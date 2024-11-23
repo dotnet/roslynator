@@ -29,109 +29,109 @@ internal class MemberSymbolEqualityComparer : EqualityComparer<ISymbol>
         {
             case SymbolKind.Event:
             case SymbolKind.Field:
+            {
+                switch (y.Kind)
                 {
-                    switch (y.Kind)
-                    {
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                        case SymbolKind.Property:
-                            return true;
-                        default:
-                            return false;
-                    }
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Method:
+                    case SymbolKind.Property:
+                        return true;
+                    default:
+                        return false;
                 }
+            }
             case SymbolKind.Method:
+            {
+                switch (y.Kind)
                 {
-                    switch (y.Kind)
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Property:
                     {
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Property:
-                            {
-                                return true;
-                            }
-                        case SymbolKind.Method:
-                            {
-                                var a = (IMethodSymbol)x;
-                                var b = (IMethodSymbol)y;
+                        return true;
+                    }
+                    case SymbolKind.Method:
+                    {
+                        var a = (IMethodSymbol)x;
+                        var b = (IMethodSymbol)y;
 
-                                return a.MethodKind == MethodKind.Ordinary
-                                    && b.MethodKind == MethodKind.Ordinary
-                                    && a.TypeParameters.Length == b.TypeParameters.Length
-                                    && ParameterEqualityComparer.ParametersEqual(a.Parameters, b.Parameters);
-                            }
-                        default:
-                            {
-                                return false;
-                            }
+                        return a.MethodKind == MethodKind.Ordinary
+                            && b.MethodKind == MethodKind.Ordinary
+                            && a.TypeParameters.Length == b.TypeParameters.Length
+                            && ParameterEqualityComparer.ParametersEqual(a.Parameters, b.Parameters);
+                    }
+                    default:
+                    {
+                        return false;
                     }
                 }
+            }
             case SymbolKind.Property:
+            {
+                switch (y.Kind)
                 {
-                    switch (y.Kind)
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Method:
                     {
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                            {
-                                return true;
-                            }
-                        case SymbolKind.Property:
-                            {
-                                var a = (IPropertySymbol)x;
-                                var b = (IPropertySymbol)y;
+                        return true;
+                    }
+                    case SymbolKind.Property:
+                    {
+                        var a = (IPropertySymbol)x;
+                        var b = (IPropertySymbol)y;
 
-                                return a.IsIndexer == b.IsIndexer
-                                    && ParameterEqualityComparer.ParametersEqual(a.Parameters, b.Parameters);
-                            }
-                        default:
-                            {
-                                return false;
-                            }
+                        return a.IsIndexer == b.IsIndexer
+                            && ParameterEqualityComparer.ParametersEqual(a.Parameters, b.Parameters);
+                    }
+                    default:
+                    {
+                        return false;
                     }
                 }
+            }
             case SymbolKind.NamedType:
+            {
+                if (y.Kind != SymbolKind.NamedType)
+                    return false;
+
+                var a = (INamedTypeSymbol)x;
+                var b = (INamedTypeSymbol)y;
+
+                if (a.TypeParameters.Length != b.TypeParameters.Length)
+                    return false;
+
+                switch (a.TypeKind)
                 {
-                    if (y.Kind != SymbolKind.NamedType)
-                        return false;
-
-                    var a = (INamedTypeSymbol)x;
-                    var b = (INamedTypeSymbol)y;
-
-                    if (a.TypeParameters.Length != b.TypeParameters.Length)
-                        return false;
-
-                    switch (a.TypeKind)
+                    case TypeKind.Class:
+                    case TypeKind.Delegate:
+                    case TypeKind.Enum:
+                    case TypeKind.Interface:
+                    case TypeKind.Struct:
                     {
-                        case TypeKind.Class:
-                        case TypeKind.Delegate:
-                        case TypeKind.Enum:
-                        case TypeKind.Interface:
-                        case TypeKind.Struct:
-                            {
-                                switch (b.TypeKind)
-                                {
-                                    case TypeKind.Class:
-                                    case TypeKind.Delegate:
-                                    case TypeKind.Enum:
-                                    case TypeKind.Interface:
-                                    case TypeKind.Struct:
-                                        return true;
-                                    default:
-                                        return false;
-                                }
-                            }
-                        default:
-                            {
+                        switch (b.TypeKind)
+                        {
+                            case TypeKind.Class:
+                            case TypeKind.Delegate:
+                            case TypeKind.Enum:
+                            case TypeKind.Interface:
+                            case TypeKind.Struct:
+                                return true;
+                            default:
                                 return false;
-                            }
+                        }
+                    }
+                    default:
+                    {
+                        return false;
                     }
                 }
+            }
             default:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
         }
     }
 

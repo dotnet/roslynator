@@ -99,40 +99,40 @@ public readonly struct SingleParameterLambdaExpressionInfo
         switch (lambdaExpression?.Kind())
         {
             case SyntaxKind.SimpleLambdaExpression:
-                {
-                    var simpleLambda = (SimpleLambdaExpressionSyntax)lambdaExpression;
+            {
+                var simpleLambda = (SimpleLambdaExpressionSyntax)lambdaExpression;
 
-                    ParameterSyntax parameter = simpleLambda.Parameter;
+                ParameterSyntax parameter = simpleLambda.Parameter;
 
-                    if (!Check(parameter, allowMissing))
-                        break;
+                if (!Check(parameter, allowMissing))
+                    break;
 
-                    CSharpSyntaxNode body = simpleLambda.Body;
+                CSharpSyntaxNode body = simpleLambda.Body;
 
-                    if (!Check(body, allowMissing))
-                        break;
+                if (!Check(body, allowMissing))
+                    break;
 
-                    return new SingleParameterLambdaExpressionInfo(simpleLambda, parameter, body);
-                }
+                return new SingleParameterLambdaExpressionInfo(simpleLambda, parameter, body);
+            }
             case SyntaxKind.ParenthesizedLambdaExpression:
-                {
-                    var parenthesizedLambda = (ParenthesizedLambdaExpressionSyntax)lambdaExpression;
+            {
+                var parenthesizedLambda = (ParenthesizedLambdaExpressionSyntax)lambdaExpression;
 
-                    ParameterSyntax? parameter = parenthesizedLambda
-                        .ParameterList?
-                        .Parameters
-                        .SingleOrDefault(shouldThrow: false);
+                ParameterSyntax? parameter = parenthesizedLambda
+                    .ParameterList?
+                    .Parameters
+                    .SingleOrDefault(shouldThrow: false);
 
-                    if (!Check(parameter, allowMissing))
-                        break;
+                if (!Check(parameter, allowMissing))
+                    break;
 
-                    CSharpSyntaxNode body = parenthesizedLambda.Body;
+                CSharpSyntaxNode body = parenthesizedLambda.Body;
 
-                    if (!Check(body, allowMissing))
-                        break;
+                if (!Check(body, allowMissing))
+                    break;
 
-                    return new SingleParameterLambdaExpressionInfo(parenthesizedLambda, parameter!, body);
-                }
+                return new SingleParameterLambdaExpressionInfo(parenthesizedLambda, parameter!, body);
+            }
         }
 
         return default;

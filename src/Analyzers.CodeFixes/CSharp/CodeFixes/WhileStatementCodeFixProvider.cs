@@ -41,37 +41,37 @@ public sealed class WhileStatementCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Convert to 'for'",
-                        ct =>
-                        {
-                            ForStatementSyntax forStatement = SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement)
-                                .WithFormatterAnnotation();
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Convert to 'for'",
+                    ct =>
+                    {
+                        ForStatementSyntax forStatement = SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement)
+                            .WithFormatterAnnotation();
 
-                            return document.ReplaceNodeAsync(whileStatement, forStatement, ct);
-                        },
-                        GetEquivalenceKey(diagnostic));
+                        return document.ReplaceNodeAsync(whileStatement, forStatement, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Convert to 'for'",
-                        ct =>
-                        {
-                            return ConvertWhileStatementToForStatementAsync(
-                                document,
-                                whileStatement,
-                                ct);
-                        },
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Convert to 'for'",
+                    ct =>
+                    {
+                        return ConvertWhileStatementToForStatementAsync(
+                            document,
+                            whileStatement,
+                            ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

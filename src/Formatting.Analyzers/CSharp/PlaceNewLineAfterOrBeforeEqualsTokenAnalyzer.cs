@@ -55,31 +55,31 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
         switch (node.Parent.Kind())
         {
             case SyntaxKind.AttributeArgument:
-                {
-                    var attributeArgument = (AttributeArgumentSyntax)node.Parent;
+            {
+                var attributeArgument = (AttributeArgumentSyntax)node.Parent;
 
-                    Analyze(context, attributeArgument.NameEquals.EqualsToken, attributeArgument.Expression);
-                    break;
-                }
+                Analyze(context, attributeArgument.NameEquals.EqualsToken, attributeArgument.Expression);
+                break;
+            }
             case SyntaxKind.AnonymousObjectMemberDeclarator:
-                {
-                    var declarator = (AnonymousObjectMemberDeclaratorSyntax)node.Parent;
+            {
+                var declarator = (AnonymousObjectMemberDeclaratorSyntax)node.Parent;
 
-                    Analyze(context, declarator.NameEquals.EqualsToken, declarator.Expression);
-                    break;
-                }
+                Analyze(context, declarator.NameEquals.EqualsToken, declarator.Expression);
+                break;
+            }
             case SyntaxKind.UsingDirective:
-                {
-                    var usingDirective = (UsingDirectiveSyntax)node.Parent;
+            {
+                var usingDirective = (UsingDirectiveSyntax)node.Parent;
 
-                    Analyze(context, usingDirective.Alias.EqualsToken, usingDirective.Name);
-                    break;
-                }
+                Analyze(context, usingDirective.Alias.EqualsToken, usingDirective.Name);
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node.Parent);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(node.Parent);
+                break;
+            }
         }
     }
 

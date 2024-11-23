@@ -34,47 +34,47 @@ internal static class RemoveInstantiationOfLocalVariableRefactoring
         switch (value)
         {
             case ObjectCreationExpressionSyntax objectCreation:
-                {
-                    InitializerExpressionSyntax initializer = objectCreation.Initializer;
+            {
+                InitializerExpressionSyntax initializer = objectCreation.Initializer;
 
-                    if (initializer?.Span.Contains(context.Span) == true)
-                        return;
+                if (initializer?.Span.Contains(context.Span) == true)
+                    return;
 
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-                    ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
-                    break;
-                }
+                ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
+                break;
+            }
             case ArrayCreationExpressionSyntax arrayCreation:
-                {
-                    InitializerExpressionSyntax initializer = arrayCreation.Initializer;
+            {
+                InitializerExpressionSyntax initializer = arrayCreation.Initializer;
 
-                    if (initializer?.Span.Contains(context.Span) == true)
-                        return;
+                if (initializer?.Span.Contains(context.Span) == true)
+                    return;
 
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
 
-                    ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
-                    break;
-                }
+                ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
+                break;
+            }
             case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
-                {
-                    InitializerExpressionSyntax initializer = implicitArrayCreation.Initializer;
+            {
+                InitializerExpressionSyntax initializer = implicitArrayCreation.Initializer;
 
-                    if (initializer?.Span.Contains(context.Span) == true)
-                        return;
+                if (initializer?.Span.Contains(context.Span) == true)
+                    return;
 
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
 
-                    ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
-                    break;
-                }
+                ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
+                break;
+            }
         }
     }
 

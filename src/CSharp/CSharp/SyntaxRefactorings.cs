@@ -239,69 +239,69 @@ internal static class SyntaxRefactorings
                 switch (trivia.Kind())
                 {
                     case SyntaxKind.SingleLineCommentTrivia:
-                        {
-                            if ((comments & CommentFilter.SingleLine) == 0)
-                                break;
-
-                            AddTrivia(trivia);
-
-                            SyntaxTriviaList triviaList = trivia.GetContainingList();
-
-                            int index = triviaList.IndexOf(trivia);
-
-                            if (index > 0)
-                            {
-                                SyntaxTrivia previousTrivia = triviaList[index - 1];
-
-                                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                                    AddTrivia(previousTrivia);
-                            }
-
-                            if (index < triviaList.Count - 1)
-                            {
-                                SyntaxTrivia nextTrivia = triviaList[index + 1];
-
-                                if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                                    AddTrivia(nextTrivia);
-                            }
-
+                    {
+                        if ((comments & CommentFilter.SingleLine) == 0)
                             break;
+
+                        AddTrivia(trivia);
+
+                        SyntaxTriviaList triviaList = trivia.GetContainingList();
+
+                        int index = triviaList.IndexOf(trivia);
+
+                        if (index > 0)
+                        {
+                            SyntaxTrivia previousTrivia = triviaList[index - 1];
+
+                            if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                                AddTrivia(previousTrivia);
                         }
+
+                        if (index < triviaList.Count - 1)
+                        {
+                            SyntaxTrivia nextTrivia = triviaList[index + 1];
+
+                            if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                                AddTrivia(nextTrivia);
+                        }
+
+                        break;
+                    }
                     case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                        {
-                            if ((comments & CommentFilter.SingleLineDocumentation) == 0)
-                                break;
-
-                            AddTrivia(trivia);
-
-                            SyntaxTriviaList triviaList = trivia.GetContainingList();
-
-                            int index = triviaList.IndexOf(trivia);
-
-                            if (index > 0)
-                            {
-                                SyntaxTrivia previousTrivia = triviaList[index - 1];
-
-                                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                                    AddTrivia(previousTrivia);
-                            }
-
+                    {
+                        if ((comments & CommentFilter.SingleLineDocumentation) == 0)
                             break;
+
+                        AddTrivia(trivia);
+
+                        SyntaxTriviaList triviaList = trivia.GetContainingList();
+
+                        int index = triviaList.IndexOf(trivia);
+
+                        if (index > 0)
+                        {
+                            SyntaxTrivia previousTrivia = triviaList[index - 1];
+
+                            if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                                AddTrivia(previousTrivia);
                         }
+
+                        break;
+                    }
                     case SyntaxKind.MultiLineCommentTrivia:
-                        {
-                            if ((comments & CommentFilter.MultiLine) != 0)
-                                RemoveMultiline(trivia);
+                    {
+                        if ((comments & CommentFilter.MultiLine) != 0)
+                            RemoveMultiline(trivia);
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                        {
-                            if ((comments & CommentFilter.MultiLineDocumentation) != 0)
-                                RemoveMultiline(trivia);
+                    {
+                        if ((comments & CommentFilter.MultiLineDocumentation) != 0)
+                            RemoveMultiline(trivia);
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
         }

@@ -32,51 +32,51 @@ internal static class RemoveAsyncAwait
             switch (node)
             {
                 case MethodDeclarationSyntax methodDeclaration:
-                    {
-                        return remover
-                            .VisitMethodDeclaration(methodDeclaration)
-                            .RemoveModifier(SyntaxKind.AsyncKeyword);
-                    }
+                {
+                    return remover
+                        .VisitMethodDeclaration(methodDeclaration)
+                        .RemoveModifier(SyntaxKind.AsyncKeyword);
+                }
                 case LocalFunctionStatementSyntax localFunction:
+                {
+                    BlockSyntax body = localFunction.Body;
+
+                    if (body is not null)
                     {
-                        BlockSyntax body = localFunction.Body;
-
-                        if (body is not null)
-                        {
-                            localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
-                        }
-                        else
-                        {
-                            ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
-
-                            if (expressionBody is not null)
-                                localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
-                        }
-
-                        return localFunction.RemoveModifier(SyntaxKind.AsyncKeyword);
+                        localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
                     }
+                    else
+                    {
+                        ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
+
+                        if (expressionBody is not null)
+                            localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
+                    }
+
+                    return localFunction.RemoveModifier(SyntaxKind.AsyncKeyword);
+                }
                 case SimpleLambdaExpressionSyntax lambda:
-                    {
-                        return lambda
-                            .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
-                    }
+                {
+                    return lambda
+                        .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
+                }
                 case ParenthesizedLambdaExpressionSyntax lambda:
-                    {
-                        return lambda
-                            .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
-                    }
+                {
+                    return lambda
+                        .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
+                }
                 case AnonymousMethodExpressionSyntax anonymousMethod:
-                    {
-                        return anonymousMethod
-                            .WithBody((CSharpSyntaxNode)remover.Visit(anonymousMethod.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(anonymousMethod.AsyncKeyword));
-                    }
+                {
+                    return anonymousMethod
+                        .WithBody((CSharpSyntaxNode)remover.Visit(anonymousMethod.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(anonymousMethod.AsyncKeyword));
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
     }

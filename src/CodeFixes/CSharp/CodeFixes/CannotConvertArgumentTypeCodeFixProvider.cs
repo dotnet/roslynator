@@ -44,93 +44,93 @@ public sealed class CannotConvertArgumentTypeCodeFixProvider : CompilerDiagnosti
         switch (diagnostic.Id)
         {
             case CompilerDiagnosticIdentifiers.CS1503_CannotConvertArgumentType:
+            {
+                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, document, root.SyntaxTree)
+                    && expression.Kind() == SyntaxKind.NullLiteralExpression
+                    && argument.Parent is ArgumentListSyntax argumentList)
                 {
-                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, document, root.SyntaxTree)
-                        && expression.Kind() == SyntaxKind.NullLiteralExpression
-                        && argument.Parent is ArgumentListSyntax argumentList)
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ImmutableArray<IParameterSymbol> parameterSymbols = FindParameters(argumentList, semanticModel, context.CancellationToken);
+
+                    if (!parameterSymbols.IsDefault)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        int index = argumentList.Arguments.IndexOf(argument);
 
-                        ImmutableArray<IParameterSymbol> parameterSymbols = FindParameters(argumentList, semanticModel, context.CancellationToken);
+                        IParameterSymbol parameterSymbol = parameterSymbols[index];
 
-                        if (!parameterSymbols.IsDefault)
+                        ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+                        if (typeSymbol.IsValueType)
                         {
-                            int index = argumentList.Arguments.IndexOf(argument);
-
-                            IParameterSymbol parameterSymbol = parameterSymbols[index];
-
-                            ITypeSymbol typeSymbol = parameterSymbol.Type;
-
-                            if (typeSymbol.IsValueType)
-                            {
-                                CodeFixRegistrator.ReplaceNullWithDefaultValue(
-                                    context,
-                                    diagnostic,
-                                    expression,
-                                    typeSymbol,
-                                    CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue);
-                            }
+                            CodeFixRegistrator.ReplaceNullWithDefaultValue(
+                                context,
+                                diagnostic,
+                                expression,
+                                typeSymbol,
+                                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue);
                         }
                     }
-
-                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, document, root.SyntaxTree)
-                        && expression.IsKind(
-                            SyntaxKind.IdentifierName,
-                            SyntaxKind.GenericName,
-                            SyntaxKind.SimpleMemberAccessExpression))
-                    {
-                        InvocationExpressionSyntax invocationExpression = InvocationExpression(
-                            expression.WithoutTrailingTrivia(),
-                            ArgumentList().WithTrailingTrivia(expression.GetTrailingTrivia()));
-
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) is not null)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add argument list",
-                                ct =>
-                                {
-                                    ArgumentSyntax newNode = argument.WithExpression(invocationExpression);
-
-                                    return document.ReplaceNodeAsync(argument, newNode, ct);
-                                },
-                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddArgumentList));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    }
-
-                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.CreateSingletonArray, document, root.SyntaxTree)
-                        && expression?.IsMissing == false)
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression);
-
-                        if (typeSymbol?.IsErrorType() == false)
-                        {
-                            foreach (ITypeSymbol typeSymbol2 in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
-                            {
-                                if (!SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2)
-                                    && typeSymbol2 is IArrayTypeSymbol arrayType
-                                    && semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Create singleton array",
-                                        ct => CreateSingletonArrayRefactoring.RefactorAsync(document, expression, arrayType.ElementType, semanticModel, ct),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.CreateSingletonArray));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    break;
                 }
+
+                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, document, root.SyntaxTree)
+                    && expression.IsKind(
+                        SyntaxKind.IdentifierName,
+                        SyntaxKind.GenericName,
+                        SyntaxKind.SimpleMemberAccessExpression))
+                {
+                    InvocationExpressionSyntax invocationExpression = InvocationExpression(
+                        expression.WithoutTrailingTrivia(),
+                        ArgumentList().WithTrailingTrivia(expression.GetTrailingTrivia()));
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) is not null)
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Add argument list",
+                            ct =>
+                            {
+                                ArgumentSyntax newNode = argument.WithExpression(invocationExpression);
+
+                                return document.ReplaceNodeAsync(argument, newNode, ct);
+                            },
+                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddArgumentList));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                }
+
+                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.CreateSingletonArray, document, root.SyntaxTree)
+                    && expression?.IsMissing == false)
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression);
+
+                    if (typeSymbol?.IsErrorType() == false)
+                    {
+                        foreach (ITypeSymbol typeSymbol2 in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
+                        {
+                            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2)
+                                && typeSymbol2 is IArrayTypeSymbol arrayType
+                                && semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Create singleton array",
+                                    ct => CreateSingletonArrayRefactoring.RefactorAsync(document, expression, arrayType.ElementType, semanticModel, ct),
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.CreateSingletonArray));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                break;
+            }
         }
     }
 

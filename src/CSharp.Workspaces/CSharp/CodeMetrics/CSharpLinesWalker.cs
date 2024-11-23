@@ -42,47 +42,47 @@ internal abstract class CSharpLinesWalker : CSharpSyntaxWalker
             switch (trivia.Kind())
             {
                 case SyntaxKind.SingleLineCommentTrivia:
+                {
+                    TextSpan span = trivia.Span;
+
+                    TextLine line = Lines.GetLineFromPosition(span.Start);
+
+                    if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
                     {
-                        TextSpan span = trivia.Span;
-
-                        TextLine line = Lines.GetLineFromPosition(span.Start);
-
-                        if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
-                        {
-                            CommentLineCount++;
-                        }
-
-                        break;
+                        CommentLineCount++;
                     }
+
+                    break;
+                }
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                    {
-                        CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
-                        break;
-                    }
+                {
+                    CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
+                    break;
+                }
                 case SyntaxKind.MultiLineCommentTrivia:
+                {
+                    TextSpan span = trivia.Span;
+
+                    TextLine line = Lines.GetLineFromPosition(span.Start);
+
+                    if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
                     {
-                        TextSpan span = trivia.Span;
+                        int lineCount = Lines.GetLineCount(trivia.Span);
 
-                        TextLine line = Lines.GetLineFromPosition(span.Start);
-
-                        if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
+                        if (lineCount == 1
+                            || line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(Lines.GetLineFromPosition(span.End).End, span.End)))
                         {
-                            int lineCount = Lines.GetLineCount(trivia.Span);
-
-                            if (lineCount == 1
-                                || line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(Lines.GetLineFromPosition(span.End).End, span.End)))
-                            {
-                                CommentLineCount += lineCount;
-                            }
+                            CommentLineCount += lineCount;
                         }
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                    {
-                        CommentLineCount += Lines.GetLineCount(trivia.Span);
-                        break;
-                    }
+                {
+                    CommentLineCount += Lines.GetLineCount(trivia.Span);
+                    break;
+                }
             }
         }
 

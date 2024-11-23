@@ -31,32 +31,32 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
             switch (node.Kind())
             {
                 case SyntaxKind.ThrowStatement:
+                {
+                    if (predicate(node))
                     {
-                        if (predicate(node))
-                        {
-                            var throwStatement = (ThrowStatementSyntax)node;
+                        var throwStatement = (ThrowStatementSyntax)node;
 
-                            ThrowInfo info = GetUndocumentedExceptionInfo(node, throwStatement.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
+                        ThrowInfo info = GetUndocumentedExceptionInfo(node, throwStatement.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
-                            if (info is not null)
-                                yield return info;
-                        }
-
-                        break;
+                        if (info is not null)
+                            yield return info;
                     }
+
+                    break;
+                }
                 case SyntaxKind.ThrowExpression:
+                {
+                    if (predicate(node))
                     {
-                        if (predicate(node))
-                        {
-                            var throwExpression = (ThrowExpressionSyntax)node;
-                            ThrowInfo info = GetUndocumentedExceptionInfo(node, throwExpression.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
+                        var throwExpression = (ThrowExpressionSyntax)node;
+                        ThrowInfo info = GetUndocumentedExceptionInfo(node, throwExpression.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
-                            if (info is not null)
-                                yield return info;
-                        }
-
-                        break;
+                        if (info is not null)
+                            yield return info;
                     }
+
+                    break;
+                }
             }
         }
     }
@@ -109,32 +109,32 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
                 {
                     case XmlTag.Include:
                     case XmlTag.Exclude:
-                        {
-                            if (isFirst)
-                                containsIncludeOrExclude = true;
+                    {
+                        if (isFirst)
+                            containsIncludeOrExclude = true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case XmlTag.InheritDoc:
-                        {
-                            return false;
-                        }
+                    {
+                        return false;
+                    }
                     case XmlTag.Exception:
+                    {
+                        if (!containsException)
                         {
-                            if (!containsException)
+                            if (info.IsEmptyElement)
                             {
-                                if (info.IsEmptyElement)
-                                {
-                                    containsException = ContainsException((XmlEmptyElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
-                                }
-                                else
-                                {
-                                    containsException = ContainsException((XmlElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
-                                }
+                                containsException = ContainsException((XmlEmptyElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
                             }
-
-                            break;
+                            else
+                            {
+                                containsException = ContainsException((XmlElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
+                            }
                         }
+
+                        break;
+                    }
                 }
 
                 if (isFirst)

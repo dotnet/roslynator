@@ -208,20 +208,20 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
         switch (symbol?.Kind)
         {
             case SymbolKind.Local:
-                {
-                    break;
-                }
+            {
+                break;
+            }
             case SymbolKind.Parameter:
-                {
-                    if (((IParameterSymbol)symbol).RefKind != RefKind.None)
-                        return;
-
-                    break;
-                }
-            default:
-                {
+            {
+                if (((IParameterSymbol)symbol).RefKind != RefKind.None)
                     return;
-                }
+
+                break;
+            }
+            default:
+            {
+                return;
+            }
         }
 
         if (IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt())

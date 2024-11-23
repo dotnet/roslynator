@@ -125,21 +125,21 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         switch (body.Kind())
         {
             case SyntaxKind.Block:
-                {
-                    return AnalyzeMethodBody(lambda, (BlockSyntax)body, semanticModel, cancellationToken);
-                }
+            {
+                return AnalyzeMethodBody(lambda, (BlockSyntax)body, semanticModel, cancellationToken);
+            }
             case SyntaxKind.AwaitExpression:
+            {
+                var awaitExpression = (AwaitExpressionSyntax)body;
+
+                if (!AwaitExpressionWalker.ContainsAwaitExpression(awaitExpression.Expression)
+                    && VerifyTypes(lambda, awaitExpression, semanticModel, cancellationToken))
                 {
-                    var awaitExpression = (AwaitExpressionSyntax)body;
-
-                    if (!AwaitExpressionWalker.ContainsAwaitExpression(awaitExpression.Expression)
-                        && VerifyTypes(lambda, awaitExpression, semanticModel, cancellationToken))
-                    {
-                        return new RemoveAsyncAwaitAnalysis(awaitExpression);
-                    }
-
-                    break;
+                    return new RemoveAsyncAwaitAnalysis(awaitExpression);
                 }
+
+                break;
+            }
         }
 
         return default;
@@ -175,84 +175,84 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         switch (statement.Kind())
         {
             case SyntaxKind.ReturnStatement:
+            {
+                var returnStatement = (ReturnStatementSyntax)statement;
+
+                AwaitExpressionSyntax awaitExpression = GetAwaitExpression(returnStatement);
+
+                if (awaitExpression is null)
+                    return default;
+
+                AwaitExpressionWalker walker = VisitStatements();
+
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+
+                if (awaitExpressions.Count == 1)
                 {
-                    var returnStatement = (ReturnStatementSyntax)statement;
+                    if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
+                        return new RemoveAsyncAwaitAnalysis(walker);
+                }
+                else if (awaitExpressions.Count > 1)
+                {
+                    StatementSyntax prevStatement = statements[statements.IndexOf(returnStatement) - 1];
 
-                    AwaitExpressionSyntax awaitExpression = GetAwaitExpression(returnStatement);
-
-                    if (awaitExpression is null)
-                        return default;
-
-                    AwaitExpressionWalker walker = VisitStatements();
-
-                    HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
-
-                    if (awaitExpressions.Count == 1)
+                    switch (prevStatement.Kind())
                     {
-                        if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
-                            return new RemoveAsyncAwaitAnalysis(walker);
-                    }
-                    else if (awaitExpressions.Count > 1)
-                    {
-                        StatementSyntax prevStatement = statements[statements.IndexOf(returnStatement) - 1];
-
-                        switch (prevStatement.Kind())
+                        case SyntaxKind.IfStatement:
                         {
-                            case SyntaxKind.IfStatement:
-                                {
-                                    if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
-                                        && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
-                                    {
-                                        return new RemoveAsyncAwaitAnalysis(walker);
-                                    }
+                            if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
+                                && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
+                            {
+                                return new RemoveAsyncAwaitAnalysis(walker);
+                            }
 
-                                    break;
-                                }
-                            case SyntaxKind.SwitchStatement:
-                                {
-                                    if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
-                                        && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
-                                    {
-                                        return new RemoveAsyncAwaitAnalysis(walker);
-                                    }
+                            break;
+                        }
+                        case SyntaxKind.SwitchStatement:
+                        {
+                            if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
+                                && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
+                            {
+                                return new RemoveAsyncAwaitAnalysis(walker);
+                            }
 
-                                    break;
-                                }
+                            break;
                         }
                     }
-
-                    return default;
                 }
+
+                return default;
+            }
             case SyntaxKind.IfStatement:
+            {
+                AwaitExpressionWalker walker = VisitStatements();
+
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+
+                if (awaitExpressions.Count > 0
+                    && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
+                    && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    AwaitExpressionWalker walker = VisitStatements();
-
-                    HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
-
-                    if (awaitExpressions.Count > 0
-                        && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
-                        && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
-                    {
-                        return new RemoveAsyncAwaitAnalysis(walker);
-                    }
-
-                    return default;
+                    return new RemoveAsyncAwaitAnalysis(walker);
                 }
+
+                return default;
+            }
             case SyntaxKind.SwitchStatement:
+            {
+                AwaitExpressionWalker walker = VisitStatements();
+
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+
+                if (awaitExpressions.Count > 0
+                    && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
+                    && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    AwaitExpressionWalker walker = VisitStatements();
-
-                    HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
-
-                    if (awaitExpressions.Count > 0
-                        && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
-                        && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
-                    {
-                        return new RemoveAsyncAwaitAnalysis(walker);
-                    }
-
-                    return default;
+                    return new RemoveAsyncAwaitAnalysis(walker);
                 }
+
+                return default;
+            }
         }
 
         return default;

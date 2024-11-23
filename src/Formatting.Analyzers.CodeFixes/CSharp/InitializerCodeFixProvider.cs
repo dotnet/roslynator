@@ -34,15 +34,15 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.PutInitializerOnSingleLine:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Put initializer on a single line",
-                        ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: false, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Put initializer on a single line",
+                    ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: false, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 }

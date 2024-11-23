@@ -50,15 +50,15 @@ internal static class JoinStringExpressionsRefactoring
             switch (expression.Kind())
             {
                 case SyntaxKind.StringLiteralExpression:
-                    {
-                        builder.Append((LiteralExpressionSyntax)expression);
-                        break;
-                    }
+                {
+                    builder.Append((LiteralExpressionSyntax)expression);
+                    break;
+                }
                 case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        builder.Append((InterpolatedStringExpressionSyntax)expression);
-                        break;
-                    }
+                {
+                    builder.Append((InterpolatedStringExpressionSyntax)expression);
+                    break;
+                }
             }
         }
 

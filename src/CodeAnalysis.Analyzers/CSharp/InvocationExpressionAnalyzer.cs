@@ -59,42 +59,42 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
         switch (invocationInfo.Arguments.Count)
         {
             case 0:
+            {
+                switch (methodName)
                 {
-                    switch (methodName)
+                    case "First":
                     {
-                        case "First":
-                            {
-                                if (DiagnosticRules.UseElementAccess.IsEffective(context))
-                                    UseElementAccessInsteadOfCallingFirst();
+                        if (DiagnosticRules.UseElementAccess.IsEffective(context))
+                            UseElementAccessInsteadOfCallingFirst();
 
-                                break;
-                            }
+                        break;
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case 1:
+            {
+                switch (methodName)
                 {
-                    switch (methodName)
+                    case "ElementAt":
                     {
-                        case "ElementAt":
-                            {
-                                if (DiagnosticRules.UseElementAccess.IsEffective(context))
-                                    UseElementAccessInsteadOfCallingElementAt();
+                        if (DiagnosticRules.UseElementAccess.IsEffective(context))
+                            UseElementAccessInsteadOfCallingElementAt();
 
-                                break;
-                            }
-                        case "IsKind":
-                            {
-                                if (DiagnosticRules.UnnecessaryNullCheck.IsEffective(context))
-                                    AnalyzeUnnecessaryNullCheck();
-
-                                break;
-                            }
+                        break;
                     }
+                    case "IsKind":
+                    {
+                        if (DiagnosticRules.UnnecessaryNullCheck.IsEffective(context))
+                            AnalyzeUnnecessaryNullCheck();
 
-                    break;
+                        break;
+                    }
                 }
+
+                break;
+            }
         }
 
         if (DiagnosticRules.UseReturnValue.IsEffective(context)

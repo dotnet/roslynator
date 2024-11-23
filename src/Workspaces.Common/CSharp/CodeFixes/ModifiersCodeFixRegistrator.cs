@@ -67,29 +67,29 @@ internal static class ModifiersCodeFixRegistrator
         switch (modifierKind)
         {
             case SyntaxKind.AbstractKeyword:
-                {
-                    node = node.RemoveModifiers(SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword);
-                    break;
-                }
+            {
+                node = node.RemoveModifiers(SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword);
+                break;
+            }
             case SyntaxKind.VirtualKeyword:
-                {
-                    node = node.RemoveModifiers(SyntaxKind.AbstractKeyword, SyntaxKind.OverrideKeyword);
-                    break;
-                }
+            {
+                node = node.RemoveModifiers(SyntaxKind.AbstractKeyword, SyntaxKind.OverrideKeyword);
+                break;
+            }
             case SyntaxKind.OverrideKeyword:
-                {
-                    node = node.RemoveModifiers(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword);
-                    break;
-                }
+            {
+                node = node.RemoveModifiers(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword);
+                break;
+            }
             case SyntaxKind.StaticKeyword:
-                {
-                    if (node.IsKind(SyntaxKind.ConstructorDeclaration))
-                        node = SyntaxAccessibility.WithoutExplicitAccessibility(node);
+            {
+                if (node.IsKind(SyntaxKind.ConstructorDeclaration))
+                    node = SyntaxAccessibility.WithoutExplicitAccessibility(node);
 
-                    node = node.RemoveModifier(SyntaxKind.SealedKeyword);
+                node = node.RemoveModifier(SyntaxKind.SealedKeyword);
 
-                    break;
-                }
+                break;
+            }
         }
 
         return node.InsertModifier(modifierKind, comparer);

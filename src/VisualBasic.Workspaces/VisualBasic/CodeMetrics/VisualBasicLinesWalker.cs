@@ -42,23 +42,23 @@ internal abstract class VisualBasicLinesWalker : VisualBasicSyntaxWalker
             switch (trivia.Kind())
             {
                 case SyntaxKind.CommentTrivia:
+                {
+                    TextSpan span = trivia.Span;
+
+                    TextLine line = Lines.GetLineFromPosition(span.Start);
+
+                    if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
                     {
-                        TextSpan span = trivia.Span;
-
-                        TextLine line = Lines.GetLineFromPosition(span.Start);
-
-                        if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
-                        {
-                            CommentLineCount++;
-                        }
-
-                        break;
+                        CommentLineCount++;
                     }
+
+                    break;
+                }
                 case SyntaxKind.DocumentationCommentTrivia:
-                    {
-                        CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
-                        break;
-                    }
+                {
+                    CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
+                    break;
+                }
             }
         }
 

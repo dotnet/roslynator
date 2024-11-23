@@ -201,19 +201,19 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
                     switch (methodSymbol.MethodKind)
                     {
                         case MethodKind.UserDefinedOperator:
-                            {
-                                if (includeUserDefinedOperator)
-                                    yield return methodSymbol;
+                        {
+                            if (includeUserDefinedOperator)
+                                yield return methodSymbol;
 
-                                break;
-                            }
+                            break;
+                        }
                         case MethodKind.Conversion:
-                            {
-                                if (includeConversion)
-                                    yield return methodSymbol;
+                        {
+                            if (includeConversion)
+                                yield return methodSymbol;
 
-                                break;
-                            }
+                            break;
+                        }
                     }
                 }
             }

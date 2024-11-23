@@ -250,43 +250,43 @@ internal static class AddGenericParameterToDeclarationRefactoring
         switch (node.Kind())
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    newNode = GetNewNode((MethodDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
-                    break;
-                }
+            {
+                newNode = GetNewNode((MethodDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
+                break;
+            }
             case SyntaxKind.ClassDeclaration:
-                {
-                    newNode = GetNewNode((ClassDeclarationSyntax)node, constraint, semanticModel);
-                    break;
-                }
+            {
+                newNode = GetNewNode((ClassDeclarationSyntax)node, constraint, semanticModel);
+                break;
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    newNode = GetNewNode((RecordDeclarationSyntax)node, constraint, semanticModel);
-                    break;
-                }
+            {
+                newNode = GetNewNode((RecordDeclarationSyntax)node, constraint, semanticModel);
+                break;
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
-                    break;
-                }
+            {
+                newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
+                break;
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    newNode = GetNewNode((InterfaceDeclarationSyntax)node, constraint, semanticModel);
-                    break;
-                }
+            {
+                newNode = GetNewNode((InterfaceDeclarationSyntax)node, constraint, semanticModel);
+                break;
+            }
             case SyntaxKind.DelegateDeclaration:
-                {
-                    newNode = GetNewNode((DelegateDeclarationSyntax)node, constraint, semanticModel);
-                    break;
-                }
+            {
+                newNode = GetNewNode((DelegateDeclarationSyntax)node, constraint, semanticModel);
+                break;
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    newNode = GetNewNode((LocalFunctionStatementSyntax)node, constraint, semanticModel, cancellationToken);
-                    break;
-                }
+            {
+                newNode = GetNewNode((LocalFunctionStatementSyntax)node, constraint, semanticModel, cancellationToken);
+                break;
+            }
         }
 
         return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);

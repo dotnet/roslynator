@@ -45,77 +45,77 @@ public sealed class AddReturnStatementCodeFixProvider : CompilerDiagnosticCodeFi
             switch (ancestor.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                    {
-                        var methodDeclaration = (MethodDeclarationSyntax)ancestor;
+                {
+                    var methodDeclaration = (MethodDeclarationSyntax)ancestor;
 
-                        if (!methodDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                            ComputeCodeFix(context, diagnostic, methodDeclaration.ReturnType, methodDeclaration.Body, semanticModel);
+                    if (!methodDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                        ComputeCodeFix(context, diagnostic, methodDeclaration.ReturnType, methodDeclaration.Body, semanticModel);
 
-                        return;
-                    }
+                    return;
+                }
                 case SyntaxKind.OperatorDeclaration:
-                    {
-                        var operatorDeclaration = (OperatorDeclarationSyntax)ancestor;
+                {
+                    var operatorDeclaration = (OperatorDeclarationSyntax)ancestor;
 
-                        ComputeCodeFix(context, diagnostic, operatorDeclaration.ReturnType, operatorDeclaration.Body, semanticModel);
-                        return;
-                    }
+                    ComputeCodeFix(context, diagnostic, operatorDeclaration.ReturnType, operatorDeclaration.Body, semanticModel);
+                    return;
+                }
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    {
-                        var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)ancestor;
+                {
+                    var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)ancestor;
 
-                        ComputeCodeFix(context, diagnostic, conversionOperatorDeclaration.Type, conversionOperatorDeclaration.Body, semanticModel);
-                        return;
-                    }
+                    ComputeCodeFix(context, diagnostic, conversionOperatorDeclaration.Type, conversionOperatorDeclaration.Body, semanticModel);
+                    return;
+                }
                 case SyntaxKind.LocalFunctionStatement:
-                    {
-                        var localFunction = (LocalFunctionStatementSyntax)ancestor;
+                {
+                    var localFunction = (LocalFunctionStatementSyntax)ancestor;
 
-                        ComputeCodeFix(context, diagnostic, localFunction.ReturnType, localFunction.Body, semanticModel);
-                        return;
-                    }
+                    ComputeCodeFix(context, diagnostic, localFunction.ReturnType, localFunction.Body, semanticModel);
+                    return;
+                }
                 case SyntaxKind.GetAccessorDeclaration:
+                {
+                    var accessor = (AccessorDeclarationSyntax)ancestor;
+
+                    switch (accessor.Parent.Parent.Kind())
                     {
-                        var accessor = (AccessorDeclarationSyntax)ancestor;
-
-                        switch (accessor.Parent.Parent.Kind())
+                        case SyntaxKind.PropertyDeclaration:
                         {
-                            case SyntaxKind.PropertyDeclaration:
-                                {
-                                    var propertyDeclaration = (PropertyDeclarationSyntax)accessor.Parent.Parent;
+                            var propertyDeclaration = (PropertyDeclarationSyntax)accessor.Parent.Parent;
 
-                                    ComputeCodeFix(context, diagnostic, propertyDeclaration.Type, accessor.Body, semanticModel);
-                                    break;
-                                }
-                            case SyntaxKind.IndexerDeclaration:
-                                {
-                                    var indexerDeclaration = (IndexerDeclarationSyntax)accessor.Parent.Parent;
-
-                                    ComputeCodeFix(context, diagnostic, indexerDeclaration.Type, accessor.Body, semanticModel);
-                                    break;
-                                }
+                            ComputeCodeFix(context, diagnostic, propertyDeclaration.Type, accessor.Body, semanticModel);
+                            break;
                         }
+                        case SyntaxKind.IndexerDeclaration:
+                        {
+                            var indexerDeclaration = (IndexerDeclarationSyntax)accessor.Parent.Parent;
 
-                        return;
+                            ComputeCodeFix(context, diagnostic, indexerDeclaration.Type, accessor.Body, semanticModel);
+                            break;
+                        }
                     }
+
+                    return;
+                }
                 case SyntaxKind.AnonymousMethodExpression:
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.ParenthesizedLambdaExpression:
+                {
+                    var anonymousFunction = (AnonymousFunctionExpressionSyntax)ancestor;
+
+                    var body = anonymousFunction.Body as BlockSyntax;
+
+                    if (body?.Statements.Count > 0)
                     {
-                        var anonymousFunction = (AnonymousFunctionExpressionSyntax)ancestor;
+                        var methodSymbol = semanticModel.GetSymbol(anonymousFunction, context.CancellationToken) as IMethodSymbol;
 
-                        var body = anonymousFunction.Body as BlockSyntax;
-
-                        if (body?.Statements.Count > 0)
-                        {
-                            var methodSymbol = semanticModel.GetSymbol(anonymousFunction, context.CancellationToken) as IMethodSymbol;
-
-                            if (methodSymbol?.IsErrorType() == false)
-                                ComputeCodeFix(context, diagnostic, methodSymbol.ReturnType, body);
-                        }
-
-                        return;
+                        if (methodSymbol?.IsErrorType() == false)
+                            ComputeCodeFix(context, diagnostic, methodSymbol.ReturnType, body);
                     }
+
+                    return;
+                }
             }
         }
     }

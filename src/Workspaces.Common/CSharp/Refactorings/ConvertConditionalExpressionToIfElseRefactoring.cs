@@ -134,25 +134,25 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
         switch (statement.Kind())
         {
             case SyntaxKind.ReturnStatement:
-                {
-                    return ((ReturnStatementSyntax)statement).WithExpression(expression);
-                }
+            {
+                return ((ReturnStatementSyntax)statement).WithExpression(expression);
+            }
             case SyntaxKind.YieldReturnStatement:
-                {
-                    return ((YieldStatementSyntax)statement).WithExpression(expression);
-                }
+            {
+                return ((YieldStatementSyntax)statement).WithExpression(expression);
+            }
             case SyntaxKind.ExpressionStatement:
-                {
-                    var expressionStatement = (ExpressionStatementSyntax)statement;
+            {
+                var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                    var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+                var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-                    return expressionStatement.WithExpression(assignment.WithRight(expression));
-                }
+                return expressionStatement.WithExpression(assignment.WithRight(expression));
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 

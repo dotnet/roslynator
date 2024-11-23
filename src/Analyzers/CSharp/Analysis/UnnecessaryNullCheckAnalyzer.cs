@@ -60,33 +60,33 @@ public sealed class UnnecessaryNullCheckAnalyzer : BaseDiagnosticAnalyzer
         switch (right.Kind())
         {
             case SyntaxKind.LogicalNotExpression:
-                {
-                    var logicalNot = (PrefixUnaryExpressionSyntax)right;
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)right;
 
-                    Analyze(nullCheck.Expression, logicalNot.Operand?.WalkDownParentheses(), null);
-                    break;
-                }
+                Analyze(nullCheck.Expression, logicalNot.Operand?.WalkDownParentheses(), null);
+                break;
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.LessThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
-                {
-                    BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)right);
+            {
+                BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)right);
 
-                    if (!binaryExpressionInfo.Success)
-                        break;
-
-                    ExpressionSyntax left = binaryExpressionInfo.Left;
-
-                    Analyze(nullCheck.Expression, left, binaryExpressionInfo.Right);
+                if (!binaryExpressionInfo.Success)
                     break;
-                }
+
+                ExpressionSyntax left = binaryExpressionInfo.Left;
+
+                Analyze(nullCheck.Expression, left, binaryExpressionInfo.Right);
+                break;
+            }
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    AnalyzeSimpleMemberAccessExpression(nullCheck.Expression, (MemberAccessExpressionSyntax)right, null);
-                    break;
-                }
+            {
+                AnalyzeSimpleMemberAccessExpression(nullCheck.Expression, (MemberAccessExpressionSyntax)right, null);
+                break;
+            }
         }
 
         void Analyze(ExpressionSyntax expression1, ExpressionSyntax expression2, ExpressionSyntax expression3)
@@ -118,21 +118,21 @@ public sealed class UnnecessaryNullCheckAnalyzer : BaseDiagnosticAnalyzer
                     case SyntaxKind.CharacterLiteralExpression:
                     case SyntaxKind.TrueLiteralExpression:
                     case SyntaxKind.FalseLiteralExpression:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case SyntaxKind.NullLiteralExpression:
                     case SyntaxKind.DefaultLiteralExpression:
-                        {
-                            return;
-                        }
+                    {
+                        return;
+                    }
                     default:
-                        {
-                            if (context.SemanticModel.GetTypeSymbol(expression3, context.CancellationToken).IsNullableType())
-                                return;
+                    {
+                        if (context.SemanticModel.GetTypeSymbol(expression3, context.CancellationToken).IsNullableType())
+                            return;
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
 

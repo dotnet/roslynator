@@ -93,56 +93,56 @@ public class SymbolXmlDocumentation
                 case "summary":
                 case "typeparam":
                 case "value":
+                {
+                    if (skipEmptyElement
+                        && string.IsNullOrWhiteSpace(element.Value))
                     {
-                        if (skipEmptyElement
-                            && string.IsNullOrWhiteSpace(element.Value))
-                        {
-                            break;
-                        }
-
-                        yield return GetElementXml(element);
                         break;
                     }
+
+                    yield return GetElementXml(element);
+                    break;
+                }
                 case "c":
                 case "para":
+                {
+                    Debug.Fail(element.Name.LocalName);
+
+                    if (skipEmptyElement
+                        && string.IsNullOrWhiteSpace(element.Value))
                     {
-                        Debug.Fail(element.Name.LocalName);
-
-                        if (skipEmptyElement
-                            && string.IsNullOrWhiteSpace(element.Value))
-                        {
-                            break;
-                        }
-
-                        yield return GetElementXml(element);
                         break;
                     }
+
+                    yield return GetElementXml(element);
+                    break;
+                }
                 case "see":
                 case "paramref":
                 case "typeparamref":
-                    {
-                        Debug.Fail(element.Name.LocalName);
+                {
+                    Debug.Fail(element.Name.LocalName);
 
-                        yield return GetElementXml(element);
-                        break;
-                    }
+                    yield return GetElementXml(element);
+                    break;
+                }
                 case "exception":
                 case "permission":
                 case "seealso":
-                    {
-                        yield return GetElementXml(element);
-                        break;
-                    }
+                {
+                    yield return GetElementXml(element);
+                    break;
+                }
                 case "filterpriority":
                 case "completionlist":
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 default:
-                    {
-                        Debug.Fail(element.Name.LocalName);
-                        break;
-                    }
+                {
+                    Debug.Fail(element.Name.LocalName);
+                    break;
+                }
             }
         }
 

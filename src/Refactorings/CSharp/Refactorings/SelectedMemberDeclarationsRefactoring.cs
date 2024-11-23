@@ -100,71 +100,71 @@ internal static class SelectedMemberDeclarationsRefactoring
                 switch (member.Kind())
                 {
                     case SyntaxKind.ClassDeclaration:
-                        {
-                            if (((ClassDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
-                                return true;
+                    {
+                        if (((ClassDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.InterfaceDeclaration:
-                        {
-                            if (((InterfaceDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
-                                return true;
+                    {
+                        if (((InterfaceDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
                     case SyntaxKind.RecordStructDeclaration:
 #endif
-                        {
-                            if (((RecordDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
-                                return true;
+                    {
+                        if (((RecordDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.StructDeclaration:
-                        {
-                            if (((StructDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
-                                return true;
+                    {
+                        if (((StructDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.MethodDeclaration:
-                        {
-                            if (((MethodDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.PartialKeyword, SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
-                                return true;
+                    {
+                        if (((MethodDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.PartialKeyword, SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.PropertyDeclaration:
-                        {
-                            if (((PropertyDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
-                                return true;
+                    {
+                        if (((PropertyDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.IndexerDeclaration:
-                        {
-                            if (((IndexerDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
-                                return true;
+                    {
+                        if (((IndexerDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.EventDeclaration:
-                        {
-                            if (((EventDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
-                                return true;
+                    {
+                        if (((EventDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.EventFieldDeclaration:
-                        {
-                            if (((EventFieldDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
-                                return true;
+                    {
+                        if (((EventFieldDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
 

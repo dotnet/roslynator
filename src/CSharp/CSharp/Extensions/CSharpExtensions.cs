@@ -277,134 +277,134 @@ public static class CSharpExtensions
         switch (expression.WalkDownParentheses().Kind())
         {
             case SyntaxKind.NullLiteralExpression:
-                {
-                    return typeSymbol.IsReferenceTypeOrNullableType();
-                }
+            {
+                return typeSymbol.IsReferenceTypeOrNullableType();
+            }
             case SyntaxKind.DefaultLiteralExpression:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SyntaxKind.DefaultExpression:
-                {
-                    var defaultExpression = (DefaultExpressionSyntax)expression;
+            {
+                var defaultExpression = (DefaultExpressionSyntax)expression;
 
-                    TypeSyntax type = defaultExpression.Type;
+                TypeSyntax type = defaultExpression.Type;
 
-                    return type is not null
-                        && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(type, cancellationToken));
-                }
+                return type is not null
+                    && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(type, cancellationToken));
+            }
         }
 
         switch (typeSymbol.SpecialType)
         {
             case SpecialType.System_Void:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             case SpecialType.System_Boolean:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is bool value
-                        && !value;
-                }
+                return optional.HasValue
+                    && optional.Value is bool value
+                    && !value;
+            }
             case SpecialType.System_Char:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is char value
-                        && value == '\0';
-                }
+                return optional.HasValue
+                    && optional.Value is char value
+                    && value == '\0';
+            }
             case SpecialType.System_SByte:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is sbyte value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is sbyte value
+                    && value == 0;
+            }
             case SpecialType.System_Byte:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is byte value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is byte value
+                    && value == 0;
+            }
             case SpecialType.System_Int16:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is short value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is short value
+                    && value == 0;
+            }
             case SpecialType.System_UInt16:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is ushort value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is ushort value
+                    && value == 0;
+            }
             case SpecialType.System_Int32:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is int value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is int value
+                    && value == 0;
+            }
             case SpecialType.System_UInt32:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is uint value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is uint value
+                    && value == 0;
+            }
             case SpecialType.System_Int64:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is long value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is long value
+                    && value == 0;
+            }
             case SpecialType.System_UInt64:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is ulong value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is ulong value
+                    && value == 0;
+            }
             case SpecialType.System_Decimal:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is decimal value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is decimal value
+                    && value == 0;
+            }
             case SpecialType.System_Single:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is float value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is float value
+                    && value == 0;
+            }
             case SpecialType.System_Double:
-                {
-                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+            {
+                Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                    return optional.HasValue
-                        && optional.Value is double value
-                        && value == 0;
-                }
+                return optional.HasValue
+                    && optional.Value is double value
+                    && value == 0;
+            }
         }
 
         if (typeSymbol.TypeKind == TypeKind.Enum)
@@ -414,69 +414,69 @@ public static class CSharpExtensions
             switch (enumSymbol.EnumUnderlyingType!.SpecialType)
             {
                 case SpecialType.System_SByte:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is sbyte value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is sbyte value
+                        && value == 0;
+                }
                 case SpecialType.System_Byte:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is byte value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is byte value
+                        && value == 0;
+                }
                 case SpecialType.System_Int16:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is short value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is short value
+                        && value == 0;
+                }
                 case SpecialType.System_UInt16:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is ushort value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is ushort value
+                        && value == 0;
+                }
                 case SpecialType.System_Int32:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is int value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is int value
+                        && value == 0;
+                }
                 case SpecialType.System_UInt32:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is uint value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is uint value
+                        && value == 0;
+                }
                 case SpecialType.System_Int64:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is long value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is long value
+                        && value == 0;
+                }
                 case SpecialType.System_UInt64:
-                    {
-                        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is ulong value
-                            && value == 0;
-                    }
+                    return optional.HasValue
+                        && optional.Value is ulong value
+                        && value == 0;
+                }
             }
 
             Debug.Fail(enumSymbol.EnumUnderlyingType.SpecialType.ToString());

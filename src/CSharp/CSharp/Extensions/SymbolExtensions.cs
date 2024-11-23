@@ -35,41 +35,41 @@ public static class SymbolExtensions
             switch (typeSymbol.DeclaredAccessibility)
             {
                 case Accessibility.Public:
-                    {
-                        AddKeyword(SyntaxKind.PublicKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.PublicKeyword);
+                    break;
+                }
                 case Accessibility.ProtectedOrInternal:
-                    {
-                        AddKeyword(SyntaxKind.ProtectedKeyword);
-                        AddKeyword(SyntaxKind.InternalKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.ProtectedKeyword);
+                    AddKeyword(SyntaxKind.InternalKeyword);
+                    break;
+                }
                 case Accessibility.Internal:
-                    {
-                        AddKeyword(SyntaxKind.InternalKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.InternalKeyword);
+                    break;
+                }
                 case Accessibility.Protected:
-                    {
-                        AddKeyword(SyntaxKind.ProtectedKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.ProtectedKeyword);
+                    break;
+                }
                 case Accessibility.ProtectedAndInternal:
-                    {
-                        AddKeyword(SyntaxKind.PrivateKeyword);
-                        AddKeyword(SyntaxKind.ProtectedKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.PrivateKeyword);
+                    AddKeyword(SyntaxKind.ProtectedKeyword);
+                    break;
+                }
                 case Accessibility.Private:
-                    {
-                        AddKeyword(SyntaxKind.PrivateKeyword);
-                        break;
-                    }
+                {
+                    AddKeyword(SyntaxKind.PrivateKeyword);
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
 

@@ -56,204 +56,204 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Swap operands",
-                            ct => document.ReplaceNodeAsync(binaryExpression, SyntaxRefactorings.SwapBinaryOperands(binaryExpression), ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Swap operands",
+                        ct => document.ReplaceNodeAsync(binaryExpression, SyntaxRefactorings.SwapBinaryOperands(binaryExpression), ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use 'string.IsNullOrEmpty' method",
-                            ct => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use 'string.IsNullOrEmpty' method",
+                        ct => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.SimplifyCoalesceExpression:
+                {
+                    ExpressionSyntax expression = binaryExpression.Left;
+
+                    if (expression is null
+                        || !context.Span.Contains(expression.Span))
                     {
-                        ExpressionSyntax expression = binaryExpression.Left;
-
-                        if (expression is null
-                            || !context.Span.Contains(expression.Span))
-                        {
-                            expression = binaryExpression.Right;
-                        }
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Simplify coalesce expression",
-                            ct => SimplifyCoalesceExpressionRefactoring.RefactorAsync(document, binaryExpression, expression, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
+                        expression = binaryExpression.Right;
                     }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Simplify coalesce expression",
+                        ct => SimplifyCoalesceExpressionRefactoring.RefactorAsync(document, binaryExpression, expression, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantAsOperator:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant 'as' operator",
-                            ct => RemoveRedundantAsOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant 'as' operator",
+                        ct => RemoveRedundantAsOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use string.Length",
-                            ct => UseStringLengthInsteadOfComparisonWithEmptyStringAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use string.Length",
+                        ct => UseStringLengthInsteadOfComparisonWithEmptyStringAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull:
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Use EqualityComparer<{typeSymbol.Name}>.Default",
-                            ct => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Use EqualityComparer<{typeSymbol.Name}>.Default",
+                        ct => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull:
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
+
+                    string title;
+
+                    if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
+                        || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
 
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
-
-                        string title;
-
-                        if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
-                            || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
-                        {
-                            ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
-
-                            title = $"Replace 'null' with '{expression}'";
-                        }
-                        else
-                        {
-                            title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart, SymbolDisplayFormats.DisplayName)}>.Default";
-                        }
-
-                        CodeAction codeAction = CodeAction.Create(
-                            title,
-                            ct => ValueTypeObjectIsNeverEqualToNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
+                        title = $"Replace 'null' with '{expression}'";
                     }
+                    else
+                    {
+                        title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart, SymbolDisplayFormats.DisplayName)}>.Default";
+                    }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        title,
+                        ct => ValueTypeObjectIsNeverEqualToNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.JoinStringExpressions:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Join string expressions",
-                            ct => JoinStringExpressionsRefactoring.RefactorAsync(document, binaryExpression, context.Span, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Join string expressions",
+                        ct => JoinStringExpressionsRefactoring.RefactorAsync(document, binaryExpression, context.Span, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseExclusiveOrOperator:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use ^ operator",
-                            ct => UseExclusiveOrOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use ^ operator",
+                        ct => UseExclusiveOrOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UnnecessaryNullCheck:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove unnecessary null check",
-                            ct => RemoveUnnecessaryNullCheckAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove unnecessary null check",
+                        ct => RemoveUnnecessaryNullCheckAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseShortCircuitingOperator:
+                {
+                    SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+                    SyntaxKind kind = binaryExpression.Kind();
+
+                    SyntaxToken newToken = default;
+
+                    if (kind == SyntaxKind.BitwiseAndExpression)
                     {
-                        SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-                        SyntaxKind kind = binaryExpression.Kind();
-
-                        SyntaxToken newToken = default;
-
-                        if (kind == SyntaxKind.BitwiseAndExpression)
-                        {
-                            newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, operatorToken.TrailingTrivia);
-                        }
-                        else if (kind == SyntaxKind.BitwiseOrExpression)
-                        {
-                            newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.BarBarToken, operatorToken.TrailingTrivia);
-                        }
-
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Use '{newToken.ToString()}' operator",
-                            ct =>
-                            {
-                                BinaryExpressionSyntax newBinaryExpression = null;
-
-                                if (kind == SyntaxKind.BitwiseAndExpression)
-                                {
-                                    newBinaryExpression = LogicalAndExpression(binaryExpression.Left, newToken, binaryExpression.Right);
-                                }
-                                else if (kind == SyntaxKind.BitwiseOrExpression)
-                                {
-                                    newBinaryExpression = LogicalOrExpression(binaryExpression.Left, newToken, binaryExpression.Right);
-                                }
-
-                                return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
+                        newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, operatorToken.TrailingTrivia);
                     }
+                    else if (kind == SyntaxKind.BitwiseOrExpression)
+                    {
+                        newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.BarBarToken, operatorToken.TrailingTrivia);
+                    }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Use '{newToken.ToString()}' operator",
+                        ct =>
+                        {
+                            BinaryExpressionSyntax newBinaryExpression = null;
+
+                            if (kind == SyntaxKind.BitwiseAndExpression)
+                            {
+                                newBinaryExpression = LogicalAndExpression(binaryExpression.Left, newToken, binaryExpression.Right);
+                            }
+                            else if (kind == SyntaxKind.BitwiseOrExpression)
+                            {
+                                newBinaryExpression = LogicalOrExpression(binaryExpression.Left, newToken, binaryExpression.Right);
+                            }
+
+                            return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UnnecessaryOperator:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use '==' operator",
-                            ct =>
-                            {
-                                SyntaxToken operatorToken = binaryExpression.OperatorToken;
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use '==' operator",
+                        ct =>
+                        {
+                            SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-                                BinaryExpressionSyntax newBinaryExpression = EqualsExpression(
-                                    binaryExpression.Left,
-                                    Token(operatorToken.LeadingTrivia, SyntaxKind.EqualsEqualsToken, operatorToken.TrailingTrivia),
-                                    binaryExpression.Right);
+                            BinaryExpressionSyntax newBinaryExpression = EqualsExpression(
+                                binaryExpression.Left,
+                                Token(operatorToken.LeadingTrivia, SyntaxKind.EqualsEqualsToken, operatorToken.TrailingTrivia),
+                                binaryExpression.Right);
 
-                                return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                            return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.SimplifyNumericComparison:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Simplify numeric comparison",
-                            ct => SimplifyNumericComparisonAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Simplify numeric comparison",
+                        ct => SimplifyNumericComparisonAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }
@@ -342,20 +342,20 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         switch (right.Kind())
         {
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    newRight = TrueLiteralExpression().WithTriviaFrom(right);
-                    break;
-                }
+            {
+                newRight = TrueLiteralExpression().WithTriviaFrom(right);
+                break;
+            }
             case SyntaxKind.LogicalNotExpression:
-                {
-                    newRight = FalseLiteralExpression().WithTriviaFrom(right);
-                    break;
-                }
+            {
+                newRight = FalseLiteralExpression().WithTriviaFrom(right);
+                break;
+            }
             default:
-                {
-                    newRight = binaryExpression.Right;
-                    break;
-                }
+            {
+                newRight = binaryExpression.Right;
+                break;
+            }
         }
 
         BinaryExpressionSyntax newBinaryExpression = BinaryExpression(

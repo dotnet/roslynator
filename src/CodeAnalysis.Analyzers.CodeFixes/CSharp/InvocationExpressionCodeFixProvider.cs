@@ -43,26 +43,26 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.UseElementAccess:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use [] instead of calling 'First'",
-                        ct => UseElementAccessInsteadOfCallingFirstAsync(document, invocationExpression, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use [] instead of calling 'First'",
+                    ct => UseElementAccessInsteadOfCallingFirstAsync(document, invocationExpression, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case DiagnosticIdentifiers.UseReturnValue:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        $"Introduce local for '{invocationExpression}'",
-                        ct => IntroduceLocalForExpressionAsync(document, invocationExpression, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    $"Introduce local for '{invocationExpression}'",
+                    ct => IntroduceLocalForExpressionAsync(document, invocationExpression, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                context.RegisterCodeFix(codeAction, diagnostic);
 
-                    break;
-                }
+                break;
+            }
         }
     }
 

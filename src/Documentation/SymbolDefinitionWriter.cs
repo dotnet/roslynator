@@ -620,30 +620,30 @@ internal abstract class SymbolDefinitionWriter : IDisposable
             case TypeKind.Class:
             case TypeKind.Interface:
             case TypeKind.Struct:
+            {
+                if (Filter.Includes(SymbolGroupFilter.Member))
+                    WriteMembers();
+
+                if (Layout != SymbolDefinitionListLayout.TypeHierarchy
+                    && (Filter.Includes(SymbolGroupFilter.Type)))
                 {
-                    if (Filter.Includes(SymbolGroupFilter.Member))
-                        WriteMembers();
-
-                    if (Layout != SymbolDefinitionListLayout.TypeHierarchy
-                        && (Filter.Includes(SymbolGroupFilter.Type)))
-                    {
-                        WriteTypes(type.GetTypeMembers().Where(f => Filter.IsMatch(f)));
-                    }
-
-                    break;
+                    WriteTypes(type.GetTypeMembers().Where(f => Filter.IsMatch(f)));
                 }
+
+                break;
+            }
             case TypeKind.Enum:
-                {
-                    if (Filter.Includes(SymbolGroupFilter.EnumField))
-                        WriteEnumMembers();
+            {
+                if (Filter.Includes(SymbolGroupFilter.EnumField))
+                    WriteEnumMembers();
 
-                    break;
-                }
+                break;
+            }
             default:
-                {
-                    Debug.Assert(type.TypeKind == TypeKind.Delegate, type.TypeKind.ToString());
-                    break;
-                }
+            {
+                Debug.Assert(type.TypeKind == TypeKind.Delegate, type.TypeKind.ToString());
+                break;
+            }
         }
 
         void WriteMembers()
@@ -863,95 +863,95 @@ internal abstract class SymbolDefinitionWriter : IDisposable
             switch (typedConstant.Kind)
             {
                 case TypedConstantKind.Primitive:
-                    {
-                        Write(SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false));
-                        break;
-                    }
+                {
+                    Write(SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false));
+                    break;
+                }
                 case TypedConstantKind.Enum:
+                {
+                    OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
+
+                    OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
+
+                    if (en.MoveNext())
                     {
-                        OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
-
-                        OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
-
-                        if (en.MoveNext())
+                        while (true)
                         {
-                            while (true)
-                            {
-                                WriteSymbol(en.Current.Symbol.ContainingType);
-                                Write(".");
-                                Write(en.Current.Symbol.Name);
+                            WriteSymbol(en.Current.Symbol.ContainingType);
+                            Write(".");
+                            Write(en.Current.Symbol.Name);
 
-                                if (en.MoveNext())
-                                {
-                                    Write(" | ");
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                            if (en.MoveNext())
+                            {
+                                Write(" | ");
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
-                        else
-                        {
-                            Write("(");
-                            WriteSymbol((INamedTypeSymbol)typedConstant.Type);
-                            Write(")");
-                            Write(typedConstant.Value.ToString());
-                        }
-
-                        break;
                     }
+                    else
+                    {
+                        Write("(");
+                        WriteSymbol((INamedTypeSymbol)typedConstant.Type);
+                        Write(")");
+                        Write(typedConstant.Value.ToString());
+                    }
+
+                    break;
+                }
                 case TypedConstantKind.Type:
+                {
+                    if (typedConstant.Value is null)
                     {
-                        if (typedConstant.Value is null)
-                        {
-                            Write("null");
-                        }
-                        else
-                        {
-                            Write("typeof");
-                            Write("(");
-                            WriteSymbol((ISymbol)typedConstant.Value);
-                            Write(")");
-                        }
-
-                        break;
+                        Write("null");
                     }
-                case TypedConstantKind.Array:
+                    else
                     {
-                        var arrayType = (IArrayTypeSymbol)typedConstant.Type;
+                        Write("typeof");
+                        Write("(");
+                        WriteSymbol((ISymbol)typedConstant.Value);
+                        Write(")");
+                    }
 
-                        Write("new ");
-                        WriteSymbol(arrayType.ElementType);
+                    break;
+                }
+                case TypedConstantKind.Array:
+                {
+                    var arrayType = (IArrayTypeSymbol)typedConstant.Type;
 
-                        Write("[] { ");
+                    Write("new ");
+                    WriteSymbol(arrayType.ElementType);
 
-                        ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
+                    Write("[] { ");
 
-                        if (en.MoveNext())
+                    ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
+
+                    if (en.MoveNext())
+                    {
+                        while (true)
                         {
-                            while (true)
-                            {
-                                AddConstantValue(en.Current);
+                            AddConstantValue(en.Current);
 
-                                if (en.MoveNext())
-                                {
-                                    Write(", ");
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                            if (en.MoveNext())
+                            {
+                                Write(", ");
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
+                    }
 
-                        Write(" }");
-                        break;
-                    }
+                    Write(" }");
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
 

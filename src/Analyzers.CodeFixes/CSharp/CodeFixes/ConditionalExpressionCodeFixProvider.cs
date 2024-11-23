@@ -49,64 +49,64 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use coalesce expression",
-                            ct =>
-                            {
-                                return SimplifyNullCheckRefactoring.RefactorAsync(
-                                    document,
-                                    conditionalExpression,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use coalesce expression",
+                        ct =>
+                        {
+                            return SimplifyNullCheckRefactoring.RefactorAsync(
+                                document,
+                                conditionalExpression,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.SimplifyConditionalExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Simplify conditional expression",
-                            ct => SimplifyConditionalExpressionAsync(document, conditionalExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Simplify conditional expression",
+                        ct => SimplifyConditionalExpressionAsync(document, conditionalExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use conditional access",
-                            ct =>
-                            {
-                                return SimplifyNullCheckRefactoring.RefactorAsync(
-                                    document,
-                                    conditionalExpression,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use conditional access",
+                        ct =>
+                        {
+                            return SimplifyNullCheckRefactoring.RefactorAsync(
+                                document,
+                                conditionalExpression,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.AvoidNestedConditionalOperators:
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(
-                            document,
-                            conditionalExpression,
-                            data: default,
-                            recursiveData: new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.Title, GetEquivalenceKey(diagnostic)),
-                            semanticModel,
-                            context.CancellationToken);
+                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(
+                        document,
+                        conditionalExpression,
+                        data: default,
+                        recursiveData: new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.Title, GetEquivalenceKey(diagnostic)),
+                        semanticModel,
+                        context.CancellationToken);
 
-                        if (recursiveCodeAction is not null)
-                            context.RegisterCodeFix(recursiveCodeAction, diagnostic);
+                    if (recursiveCodeAction is not null)
+                        context.RegisterCodeFix(recursiveCodeAction, diagnostic);
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
     }

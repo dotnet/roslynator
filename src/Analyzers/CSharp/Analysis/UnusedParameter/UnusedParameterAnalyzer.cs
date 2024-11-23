@@ -467,11 +467,11 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.ArrowExpressionClause:
                 return ContainsOnlyThrowNewExpression((ArrowExpressionClauseSyntax)node);
             case SyntaxKind.AccessorList:
-                {
-                    return ((AccessorListSyntax)node)
-                        .Accessors
-                        .All(f => ContainsOnlyThrowNewExpression(f.BodyOrExpressionBody()));
-                }
+            {
+                return ((AccessorListSyntax)node)
+                    .Accessors
+                    .All(f => ContainsOnlyThrowNewExpression(f.BodyOrExpressionBody()));
+            }
         }
 
         return false;

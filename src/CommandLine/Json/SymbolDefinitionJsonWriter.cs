@@ -455,32 +455,32 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
             case TypeKind.Class:
             case TypeKind.Interface:
             case TypeKind.Struct:
+            {
+                if (Filter.Includes(SymbolGroupFilter.Member)
+                    && typeSymbol.GetMembers().Any(f => !f.IsKind(SymbolKind.NamedType) && Filter.IsMatch(f)))
                 {
-                    if (Filter.Includes(SymbolGroupFilter.Member)
-                        && typeSymbol.GetMembers().Any(f => !f.IsKind(SymbolKind.NamedType) && Filter.IsMatch(f)))
-                    {
-                        return true;
-                    }
-
-                    if (Layout != SymbolDefinitionListLayout.TypeHierarchy
-                        && (Filter.Includes(SymbolGroupFilter.Type))
-                        && typeSymbol.GetTypeMembers().Any(f => Filter.IsMatch(f)))
-                    {
-                        return true;
-                    }
-
-                    break;
+                    return true;
                 }
+
+                if (Layout != SymbolDefinitionListLayout.TypeHierarchy
+                    && (Filter.Includes(SymbolGroupFilter.Type))
+                    && typeSymbol.GetTypeMembers().Any(f => Filter.IsMatch(f)))
+                {
+                    return true;
+                }
+
+                break;
+            }
             case TypeKind.Enum:
+            {
+                if (Filter.Includes(SymbolGroupFilter.EnumField)
+                    && typeSymbol.GetMembers().Any(m => m.Kind == SymbolKind.Field && Filter.IsMatch((IFieldSymbol)m)))
                 {
-                    if (Filter.Includes(SymbolGroupFilter.EnumField)
-                        && typeSymbol.GetMembers().Any(m => m.Kind == SymbolKind.Field && Filter.IsMatch((IFieldSymbol)m)))
-                    {
-                        return true;
-                    }
-
-                    break;
+                    return true;
                 }
+
+                break;
+            }
         }
 
         return false;

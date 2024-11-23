@@ -46,45 +46,45 @@ public sealed class RemovePropertyOrFieldInitializerCodeFixProvider : CompilerDi
         switch (GetNode(token))
         {
             case PropertyDeclarationSyntax propertyDeclaration:
-                {
-                    EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
+            {
+                EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
 
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct =>
-                        {
-                            PropertyDeclarationSyntax newNode = propertyDeclaration
-                                .RemoveNode(initializer)
-                                .WithSemicolonToken(default(SyntaxToken))
-                                .AppendToTrailingTrivia(propertyDeclaration.SemicolonToken.GetAllTrivia())
-                                .WithFormatterAnnotation();
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct =>
+                    {
+                        PropertyDeclarationSyntax newNode = propertyDeclaration
+                            .RemoveNode(initializer)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .AppendToTrailingTrivia(propertyDeclaration.SemicolonToken.GetAllTrivia())
+                            .WithFormatterAnnotation();
 
-                            return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
-                        },
-                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+                        return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
+                    },
+                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case VariableDeclaratorSyntax variableDeclarator:
-                {
-                    EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
+            {
+                EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
 
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct =>
-                        {
-                            VariableDeclaratorSyntax newNode = variableDeclarator
-                                .RemoveNode(initializer)
-                                .WithFormatterAnnotation();
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct =>
+                    {
+                        VariableDeclaratorSyntax newNode = variableDeclarator
+                            .RemoveNode(initializer)
+                            .WithFormatterAnnotation();
 
-                            return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
-                        },
-                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+                        return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
+                    },
+                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
 
         static SyntaxNode GetNode(SyntaxToken token)

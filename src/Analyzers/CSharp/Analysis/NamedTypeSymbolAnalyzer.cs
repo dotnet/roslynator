@@ -64,47 +64,47 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
                         switch (interfaceSymbol.MetadataName)
                         {
                             case "IComparable":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_IComparable))
-                                        fIComparable = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_IComparable))
+                                    fIComparable = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                             case "IComparable`1":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_IComparable_T))
-                                        fIComparableOfT = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_IComparable_T))
+                                    fIComparableOfT = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                             case "IComparer":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_IComparer))
-                                        fIComparer = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_IComparer))
+                                    fIComparer = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                             case "IComparer`1":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_Generic_IComparer_T))
-                                        fIComparerOfT = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_Generic_IComparer_T))
+                                    fIComparerOfT = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                             case "IEqualityComparer":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_IEqualityComparer))
-                                        fIEqualityComparer = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_IEqualityComparer))
+                                    fIEqualityComparer = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                             case "IEqualityComparer`1":
-                                {
-                                    if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_Generic_IEqualityComparer_T))
-                                        fIEqualityComparerOfT = true;
+                            {
+                                if (interfaceSymbol.HasMetadataName(MetadataNames.System_Collections_Generic_IEqualityComparer_T))
+                                    fIEqualityComparerOfT = true;
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
 

@@ -137,35 +137,35 @@ internal static class RuleSetLoader
         switch (action2)
         {
             case ReportDiagnostic.Suppress:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case ReportDiagnostic.Default:
-                {
-                    return action1 == ReportDiagnostic.Warn
-                        || action1 == ReportDiagnostic.Error
-                        || action1 == ReportDiagnostic.Info
-                        || action1 == ReportDiagnostic.Hidden;
-                }
+            {
+                return action1 == ReportDiagnostic.Warn
+                    || action1 == ReportDiagnostic.Error
+                    || action1 == ReportDiagnostic.Info
+                    || action1 == ReportDiagnostic.Hidden;
+            }
             case ReportDiagnostic.Hidden:
-                {
-                    return action1 == ReportDiagnostic.Warn
-                        || action1 == ReportDiagnostic.Error
-                        || action1 == ReportDiagnostic.Info;
-                }
+            {
+                return action1 == ReportDiagnostic.Warn
+                    || action1 == ReportDiagnostic.Error
+                    || action1 == ReportDiagnostic.Info;
+            }
             case ReportDiagnostic.Info:
-                {
-                    return action1 == ReportDiagnostic.Warn
-                        || action1 == ReportDiagnostic.Error;
-                }
+            {
+                return action1 == ReportDiagnostic.Warn
+                    || action1 == ReportDiagnostic.Error;
+            }
             case ReportDiagnostic.Warn:
-                {
-                    return action1 == ReportDiagnostic.Error;
-                }
+            {
+                return action1 == ReportDiagnostic.Error;
+            }
             case ReportDiagnostic.Error:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
         }
 
         return false;

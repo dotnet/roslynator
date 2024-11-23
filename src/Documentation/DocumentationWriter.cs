@@ -671,73 +671,73 @@ public abstract class DocumentationWriter : IDisposable
         switch (symbol.Kind)
         {
             case SymbolKind.NamedType:
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+
+                IMethodSymbol methodSymbol = namedTypeSymbol.DelegateInvokeMethod;
+
+                if (methodSymbol is not null)
                 {
-                    var namedTypeSymbol = (INamedTypeSymbol)symbol;
+                    ITypeSymbol returnType = methodSymbol.ReturnType;
 
-                    IMethodSymbol methodSymbol = namedTypeSymbol.DelegateInvokeMethod;
+                    if (returnType.SpecialType == SpecialType.System_Void)
+                        return;
 
-                    if (methodSymbol is not null)
+                    WriteReturnType(returnType, Resources.ReturnValueTitle);
+
+                    xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                }
+
+                break;
+            }
+            case SymbolKind.Field:
+            {
+                var fieldSymbol = (IFieldSymbol)symbol;
+
+                WriteReturnType(fieldSymbol.Type, Resources.FieldValueTitle);
+                break;
+            }
+            case SymbolKind.Method:
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                switch (methodSymbol.MethodKind)
+                {
+                    case MethodKind.UserDefinedOperator:
+                    case MethodKind.Conversion:
+                    {
+                        WriteReturnType(methodSymbol.ReturnType, Resources.ReturnsTitle);
+
+                        xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                        break;
+                    }
+                    default:
                     {
                         ITypeSymbol returnType = methodSymbol.ReturnType;
 
                         if (returnType.SpecialType == SpecialType.System_Void)
                             return;
 
-                        WriteReturnType(returnType, Resources.ReturnValueTitle);
+                        WriteReturnType(returnType, Resources.ReturnsTitle);
 
                         xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                        break;
                     }
-
-                    break;
                 }
-            case SymbolKind.Field:
-                {
-                    var fieldSymbol = (IFieldSymbol)symbol;
 
-                    WriteReturnType(fieldSymbol.Type, Resources.FieldValueTitle);
-                    break;
-                }
-            case SymbolKind.Method:
-                {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    switch (methodSymbol.MethodKind)
-                    {
-                        case MethodKind.UserDefinedOperator:
-                        case MethodKind.Conversion:
-                            {
-                                WriteReturnType(methodSymbol.ReturnType, Resources.ReturnsTitle);
-
-                                xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
-                                break;
-                            }
-                        default:
-                            {
-                                ITypeSymbol returnType = methodSymbol.ReturnType;
-
-                                if (returnType.SpecialType == SpecialType.System_Void)
-                                    return;
-
-                                WriteReturnType(returnType, Resources.ReturnsTitle);
-
-                                xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
-                                break;
-                            }
-                    }
-
-                    break;
-                }
+                break;
+            }
             case SymbolKind.Property:
-                {
-                    var propertySymbol = (IPropertySymbol)symbol;
+            {
+                var propertySymbol = (IPropertySymbol)symbol;
 
-                    WriteReturnType(propertySymbol.Type, Resources.PropertyValueTitle);
+                WriteReturnType(propertySymbol.Type, Resources.PropertyValueTitle);
 
-                    string elementName = (propertySymbol.IsIndexer) ? WellKnownXmlTags.Returns : WellKnownXmlTags.Value;
+                string elementName = (propertySymbol.IsIndexer) ? WellKnownXmlTags.Returns : WellKnownXmlTags.Value;
 
-                    xmlDocumentation?.GetElement(elementName)?.WriteContentTo(this);
-                    break;
-                }
+                xmlDocumentation?.GetElement(elementName)?.WriteContentTo(this);
+                break;
+            }
         }
 
         void WriteReturnType(ITypeSymbol typeSymbol, string heading)
@@ -754,16 +754,16 @@ public abstract class DocumentationWriter : IDisposable
         switch (typeSymbol.TypeKind)
         {
             case TypeKind.Interface:
-                {
-                    return;
-                }
+            {
+                return;
+            }
             case TypeKind.Class:
-                {
-                    if (typeSymbol.IsStatic)
-                        return;
+            {
+                if (typeSymbol.IsStatic)
+                    return;
 
-                    break;
-                }
+                break;
+            }
         }
 
         if (typeSymbol.BaseType is null)
@@ -1952,27 +1952,27 @@ public abstract class DocumentationWriter : IDisposable
         switch (symbol.Kind)
         {
             case SymbolKind.NamedType:
-                {
-                    if (!CanCreateTypeLocalUrl)
-                        return null;
+            {
+                if (!CanCreateTypeLocalUrl)
+                    return null;
 
-                    break;
-                }
+                break;
+            }
             case SymbolKind.Event:
             case SymbolKind.Field:
             case SymbolKind.Method:
             case SymbolKind.Property:
-                {
-                    if (!CanCreateMemberLocalUrl)
-                        return null;
+            {
+                if (!CanCreateMemberLocalUrl)
+                    return null;
 
-                    break;
-                }
+                break;
+            }
             case SymbolKind.Parameter:
             case SymbolKind.TypeParameter:
-                {
-                    return null;
-                }
+            {
+                return null;
+            }
         }
 
         if (DocumentationModel.IsExternal(symbol))
@@ -2035,57 +2035,57 @@ public abstract class DocumentationWriter : IDisposable
             switch (symbol.Kind)
             {
                 case SymbolKind.Method:
+                {
+                    var methodSymbol = (IMethodSymbol)symbol;
+
+                    switch (methodSymbol.MethodKind)
                     {
-                        var methodSymbol = (IMethodSymbol)symbol;
-
-                        switch (methodSymbol.MethodKind)
+                        case MethodKind.Constructor:
                         {
-                            case MethodKind.Constructor:
-                                {
-                                    return model.GetConstructors();
-                                }
-                            case MethodKind.Ordinary:
-                                {
-                                    return model.GetMethods();
-                                }
-                            case MethodKind.Conversion:
-                            case MethodKind.UserDefinedOperator:
-                                {
-                                    return model.GetOperators();
-                                }
-                            case MethodKind.ExplicitInterfaceImplementation:
-                                {
-                                    ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
-
-                                    if (!explicitInterfaceImplementations.IsDefaultOrEmpty)
-                                        return model.GetExplicitImplementations();
-
-                                    break;
-                                }
+                            return model.GetConstructors();
                         }
-
-                        break;
-                    }
-                case SymbolKind.Property:
-                    {
-                        var propertySymbol = (IPropertySymbol)symbol;
-
-                        if (propertySymbol.IsIndexer)
+                        case MethodKind.Ordinary:
                         {
-                            ImmutableArray<IPropertySymbol> explicitInterfaceImplementations = propertySymbol.ExplicitInterfaceImplementations;
+                            return model.GetMethods();
+                        }
+                        case MethodKind.Conversion:
+                        case MethodKind.UserDefinedOperator:
+                        {
+                            return model.GetOperators();
+                        }
+                        case MethodKind.ExplicitInterfaceImplementation:
+                        {
+                            ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
 
                             if (!explicitInterfaceImplementations.IsDefaultOrEmpty)
-                            {
                                 return model.GetExplicitImplementations();
-                            }
-                            else
-                            {
-                                return model.GetIndexers();
-                            }
-                        }
 
-                        break;
+                            break;
+                        }
                     }
+
+                    break;
+                }
+                case SymbolKind.Property:
+                {
+                    var propertySymbol = (IPropertySymbol)symbol;
+
+                    if (propertySymbol.IsIndexer)
+                    {
+                        ImmutableArray<IPropertySymbol> explicitInterfaceImplementations = propertySymbol.ExplicitInterfaceImplementations;
+
+                        if (!explicitInterfaceImplementations.IsDefaultOrEmpty)
+                        {
+                            return model.GetExplicitImplementations();
+                        }
+                        else
+                        {
+                            return model.GetIndexers();
+                        }
+                    }
+
+                    break;
+                }
             }
 
             return null;

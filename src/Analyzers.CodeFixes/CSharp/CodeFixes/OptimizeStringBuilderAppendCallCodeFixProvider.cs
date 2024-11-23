@@ -123,59 +123,59 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
         switch (invocationInfo.NameText)
         {
             case "Substring":
+            {
+                SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                switch (arguments.Count)
                 {
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
-
-                    switch (arguments.Count)
+                    case 1:
                     {
-                        case 1:
-                            {
-                                ArgumentListSyntax argumentList = ArgumentList(
-                                    Argument(invocationInfo.Expression),
-                                    arguments[0],
-                                    Argument(
-                                        SubtractExpression(
-                                            SimpleMemberAccessExpression(invocationInfo.Expression, IdentifierName("Length")),
-                                            arguments[0].Expression.Parenthesize())));
+                        ArgumentListSyntax argumentList = ArgumentList(
+                            Argument(invocationInfo.Expression),
+                            arguments[0],
+                            Argument(
+                                SubtractExpression(
+                                    SimpleMemberAccessExpression(invocationInfo.Expression, IdentifierName("Length")),
+                                    arguments[0].Expression.Parenthesize())));
 
-                                return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
-                            }
-                        case 2:
-                            {
-                                ArgumentListSyntax argumentList = ArgumentList(
-                                    Argument(invocationInfo.Expression),
-                                    arguments[0],
-                                    arguments[1]
-                                );
+                        return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+                    }
+                    case 2:
+                    {
+                        ArgumentListSyntax argumentList = ArgumentList(
+                            Argument(invocationInfo.Expression),
+                            arguments[0],
+                            arguments[1]
+                        );
 
-                                return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
-                            }
-                        default:
-                            {
-                                throw new InvalidOperationException();
-                            }
+                        return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+                    }
+                    default:
+                    {
+                        throw new InvalidOperationException();
                     }
                 }
+            }
             case "Remove":
-                {
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+            {
+                SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
-                    ArgumentListSyntax argumentList = ArgumentList(
-                        Argument(invocationInfo.Expression),
-                        Argument(NumericLiteralExpression(0)),
-                        arguments[0]
-                    );
+                ArgumentListSyntax argumentList = ArgumentList(
+                    Argument(invocationInfo.Expression),
+                    Argument(NumericLiteralExpression(0)),
+                    arguments[0]
+                );
 
-                    return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
-                }
+                return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+            }
             case "Format":
-                {
-                    return CreateNewInvocationExpression(outerInvocationExpression, "AppendFormat", invocationInfo.ArgumentList);
-                }
+            {
+                return CreateNewInvocationExpression(outerInvocationExpression, "AppendFormat", invocationInfo.ArgumentList);
+            }
             case "Join":
-                {
-                    return CreateNewInvocationExpression(outerInvocationExpression, "AppendJoin", invocationInfo.ArgumentList);
-                }
+            {
+                return CreateNewInvocationExpression(outerInvocationExpression, "AppendJoin", invocationInfo.ArgumentList);
+            }
         }
 
         SyntaxDebug.Fail(innerInvocationExpression);

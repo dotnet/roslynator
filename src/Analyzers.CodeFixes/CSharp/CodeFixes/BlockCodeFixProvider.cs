@@ -43,25 +43,25 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.SimplifyLazyInitialization:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Simplify lazy initialization",
-                            ct => SimplifyLazyInitializationAsync(document, block, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Simplify lazy initialization",
+                        ct => SimplifyLazyInitializationAsync(document, block, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove braces",
-                            ct => RemoveBracesAsync(document, block, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove braces",
+                        ct => RemoveBracesAsync(document, block, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

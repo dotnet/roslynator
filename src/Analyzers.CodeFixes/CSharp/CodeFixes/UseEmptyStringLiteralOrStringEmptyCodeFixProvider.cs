@@ -42,32 +42,32 @@ public sealed class UseEmptyStringLiteralOrStringEmptyCodeFixProvider : BaseCode
         switch (node.Kind())
         {
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccessExpression = (MemberAccessExpressionSyntax)node;
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)node;
 
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use empty string literal",
-                        ct => UseEmptyStringLiteralInsteadOfStringEmptyAsync(document, memberAccessExpression, ct),
-                        GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = CodeAction.Create(
+                    "Use empty string literal",
+                    ct => UseEmptyStringLiteralInsteadOfStringEmptyAsync(document, memberAccessExpression, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case SyntaxKind.StringLiteralExpression:
             case SyntaxKind.InterpolatedStringExpression:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use 'string.Empty'",
-                        ct => UseStringEmptyInsteadOfEmptyStringLiteralAsync(document, (ExpressionSyntax)node, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use 'string.Empty'",
+                    ct => UseStringEmptyInsteadOfEmptyStringLiteralAsync(document, (ExpressionSyntax)node, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 

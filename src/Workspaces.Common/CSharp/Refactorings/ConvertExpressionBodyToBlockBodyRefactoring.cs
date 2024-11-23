@@ -86,103 +86,103 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         switch (node.Kind())
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    var method = (MethodDeclarationSyntax)node;
+            {
+                var method = (MethodDeclarationSyntax)node;
 
-                    return method
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(method, expression, method.SemicolonToken, method.ReturnType, configOptions, semanticModel, cancellationToken));
-                }
+                return method
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlock(method, expression, method.SemicolonToken, method.ReturnType, configOptions, semanticModel, cancellationToken));
+            }
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    var constructor = (ConstructorDeclarationSyntax)node;
+            {
+                var constructor = (ConstructorDeclarationSyntax)node;
 
-                    return constructor
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(constructor, expression, constructor.SemicolonToken, configOptions));
-                }
+                return constructor
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlockWithExpressionStatement(constructor, expression, constructor.SemicolonToken, configOptions));
+            }
             case SyntaxKind.DestructorDeclaration:
-                {
-                    var destructor = (DestructorDeclarationSyntax)node;
+            {
+                var destructor = (DestructorDeclarationSyntax)node;
 
-                    return destructor
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(destructor, expression, destructor.SemicolonToken, configOptions));
-                }
+                return destructor
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlockWithExpressionStatement(destructor, expression, destructor.SemicolonToken, configOptions));
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    var operatorDeclaration = (OperatorDeclarationSyntax)node;
+            {
+                var operatorDeclaration = (OperatorDeclarationSyntax)node;
 
-                    return operatorDeclaration
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(operatorDeclaration, expression, operatorDeclaration.SemicolonToken, configOptions));
-                }
+                return operatorDeclaration
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlock(operatorDeclaration, expression, operatorDeclaration.SemicolonToken, configOptions));
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+            {
+                var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
 
-                    return conversionOperatorDeclaration
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(conversionOperatorDeclaration, expression, conversionOperatorDeclaration.SemicolonToken, configOptions));
-                }
+                return conversionOperatorDeclaration
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlock(conversionOperatorDeclaration, expression, conversionOperatorDeclaration.SemicolonToken, configOptions));
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                    return propertyDeclaration
-                        .WithAccessorList(CreateAccessorList(propertyDeclaration, expression, propertyDeclaration.SemicolonToken, configOptions))
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default);
-                }
+                return propertyDeclaration
+                    .WithAccessorList(CreateAccessorList(propertyDeclaration, expression, propertyDeclaration.SemicolonToken, configOptions))
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                    return indexerDeclaration
-                        .WithAccessorList(CreateAccessorList(indexerDeclaration, expression, indexerDeclaration.SemicolonToken, configOptions))
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default);
-                }
+                return indexerDeclaration
+                    .WithAccessorList(CreateAccessorList(indexerDeclaration, expression, indexerDeclaration.SemicolonToken, configOptions))
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default);
+            }
             case SyntaxKind.GetAccessorDeclaration:
-                {
-                    var accessor = (AccessorDeclarationSyntax)node;
+            {
+                var accessor = (AccessorDeclarationSyntax)node;
 
-                    return accessor
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(accessor, expression, accessor.SemicolonToken, configOptions));
-                }
+                return accessor
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlock(accessor, expression, accessor.SemicolonToken, configOptions));
+            }
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.InitAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
-                {
-                    var accessor = (AccessorDeclarationSyntax)node;
+            {
+                var accessor = (AccessorDeclarationSyntax)node;
 
-                    return accessor
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(accessor, expression, accessor.SemicolonToken, configOptions));
-                }
+                return accessor
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlockWithExpressionStatement(accessor, expression, accessor.SemicolonToken, configOptions));
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    var localFunction = (LocalFunctionStatementSyntax)node;
+            {
+                var localFunction = (LocalFunctionStatementSyntax)node;
 
-                    return localFunction
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(localFunction, expression, localFunction.SemicolonToken, localFunction.ReturnType, configOptions, semanticModel, cancellationToken));
-                }
+                return localFunction
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default)
+                    .WithBody(CreateBlock(localFunction, expression, localFunction.SemicolonToken, localFunction.ReturnType, configOptions, semanticModel, cancellationToken));
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node);
-                    return node;
-                }
+            {
+                SyntaxDebug.Fail(node);
+                return node;
+            }
         }
     }
 
@@ -226,23 +226,23 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
             switch (expression.Kind())
             {
                 case SyntaxKind.ThrowExpression:
+                {
+                    return true;
+                }
+                case SyntaxKind.AwaitExpression:
+                {
+                    ITypeSymbol originalDefinition = semanticModel
+                        .GetTypeSymbol(returnType, cancellationToken)
+                        .OriginalDefinition;
+
+                    if (!originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T)
+                        && !originalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
                     {
                         return true;
                     }
-                case SyntaxKind.AwaitExpression:
-                    {
-                        ITypeSymbol originalDefinition = semanticModel
-                            .GetTypeSymbol(returnType, cancellationToken)
-                            .OriginalDefinition;
 
-                        if (!originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T)
-                            && !originalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
-                        {
-                            return true;
-                        }
-
-                        break;
-                    }
+                    break;
+                }
             }
 
             return false;

@@ -121,22 +121,22 @@ public readonly struct StringConcatenationExpressionInfo
             switch (expression.Kind())
             {
                 case SyntaxKind.StringLiteralExpression:
-                    {
-                        builder.Append((LiteralExpressionSyntax)expression);
-                        break;
-                    }
+                {
+                    builder.Append((LiteralExpressionSyntax)expression);
+                    break;
+                }
                 case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        builder.Append((InterpolatedStringExpressionSyntax)expression);
-                        break;
-                    }
+                {
+                    builder.Append((InterpolatedStringExpressionSyntax)expression);
+                    break;
+                }
                 default:
-                    {
-                        sb.Append('{');
-                        sb.Append(expression.ToString());
-                        sb.Append('}');
-                        break;
-                    }
+                {
+                    sb.Append('{');
+                    sb.Append(expression.ToString());
+                    sb.Append('}');
+                    break;
+                }
             }
         }
 

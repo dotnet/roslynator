@@ -257,56 +257,56 @@ public class DocumentationGenerator
             switch (part)
             {
                 case RootDocumentationParts.Content:
-                    {
-                        IEnumerable<string> names = EnabledAndSortedRootParts
-                            .Where(f => HasContent(f))
-                            .OrderBy(f => f, RootPartComparer)
-                            .Select(f => Resources.GetHeading(f));
+                {
+                    IEnumerable<string> names = EnabledAndSortedRootParts
+                        .Where(f => HasContent(f))
+                        .OrderBy(f => f, RootPartComparer)
+                        .Select(f => Resources.GetHeading(f));
 
-                        if ((Options.IgnoredRootParts & RootDocumentationParts.Content) == 0)
-                            writer.WriteContent(names);
+                    if ((Options.IgnoredRootParts & RootDocumentationParts.Content) == 0)
+                        writer.WriteContent(names);
 
-                        break;
-                    }
+                    break;
+                }
                 case RootDocumentationParts.Types:
                 case RootDocumentationParts.Namespaces:
-                    {
-                        IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols
-                            .Select(f => f.ContainingNamespace)
-                            .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
+                {
+                    IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols
+                        .Select(f => f.ContainingNamespace)
+                        .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
 
-                        bool includeTypes = (Options.IgnoredRootParts & RootDocumentationParts.Types) == 0;
+                    bool includeTypes = (Options.IgnoredRootParts & RootDocumentationParts.Types) == 0;
 
-                        writer.WriteTypesByNamespace(
-                            typeSymbols,
-                            (includeTypes) ? Resources.TypesTitle : Resources.NamespacesTitle,
-                            2,
-                            includeTypes: includeTypes);
+                    writer.WriteTypesByNamespace(
+                        typeSymbols,
+                        (includeTypes) ? Resources.TypesTitle : Resources.NamespacesTitle,
+                        2,
+                        includeTypes: includeTypes);
 
-                        break;
-                    }
+                    break;
+                }
                 case RootDocumentationParts.ClassHierarchy:
+                {
+                    if (typeSymbols.Any(f => !f.IsStatic && f.TypeKind == TypeKind.Class))
                     {
-                        if (typeSymbols.Any(f => !f.IsStatic && f.TypeKind == TypeKind.Class))
-                        {
-                            INamedTypeSymbol objectType = DocumentationModel.Compilations[0].ObjectType;
+                        INamedTypeSymbol objectType = DocumentationModel.Compilations[0].ObjectType;
 
-                            IEnumerable<INamedTypeSymbol> instanceClasses = typeSymbols.Where(f => !f.IsStatic && f.TypeKind == TypeKind.Class);
+                        IEnumerable<INamedTypeSymbol> instanceClasses = typeSymbols.Where(f => !f.IsStatic && f.TypeKind == TypeKind.Class);
 
-                            writer.WriteHeading2(Resources.ClassHierarchyTitle);
+                        writer.WriteHeading2(Resources.ClassHierarchyTitle);
 
-                            writer.WriteClassHierarchy(objectType, instanceClasses, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.ClassHierarchy));
+                        writer.WriteClassHierarchy(objectType, instanceClasses, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.ClassHierarchy));
 
-                            writer.WriteLine();
-                        }
-
-                        break;
+                        writer.WriteLine();
                     }
+
+                    break;
+                }
                 case RootDocumentationParts.Other:
-                    {
-                        GenerateExternalTypesExtensions(writer);
-                        break;
-                    }
+                {
+                    GenerateExternalTypesExtensions(writer);
+                    break;
+                }
             }
         }
 
@@ -355,97 +355,97 @@ public class DocumentationGenerator
                 switch (part)
                 {
                     case NamespaceDocumentationParts.Content:
-                        {
-                            IEnumerable<string> names = EnabledAndSortedNamespaceParts
-                                .Where(f => HasContent(f))
-                                .OrderBy(f => f, NamespacePartComparer)
-                                .Select(f => Resources.GetHeading(f));
+                    {
+                        IEnumerable<string> names = EnabledAndSortedNamespaceParts
+                            .Where(f => HasContent(f))
+                            .OrderBy(f => f, NamespacePartComparer)
+                            .Select(f => Resources.GetHeading(f));
 
-                            if ((Options.IgnoredNamespaceParts & NamespaceDocumentationParts.Content) == 0)
-                                writer.WriteContent(names, includeLinkToRoot: true);
+                        if ((Options.IgnoredNamespaceParts & NamespaceDocumentationParts.Content) == 0)
+                            writer.WriteContent(names, includeLinkToRoot: true);
 
-                            break;
-                        }
+                        break;
+                    }
                     case NamespaceDocumentationParts.ContainingNamespace:
-                        {
-                            INamespaceSymbol containingNamespace = namespaceSymbol.ContainingNamespace;
+                    {
+                        INamespaceSymbol containingNamespace = namespaceSymbol.ContainingNamespace;
 
-                            if (containingNamespace?.IsGlobalNamespace == false)
-                                writer.WriteContainingNamespace(containingNamespace, Resources.ContainingNamespaceTitle);
+                        if (containingNamespace?.IsGlobalNamespace == false)
+                            writer.WriteContainingNamespace(containingNamespace, Resources.ContainingNamespaceTitle);
 
-                            break;
-                        }
+                        break;
+                    }
                     case NamespaceDocumentationParts.Summary:
-                        {
-                            xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(writer);
-                            break;
-                        }
+                    {
+                        xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(writer);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Examples:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteExamples(namespaceSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteExamples(namespaceSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case NamespaceDocumentationParts.Remarks:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteRemarks(namespaceSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteRemarks(namespaceSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case NamespaceDocumentationParts.Classes:
-                        {
-                            WriteTypes(typeSymbols, TypeKind.Class);
-                            break;
-                        }
+                    {
+                        WriteTypes(typeSymbols, TypeKind.Class);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Structs:
-                        {
-                            WriteTypes(typeSymbols, TypeKind.Struct);
-                            break;
-                        }
+                    {
+                        WriteTypes(typeSymbols, TypeKind.Struct);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Interfaces:
-                        {
-                            WriteTypes(typeSymbols, TypeKind.Interface);
-                            break;
-                        }
+                    {
+                        WriteTypes(typeSymbols, TypeKind.Interface);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Enums:
-                        {
-                            WriteTypes(typeSymbols, TypeKind.Enum);
-                            break;
-                        }
+                    {
+                        WriteTypes(typeSymbols, TypeKind.Enum);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Delegates:
-                        {
-                            WriteTypes(typeSymbols, TypeKind.Delegate);
-                            break;
-                        }
+                    {
+                        WriteTypes(typeSymbols, TypeKind.Delegate);
+                        break;
+                    }
                     case NamespaceDocumentationParts.Namespaces:
+                    {
+                        if (HasContent(NamespaceDocumentationParts.Namespaces))
                         {
-                            if (HasContent(NamespaceDocumentationParts.Namespaces))
-                            {
-                                IEnumerable<INamespaceSymbol> namespaces = DocumentationModel
-                                    .Types
-                                    .SelectMany(f => f.GetContainingNamespaces())
-                                    .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol))
-                                    .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
-                                    .OrderBy(f => f, SymbolDefinitionComparer.SystemFirst);
+                            IEnumerable<INamespaceSymbol> namespaces = DocumentationModel
+                                .Types
+                                .SelectMany(f => f.GetContainingNamespaces())
+                                .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol))
+                                .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
+                                .OrderBy(f => f, SymbolDefinitionComparer.SystemFirst);
 
-                                WriteNamespaces(namespaces);
-                            }
-
-                            break;
+                            WriteNamespaces(namespaces);
                         }
+
+                        break;
+                    }
                     case NamespaceDocumentationParts.SeeAlso:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteSeeAlso(namespaceSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteSeeAlso(namespaceSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
             }
 
@@ -486,53 +486,53 @@ public class DocumentationGenerator
                     case NamespaceDocumentationParts.Content:
                     case NamespaceDocumentationParts.Summary:
                     case NamespaceDocumentationParts.ContainingNamespace:
-                        {
-                            return false;
-                        }
+                    {
+                        return false;
+                    }
                     case NamespaceDocumentationParts.Examples:
-                        {
-                            return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
-                        }
+                    {
+                        return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
+                    }
                     case NamespaceDocumentationParts.Remarks:
-                        {
-                            return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
-                        }
+                    {
+                        return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
+                    }
                     case NamespaceDocumentationParts.Classes:
-                        {
-                            return typeSymbols.Any(f => f.TypeKind == TypeKind.Class);
-                        }
+                    {
+                        return typeSymbols.Any(f => f.TypeKind == TypeKind.Class);
+                    }
                     case NamespaceDocumentationParts.Structs:
-                        {
-                            return typeSymbols.Any(f => f.TypeKind == TypeKind.Struct);
-                        }
+                    {
+                        return typeSymbols.Any(f => f.TypeKind == TypeKind.Struct);
+                    }
                     case NamespaceDocumentationParts.Interfaces:
-                        {
-                            return typeSymbols.Any(f => f.TypeKind == TypeKind.Interface);
-                        }
+                    {
+                        return typeSymbols.Any(f => f.TypeKind == TypeKind.Interface);
+                    }
                     case NamespaceDocumentationParts.Enums:
-                        {
-                            return typeSymbols.Any(f => f.TypeKind == TypeKind.Enum);
-                        }
+                    {
+                        return typeSymbols.Any(f => f.TypeKind == TypeKind.Enum);
+                    }
                     case NamespaceDocumentationParts.Delegates:
-                        {
-                            return typeSymbols.Any(f => f.TypeKind == TypeKind.Delegate);
-                        }
+                    {
+                        return typeSymbols.Any(f => f.TypeKind == TypeKind.Delegate);
+                    }
                     case NamespaceDocumentationParts.Namespaces:
-                        {
-                            return !typeSymbols.Any()
-                                && DocumentationModel
-                                    .Types
-                                    .SelectMany(f => f.GetContainingNamespaces())
-                                    .Any(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol));
-                        }
+                    {
+                        return !typeSymbols.Any()
+                            && DocumentationModel
+                                .Types
+                                .SelectMany(f => f.GetContainingNamespaces())
+                                .Any(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol));
+                    }
                     case NamespaceDocumentationParts.SeeAlso:
-                        {
-                            return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
-                        }
+                    {
+                        return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
+                    }
                     default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
             }
         }
@@ -619,195 +619,195 @@ public class DocumentationGenerator
                 switch (part)
                 {
                     case TypeDocumentationParts.Content:
-                        {
-                            IEnumerable<string> names = EnabledAndSortedTypeParts
-                                .Where(f => HasContent(f))
-                                .OrderBy(f => f, TypePartComparer)
-                                .Select(f => Resources.GetHeading(f));
+                    {
+                        IEnumerable<string> names = EnabledAndSortedTypeParts
+                            .Where(f => HasContent(f))
+                            .OrderBy(f => f, TypePartComparer)
+                            .Select(f => Resources.GetHeading(f));
 
-                            if ((Options.IgnoredTypeParts & TypeDocumentationParts.Content) == 0)
-                                writer.WriteContent(names, includeLinkToRoot: true);
+                        if ((Options.IgnoredTypeParts & TypeDocumentationParts.Content) == 0)
+                            writer.WriteContent(names, includeLinkToRoot: true);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.ContainingNamespace:
-                        {
-                            INamespaceSymbol containingNamespace = typeModel.ContainingNamespace;
+                    {
+                        INamespaceSymbol containingNamespace = typeModel.ContainingNamespace;
 
-                            if (containingNamespace is not null)
-                                writer.WriteContainingNamespace(containingNamespace, Resources.NamespaceTitle);
+                        if (containingNamespace is not null)
+                            writer.WriteContainingNamespace(containingNamespace, Resources.NamespaceTitle);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.ContainingAssembly:
-                        {
-                            writer.WriteContainingAssembly(typeModel.ContainingAssembly, Resources.AssemblyTitle);
-                            break;
-                        }
+                    {
+                        writer.WriteContainingAssembly(typeModel.ContainingAssembly, Resources.AssemblyTitle);
+                        break;
+                    }
                     case TypeDocumentationParts.ObsoleteMessage:
-                        {
-                            if (typeModel.IsObsolete)
-                                writer.WriteObsoleteMessage(typeSymbol);
+                    {
+                        if (typeModel.IsObsolete)
+                            writer.WriteObsoleteMessage(typeSymbol);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Summary:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteSummary(typeSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteSummary(typeSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Declaration:
-                        {
-                            writer.WriteDefinition(typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteDefinition(typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.TypeParameters:
-                        {
-                            writer.WriteTypeParameters(typeModel.TypeParameters);
-                            break;
-                        }
+                    {
+                        writer.WriteTypeParameters(typeModel.TypeParameters);
+                        break;
+                    }
                     case TypeDocumentationParts.Parameters:
-                        {
-                            writer.WriteParameters(typeModel.Parameters);
-                            break;
-                        }
+                    {
+                        writer.WriteParameters(typeModel.Parameters);
+                        break;
+                    }
                     case TypeDocumentationParts.ReturnValue:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteReturnType(typeSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteReturnType(typeSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Inheritance:
-                        {
-                            writer.WriteInheritance(typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteInheritance(typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Attributes:
-                        {
-                            writer.WriteAttributes(typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteAttributes(typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Derived:
-                        {
-                            if (derivedTypes.Any())
-                                writer.WriteDerivedTypes(derivedTypes);
+                    {
+                        if (derivedTypes.Any())
+                            writer.WriteDerivedTypes(derivedTypes);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Implements:
-                        {
-                            writer.WriteImplementedInterfaces(typeModel.GetImplementedInterfaces(Options.OmitIEnumerable));
-                            break;
-                        }
+                    {
+                        writer.WriteImplementedInterfaces(typeModel.GetImplementedInterfaces(Options.OmitIEnumerable));
+                        break;
+                    }
                     case TypeDocumentationParts.Examples:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteExamples(typeSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteExamples(typeSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Remarks:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteRemarks(typeSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteRemarks(typeSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.Constructors:
-                        {
-                            writer.WriteConstructors(typeModel.GetConstructors());
-                            break;
-                        }
+                    {
+                        writer.WriteConstructors(typeModel.GetConstructors());
+                        break;
+                    }
                     case TypeDocumentationParts.Fields:
+                    {
+                        if (typeModel.TypeKind == TypeKind.Enum)
                         {
-                            if (typeModel.TypeKind == TypeKind.Enum)
-                            {
-                                writer.WriteEnumFields(typeModel.GetFields(), typeSymbol);
-                            }
-                            else
-                            {
-                                writer.WriteFields(typeModel.GetFields(includeInherited: includeInherited), containingType: typeSymbol);
-                            }
-
-                            break;
+                            writer.WriteEnumFields(typeModel.GetFields(), typeSymbol);
                         }
+                        else
+                        {
+                            writer.WriteFields(typeModel.GetFields(includeInherited: includeInherited), containingType: typeSymbol);
+                        }
+
+                        break;
+                    }
                     case TypeDocumentationParts.Indexers:
-                        {
-                            writer.WriteIndexers(typeModel.GetIndexers(includeInherited: includeInherited), containingType: typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteIndexers(typeModel.GetIndexers(includeInherited: includeInherited), containingType: typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Properties:
-                        {
-                            writer.WriteProperties(typeModel.GetProperties(includeInherited: includeInherited), containingType: typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteProperties(typeModel.GetProperties(includeInherited: includeInherited), containingType: typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Methods:
-                        {
-                            writer.WriteMethods(typeModel.GetMethods(includeInherited: includeInherited), containingType: typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteMethods(typeModel.GetMethods(includeInherited: includeInherited), containingType: typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Operators:
-                        {
-                            writer.WriteOperators(typeModel.GetOperators(includeInherited: true), containingType: typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteOperators(typeModel.GetOperators(includeInherited: true), containingType: typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Events:
-                        {
-                            writer.WriteEvents(typeModel.GetEvents(includeInherited: includeInherited), containingType: typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteEvents(typeModel.GetEvents(includeInherited: includeInherited), containingType: typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.ExplicitInterfaceImplementations:
-                        {
-                            writer.WriteExplicitInterfaceImplementations(typeModel.GetExplicitImplementations());
-                            break;
-                        }
+                    {
+                        writer.WriteExplicitInterfaceImplementations(typeModel.GetExplicitImplementations());
+                        break;
+                    }
                     case TypeDocumentationParts.ExtensionMethods:
-                        {
-                            writer.WriteExtensionMethods(DocumentationModel.GetExtensionMethods(typeSymbol));
-                            break;
-                        }
+                    {
+                        writer.WriteExtensionMethods(DocumentationModel.GetExtensionMethods(typeSymbol));
+                        break;
+                    }
                     case TypeDocumentationParts.Classes:
-                        {
-                            writer.WriteNestedTypes(typeModel.GetClasses(includeInherited: includeInherited), TypeKind.Class, typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteNestedTypes(typeModel.GetClasses(includeInherited: includeInherited), TypeKind.Class, typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Structs:
-                        {
-                            writer.WriteNestedTypes(typeModel.GetStructs(includeInherited: includeInherited), TypeKind.Struct, typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteNestedTypes(typeModel.GetStructs(includeInherited: includeInherited), TypeKind.Struct, typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Interfaces:
-                        {
-                            writer.WriteNestedTypes(typeModel.GetInterfaces(includeInherited: includeInherited), TypeKind.Interface, typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteNestedTypes(typeModel.GetInterfaces(includeInherited: includeInherited), TypeKind.Interface, typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Enums:
-                        {
-                            writer.WriteNestedTypes(typeModel.GetEnums(includeInherited: includeInherited), TypeKind.Enum, typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteNestedTypes(typeModel.GetEnums(includeInherited: includeInherited), TypeKind.Enum, typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.Delegates:
-                        {
-                            writer.WriteNestedTypes(typeModel.GetDelegates(includeInherited: includeInherited), TypeKind.Delegate, typeSymbol);
-                            break;
-                        }
+                    {
+                        writer.WriteNestedTypes(typeModel.GetDelegates(includeInherited: includeInherited), TypeKind.Delegate, typeSymbol);
+                        break;
+                    }
                     case TypeDocumentationParts.AppliesTo:
-                        {
-                            if (SourceReferenceProvider is not null)
-                                writer.WriteAppliesTo(typeSymbol, SourceReferenceProvider.GetSourceReferences(typeSymbol));
+                    {
+                        if (SourceReferenceProvider is not null)
+                            writer.WriteAppliesTo(typeSymbol, SourceReferenceProvider.GetSourceReferences(typeSymbol));
 
-                            break;
-                        }
+                        break;
+                    }
                     case TypeDocumentationParts.SeeAlso:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteSeeAlso(typeSymbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteSeeAlso(typeSymbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
 
@@ -845,88 +845,88 @@ public class DocumentationGenerator
                 case TypeDocumentationParts.Derived:
                 case TypeDocumentationParts.Implements:
                 case TypeDocumentationParts.AppliesTo:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
                 case TypeDocumentationParts.Examples:
-                    {
-                        return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
-                    }
+                {
+                    return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
+                }
                 case TypeDocumentationParts.Remarks:
-                    {
-                        return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
-                    }
+                {
+                    return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
+                }
                 case TypeDocumentationParts.Constructors:
-                    {
-                        return typeModel.GetConstructors().Any();
-                    }
+                {
+                    return typeModel.GetConstructors().Any();
+                }
                 case TypeDocumentationParts.Fields:
+                {
+                    if (typeModel.TypeKind == TypeKind.Enum)
                     {
-                        if (typeModel.TypeKind == TypeKind.Enum)
-                        {
-                            return typeModel.GetFields().Any();
-                        }
-                        else
-                        {
-                            return typeModel.GetFields(includeInherited: true).Any();
-                        }
+                        return typeModel.GetFields().Any();
                     }
+                    else
+                    {
+                        return typeModel.GetFields(includeInherited: true).Any();
+                    }
+                }
                 case TypeDocumentationParts.Indexers:
-                    {
-                        return typeModel.GetIndexers(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetIndexers(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Properties:
-                    {
-                        return typeModel.GetProperties(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetProperties(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Methods:
-                    {
-                        return typeModel.GetMethods(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetMethods(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Operators:
-                    {
-                        return typeModel.GetOperators(includeInherited: true).Any();
-                    }
+                {
+                    return typeModel.GetOperators(includeInherited: true).Any();
+                }
                 case TypeDocumentationParts.Events:
-                    {
-                        return typeModel.GetEvents(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetEvents(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.ExplicitInterfaceImplementations:
-                    {
-                        return typeModel.GetExplicitImplementations().Any();
-                    }
+                {
+                    return typeModel.GetExplicitImplementations().Any();
+                }
                 case TypeDocumentationParts.ExtensionMethods:
-                    {
-                        return DocumentationModel.GetExtensionMethods(typeSymbol).Any();
-                    }
+                {
+                    return DocumentationModel.GetExtensionMethods(typeSymbol).Any();
+                }
                 case TypeDocumentationParts.Classes:
-                    {
-                        return typeModel.GetClasses(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetClasses(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Structs:
-                    {
-                        return typeModel.GetStructs(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetStructs(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Interfaces:
-                    {
-                        return typeModel.GetInterfaces(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetInterfaces(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Enums:
-                    {
-                        return typeModel.GetEnums(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetEnums(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.Delegates:
-                    {
-                        return typeModel.GetDelegates(includeInherited: includeInherited).Any();
-                    }
+                {
+                    return typeModel.GetDelegates(includeInherited: includeInherited).Any();
+                }
                 case TypeDocumentationParts.SeeAlso:
-                    {
-                        return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
-                    }
+                {
+                    return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
     }
@@ -1017,86 +1017,86 @@ public class DocumentationGenerator
                 switch (part)
                 {
                     case MemberDocumentationParts.ObsoleteMessage:
-                        {
-                            if (symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute))
-                                writer.WriteObsoleteMessage(symbol);
+                    {
+                        if (symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute))
+                            writer.WriteObsoleteMessage(symbol);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MemberDocumentationParts.Summary:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteSummary(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteSummary(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MemberDocumentationParts.Declaration:
-                        {
-                            writer.WriteDefinition(symbol);
-                            break;
-                        }
+                    {
+                        writer.WriteDefinition(symbol);
+                        break;
+                    }
                     case MemberDocumentationParts.TypeParameters:
-                        {
-                            writer.WriteTypeParameters(symbol.GetTypeParameters());
-                            break;
-                        }
+                    {
+                        writer.WriteTypeParameters(symbol.GetTypeParameters());
+                        break;
+                    }
                     case MemberDocumentationParts.Parameters:
-                        {
-                            writer.WriteParameters(symbol.GetParameters());
-                            break;
-                        }
+                    {
+                        writer.WriteParameters(symbol.GetParameters());
+                        break;
+                    }
                     case MemberDocumentationParts.ReturnValue:
-                        {
-                            writer.WriteReturnType(symbol, xmlDocumentation);
-                            break;
-                        }
+                    {
+                        writer.WriteReturnType(symbol, xmlDocumentation);
+                        break;
+                    }
                     case MemberDocumentationParts.Implements:
-                        {
-                            writer.WriteImplementedInterfaceMembers(symbol.FindImplementedInterfaceMembers());
-                            break;
-                        }
+                    {
+                        writer.WriteImplementedInterfaceMembers(symbol.FindImplementedInterfaceMembers());
+                        break;
+                    }
                     case MemberDocumentationParts.Attributes:
-                        {
-                            writer.WriteAttributes(symbol);
-                            break;
-                        }
+                    {
+                        writer.WriteAttributes(symbol);
+                        break;
+                    }
                     case MemberDocumentationParts.Exceptions:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteExceptions(symbol, xmlDocumentation);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteExceptions(symbol, xmlDocumentation);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MemberDocumentationParts.Examples:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteExamples(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteExamples(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MemberDocumentationParts.Remarks:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteRemarks(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteRemarks(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
-                            break;
-                        }
+                        break;
+                    }
                     case MemberDocumentationParts.AppliesTo:
-                        {
-                            if (SourceReferenceProvider is null)
-                                break;
-
-                            writer.WriteAppliesTo(symbol, SourceReferenceProvider.GetSourceReferences(symbol), headingLevelBase: headingLevelBase);
-
+                    {
+                        if (SourceReferenceProvider is null)
                             break;
-                        }
+
+                        writer.WriteAppliesTo(symbol, SourceReferenceProvider.GetSourceReferences(symbol), headingLevelBase: headingLevelBase);
+
+                        break;
+                    }
                     case MemberDocumentationParts.SeeAlso:
-                        {
-                            if (xmlDocumentation is not null)
-                                writer.WriteSeeAlso(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
+                    {
+                        if (xmlDocumentation is not null)
+                            writer.WriteSeeAlso(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
         }

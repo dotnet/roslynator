@@ -56,9 +56,9 @@ internal static class InvertLinqMethodCallRefactoring
         {
             case SyntaxKind.SimpleLambdaExpression:
             case SyntaxKind.ParenthesizedLambdaExpression:
-                {
-                    return ((LambdaExpressionSyntax)expression).Body as ExpressionSyntax;
-                }
+            {
+                return ((LambdaExpressionSyntax)expression).Body as ExpressionSyntax;
+            }
         }
 
         return null;

@@ -40,84 +40,84 @@ public sealed class ReturnStatementCodeFixProvider : CompilerDiagnosticCodeFixPr
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.CS1622_CannotReturnValueFromIterator:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn, context.Document, root.SyntaxTree))
-                            break;
-
-                        ExpressionSyntax expression = returnStatement.Expression;
-
-                        if (expression is not null)
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            ISymbol containingSymbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
-
-                            if (containingSymbol?.Kind == SymbolKind.Method)
-                            {
-                                var methodSymbol = (IMethodSymbol)containingSymbol;
-
-                                ITypeSymbol returnType = methodSymbol.ReturnType;
-
-                                var replacementKind = SyntaxKind.None;
-
-                                if (returnType.SpecialType == SpecialType.System_Collections_IEnumerable)
-                                {
-                                    if (semanticModel
-                                        .GetTypeSymbol(expression, context.CancellationToken)
-                                        .OriginalDefinition
-                                        .IsIEnumerableOrIEnumerableOfT())
-                                    {
-                                        replacementKind = SyntaxKind.ForEachStatement;
-                                    }
-                                    else
-                                    {
-                                        replacementKind = SyntaxKind.YieldReturnStatement;
-                                    }
-                                }
-                                else if (returnType.Kind == SymbolKind.NamedType)
-                                {
-                                    var namedTypeSymbol = (INamedTypeSymbol)returnType;
-
-                                    if (namedTypeSymbol.OriginalDefinition.IsIEnumerableOfT())
-                                    {
-                                        if (semanticModel.IsImplicitConversion(expression, namedTypeSymbol.TypeArguments[0]))
-                                        {
-                                            replacementKind = SyntaxKind.YieldReturnStatement;
-                                        }
-                                        else
-                                        {
-                                            replacementKind = SyntaxKind.ForEachStatement;
-                                        }
-                                    }
-                                }
-
-                                if (replacementKind == SyntaxKind.YieldReturnStatement
-                                    || (replacementKind == SyntaxKind.ForEachStatement && !returnStatement.SpanContainsDirectives()))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Use yield return instead of return",
-                                        ct => UseYieldReturnInsteadOfReturnRefactoring.RefactorAsync(context.Document, returnStatement, replacementKind, semanticModel, ct),
-                                        GetEquivalenceKey(diagnostic));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
-                            }
-                        }
-
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn, context.Document, root.SyntaxTree))
                         break;
-                    }
-                case CompilerDiagnosticIdentifiers.CS0127_SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
-                case CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
+
+                    ExpressionSyntax expression = returnStatement.Expression;
+
+                    if (expression is not null)
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, context.Document, root.SyntaxTree))
-                        {
-                            ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
-                        }
+                        ISymbol containingSymbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
 
-                        break;
+                        if (containingSymbol?.Kind == SymbolKind.Method)
+                        {
+                            var methodSymbol = (IMethodSymbol)containingSymbol;
+
+                            ITypeSymbol returnType = methodSymbol.ReturnType;
+
+                            var replacementKind = SyntaxKind.None;
+
+                            if (returnType.SpecialType == SpecialType.System_Collections_IEnumerable)
+                            {
+                                if (semanticModel
+                                    .GetTypeSymbol(expression, context.CancellationToken)
+                                    .OriginalDefinition
+                                    .IsIEnumerableOrIEnumerableOfT())
+                                {
+                                    replacementKind = SyntaxKind.ForEachStatement;
+                                }
+                                else
+                                {
+                                    replacementKind = SyntaxKind.YieldReturnStatement;
+                                }
+                            }
+                            else if (returnType.Kind == SymbolKind.NamedType)
+                            {
+                                var namedTypeSymbol = (INamedTypeSymbol)returnType;
+
+                                if (namedTypeSymbol.OriginalDefinition.IsIEnumerableOfT())
+                                {
+                                    if (semanticModel.IsImplicitConversion(expression, namedTypeSymbol.TypeArguments[0]))
+                                    {
+                                        replacementKind = SyntaxKind.YieldReturnStatement;
+                                    }
+                                    else
+                                    {
+                                        replacementKind = SyntaxKind.ForEachStatement;
+                                    }
+                                }
+                            }
+
+                            if (replacementKind == SyntaxKind.YieldReturnStatement
+                                || (replacementKind == SyntaxKind.ForEachStatement && !returnStatement.SpanContainsDirectives()))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Use yield return instead of return",
+                                    ct => UseYieldReturnInsteadOfReturnRefactoring.RefactorAsync(context.Document, returnStatement, replacementKind, semanticModel, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                        }
                     }
+
+                    break;
+                }
+                case CompilerDiagnosticIdentifiers.CS0127_SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
+                case CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, context.Document, root.SyntaxTree))
+                    {
+                        ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
+                    }
+
+                    break;
+                }
             }
         }
     }

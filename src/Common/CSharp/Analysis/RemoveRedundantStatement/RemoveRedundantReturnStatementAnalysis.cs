@@ -53,28 +53,28 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
             case SyntaxKind.ConstructorDeclaration:
             case SyntaxKind.DestructorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
-                }
+            {
+                return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    return ((LocalFunctionStatementSyntax)block.Parent).ReturnType?.IsVoid() == true;
-                }
+            {
+                return ((LocalFunctionStatementSyntax)block.Parent).ReturnType?.IsVoid() == true;
+            }
             case SyntaxKind.SimpleLambdaExpression:
             case SyntaxKind.ParenthesizedLambdaExpression:
             case SyntaxKind.AnonymousMethodExpression:
-                {
-                    return statement is ReturnStatementSyntax returnStatement
-                        && returnStatement.Expression is null;
-                }
+            {
+                return statement is ReturnStatementSyntax returnStatement
+                    && returnStatement.Expression is null;
+            }
             default:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
         }
     }
 }

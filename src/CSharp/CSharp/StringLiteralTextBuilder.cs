@@ -43,25 +43,25 @@ internal class StringLiteralTextBuilder
             switch (content.Kind())
             {
                 case SyntaxKind.Interpolation:
-                    {
-                        StringBuilder.Append(content.ToFullString());
-                        break;
-                    }
+                {
+                    StringBuilder.Append(content.ToFullString());
+                    break;
+                }
                 case SyntaxKind.InterpolatedStringText:
+                {
+                    var interpolatedText = (InterpolatedStringTextSyntax)content;
+
+                    if (IsVerbatim == isVerbatim)
                     {
-                        var interpolatedText = (InterpolatedStringTextSyntax)content;
-
-                        if (IsVerbatim == isVerbatim)
-                        {
-                            StringBuilder.Append(interpolatedText.TextToken.Text);
-                        }
-                        else
-                        {
-                            Append(interpolatedText.TextToken.ValueText);
-                        }
-
-                        break;
+                        StringBuilder.Append(interpolatedText.TextToken.Text);
                     }
+                    else
+                    {
+                        Append(interpolatedText.TextToken.ValueText);
+                    }
+
+                    break;
+                }
             }
         }
     }
@@ -154,27 +154,27 @@ internal class StringLiteralTextBuilder
             switch (ch)
             {
                 case '\"':
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case '\\':
-                    {
-                        return !IsVerbatim;
-                    }
+                {
+                    return !IsVerbatim;
+                }
                 case '{':
                 case '}':
-                    {
-                        return IsInterpolated;
-                    }
+                {
+                    return IsInterpolated;
+                }
                 case '\r':
                 case '\n':
-                    {
-                        return !IsVerbatim;
-                    }
+                {
+                    return !IsVerbatim;
+                }
                 default:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
         }
 
@@ -183,50 +183,50 @@ internal class StringLiteralTextBuilder
             switch (ch)
             {
                 case '\"':
+                {
+                    if (IsVerbatim)
                     {
-                        if (IsVerbatim)
-                        {
-                            StringBuilder.Append("\"\"");
-                        }
-                        else
-                        {
-                            StringBuilder.Append("\\\"");
-                        }
-
-                        break;
+                        StringBuilder.Append("\"\"");
                     }
+                    else
+                    {
+                        StringBuilder.Append("\\\"");
+                    }
+
+                    break;
+                }
                 case '\\':
-                    {
-                        Debug.Assert(!IsVerbatim);
+                {
+                    Debug.Assert(!IsVerbatim);
 
-                        StringBuilder.Append(@"\\");
-                        break;
-                    }
+                    StringBuilder.Append(@"\\");
+                    break;
+                }
                 case '{':
-                    {
-                        StringBuilder.Append("{{");
-                        break;
-                    }
+                {
+                    StringBuilder.Append("{{");
+                    break;
+                }
                 case '}':
-                    {
-                        StringBuilder.Append("}}");
-                        break;
-                    }
+                {
+                    StringBuilder.Append("}}");
+                    break;
+                }
                 case '\r':
-                    {
-                        StringBuilder.Append(@"\r");
-                        break;
-                    }
+                {
+                    StringBuilder.Append(@"\r");
+                    break;
+                }
                 case '\n':
-                    {
-                        StringBuilder.Append(@"\n");
-                        break;
-                    }
+                {
+                    StringBuilder.Append(@"\n");
+                    break;
+                }
                 default:
-                    {
-                        Debug.Fail(ch.ToString());
-                        break;
-                    }
+                {
+                    Debug.Fail(ch.ToString());
+                    break;
+                }
             }
         }
     }

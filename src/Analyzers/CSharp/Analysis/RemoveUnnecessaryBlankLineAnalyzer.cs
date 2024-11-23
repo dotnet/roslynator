@@ -629,28 +629,28 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
             switch (en.Current.Kind())
             {
                 case SyntaxKind.EndOfLineTrivia:
-                    {
-                        SyntaxTrivia endOfLine = en.Current;
+                {
+                    SyntaxTrivia endOfLine = en.Current;
 
-                        if (isEnd)
+                    if (isEnd)
+                    {
+                        while (en.MoveNext())
                         {
-                            while (en.MoveNext())
-                            {
-                                if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
-                                    return null;
-                            }
+                            if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                                return null;
                         }
+                    }
 
-                        return TextSpan.FromBounds(triviaList.Span.Start, endOfLine.Span.End);
-                    }
+                    return TextSpan.FromBounds(triviaList.Span.Start, endOfLine.Span.End);
+                }
                 case SyntaxKind.WhitespaceTrivia:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 default:
-                    {
-                        return null;
-                    }
+                {
+                    return null;
+                }
             }
         }
 

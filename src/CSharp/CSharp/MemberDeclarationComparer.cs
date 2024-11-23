@@ -66,10 +66,10 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
             case SyntaxKind.IncompleteMember:
                 return false;
             default:
-                {
-                    Debug.Fail($"unknown member '{kind}'");
-                    return false;
-                }
+            {
+                Debug.Fail($"unknown member '{kind}'");
+                return false;
+            }
         }
     }
 
@@ -111,9 +111,9 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
             switch (member.Kind())
             {
                 case SyntaxKind.FieldDeclaration:
-                    {
-                        return ((FieldDeclarationSyntax)member).Declaration?.Variables.FirstOrDefault()?.Identifier.ValueText;
-                    }
+                {
+                    return ((FieldDeclarationSyntax)member).Declaration?.Variables.FirstOrDefault()?.Identifier.ValueText;
+                }
                 case SyntaxKind.ConstructorDeclaration:
                     return ((ConstructorDeclarationSyntax)member).Identifier.ValueText;
                 case SyntaxKind.DelegateDeclaration:
@@ -148,10 +148,10 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
                 case SyntaxKind.IncompleteMember:
                     return "";
                 default:
-                    {
-                        Debug.Fail($"unknown member '{member.Kind()}'");
-                        return "";
-                    }
+                {
+                    Debug.Fail($"unknown member '{member.Kind()}'");
+                    return "";
+                }
             }
         }
     }

@@ -52,15 +52,15 @@ internal static class ConvertLambdaExpressionBodyToBlockBodyRefactoring
         switch (lambda.Kind())
         {
             case SyntaxKind.SimpleLambdaExpression:
-                {
-                    newLambda = ((SimpleLambdaExpressionSyntax)lambda).WithBody(block);
-                    break;
-                }
+            {
+                newLambda = ((SimpleLambdaExpressionSyntax)lambda).WithBody(block);
+                break;
+            }
             case SyntaxKind.ParenthesizedLambdaExpression:
-                {
-                    newLambda = ((ParenthesizedLambdaExpressionSyntax)lambda).WithBody(block);
-                    break;
-                }
+            {
+                newLambda = ((ParenthesizedLambdaExpressionSyntax)lambda).WithBody(block);
+                break;
+            }
         }
 
         newLambda = newLambda.WithFormatterAnnotation();

@@ -21,143 +21,143 @@ internal static class DiagnosticIdPrefix
         switch (id[0])
         {
             case 'A':
+            {
+                if (HasPrefix(AD))
                 {
-                    if (HasPrefix(AD))
-                    {
-                        return AD;
-                    }
-                    else if (HasPrefix(Async))
-                    {
-                        return Async;
-                    }
-
-                    break;
+                    return AD;
                 }
+                else if (HasPrefix(Async))
+                {
+                    return Async;
+                }
+
+                break;
+            }
             case 'B':
+            {
+                if (HasPrefix(BC))
                 {
-                    if (HasPrefix(BC))
-                    {
-                        return BC;
-                    }
-                    else if (HasPrefix(BL))
-                    {
-                        return BL;
-                    }
-
-                    break;
+                    return BC;
                 }
+                else if (HasPrefix(BL))
+                {
+                    return BL;
+                }
+
+                break;
+            }
             case 'C':
+            {
+                if (HasPrefix(CA))
                 {
-                    if (HasPrefix(CA))
-                    {
-                        return CA;
-                    }
-                    else if (HasPrefix(CC))
-                    {
-                        return CC;
-                    }
-                    else if (HasPrefix(CS))
-                    {
-                        return CS;
-                    }
-
-                    break;
+                    return CA;
                 }
+                else if (HasPrefix(CC))
+                {
+                    return CC;
+                }
+                else if (HasPrefix(CS))
+                {
+                    return CS;
+                }
+
+                break;
+            }
             case 'E':
+            {
+                if (HasPrefix(ENC))
                 {
-                    if (HasPrefix(ENC))
-                    {
-                        return ENC;
-                    }
-
-                    break;
+                    return ENC;
                 }
+
+                break;
+            }
             case 'I':
+            {
+                if (HasPrefix(IDE))
                 {
-                    if (HasPrefix(IDE))
-                    {
-                        return IDE;
-                    }
-                    else if (HasPrefix(IL))
-                    {
-                        return IL;
-                    }
-
-                    break;
+                    return IDE;
                 }
+                else if (HasPrefix(IL))
+                {
+                    return IL;
+                }
+
+                break;
+            }
             case 'R':
+            {
+                if (HasPrefix(RCS))
                 {
-                    if (HasPrefix(RCS))
-                    {
-                        return RCS;
-                    }
-                    else if (HasPrefix(ROS))
-                    {
-                        return ROS;
-                    }
-                    else if (HasPrefix(RECS))
-                    {
-                        return RECS;
-                    }
-                    else if (HasPrefix(REVB))
-                    {
-                        return REVB;
-                    }
-                    else if (HasPrefix(RS))
-                    {
-                        return RS;
-                    }
-
-                    break;
+                    return RCS;
                 }
+                else if (HasPrefix(ROS))
+                {
+                    return ROS;
+                }
+                else if (HasPrefix(RECS))
+                {
+                    return RECS;
+                }
+                else if (HasPrefix(REVB))
+                {
+                    return REVB;
+                }
+                else if (HasPrefix(RS))
+                {
+                    return RS;
+                }
+
+                break;
+            }
             case 'S':
+            {
+                if (HasPrefix(SA))
                 {
-                    if (HasPrefix(SA))
-                    {
-                        return SA;
-                    }
-                    else if (HasPrefix(SX))
-                    {
-                        return SX;
-                    }
-
-                    break;
+                    return SA;
                 }
+                else if (HasPrefix(SX))
+                {
+                    return SX;
+                }
+
+                break;
+            }
             case 'U':
+            {
+                if (HasPrefix(U2U))
                 {
-                    if (HasPrefix(U2U))
-                    {
-                        return U2U;
-                    }
-
-                    break;
+                    return U2U;
                 }
+
+                break;
+            }
             case 'V':
+            {
+                if (HasPrefix(VB))
                 {
-                    if (HasPrefix(VB))
-                    {
-                        return VB;
-                    }
-                    else if (HasPrefix(VSSDK))
-                    {
-                        return VSSDK;
-                    }
-                    else if (HasPrefix(VSTHRD))
-                    {
-                        return VSTHRD;
-                    }
-
-                    break;
+                    return VB;
                 }
+                else if (HasPrefix(VSSDK))
+                {
+                    return VSSDK;
+                }
+                else if (HasPrefix(VSTHRD))
+                {
+                    return VSTHRD;
+                }
+
+                break;
+            }
             case 'x':
+            {
+                if (HasPrefix(xUnit))
                 {
-                    if (HasPrefix(xUnit))
-                    {
-                        return xUnit;
-                    }
-
-                    break;
+                    return xUnit;
                 }
+
+                break;
+            }
         }
 
         int prefixLength = GetPrefixLength(id);

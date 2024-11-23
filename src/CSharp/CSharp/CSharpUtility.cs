@@ -109,22 +109,22 @@ internal static class CSharpUtility
             switch (ancestor)
             {
                 case NamespaceDeclarationSyntax namespaceDeclaration:
+                {
+                    if (IsNamespace(namespaceSymbol, namespaceDeclaration.Name, semanticModel, cancellationToken)
+                        || IsNamespace(namespaceSymbol, namespaceDeclaration.Usings, semanticModel, cancellationToken))
                     {
-                        if (IsNamespace(namespaceSymbol, namespaceDeclaration.Name, semanticModel, cancellationToken)
-                            || IsNamespace(namespaceSymbol, namespaceDeclaration.Usings, semanticModel, cancellationToken))
-                        {
-                            return true;
-                        }
-
-                        break;
+                        return true;
                     }
+
+                    break;
+                }
                 case CompilationUnitSyntax compilationUnit:
-                    {
-                        if (IsNamespace(namespaceSymbol, compilationUnit.Usings, semanticModel, cancellationToken))
-                            return true;
+                {
+                    if (IsNamespace(namespaceSymbol, compilationUnit.Usings, semanticModel, cancellationToken))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
 
@@ -327,18 +327,18 @@ internal static class CSharpUtility
             switch (left?.Kind())
             {
                 case SyntaxKind.StringLiteralExpression:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SyntaxKind.AddExpression:
-                    {
-                        binaryExpression = (BinaryExpressionSyntax)left;
-                        break;
-                    }
+                {
+                    binaryExpression = (BinaryExpressionSyntax)left;
+                    break;
+                }
                 default:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
         }
     }
@@ -493,31 +493,31 @@ internal static class CSharpUtility
                     return false;
 #if DEBUG
                 default:
-                    {
-                        if (parent is ExpressionSyntax)
-                            break;
-
-                        switch (parent.Kind())
-                        {
-                            case SyntaxKind.Argument:
-                            case SyntaxKind.ArgumentList:
-                            case SyntaxKind.BracketedArgumentList:
-                            case SyntaxKind.EqualsValueClause:
-                            case SyntaxKind.Interpolation:
-                            case SyntaxKind.VariableDeclaration:
-                            case SyntaxKind.VariableDeclarator:
-                                {
-                                    break;
-                                }
-                            default:
-                                {
-                                    SyntaxDebug.Fail(parent);
-                                    break;
-                                }
-                        }
-
+                {
+                    if (parent is ExpressionSyntax)
                         break;
+
+                    switch (parent.Kind())
+                    {
+                        case SyntaxKind.Argument:
+                        case SyntaxKind.ArgumentList:
+                        case SyntaxKind.BracketedArgumentList:
+                        case SyntaxKind.EqualsValueClause:
+                        case SyntaxKind.Interpolation:
+                        case SyntaxKind.VariableDeclaration:
+                        case SyntaxKind.VariableDeclarator:
+                        {
+                            break;
+                        }
+                        default:
+                        {
+                            SyntaxDebug.Fail(parent);
+                            break;
+                        }
                     }
+
+                    break;
+                }
 #endif
             }
         }
@@ -568,20 +568,20 @@ internal static class CSharpUtility
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.ElementAccessExpression:
                 case SyntaxKind.InvocationExpression:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        if (((ConditionalAccessExpressionSyntax)parent).WhenNotNull == prev)
-                            return true;
+                {
+                    if (((ConditionalAccessExpressionSyntax)parent).WhenNotNull == prev)
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
                 default:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
 
             prev = parent;

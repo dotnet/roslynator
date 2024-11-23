@@ -29,7 +29,6 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
 
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
-
         XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
 
         CodeAction codeAction = CodeAction.Create(

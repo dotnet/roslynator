@@ -81,33 +81,33 @@ public static class ModifierList
         switch (accessibility)
         {
             case Accessibility.Private:
-                {
-                    return Insert(node, SyntaxKind.PrivateKeyword, comparer);
-                }
+            {
+                return Insert(node, SyntaxKind.PrivateKeyword, comparer);
+            }
             case Accessibility.Protected:
-                {
-                    return Insert(node, SyntaxKind.ProtectedKeyword, comparer);
-                }
+            {
+                return Insert(node, SyntaxKind.ProtectedKeyword, comparer);
+            }
             case Accessibility.ProtectedAndInternal:
-                {
-                    node = Insert(node, SyntaxKind.PrivateKeyword, comparer);
+            {
+                node = Insert(node, SyntaxKind.PrivateKeyword, comparer);
 
-                    return Insert(node, SyntaxKind.ProtectedKeyword, comparer);
-                }
+                return Insert(node, SyntaxKind.ProtectedKeyword, comparer);
+            }
             case Accessibility.Internal:
-                {
-                    return Insert(node, SyntaxKind.InternalKeyword, comparer);
-                }
+            {
+                return Insert(node, SyntaxKind.InternalKeyword, comparer);
+            }
             case Accessibility.Public:
-                {
-                    return Insert(node, SyntaxKind.PublicKeyword, comparer);
-                }
+            {
+                return Insert(node, SyntaxKind.PublicKeyword, comparer);
+            }
             case Accessibility.ProtectedOrInternal:
-                {
-                    node = Insert(node, SyntaxKind.ProtectedKeyword, comparer);
+            {
+                node = Insert(node, SyntaxKind.ProtectedKeyword, comparer);
 
-                    return Insert(node, SyntaxKind.InternalKeyword, comparer);
-                }
+                return Insert(node, SyntaxKind.InternalKeyword, comparer);
+            }
         }
 
         return node;

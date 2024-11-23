@@ -68,16 +68,16 @@ public sealed class RemoveRedundantDefaultSwitchSectionAnalyzer : BaseDiagnostic
         switch (statement?.Kind())
         {
             case SyntaxKind.Block:
-                {
-                    return ((BlockSyntax)statement)
-                        .Statements
-                        .SingleOrDefault(shouldThrow: false)?
-                        .Kind() == SyntaxKind.BreakStatement;
-                }
+            {
+                return ((BlockSyntax)statement)
+                    .Statements
+                    .SingleOrDefault(shouldThrow: false)?
+                    .Kind() == SyntaxKind.BreakStatement;
+            }
             case SyntaxKind.BreakStatement:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
         }
 
         return false;

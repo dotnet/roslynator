@@ -202,29 +202,29 @@ internal class CliSymbolRenameState : SymbolRenameState
                     {
                         case DialogResult.None:
                         case DialogResult.No:
-                            {
-                                ignoreIds?.Add(symbolId);
-                                return default;
-                            }
+                        {
+                            ignoreIds?.Add(symbolId);
+                            return default;
+                        }
                         case DialogResult.NoToAll:
-                            {
-                                ErrorResolution = CliCompilationErrorResolution.Skip;
-                                ignoreIds?.Add(symbolId);
-                                return default;
-                            }
+                        {
+                            ErrorResolution = CliCompilationErrorResolution.Skip;
+                            ignoreIds?.Add(symbolId);
+                            return default;
+                        }
                         case DialogResult.Yes:
-                            {
-                                break;
-                            }
+                        {
+                            break;
+                        }
                         case DialogResult.YesToAll:
-                            {
-                                ErrorResolution = CliCompilationErrorResolution.None;
-                                break;
-                            }
+                        {
+                            ErrorResolution = CliCompilationErrorResolution.None;
+                            break;
+                        }
                         default:
-                            {
-                                throw new InvalidOperationException();
-                            }
+                        {
+                            throw new InvalidOperationException();
+                        }
                     }
                 }
                 else if (ErrorResolution == CliCompilationErrorResolution.Abort)
@@ -248,29 +248,29 @@ internal class CliSymbolRenameState : SymbolRenameState
             {
                 case DialogResult.None:
                 case DialogResult.No:
-                    {
-                        ignoreIds?.Add(symbolId);
-                        return default;
-                    }
+                {
+                    ignoreIds?.Add(symbolId);
+                    return default;
+                }
                 case DialogResult.NoToAll:
-                    {
-                        DryRun = true;
-                        ignoreIds?.Add(symbolId);
-                        return default;
-                    }
+                {
+                    DryRun = true;
+                    ignoreIds?.Add(symbolId);
+                    return default;
+                }
                 case DialogResult.Yes:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case DialogResult.YesToAll:
-                    {
-                        Ask = false;
-                        break;
-                    }
+                {
+                    Ask = false;
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
 

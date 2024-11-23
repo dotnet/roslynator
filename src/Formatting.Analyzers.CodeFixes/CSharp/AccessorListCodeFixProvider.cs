@@ -36,15 +36,15 @@ public sealed class AccessorListCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        (accessorList.Accessors.Count == 1) ? "Put accessor on a single line" : "Put accessors on a single line",
-                        ct => PutAccessorsOnSingleLine(document, accessorList, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    (accessorList.Accessors.Count == 1) ? "Put accessor on a single line" : "Put accessors on a single line",
+                    ct => PutAccessorsOnSingleLine(document, accessorList, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

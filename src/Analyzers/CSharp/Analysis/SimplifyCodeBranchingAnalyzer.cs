@@ -184,40 +184,40 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
-                {
-                    //void M()
-                    //{
-                    //    if (x)
-                    //    {
-                    //        return;
-                    //    }
-                    //    else
-                    //    {
-                    //        M();
-                    //    }
+            {
+                //void M()
+                //{
+                //    if (x)
+                //    {
+                //        return;
+                //    }
+                //    else
+                //    {
+                //        M();
+                //    }
 
-                    return ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
-                        && returnStatement.Expression is null;
-                }
+                return ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
+                    && returnStatement.Expression is null;
+            }
             case SyntaxKind.ForEachStatement:
             case SyntaxKind.ForEachVariableStatement:
             case SyntaxKind.ForStatement:
             case SyntaxKind.WhileStatement:
-                {
-                    //while (x)
-                    //{
-                    //    if (y)
-                    //    {
-                    //        continue;
-                    //    }
-                    //    else
-                    //    {
-                    //        M();
-                    //    }
-                    //}
+            {
+                //while (x)
+                //{
+                //    if (y)
+                //    {
+                //        continue;
+                //    }
+                //    else
+                //    {
+                //        M();
+                //    }
+                //}
 
-                    return ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ContinueStatement);
-                }
+                return ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ContinueStatement);
+            }
         }
 
         return false;

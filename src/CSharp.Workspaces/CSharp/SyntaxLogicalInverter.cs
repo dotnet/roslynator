@@ -92,94 +92,94 @@ public class SyntaxLogicalInverter
             case SyntaxKind.UncheckedExpression:
             case SyntaxKind.DefaultExpression:
             case SyntaxKind.ConditionalAccessExpression:
-                {
-                    return DefaultInvert(expression, false);
-                }
+            {
+                return DefaultInvert(expression, false);
+            }
             case SyntaxKind.PostIncrementExpression:
             case SyntaxKind.PostDecrementExpression:
             case SyntaxKind.ObjectCreationExpression:
             case SyntaxKind.AnonymousObjectCreationExpression:
             case SyntaxKind.TypeOfExpression:
-                {
-                    return DefaultInvert(expression);
-                }
+            {
+                return DefaultInvert(expression);
+            }
             case SyntaxKind.LogicalNotExpression:
-                {
-                    return ((PrefixUnaryExpressionSyntax)expression).Operand;
-                }
+            {
+                return ((PrefixUnaryExpressionSyntax)expression).Operand;
+            }
             case SyntaxKind.CastExpression:
-                {
-                    return DefaultInvert(expression);
-                }
+            {
+                return DefaultInvert(expression);
+            }
             case SyntaxKind.LessThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
-                {
-                    return (semanticModel is not null)
-                        ? InvertLessThanOrGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
-                        : DefaultInvert(expression);
-                }
+            {
+                return (semanticModel is not null)
+                    ? InvertLessThanOrGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
+                    : DefaultInvert(expression);
+            }
             case SyntaxKind.IsExpression:
-                {
-                    if (semanticModel is null)
-                        return DefaultInvert(expression);
-
-                    var isExpression = (BinaryExpressionSyntax)expression;
-                    var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbol(isExpression.Right, cancellationToken)!;
-
-                    TypeSyntax type = rightTypeSymbol.ToTypeSyntax();
-
-                    if (SymbolEqualityComparer.Default.Equals(
-                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsExpression).Symbol,
-                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsTypeOrNamespace).Symbol))
-                    {
-                        type = type.WithSimplifierAnnotation();
-                    }
-
-                    return (Options.UseNotPattern)
-                        ? IsPatternExpression(
-                            isExpression.Left,
-                            isExpression.OperatorToken.WithTrailingTrivia(Space),
-                            UnaryPattern(
-                                Token(SyntaxKind.NotKeyword)
-                                    .WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
-                                TypePattern(type)))
-                        : DefaultInvert(expression);
-                }
-            case SyntaxKind.AsExpression:
-                {
+            {
+                if (semanticModel is null)
                     return DefaultInvert(expression);
-                }
-            case SyntaxKind.IsPatternExpression:
+
+                var isExpression = (BinaryExpressionSyntax)expression;
+                var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbol(isExpression.Right, cancellationToken)!;
+
+                TypeSyntax type = rightTypeSymbol.ToTypeSyntax();
+
+                if (SymbolEqualityComparer.Default.Equals(
+                    semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsExpression).Symbol,
+                    semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsTypeOrNamespace).Symbol))
                 {
-                    return (Options.UseNotPattern)
-                        ? InvertIsPattern((IsPatternExpressionSyntax)expression)
-                        : DefaultInvert(expression);
+                    type = type.WithSimplifierAnnotation();
                 }
+
+                return (Options.UseNotPattern)
+                    ? IsPatternExpression(
+                        isExpression.Left,
+                        isExpression.OperatorToken.WithTrailingTrivia(Space),
+                        UnaryPattern(
+                            Token(SyntaxKind.NotKeyword)
+                                .WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
+                            TypePattern(type)))
+                    : DefaultInvert(expression);
+            }
+            case SyntaxKind.AsExpression:
+            {
+                return DefaultInvert(expression);
+            }
+            case SyntaxKind.IsPatternExpression:
+            {
+                return (Options.UseNotPattern)
+                    ? InvertIsPattern((IsPatternExpressionSyntax)expression)
+                    : DefaultInvert(expression);
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
-                {
-                    return InvertBinaryExpression((BinaryExpressionSyntax)expression);
-                }
+            {
+                return InvertBinaryExpression((BinaryExpressionSyntax)expression);
+            }
             case SyntaxKind.BitwiseAndExpression:
-                {
-                    return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
-                }
+            {
+                return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
+            }
             case SyntaxKind.ExclusiveOrExpression:
-                {
-                    return DefaultInvert(expression);
-                }
+            {
+                return DefaultInvert(expression);
+            }
             case SyntaxKind.BitwiseOrExpression:
             case SyntaxKind.LogicalOrExpression:
             case SyntaxKind.LogicalAndExpression:
-                {
-                    return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
-                }
+            {
+                return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
+            }
             case SyntaxKind.ConditionalExpression:
-                {
-                    return InvertConditionalExpression((ConditionalExpressionSyntax)expression, semanticModel, cancellationToken);
-                }
+            {
+                return InvertConditionalExpression((ConditionalExpressionSyntax)expression, semanticModel, cancellationToken);
+            }
             case SyntaxKind.SimpleAssignmentExpression:
             case SyntaxKind.AddAssignmentExpression:
             case SyntaxKind.SubtractAssignmentExpression:
@@ -191,56 +191,56 @@ public class SyntaxLogicalInverter
             case SyntaxKind.OrAssignmentExpression:
             case SyntaxKind.LeftShiftAssignmentExpression:
             case SyntaxKind.RightShiftAssignmentExpression:
-                {
-                    return DefaultInvert(expression);
-                }
+            {
+                return DefaultInvert(expression);
+            }
             case SyntaxKind.TrueLiteralExpression:
-                {
-                    return FalseLiteralExpression();
-                }
+            {
+                return FalseLiteralExpression();
+            }
             case SyntaxKind.FalseLiteralExpression:
-                {
-                    return TrueLiteralExpression();
-                }
+            {
+                return TrueLiteralExpression();
+            }
             case SyntaxKind.ParenthesizedExpression:
-                {
-                    var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+            {
+                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
 
-                    ExpressionSyntax expression2 = parenthesizedExpression.Expression;
+                ExpressionSyntax expression2 = parenthesizedExpression.Expression;
 
-                    if (expression2 is null)
-                        return parenthesizedExpression;
+                if (expression2 is null)
+                    return parenthesizedExpression;
 
-                    if (expression2.IsMissing)
-                        return parenthesizedExpression;
+                if (expression2.IsMissing)
+                    return parenthesizedExpression;
 
-                    ExpressionSyntax newExpression = LogicallyInvertImpl(expression2, semanticModel, cancellationToken);
+                ExpressionSyntax newExpression = LogicallyInvertImpl(expression2, semanticModel, cancellationToken);
 
-                    newExpression = newExpression.WithTriviaFrom(expression2);
+                newExpression = newExpression.WithTriviaFrom(expression2);
 
-                    return parenthesizedExpression.WithExpression(newExpression);
-                }
+                return parenthesizedExpression.WithExpression(newExpression);
+            }
             case SyntaxKind.AwaitExpression:
-                {
-                    return DefaultInvert(expression);
-                }
+            {
+                return DefaultInvert(expression);
+            }
             case SyntaxKind.CoalesceExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)expression;
+                if (binaryExpression.Right.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)expression;
-                    if (binaryExpression.Right.IsKind(SyntaxKind.FalseLiteralExpression))
-                    {
-                        // !(x ?? false) === (x != true)
-                        return NotEqualsExpression(binaryExpression.Left, TrueLiteralExpression());
-                    }
-
-                    if (binaryExpression.Right.IsKind(SyntaxKind.TrueLiteralExpression))
-                    {
-                        // !(x ?? true) === (x == false)
-                        return EqualsExpression(binaryExpression.Left, FalseLiteralExpression());
-                    }
-
-                    return DefaultInvert(expression);
+                    // !(x ?? false) === (x != true)
+                    return NotEqualsExpression(binaryExpression.Left, TrueLiteralExpression());
                 }
+
+                if (binaryExpression.Right.IsKind(SyntaxKind.TrueLiteralExpression))
+                {
+                    // !(x ?? true) === (x == false)
+                    return EqualsExpression(binaryExpression.Left, FalseLiteralExpression());
+                }
+
+                return DefaultInvert(expression);
+            }
         }
 
         Debug.Fail($"Logical inversion of unknown kind '{expression.Kind()}'");
@@ -328,20 +328,20 @@ public class SyntaxLogicalInverter
         switch (conditionalAccess.WhenNotNull)
         {
             case MemberBindingExpressionSyntax memberBinding:
-                {
-                    return SimpleMemberAccessExpression(conditionalAccess.Expression, memberBinding.Name);
-                }
+            {
+                return SimpleMemberAccessExpression(conditionalAccess.Expression, memberBinding.Name);
+            }
             case ElementBindingExpressionSyntax elementBinding:
-                {
-                    return ElementAccessExpression(conditionalAccess.Expression, elementBinding.ArgumentList);
-                }
+            {
+                return ElementAccessExpression(conditionalAccess.Expression, elementBinding.ArgumentList);
+            }
             case InvocationExpressionSyntax invocation:
-                {
-                    if (invocation.Expression is not MemberBindingExpressionSyntax memberBinding)
-                        return null;
+            {
+                if (invocation.Expression is not MemberBindingExpressionSyntax memberBinding)
+                    return null;
 
-                    return InvocationExpression(SimpleMemberAccessExpression(conditionalAccess.Expression, memberBinding.Name), invocation.ArgumentList);
-                }
+                return InvocationExpression(SimpleMemberAccessExpression(conditionalAccess.Expression, memberBinding.Name), invocation.ArgumentList);
+            }
         }
 
         return null;

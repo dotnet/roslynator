@@ -86,64 +86,64 @@ public static class WorkspaceExtensions
         switch (parent?.Kind())
         {
             case SyntaxKind.CompilationUnit:
-                {
-                    var compilationUnit = (CompilationUnitSyntax)parent;
+            {
+                var compilationUnit = (CompilationUnitSyntax)parent;
 
-                    return document.ReplaceNodeAsync(compilationUnit, SyntaxRefactorings.RemoveMember(compilationUnit, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(compilationUnit, SyntaxRefactorings.RemoveMember(compilationUnit, member), cancellationToken);
+            }
             case SyntaxKind.NamespaceDeclaration:
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)parent;
+            {
+                var namespaceDeclaration = (NamespaceDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
+            }
 #if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
-                {
-                    var namespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)parent;
+            {
+                var namespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
+            }
 #endif
             case SyntaxKind.ClassDeclaration:
-                {
-                    var classDeclaration = (ClassDeclarationSyntax)parent;
+            {
+                var classDeclaration = (ClassDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(classDeclaration, SyntaxRefactorings.RemoveMember(classDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(classDeclaration, SyntaxRefactorings.RemoveMember(classDeclaration, member), cancellationToken);
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    var structDeclaration = (StructDeclarationSyntax)parent;
+            {
+                var structDeclaration = (StructDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(structDeclaration, SyntaxRefactorings.RemoveMember(structDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(structDeclaration, SyntaxRefactorings.RemoveMember(structDeclaration, member), cancellationToken);
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
+            {
+                var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    var recordDeclaration = (RecordDeclarationSyntax)parent;
+            {
+                var recordDeclaration = (RecordDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(recordDeclaration, SyntaxRefactorings.RemoveMember(recordDeclaration, member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(recordDeclaration, SyntaxRefactorings.RemoveMember(recordDeclaration, member), cancellationToken);
+            }
             case SyntaxKind.EnumDeclaration:
-                {
-                    var enumDeclaration = (EnumDeclarationSyntax)parent;
+            {
+                var enumDeclaration = (EnumDeclarationSyntax)parent;
 
-                    return document.ReplaceNodeAsync(enumDeclaration, SyntaxRefactorings.RemoveMember(enumDeclaration, (EnumMemberDeclarationSyntax)member), cancellationToken);
-                }
+                return document.ReplaceNodeAsync(enumDeclaration, SyntaxRefactorings.RemoveMember(enumDeclaration, (EnumMemberDeclarationSyntax)member), cancellationToken);
+            }
             default:
-                {
-                    SyntaxDebug.Assert(parent is null, parent);
+            {
+                SyntaxDebug.Assert(parent is null, parent);
 
-                    return document.RemoveNodeAsync(member, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
-                }
+                return document.RemoveNodeAsync(member, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
+            }
         }
     }
 

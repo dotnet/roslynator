@@ -26,36 +26,36 @@ internal abstract class UseMethodChainingAnalysis
         switch (parent?.Kind())
         {
             case SyntaxKind.ExpressionStatement:
-                {
-                    var expressionStatement = (ExpressionStatementSyntax)parent;
+            {
+                var expressionStatement = (ExpressionStatementSyntax)parent;
 
-                    if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
-                        break;
+                if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
+                    break;
 
-                    string name = identifierName.Identifier.ValueText;
+                string name = identifierName.Identifier.ValueText;
 
-                    return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                }
+                return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+            }
             case SyntaxKind.SimpleAssignmentExpression:
-                {
-                    var assignmentExpression = (AssignmentExpressionSyntax)parent;
+            {
+                var assignmentExpression = (AssignmentExpressionSyntax)parent;
 
-                    if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
-                        break;
+                if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
+                    break;
 
-                    if (assignmentExpression.Right != invocationExpression)
-                        break;
+                if (assignmentExpression.Right != invocationExpression)
+                    break;
 
-                    if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
-                        break;
+                if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
+                    break;
 
-                    string name = identifierName.Identifier.ValueText;
+                string name = identifierName.Identifier.ValueText;
 
-                    if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
-                        break;
+                if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
+                    break;
 
-                    return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                }
+                return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+            }
         }
 
         return false;

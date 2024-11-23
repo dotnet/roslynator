@@ -106,65 +106,65 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
             switch (memberSymbol.Kind)
             {
                 case SymbolKind.ErrorType:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
                 case SymbolKind.NamedType:
-                    {
-                        var namedTypeSymbol = (INamedTypeSymbol)memberSymbol;
+                {
+                    var namedTypeSymbol = (INamedTypeSymbol)memberSymbol;
 
-                        switch (namedTypeSymbol.TypeKind)
+                    switch (namedTypeSymbol.TypeKind)
+                    {
+                        case TypeKind.Unknown:
+                        case TypeKind.Error:
                         {
-                            case TypeKind.Unknown:
-                            case TypeKind.Error:
-                                {
-                                    return false;
-                                }
-                            case TypeKind.Class:
-                            case TypeKind.Delegate:
-                            case TypeKind.Enum:
-                            case TypeKind.Interface:
-                            case TypeKind.Struct:
-                                {
-                                    if (memberSymbol.DeclaredAccessibility.ContainsProtected())
-                                        return false;
-
-                                    break;
-                                }
-                            default:
-                                {
-                                    Debug.Fail(namedTypeSymbol.TypeKind.ToString());
-                                    break;
-                                }
-                        }
-
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Assert(memberSymbol.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property), memberSymbol.Kind.ToString());
-
-                        if (memberSymbol.DeclaredAccessibility.ContainsProtected())
                             return false;
-
-                        if (!memberSymbol.IsImplicitlyDeclared)
+                        }
+                        case TypeKind.Class:
+                        case TypeKind.Delegate:
+                        case TypeKind.Enum:
+                        case TypeKind.Interface:
+                        case TypeKind.Struct:
                         {
-                            if (memberSymbol.IsStatic)
-                            {
-                                if (memberSymbol.Kind == SymbolKind.Method
-                                    && ((IMethodSymbol)memberSymbol).MethodKind.Is(MethodKind.UserDefinedOperator, MethodKind.Conversion))
-                                {
-                                    return false;
-                                }
-                            }
-                            else
+                            if (memberSymbol.DeclaredAccessibility.ContainsProtected())
+                                return false;
+
+                            break;
+                        }
+                        default:
+                        {
+                            Debug.Fail(namedTypeSymbol.TypeKind.ToString());
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    Debug.Assert(memberSymbol.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property), memberSymbol.Kind.ToString());
+
+                    if (memberSymbol.DeclaredAccessibility.ContainsProtected())
+                        return false;
+
+                    if (!memberSymbol.IsImplicitlyDeclared)
+                    {
+                        if (memberSymbol.IsStatic)
+                        {
+                            if (memberSymbol.Kind == SymbolKind.Method
+                                && ((IMethodSymbol)memberSymbol).MethodKind.Is(MethodKind.UserDefinedOperator, MethodKind.Conversion))
                             {
                                 return false;
                             }
                         }
-
-                        break;
+                        else
+                        {
+                            return false;
+                        }
                     }
+
+                    break;
+                }
             }
         }
 

@@ -42,57 +42,57 @@ public sealed class TypeDeclarationCodeFixProvider : CompilerDiagnosticCodeFixPr
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectEquals, context.Document, root.SyntaxTree))
-                            break;
-
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        var typeSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken) as ITypeSymbol;
-
-                        if (typeSymbol?.IsErrorType() != false)
-                            break;
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Override object.Equals",
-                            ct =>
-                            {
-                                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, typeDeclaration.Identifier.SpanStart);
-
-                                MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type);
-
-                                TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
-
-                                return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectEquals, context.Document, root.SyntaxTree))
                         break;
-                    }
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    var typeSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken) as ITypeSymbol;
+
+                    if (typeSymbol?.IsErrorType() != false)
+                        break;
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Override object.Equals",
+                        ct =>
+                        {
+                            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, typeDeclaration.Identifier.SpanStart);
+
+                            MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type);
+
+                            TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
+
+                            return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode:
                 case CompilerDiagnosticIdentifiers.CS0659_TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectGetHashCode, context.Document, root.SyntaxTree))
-                            break;
-
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration();
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Override object.GetHashCode",
-                            ct =>
-                            {
-                                TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
-
-                                return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectGetHashCode, context.Document, root.SyntaxTree))
                         break;
-                    }
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration();
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Override object.GetHashCode",
+                        ct =>
+                        {
+                            TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
+
+                            return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

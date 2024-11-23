@@ -35,43 +35,43 @@ internal static class SimplifyBooleanComparisonAnalysis
         switch (binaryExpression.Kind())
         {
             case SyntaxKind.EqualsExpression:
+            {
+                if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    if (left.IsKind(SyntaxKind.FalseLiteralExpression))
-                    {
-                        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
+                    DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
 
-                        if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
-                    }
-                    else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
-                    {
-                        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
-
-                        if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
-                    }
-
-                    break;
+                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
+                        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
+                else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
+                {
+                    DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
+
+                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
+                        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                }
+
+                break;
+            }
             case SyntaxKind.NotEqualsExpression:
+            {
+                if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
-                    if (left.IsKind(SyntaxKind.TrueLiteralExpression))
-                    {
-                        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
+                    DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
 
-                        if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
-                    }
-                    else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
-                    {
-                        DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
-
-                        if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
-                    }
-
-                    break;
+                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
+                        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
+                else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
+                {
+                    DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
+
+                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
+                        DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                }
+
+                break;
+            }
         }
     }
 }

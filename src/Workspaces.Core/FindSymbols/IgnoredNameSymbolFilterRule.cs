@@ -35,12 +35,12 @@ internal class IgnoredNameSymbolFilterRule : SymbolFilterRule
         {
             case SymbolKind.Namespace:
             case SymbolKind.NamedType:
-                {
-                    if (Names.Contains(value))
-                        return false;
+            {
+                if (Names.Contains(value))
+                    return false;
 
-                    break;
-                }
+                break;
+            }
         }
 
         return true;

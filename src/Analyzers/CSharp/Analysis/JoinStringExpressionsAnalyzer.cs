@@ -63,108 +63,108 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
             switch (expression.Kind())
             {
                 case SyntaxKind.StringLiteralExpression:
+                {
+                    StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
+
+                    bool isVerbatim2 = stringLiteral.IsVerbatim;
+
+                    if (firstExpression is null)
                     {
-                        StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
+                        firstExpression = expression;
+                        isLiteral = true;
+                        isVerbatim = isVerbatim2;
 
-                        bool isVerbatim2 = stringLiteral.IsVerbatim;
-
-                        if (firstExpression is null)
-                        {
-                            firstExpression = expression;
-                            isLiteral = true;
-                            isVerbatim = isVerbatim2;
-
-                            if (isVerbatim)
-                                startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
-                        }
-                        else if (!isLiteral
-                            || isVerbatim != isVerbatim2
-                            || (!isVerbatim && !CheckHexadecimalEscapeSequence(stringLiteral)))
-                        {
-                            if (lastExpression is not null)
-                                Analyze(context, firstExpression, lastExpression, isVerbatim);
-
-                            firstExpression = null;
-                            lastExpression = null;
-                        }
-                        else
-                        {
-                            lastExpression = expression;
-
-                            if (isVerbatim)
-                            {
-                                FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
-
-                                if (startLine != lineSpan.EndLine())
-                                {
-                                    firstExpression = null;
-                                    lastExpression = null;
-                                }
-                                else
-                                {
-                                    startLine = lineSpan.StartLine();
-                                }
-                            }
-                        }
-
-                        break;
+                        if (isVerbatim)
+                            startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
                     }
-                case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        var interpolatedString = ((InterpolatedStringExpressionSyntax)expression);
-
-                        bool isVerbatim2 = interpolatedString.IsVerbatim();
-
-                        if (firstExpression is null)
-                        {
-                            firstExpression = expression;
-                            isLiteral = false;
-                            isVerbatim = isVerbatim2;
-
-                            if (isVerbatim)
-                                startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
-                        }
-                        else if (isLiteral
-                            || isVerbatim != isVerbatim2
-                            || (!isVerbatim && !CheckHexadecimalEscapeSequence(interpolatedString)))
-                        {
-                            if (lastExpression is not null)
-                                Analyze(context, firstExpression, lastExpression, isVerbatim);
-
-                            firstExpression = null;
-                            lastExpression = null;
-                        }
-                        else
-                        {
-                            lastExpression = expression;
-
-                            if (isVerbatim)
-                            {
-                                FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
-
-                                if (startLine != lineSpan.EndLine())
-                                {
-                                    firstExpression = null;
-                                    lastExpression = null;
-                                }
-                                else
-                                {
-                                    startLine = lineSpan.StartLine();
-                                }
-                            }
-                        }
-
-                        break;
-                    }
-                default:
+                    else if (!isLiteral
+                        || isVerbatim != isVerbatim2
+                        || (!isVerbatim && !CheckHexadecimalEscapeSequence(stringLiteral)))
                     {
                         if (lastExpression is not null)
                             Analyze(context, firstExpression, lastExpression, isVerbatim);
 
                         firstExpression = null;
                         lastExpression = null;
-                        break;
                     }
+                    else
+                    {
+                        lastExpression = expression;
+
+                        if (isVerbatim)
+                        {
+                            FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
+
+                            if (startLine != lineSpan.EndLine())
+                            {
+                                firstExpression = null;
+                                lastExpression = null;
+                            }
+                            else
+                            {
+                                startLine = lineSpan.StartLine();
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                case SyntaxKind.InterpolatedStringExpression:
+                {
+                    var interpolatedString = ((InterpolatedStringExpressionSyntax)expression);
+
+                    bool isVerbatim2 = interpolatedString.IsVerbatim();
+
+                    if (firstExpression is null)
+                    {
+                        firstExpression = expression;
+                        isLiteral = false;
+                        isVerbatim = isVerbatim2;
+
+                        if (isVerbatim)
+                            startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
+                    }
+                    else if (isLiteral
+                        || isVerbatim != isVerbatim2
+                        || (!isVerbatim && !CheckHexadecimalEscapeSequence(interpolatedString)))
+                    {
+                        if (lastExpression is not null)
+                            Analyze(context, firstExpression, lastExpression, isVerbatim);
+
+                        firstExpression = null;
+                        lastExpression = null;
+                    }
+                    else
+                    {
+                        lastExpression = expression;
+
+                        if (isVerbatim)
+                        {
+                            FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
+
+                            if (startLine != lineSpan.EndLine())
+                            {
+                                firstExpression = null;
+                                lastExpression = null;
+                            }
+                            else
+                            {
+                                startLine = lineSpan.StartLine();
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    if (lastExpression is not null)
+                        Analyze(context, firstExpression, lastExpression, isVerbatim);
+
+                    firstExpression = null;
+                    lastExpression = null;
+                    break;
+                }
             }
         }
 
@@ -243,23 +243,27 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
                     case 'r':
                     case 't':
                     case 'v':
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case 'u':
-                        {
-                            pos += 4;
-                            break;
-                        }
+                    {
+                        pos += 4;
+                        break;
+                    }
                     case 'U':
-                        {
-                            pos += 8;
-                            break;
-                        }
+                    {
+                        pos += 8;
+                        break;
+                    }
                     case 'x':
+                    {
+                        pos++;
+
+                        if (pos < text.Length
+                            && StringUtility.IsHexadecimalDigit(text[pos]))
                         {
                             pos++;
-
                             if (pos < text.Length
                                 && StringUtility.IsHexadecimalDigit(text[pos]))
                             {
@@ -271,27 +275,23 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
                                     if (pos < text.Length
                                         && StringUtility.IsHexadecimalDigit(text[pos]))
                                     {
-                                        pos++;
-                                        if (pos < text.Length
-                                            && StringUtility.IsHexadecimalDigit(text[pos]))
-                                        {
-                                            break;
-                                        }
+                                        break;
                                     }
                                 }
                             }
-
-                            if (pos == start + length)
-                                return false;
-
-                            pos--;
-                            break;
                         }
-                    default:
-                        {
-                            Debug.Fail(text[pos].ToString());
+
+                        if (pos == start + length)
                             return false;
-                        }
+
+                        pos--;
+                        break;
+                    }
+                    default:
+                    {
+                        Debug.Fail(text[pos].ToString());
+                        return false;
+                    }
                 }
             }
         }

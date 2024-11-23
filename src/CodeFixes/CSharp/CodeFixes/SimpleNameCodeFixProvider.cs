@@ -119,51 +119,51 @@ public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvide
         switch (node.Parent)
         {
             case MethodDeclarationSyntax methodDeclaration:
+            {
+                if (object.ReferenceEquals(node, methodDeclaration.ReturnType))
                 {
-                    if (object.ReferenceEquals(node, methodDeclaration.ReturnType))
-                    {
-                        ExpressionSyntax expression = methodDeclaration.ExpressionBody?.Expression;
+                    ExpressionSyntax expression = methodDeclaration.ExpressionBody?.Expression;
 
-                        if (expression is not null)
-                            return expression;
+                    if (expression is not null)
+                        return expression;
 
-                        StatementSyntax statement = methodDeclaration.Body?.SingleNonBlockStatementOrDefault();
+                    StatementSyntax statement = methodDeclaration.Body?.SingleNonBlockStatementOrDefault();
 
-                        return (statement as ReturnStatementSyntax)?.Expression;
-                    }
-
-                    break;
+                    return (statement as ReturnStatementSyntax)?.Expression;
                 }
+
+                break;
+            }
             case LocalFunctionStatementSyntax localFunction:
+            {
+                if (object.ReferenceEquals(node, localFunction.ReturnType))
                 {
-                    if (object.ReferenceEquals(node, localFunction.ReturnType))
-                    {
-                        ExpressionSyntax expression = localFunction.ExpressionBody?.Expression;
+                    ExpressionSyntax expression = localFunction.ExpressionBody?.Expression;
 
-                        if (expression is not null)
-                            return expression;
+                    if (expression is not null)
+                        return expression;
 
-                        StatementSyntax statement = localFunction.Body?.SingleNonBlockStatementOrDefault();
+                    StatementSyntax statement = localFunction.Body?.SingleNonBlockStatementOrDefault();
 
-                        return (statement as ReturnStatementSyntax)?.Expression;
-                    }
-
-                    break;
+                    return (statement as ReturnStatementSyntax)?.Expression;
                 }
+
+                break;
+            }
             case VariableDeclarationSyntax variableDeclaration:
+            {
+                if (object.ReferenceEquals(node, variableDeclaration.Type)
+                    && node.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
                 {
-                    if (object.ReferenceEquals(node, variableDeclaration.Type)
-                        && node.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
-                    {
-                        return variableDeclaration
-                            .Variables
-                            .SingleOrDefault(shouldThrow: false)?
-                            .Initializer?
-                            .Value;
-                    }
-
-                    break;
+                    return variableDeclaration
+                        .Variables
+                        .SingleOrDefault(shouldThrow: false)?
+                        .Initializer?
+                        .Value;
                 }
+
+                break;
+            }
         }
 
         return null;

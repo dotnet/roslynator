@@ -33,22 +33,22 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveRedundantCommaInInitializer:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant comma",
-                            ct =>
-                            {
-                                ct.ThrowIfCancellationRequested();
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant comma",
+                        ct =>
+                        {
+                            ct.ThrowIfCancellationRequested();
 
-                                InitializerExpressionSyntax newInitializer = RemoveTrailingComma(initializer);
+                            InitializerExpressionSyntax newInitializer = RemoveTrailingComma(initializer);
 
-                                return context.Document.ReplaceNodeAsync(initializer, newInitializer, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                            return context.Document.ReplaceNodeAsync(initializer, newInitializer, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

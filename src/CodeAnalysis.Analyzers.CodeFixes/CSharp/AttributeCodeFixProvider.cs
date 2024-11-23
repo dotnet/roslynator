@@ -42,15 +42,15 @@ public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
         {
             case DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName:
             case DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Specify name",
-                        ct => SpecifyNameAsync(document, attribute, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Specify name",
+                    ct => SpecifyNameAsync(document, attribute, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

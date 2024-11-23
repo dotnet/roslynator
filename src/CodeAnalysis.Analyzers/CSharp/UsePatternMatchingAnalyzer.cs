@@ -194,33 +194,33 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             switch (switchExpression.Kind())
             {
                 case SyntaxKind.IdentifierName:
-                    {
-                        StatementSyntax previousStatement = switchStatement.PreviousStatement();
+                {
+                    StatementSyntax previousStatement = switchStatement.PreviousStatement();
 
-                        if (!previousStatement.IsKind(SyntaxKind.LocalDeclarationStatement))
-                            return null;
-
-                        localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo((LocalDeclarationStatementSyntax)previousStatement);
-
-                        if (!localInfo.Success)
-                            return null;
-
-                        if (localInfo.IdentifierText != ((IdentifierNameSyntax)switchExpression).Identifier.ValueText)
-                            return null;
-
-                        if (!localInfo.Value.IsKind(SyntaxKind.InvocationExpression))
-                            return null;
-
-                        return GetName2((InvocationExpressionSyntax)localInfo.Value);
-                    }
-                case SyntaxKind.InvocationExpression:
-                    {
-                        return GetName2((InvocationExpressionSyntax)switchExpression);
-                    }
-                default:
-                    {
+                    if (!previousStatement.IsKind(SyntaxKind.LocalDeclarationStatement))
                         return null;
-                    }
+
+                    localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo((LocalDeclarationStatementSyntax)previousStatement);
+
+                    if (!localInfo.Success)
+                        return null;
+
+                    if (localInfo.IdentifierText != ((IdentifierNameSyntax)switchExpression).Identifier.ValueText)
+                        return null;
+
+                    if (!localInfo.Value.IsKind(SyntaxKind.InvocationExpression))
+                        return null;
+
+                    return GetName2((InvocationExpressionSyntax)localInfo.Value);
+                }
+                case SyntaxKind.InvocationExpression:
+                {
+                    return GetName2((InvocationExpressionSyntax)switchExpression);
+                }
+                default:
+                {
+                    return null;
+                }
             }
         }
 
@@ -276,32 +276,32 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             case IsKindExpressionStyle.IsKindConditional:
             case IsKindExpressionStyle.Kind:
             case IsKindExpressionStyle.KindConditional:
-                {
-                    if (ifStatement.Statement is not BlockSyntax block)
-                        return;
+            {
+                if (ifStatement.Statement is not BlockSyntax block)
+                    return;
 
-                    Analyze(block.Statements.FirstOrDefault());
-                    break;
-                }
+                Analyze(block.Statements.FirstOrDefault());
+                break;
+            }
             case IsKindExpressionStyle.NotIsKind:
             case IsKindExpressionStyle.NotIsKindConditional:
             case IsKindExpressionStyle.NotKind:
             case IsKindExpressionStyle.NotKindConditional:
-                {
-                    if (ifStatement.Else is not null)
-                        return;
+            {
+                if (ifStatement.Else is not null)
+                    return;
 
-                    StatementSyntax statement = ifStatement.Statement.SingleNonBlockStatementOrDefault();
+                StatementSyntax statement = ifStatement.Statement.SingleNonBlockStatementOrDefault();
 
-                    if (statement is null)
-                        return;
+                if (statement is null)
+                    return;
 
-                    if (!CSharpFacts.IsJumpStatement(statement.Kind()))
-                        return;
+                if (!CSharpFacts.IsJumpStatement(statement.Kind()))
+                    return;
 
-                    Analyze(ifStatement.NextStatement());
-                    break;
-                }
+                Analyze(ifStatement.NextStatement());
+                break;
+            }
         }
 
         void Analyze(StatementSyntax statement)

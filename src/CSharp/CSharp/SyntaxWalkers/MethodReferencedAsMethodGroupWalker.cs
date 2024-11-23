@@ -42,17 +42,17 @@ internal class MethodReferencedAsMethodGroupWalker : BaseCSharpSyntaxWalker
             switch (parent.Kind())
             {
                 case SyntaxKind.InvocationExpression:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.MemberBindingExpression:
-                    {
-                        if (parent.IsParentKind(SyntaxKind.InvocationExpression))
-                            return true;
+                {
+                    if (parent.IsParentKind(SyntaxKind.InvocationExpression))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             return false;
