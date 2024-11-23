@@ -37,6 +37,7 @@ class C
 ");
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
     public async Task Test_FirstElement_Pragma()
     {
         await VerifyDiagnosticAndFixAsync(@"
