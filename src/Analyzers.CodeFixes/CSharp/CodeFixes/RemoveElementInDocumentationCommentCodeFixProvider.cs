@@ -32,7 +32,6 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
 #if ROSLYN_4_0
     public override FixAllProvider GetFixAllProvider()
     {
-        Console.WriteLine("using fixallprovider");
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
 
         static async Task<Document> FixAllAsync(
@@ -42,7 +41,6 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
         {
             foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
             {
-                Console.WriteLine(diagnostic.ToString());
                 (Func<CancellationToken, Task<Document>> CreateChangedDocument, string) result
                     = await GetChangedDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
 
@@ -152,8 +150,6 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
                 }
             }
         }
-
-        Console.WriteLine(start + " " + end);
 
         return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(start, end), ""), cancellationToken);
     }
