@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1228UnusedElementInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, XmlNodeCodeFixProvider>
+public class RCS1228UnusedElementInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, RemoveElementInDocumentationCommentCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedElementInDocumentationComment;
 
@@ -28,6 +28,33 @@ class C
 ", @"
 class C
 {
+    /// <summary>
+    /// </summary>
+    void M()
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_FirstElement_Pragma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+#pragma warning disable RCS0000
+    /// [|<returns></returns>|]
+    /// <summary>
+    /// </summary>
+    void M()
+    {
+    }
+}
+", @"
+class C
+{
+#pragma warning disable RCS0000
     /// <summary>
     /// </summary>
     void M()
@@ -109,6 +136,33 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ReturnsIsOnlyElement_LocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        /// [|<returns></returns>|]
+        void LF()
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        void LF()
+        {
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
     public async Task Test_ExampleElement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -172,14 +226,15 @@ class C
 class C
 {
     /// <summary></summary>
-    /// [|<param name="p"></param>|]
-    void M(object p) => M(p);
+    /// [|<param name="p1"></param>|]
+    /// [|<param name="p2"></param>|]
+    void M(object p1, object p2) => M(p1, p2);
 }
 """, """
 class C
 {
     /// <summary></summary>
-    void M(object p) => M(p);
+    void M(object p1, object p2) => M(p1, p2);
 }
 """);
     }

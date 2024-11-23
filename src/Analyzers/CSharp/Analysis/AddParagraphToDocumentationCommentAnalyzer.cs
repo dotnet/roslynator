@@ -41,7 +41,7 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
     {
         var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
-        if (!documentationComment.IsPartOfMemberDeclaration())
+        if (!documentationComment.IsPartOfDeclaration())
             return;
 
         foreach (XmlNodeSyntax node in documentationComment.Content)

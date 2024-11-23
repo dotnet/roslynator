@@ -56,7 +56,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
     {
         var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
-        if (!documentationComment.IsPartOfMemberDeclaration())
+        if (!documentationComment.IsPartOfDeclaration())
             return;
 
         bool? fixDocumentationCommentTagEnabled = null;

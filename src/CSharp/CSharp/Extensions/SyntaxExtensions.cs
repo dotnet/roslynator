@@ -622,12 +622,12 @@ public static class SyntaxExtensions
         }
     }
 
-    internal static bool IsPartOfMemberDeclaration(this DocumentationCommentTriviaSyntax documentationComment)
+    internal static bool IsPartOfDeclaration(this DocumentationCommentTriviaSyntax documentationComment)
     {
         SyntaxNode? node = documentationComment.ParentTrivia.Token.Parent;
 
-        return node is MemberDeclarationSyntax
-            || node?.Parent is MemberDeclarationSyntax;
+        return node is MemberDeclarationSyntax or LocalFunctionStatementSyntax
+            || node?.Parent is MemberDeclarationSyntax or LocalFunctionStatementSyntax;
     }
     #endregion DocumentationCommentTriviaSyntax
 
