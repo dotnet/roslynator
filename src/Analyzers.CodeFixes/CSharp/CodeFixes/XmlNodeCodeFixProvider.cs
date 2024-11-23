@@ -141,55 +141,6 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
         }
 
         return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(start, end), ""), cancellationToken);
-
-        static bool IsXmlTextBetweenLines(XmlTextSyntax xmlText)
-        {
-            SyntaxTokenList tokens = xmlText.TextTokens;
-
-            SyntaxTokenList.Enumerator en = tokens.GetEnumerator();
-
-            if (!en.MoveNext())
-                return false;
-
-            if (IsEmptyOrWhitespace(en.Current)
-                && !en.MoveNext())
-            {
-                return false;
-            }
-
-            if (!en.Current.IsKind(SyntaxKind.XmlTextLiteralNewLineToken))
-                return false;
-
-            if (en.MoveNext())
-            {
-                if (!IsEmptyOrWhitespace(en.Current))
-                    return false;
-
-                if (en.MoveNext())
-                    return false;
-            }
-
-            return true;
-
-            static bool IsEmptyOrWhitespace(SyntaxToken token)
-            {
-                return token.IsKind(SyntaxKind.XmlTextLiteralToken)
-                    && StringUtility.IsEmptyOrWhitespace(token.ValueText);
-            }
-        }
-
-        static bool IsWhitespace(XmlTextSyntax xmlText)
-        {
-            string text = xmlText.TextTokens.SingleOrDefault(shouldThrow: false).ValueText;
-
-            return text.Length > 0
-                && StringUtility.IsEmptyOrWhitespace(text);
-        }
-
-        static bool IsNewLine(XmlTextSyntax xmlText)
-        {
-            return xmlText.TextTokens.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.XmlTextLiteralNewLineToken);
-        }
     }
 
     private static Task<Document> FixDocumentationCommentTagAsync(
