@@ -155,7 +155,9 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                     if (IsMainMethod(declaration, modifiers, methodName))
                         break;
 
-                    if (declaration.ReturnsVoid()
+                    if ((declaration.ReturnsVoid()
+                        || (methodName == "Start"
+                            && semanticModel.GetDeclaredSymbol(declaration, cancellationToken)?.ReturnType.SpecialType == SpecialType.System_Collections_IEnumerator))
                         && context.IsUnityCodeAnalysisEnabled() == true)
                     {
                         if (canContainUnityScriptMethods is null)
