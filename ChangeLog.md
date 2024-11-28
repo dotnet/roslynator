@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1586))
 - Improve code fixer for [RCS1228](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1228) ([PR](https://github.com/dotnet/roslynator/pull/1585))
+- Fix diagnostic message for [RCS0032](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0032) ([PR](https://github.com/dotnet/roslynator/pull/1588))
 
 ### Changed
 
