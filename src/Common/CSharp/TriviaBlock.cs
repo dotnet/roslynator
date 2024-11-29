@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -49,9 +50,31 @@ internal readonly struct TriviaBlock
 
     public Location GetLocation()
     {
+        SyntaxTriviaList triviaList = (!First.IsKind(SyntaxKind.None))
+            ? First.GetTrailingTrivia()
+            : Second.GetLeadingTrivia();
+
+        TextSpan span = triviaList.FirstOrDefault(f => f.IsWhitespaceOrEndOfLineTrivia()).Span;
+
+        if (span.Length == 0)
+        {
+            if (Second.Span.Length > 0)
+            {
+                span = new TextSpan(Second.Span.Start, 1);
+            }
+            else if (First.Span.Length > 0)
+            {
+                span = new TextSpan(First.Span.End, 1);
+            }
+            else
+            {
+                span = new TextSpan(Position, 0);
+            }
+        }
+
         return Location.Create(
             (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree,
-            new TextSpan(Position, 0));
+            span);
     }
 
     public TriviaBlockReader CreateReader()
