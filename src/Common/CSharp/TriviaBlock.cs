@@ -79,11 +79,11 @@ internal readonly struct TriviaBlock
             {
                 if (Second.Span.Length > 0)
                 {
-                    span = ((Second.IsToken) ? Second : Second.AsNode()!.GetFirstToken()).Span;
+                    span = new TextSpan(Second.SpanStart, 1);
                 }
                 else if (First.Span.Length > 0)
                 {
-                    span = ((First.IsToken) ? First : First.AsNode()!.GetLastToken()).Span;
+                    span = new TextSpan(First.Span.End - 1, 1);
                 }
                 else
                 {
