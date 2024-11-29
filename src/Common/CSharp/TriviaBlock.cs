@@ -50,25 +50,45 @@ internal readonly struct TriviaBlock
 
     public Location GetLocation()
     {
-        SyntaxTriviaList triviaList = (!First.IsKind(SyntaxKind.None))
-            ? First.GetTrailingTrivia()
-            : Second.GetLeadingTrivia();
-
-        TextSpan span = triviaList.FirstOrDefault(f => f.IsWhitespaceOrEndOfLineTrivia()).Span;
-
-        if (span.Length == 0)
+        TextSpan span;
+        if (Kind == TriviaBlockKind.BlankLine)
         {
-            if (Second.Span.Length > 0)
+            TriviaBlockReader reader = CreateReader();
+
+            reader.ReadTo(SyntaxKind.EndOfLineTrivia);
+            SyntaxTrivia trivia = reader.ReadTo(SyntaxKind.EndOfLineTrivia);
+            span = trivia.Span;
+        }
+        else
+        {
+            SyntaxTriviaList triviaList = (!First.IsKind(SyntaxKind.None))
+                ? First.GetTrailingTrivia()
+                : Second.GetLeadingTrivia();
+
+            span = triviaList.LastOrDefault(f => f.IsEndOfLineTrivia()).Span;
+
+            if (span.Length == 0)
             {
-                span = new TextSpan(Second.Span.Start, 1);
+                SyntaxTrivia trivia = triviaList.LastOrDefault();
+
+                if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                    span = trivia.Span;
             }
-            else if (First.Span.Length > 0)
+
+            if (span.Length == 0)
             {
-                span = new TextSpan(First.Span.End, 1);
-            }
-            else
-            {
-                span = new TextSpan(Position, 0);
+                if (Second.Span.Length > 0)
+                {
+                    span = (Second.IsToken ? Second : Second.AsNode()!.GetFirstToken()).Span;
+                }
+                else if (First.Span.Length > 0)
+                {
+                    span = (First.IsToken ? First : First.AsNode()!.GetLastToken()).Span;
+                }
+                else
+                {
+                    span = new TextSpan(Position, 0);
+                }
             }
         }
 

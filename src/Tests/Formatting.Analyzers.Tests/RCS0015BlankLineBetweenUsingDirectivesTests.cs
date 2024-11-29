@@ -16,9 +16,9 @@ public class RCS0015BlankLineBetweenUsingDirectivesTests : AbstractCSharpDiagnos
     public async Task Test_AddEmptyLine_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;[||]
-using Microsoft.CodeAnalysis;[||]
-using System.Threading;
+using System;[|
+|]using Microsoft.CodeAnalysis;[|
+|]using System.Threading;
 
 class C
 {
@@ -40,9 +40,9 @@ class C
     public async Task Test_AddEmptyLine_GlobalAlias()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using global::System;[||]
-using Microsoft.CodeAnalysis;[||]
-using System.Threading;
+using global::System;[|
+|]using Microsoft.CodeAnalysis;[|
+|]using System.Threading;
 
 class C
 {
@@ -65,10 +65,10 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-[||]
-using Microsoft.CodeAnalysis;
-[||]
-using System.Threading;
+[|
+|]using Microsoft.CodeAnalysis;
+[|
+|]using System.Threading;
 
 class C
 {
@@ -89,8 +89,8 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-[||]    
-
+    [|
+|]
 using Microsoft.CodeAnalysis;
 
 class C
@@ -111,8 +111,8 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-[||]    
-using System.Text;
+    [|
+|]using System.Text;
 
 class C
 {

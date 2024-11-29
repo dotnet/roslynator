@@ -22,7 +22,7 @@ class C
     {
         bool f = false;
 
-        if (f)[||] M();
+        if (f)[| |]M();
     }
 }
 ", @"
@@ -51,7 +51,7 @@ class C
 
         if (f)
             M();
-        else[||] M();
+        else[| |]M();
     }
 }
 ", @"
@@ -83,7 +83,7 @@ class C
         bool f = false;
         var items = new List<object>();
 
-        foreach (object item in items)[||] M();
+        foreach (object item in items)[| |]M();
     }
 }
 ", @"
@@ -116,7 +116,7 @@ class C
         bool f = false;
         var items = new List<object>();
 
-        foreach ((int a, int b) in new[] { (0, 0) })[||] M();
+        foreach ((int a, int b) in new[] { (0, 0) })[| |]M();
     }
 }
 ", @"
@@ -149,7 +149,7 @@ class C
         bool f = false;
         var items = new List<object>();
 
-        for (int i = 0; i < items.Count; i++)[||] M();
+        for (int i = 0; i < items.Count; i++)[| |]M();
     }
 }
 ", @"
@@ -181,7 +181,7 @@ class C
     {
         bool f = false;
 
-        using ((IDisposable)null)[||] M();
+        using ((IDisposable)null)[| |]M();
     }
 }
 ", @"
@@ -210,7 +210,7 @@ class C
     {
         bool f = false;
 
-        while (f)[||] M();
+        while (f)[| |]M();
     }
 }
 ", @"
@@ -237,7 +237,7 @@ class C
     {
         bool f = false;
 
-        do[||] M();
+        do[| |]M();
         while (f);
     }
 }
@@ -266,7 +266,7 @@ class C
     {
         bool f = false;
 
-        lock (null)[||] M();
+        lock (null)[| |]M();
     }
 }
 ", @"
@@ -295,7 +295,7 @@ class C
 
         unsafe
         {
-            fixed (char* p = "")[||] M();
+            fixed (char* p = "")[| |]M();
         }
     }
 }

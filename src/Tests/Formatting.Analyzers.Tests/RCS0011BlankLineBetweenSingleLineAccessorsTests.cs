@@ -22,8 +22,8 @@ class C
 
     string P
     {
-        get { return _p; }[||]
-        set { _p = value; }
+        get { return _p; }[|
+|]        set { _p = value; }
     }
 }
 ", @"
@@ -52,8 +52,8 @@ class C
     string P
     {
         get { return _p; }
-[||]
-        set { _p = value; }
+[|
+|]        set { _p = value; }
     }
 }
 ", @"
@@ -81,8 +81,8 @@ class C
     string P
     {
         get { return _p; }
-[||]
-
+[|
+|]
         set { _p = value; }
     }
 }
@@ -111,8 +111,8 @@ class C
     event EventHandler E
     {
         add { }
-[||]
-        remove { }
+[|
+|]        remove { }
     }
 }
 ", @"

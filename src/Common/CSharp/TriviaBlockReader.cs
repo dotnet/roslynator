@@ -43,6 +43,17 @@ internal struct TriviaBlockReader
         return default;
     }
 
+    public SyntaxTrivia ReadTo(SyntaxKind kind)
+    {
+        while (MoveNext())
+        {
+            if (Current.IsKind(kind))
+                return Current;
+        }
+
+        return default;
+    }
+
     public void ReadTo(int position)
     {
         while (MoveNext()

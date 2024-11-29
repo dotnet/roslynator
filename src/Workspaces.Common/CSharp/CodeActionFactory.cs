@@ -97,8 +97,6 @@ internal static class CodeActionFactory
 
         TriviaBlock block = CreateBlock(root, position);
 
-        Debug.Assert(position == block.Position);
-
         TextChange textChange = GetTextChangeForBlankLine(block);
 
         CodeAction codeAction = CodeAction.Create(
