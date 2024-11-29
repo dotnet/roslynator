@@ -22,21 +22,21 @@ internal static class AddParameterToInterfaceMemberRefactoring
         switch (memberDeclaration)
         {
             case MethodDeclarationSyntax methodDeclaration:
-                {
-                    return ComputeRefactoringForExplicitImplementation(
-                        context,
-                        methodDeclaration,
-                        methodDeclaration.ExplicitInterfaceSpecifier,
-                        methodDeclaration.ParameterList?.Parameters ?? default);
-                }
+            {
+                return ComputeRefactoringForExplicitImplementation(
+                    context,
+                    methodDeclaration,
+                    methodDeclaration.ExplicitInterfaceSpecifier,
+                    methodDeclaration.ParameterList?.Parameters ?? default);
+            }
             case IndexerDeclarationSyntax indexerDeclaration:
-                {
-                    return ComputeRefactoringForExplicitImplementation(
-                        context,
-                        indexerDeclaration,
-                        indexerDeclaration.ExplicitInterfaceSpecifier,
-                        indexerDeclaration.ParameterList?.Parameters ?? default);
-                }
+            {
+                return ComputeRefactoringForExplicitImplementation(
+                    context,
+                    indexerDeclaration,
+                    indexerDeclaration.ExplicitInterfaceSpecifier,
+                    indexerDeclaration.ParameterList?.Parameters ?? default);
+            }
         }
 
         return default;
@@ -209,18 +209,18 @@ internal static class AddParameterToInterfaceMemberRefactoring
         switch (memberSymbol.Kind)
         {
             case SymbolKind.Method:
-                {
-                    return FindInterfaceMethod((IMethodSymbol)memberSymbol, interfaceSymbol);
-                }
+            {
+                return FindInterfaceMethod((IMethodSymbol)memberSymbol, interfaceSymbol);
+            }
             case SymbolKind.Property:
-                {
-                    var propertySymbol = (IPropertySymbol)memberSymbol;
+            {
+                var propertySymbol = (IPropertySymbol)memberSymbol;
 
-                    if (propertySymbol.IsIndexer)
-                        return FindInterfaceIndexer(propertySymbol, interfaceSymbol);
+                if (propertySymbol.IsIndexer)
+                    return FindInterfaceIndexer(propertySymbol, interfaceSymbol);
 
-                    break;
-                }
+                break;
+            }
         }
 
         return null;

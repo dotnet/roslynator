@@ -203,8 +203,7 @@ internal class CodeAnalyzer
     {
         foreach (Diagnostic diagnostic in diagnostics)
         {
-            if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken)
-                && (Options.ReportNotConfigurable || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable)))
+            if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken))
             {
                 if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
                 {
@@ -222,9 +221,16 @@ internal class CodeAnalyzer
                         }
                     }
                 }
-                else
+                else if (Options.ReportNotConfigurable
+                    || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable))
                 {
-                    yield return diagnostic;
+                    SyntaxTree? tree = diagnostic.Location.SourceTree;
+
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                    {
+                        yield return diagnostic;
+                    }
                 }
             }
         }

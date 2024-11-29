@@ -44,8 +44,11 @@ public abstract class OptionValue
             .Select(f => _lowerLetterUpperLetterRegex
                 .Replace(f.ToString(), e => e.Value.Insert(1, "-"))
                 .ToLowerInvariant())
+#if NETFRAMEWORK
             .OrderBy(f => f);
-
+#else
+            .Order();
+#endif
         if (multiline)
         {
             return string.Join(Environment.NewLine + "  ", values);

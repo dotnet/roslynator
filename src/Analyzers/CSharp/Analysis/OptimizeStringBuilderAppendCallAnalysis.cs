@@ -93,55 +93,55 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
             switch (methodSymbol2.Name)
             {
                 case "Substring":
-                    {
-                        ImmutableArray<IParameterSymbol> parameters = methodSymbol2.Parameters;
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol2.Parameters;
 
-                        switch (parameters.Length)
+                    switch (parameters.Length)
+                    {
+                        case 1:
                         {
-                            case 1:
-                                {
-                                    if (parameters[0].Type.SpecialType == SpecialType.System_Int32
-                                        && invocationInfo2.Expression.IsKind(SyntaxKind.IdentifierName)
-                                        && context.SemanticModel.GetSymbol(invocationInfo2.Expression, context.CancellationToken).IsKind(SymbolKind.Field, SymbolKind.Local, SymbolKind.Parameter))
-                                    {
-                                        ReportDiagnostic(argument);
-                                    }
+                            if (parameters[0].Type.SpecialType == SpecialType.System_Int32
+                                && invocationInfo2.Expression.IsKind(SyntaxKind.IdentifierName)
+                                && context.SemanticModel.GetSymbol(invocationInfo2.Expression, context.CancellationToken).IsKind(SymbolKind.Field, SymbolKind.Local, SymbolKind.Parameter))
+                            {
+                                ReportDiagnostic(argument);
+                            }
 
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    if (parameters[0].Type.SpecialType == SpecialType.System_Int32
-                                        && parameters[1].Type.SpecialType == SpecialType.System_Int32)
-                                    {
-                                        ReportDiagnostic(argument);
-                                    }
-
-                                    break;
-                                }
+                            break;
                         }
+                        case 2:
+                        {
+                            if (parameters[0].Type.SpecialType == SpecialType.System_Int32
+                                && parameters[1].Type.SpecialType == SpecialType.System_Int32)
+                            {
+                                ReportDiagnostic(argument);
+                            }
 
-                        break;
+                            break;
+                        }
                     }
+
+                    break;
+                }
                 case "Remove":
-                    {
-                        if (methodSymbol2.HasSingleParameter(SpecialType.System_Int32))
-                            ReportDiagnostic(argument);
-
-                        break;
-                    }
-                case "Format":
-                    {
+                {
+                    if (methodSymbol2.HasSingleParameter(SpecialType.System_Int32))
                         ReportDiagnostic(argument);
-                        break;
-                    }
-                case "Join":
-                    {
-                        if (methodSymbol.ContainingType.ContainsMember<IMethodSymbol>("AppendJoin"))
-                            ReportDiagnostic(argument);
 
-                        break;
-                    }
+                    break;
+                }
+                case "Format":
+                {
+                    ReportDiagnostic(argument);
+                    break;
+                }
+                case "Join":
+                {
+                    if (methodSymbol.ContainingType.ContainsMember<IMethodSymbol>("AppendJoin"))
+                        ReportDiagnostic(argument);
+
+                    break;
+                }
             }
         }
 

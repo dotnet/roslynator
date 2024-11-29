@@ -74,10 +74,10 @@ internal class UnusedParameterWalker : TypeSyntaxWalker
         switch (node.Kind())
         {
             case SyntaxKind.ArrayType:
-                {
-                    VisitArrayType((ArrayTypeSyntax)node);
-                    break;
-                }
+            {
+                VisitArrayType((ArrayTypeSyntax)node);
+                break;
+            }
             case SyntaxKind.AliasQualifiedName:
             case SyntaxKind.GenericName:
             case SyntaxKind.IdentifierName:
@@ -88,17 +88,17 @@ internal class UnusedParameterWalker : TypeSyntaxWalker
             case SyntaxKind.QualifiedName:
             case SyntaxKind.RefType:
             case SyntaxKind.TupleType:
-                {
-                    if (IsAnyTypeParameter)
-                        Visit(node);
-
-                    break;
-                }
-            default:
-                {
+            {
+                if (IsAnyTypeParameter)
                     Visit(node);
-                    break;
-                }
+
+                break;
+            }
+            default:
+            {
+                Visit(node);
+                break;
+            }
         }
     }
 

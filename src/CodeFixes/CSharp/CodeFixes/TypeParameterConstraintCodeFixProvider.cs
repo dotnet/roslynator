@@ -42,88 +42,88 @@ public sealed class TypeParameterConstraintCodeFixProvider : CompilerDiagnosticC
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.CS0401_NewConstraintMustBeLastConstraintSpecified:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
-                            break;
-
-                        TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
-
-                        if (!constraintInfo.Success)
-                            break;
-
-                        MoveConstraint(context, diagnostic, constraintInfo, constraintInfo.Constraints.Count - 1);
-
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
                         break;
-                    }
+
+                    TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
+
+                    if (!constraintInfo.Success)
+                        break;
+
+                    MoveConstraint(context, diagnostic, constraintInfo, constraintInfo.Constraints.Count - 1);
+
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0405_DuplicateConstraintForTypeParameter:
-                    {
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
-                            RemoveConstraint(context, diagnostic, constraint);
+                {
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
+                        RemoveConstraint(context, diagnostic, constraint);
 
-                        break;
-                    }
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
-                            break;
-
-                        TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
-
-                        if (!constraintInfo.Success)
-                            break;
-
-                        if (constraintInfo.IsDuplicateConstraint)
-                        {
-                            RemoveConstraint(context, diagnostic, constraint);
-                        }
-                        else
-                        {
-                            MoveConstraint(context, diagnostic, constraintInfo, 0);
-                        }
-
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
                         break;
+
+                    TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
+
+                    if (!constraintInfo.Success)
+                        break;
+
+                    if (constraintInfo.IsDuplicateConstraint)
+                    {
+                        RemoveConstraint(context, diagnostic, constraint);
                     }
+                    else
+                    {
+                        MoveConstraint(context, diagnostic, constraintInfo, 0);
+                    }
+
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
-                            break;
-
-                        TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
-
-                        if (!constraintInfo.Success)
-                            break;
-
-                        RemoveConstraint(context, diagnostic, constraint);
-
-                        TypeParameterConstraintSyntax classConstraint = constraintInfo.Constraints.Find(SyntaxKind.ClassConstraint);
-
-                        if (classConstraint is not null)
-                            RemoveConstraint(context, diagnostic, classConstraint);
-
-                        TypeParameterConstraintSyntax structConstraint = constraintInfo.Constraints.Find(SyntaxKind.StructConstraint);
-
-                        if (structConstraint is not null)
-                            RemoveConstraint(context, diagnostic, structConstraint);
-
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
                         break;
-                    }
-                case CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
-                            break;
 
-                        RemoveConstraint(context, diagnostic, constraint);
+                    TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
 
-                        TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
+                    if (!constraintInfo.Success)
+                        break;
 
-                        if (!constraintInfo.Success)
-                            break;
+                    RemoveConstraint(context, diagnostic, constraint);
 
-                        TypeParameterConstraintSyntax structConstraint = constraintInfo.Constraints.Find(SyntaxKind.StructConstraint);
+                    TypeParameterConstraintSyntax classConstraint = constraintInfo.Constraints.Find(SyntaxKind.ClassConstraint);
 
+                    if (classConstraint is not null)
+                        RemoveConstraint(context, diagnostic, classConstraint);
+
+                    TypeParameterConstraintSyntax structConstraint = constraintInfo.Constraints.Find(SyntaxKind.StructConstraint);
+
+                    if (structConstraint is not null)
                         RemoveConstraint(context, diagnostic, structConstraint);
+
+                    break;
+                }
+                case CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
                         break;
-                    }
+
+                    RemoveConstraint(context, diagnostic, constraint);
+
+                    TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
+
+                    if (!constraintInfo.Success)
+                        break;
+
+                    TypeParameterConstraintSyntax structConstraint = constraintInfo.Constraints.Find(SyntaxKind.StructConstraint);
+
+                    RemoveConstraint(context, diagnostic, structConstraint);
+                    break;
+                }
             }
         }
     }

@@ -923,6 +923,202 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_DuckTyped_TaskType_WithAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async DuckTyped M()
+    {
+        [|using|] FileStream fs = default;
+        await GetAsync();
+    }
+
+    async DuckTyped<int> M2()
+    {
+        [|using|] FileStream fs = default;
+        return await GetAsync<int>();
+    }
+
+    DuckTyped GetAsync() => default;
+    DuckTyped<T> GetAsync<T>() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+}
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+
+public struct Awaiter : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public void GetResult() { }
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+", @"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async DuckTyped M()
+    {
+        await using FileStream fs = default;
+        await GetAsync();
+    }
+
+    async DuckTyped<int> M2()
+    {
+        await using FileStream fs = default;
+        return await GetAsync<int>();
+    }
+
+    DuckTyped GetAsync() => default;
+    DuckTyped<T> GetAsync<T>() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+}
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+
+public struct Awaiter : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public void GetResult() { }
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_DuckTyped_TaskType_WithoutAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped M()
+    {
+        [|using|] FileStream fs = default;
+        return GetAsync();
+    }
+
+    DuckTyped<int> M2()
+    {
+        [|using|] FileStream fs = default;
+        return GetAsync<int>();
+    }
+
+    DuckTyped GetAsync() => default;
+    DuckTyped<T> GetAsync<T>() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+}
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+
+public struct Awaiter : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public void GetResult() { }
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+", @"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async DuckTyped M()
+    {
+        await using FileStream fs = default;
+        await GetAsync();
+    }
+
+    async DuckTyped<int> M2()
+    {
+        await using FileStream fs = default;
+        return await GetAsync<int>();
+    }
+
+    DuckTyped GetAsync() => default;
+    DuckTyped<T> GetAsync<T>() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+}
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+
+public struct Awaiter : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public void GetResult() { }
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task TestNoDiagnostic_LockStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -944,5 +1140,90 @@ abstract class C
     }
 }
 """);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task TestNoDiagnostic_DuckTyped_NotTaskType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped M()
+    {
+        using FileStream fs = default;
+        return GetAsync();
+    }
+
+    DuckTyped<int> M2()
+    {
+        using FileStream fs = default;
+        return GetAsync<int>();
+    }
+
+    DuckTyped GetAsync() => default;
+    DuckTyped<T> GetAsync<T>() => default;
+}
+
+//[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+}
+//[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+
+public struct Awaiter : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public void GetResult() { }
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task TestNoDiagnostic_NonAwaitable_TaskType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    NonAwaitableTaskType M()
+    {
+        using FileStream fs = default;
+        return GetAsync();
+    }
+
+    NonAwaitableTaskType<int> M2()
+    {
+        using FileStream fs = default;
+        return GetAsync<int>();
+    }
+
+    NonAwaitableTaskType GetAsync() => default;
+    NonAwaitableTaskType<T> GetAsync<T>() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class NonAwaitableTaskType { }
+[AsyncMethodBuilder(null)]
+class NonAwaitableTaskType<T> { }
+");
     }
 }

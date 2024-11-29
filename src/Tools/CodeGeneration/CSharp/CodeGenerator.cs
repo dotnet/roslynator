@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +26,7 @@ public static class CodeGenerator
                     Modifiers.Public_Static_Partial(),
                     "ConfigOptions",
                     options
-                        .OrderBy(f => f.Id)
+                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
                         .Select(f =>
                         {
                             return FieldDeclaration(
@@ -42,31 +43,31 @@ public static class CodeGenerator
                                 .AddObsoleteAttributeIf(f.IsObsolete);
                         })
                         .Concat(new MemberDeclarationSyntax[]
-                            {
-                                MethodDeclaration(
-                                    Modifiers.Private_Static(),
-                                    ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
-                                    Identifier("GetRequiredOptions"),
-                                    ParameterList(),
-                                    Block(
-                                        analyzers
-                                            .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
-                                            .OrderBy(f => f.Id)
-                                            .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
-                                            .Select(f =>
-                                            {
-                                                AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
+                        {
+                            MethodDeclaration(
+                                Modifiers.Private_Static(),
+                                ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
+                                Identifier("GetRequiredOptions"),
+                                ParameterList(),
+                                Block(
+                                    analyzers
+                                        .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
+                                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
+                                        .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
+                                        .Select(f =>
+                                        {
+                                            AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
 
-                                                Debug.Assert(mismatch.Key is null, mismatch.Key);
+                                            Debug.Assert(mismatch.Key is null, mismatch.Key);
 
-                                                IEnumerable<string> optionKeys = f.keys
-                                                    .Join(options, f => f.Key, f => f.Key, (_, g) => g)
-                                                    .Select(f => $"ConfigOptionKeys.{f.Id}");
+                                            IEnumerable<string> optionKeys = f.keys
+                                                .Join(options, f => f.Key, f => f.Key, (_, g) => g)
+                                                .Select(f => $"ConfigOptionKeys.{f.Id}");
 
-                                                return YieldReturnStatement(
-                                                    ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
-                                            }))),
-                            })
+                                            return YieldReturnStatement(
+                                                ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
+                                        }))),
+                        })
                         .ToSyntaxList())));
 
         compilationUnit = compilationUnit.NormalizeWhitespace();
@@ -86,7 +87,7 @@ public static class CodeGenerator
                     Modifiers.Internal_Static_Partial(),
                     "ConfigOptionKeys",
                     options
-                        .OrderBy(f => f.Id)
+                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
                         .Select(f =>
                         {
                             return FieldDeclaration(
@@ -114,7 +115,7 @@ public static class CodeGenerator
                     Modifiers.Internal_Static_Partial(),
                     "ConfigOptionValues",
                     options
-                        .OrderBy(option => option.Id)
+                        .OrderBy(option => option.Id, StringComparer.InvariantCulture)
                         .SelectMany(option =>
                         {
                             return option.Values.Select(v =>

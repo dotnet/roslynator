@@ -222,22 +222,22 @@ internal static class InvertIfRefactoring
             switch (jumpStatement.Kind())
             {
                 case SyntaxKind.ReturnStatement:
+                {
+                    if (((ReturnStatementSyntax)jumpStatement).Expression is null
+                        && RemoveRedundantStatementAnalysis.IsFixable(lastStatement, SyntaxKind.ReturnStatement))
                     {
-                        if (((ReturnStatementSyntax)jumpStatement).Expression is null
-                            && RemoveRedundantStatementAnalysis.IsFixable(lastStatement, SyntaxKind.ReturnStatement))
-                        {
-                            return true;
-                        }
-
-                        break;
+                        return true;
                     }
+
+                    break;
+                }
                 case SyntaxKind.ContinueStatement:
-                    {
-                        if (RemoveRedundantStatementAnalysis.IsFixable(lastStatement, SyntaxKind.ContinueStatement))
-                            return true;
+                {
+                    if (RemoveRedundantStatementAnalysis.IsFixable(lastStatement, SyntaxKind.ContinueStatement))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             return false;

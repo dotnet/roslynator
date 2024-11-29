@@ -246,6 +246,168 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task Test_DuckTyped()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await M2()[|.ConfigureAwait(false)|];
+    }
+    DuckTyped M2() => default(DuckTyped);
+}
+
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+
+    public ConfiguredDuckTyped ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(ConfiguredDuckTyped);
+    }
+    public struct ConfiguredDuckTyped
+    {
+        public ConfiguredDuckAwaiter GetAwaiter() => default(ConfiguredDuckAwaiter);
+
+        public struct ConfiguredDuckAwaiter : INotifyCompletion
+        {
+            public bool IsCompleted => false;
+            public void OnCompleted(System.Action continuation) { }
+            public void GetResult() { }
+        }
+    }
+}
+", @"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await M2();
+    }
+    DuckTyped M2() => default(DuckTyped);
+}
+
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+
+    public ConfiguredDuckTyped ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(ConfiguredDuckTyped);
+    }
+    public struct ConfiguredDuckTyped
+    {
+        public ConfiguredDuckAwaiter GetAwaiter() => default(ConfiguredDuckAwaiter);
+
+        public struct ConfiguredDuckAwaiter : INotifyCompletion
+        {
+            public bool IsCompleted => false;
+            public void OnCompleted(System.Action continuation) { }
+            public void GetResult() { }
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task Test_ExtensionMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await Task.Yield()[|.ConfigureAwait(false)|];
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+", @"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await Task.Yield();
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
     public async Task TestNoDiagnostic_Task()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -309,6 +471,104 @@ class C
     }
 
     ValueTask<object> M2() => default;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_ExtensionMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await Task.Yield();
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_NonAwaitable_Lookalike()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await M2().ConfigureAwait(false);
+    }
+    NonAwaitable M2() => default;
+}
+
+struct Awaitable
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+
+struct NonAwaitable
+{
+    // no awaiter
+
+    public Awaitable ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(Awaitable);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_ConfigureAwaitTrue()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        Task task = default;
+        await task.ConfigureAwait(true);
+    }
 }
 ");
     }

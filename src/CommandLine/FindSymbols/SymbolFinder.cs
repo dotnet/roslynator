@@ -59,63 +59,63 @@ internal static class SymbolFinder
                         switch (reason)
                         {
                             case SymbolFilterReason.None:
-                                {
-                                    if (options.IgnoreGeneratedCode
-                                        && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => syntaxFactsService.IsComment(f), cancellationToken))
-                                    {
-                                        continue;
-                                    }
-
-                                    if (symbol.IsKind(SymbolKind.Method))
-                                    {
-                                        if (canContainUnityScriptMethods is null
-                                            && namespaceOrTypeSymbol is INamedTypeSymbol typeSymbol)
-                                        {
-                                            canContainUnityScriptMethods = typeSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
-                                        }
-
-                                        if (canContainUnityScriptMethods == true
-                                            && UnityScriptMethods.MethodNames.Contains(symbol.Name))
-                                        {
-                                            continue;
-                                        }
-                                    }
-
-                                    if (options.Unused)
-                                    {
-                                        bool isUnused = await UnusedSymbolUtility.IsUnusedSymbolAsync(symbol, project.Solution, cancellationToken);
-
-                                        if (isUnused
-                                            && !UnusedSymbolUtility.CanBeUnreferenced(symbol))
-                                        {
-                                            (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
-                                            continue;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
-                                    }
-
-                                    break;
-                                }
-                            case SymbolFilterReason.WithoutAttribute:
+                            {
+                                if (options.IgnoreGeneratedCode
+                                    && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => syntaxFactsService.IsComment(f), cancellationToken))
                                 {
                                     continue;
                                 }
+
+                                if (symbol.IsKind(SymbolKind.Method))
+                                {
+                                    if (canContainUnityScriptMethods is null
+                                        && namespaceOrTypeSymbol is INamedTypeSymbol typeSymbol)
+                                    {
+                                        canContainUnityScriptMethods = typeSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
+                                    }
+
+                                    if (canContainUnityScriptMethods == true
+                                        && UnityScriptMethods.MethodNames.Contains(symbol.Name))
+                                    {
+                                        continue;
+                                    }
+                                }
+
+                                if (options.Unused)
+                                {
+                                    bool isUnused = await UnusedSymbolUtility.IsUnusedSymbolAsync(symbol, project.Solution, cancellationToken);
+
+                                    if (isUnused
+                                        && !UnusedSymbolUtility.CanBeUnreferenced(symbol))
+                                    {
+                                        (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
+                                }
+
+                                break;
+                            }
+                            case SymbolFilterReason.WithoutAttribute:
+                            {
+                                continue;
+                            }
                             case SymbolFilterReason.Visibility:
                             case SymbolFilterReason.SymbolGroup:
                             case SymbolFilterReason.Ignored:
                             case SymbolFilterReason.WithAttribute:
                             case SymbolFilterReason.Other:
-                                {
-                                    break;
-                                }
+                            {
+                                break;
+                            }
                             default:
-                                {
-                                    Debug.Fail(reason.ToString());
-                                    break;
-                                }
+                            {
+                                Debug.Fail(reason.ToString());
+                                break;
+                            }
                         }
                     }
 

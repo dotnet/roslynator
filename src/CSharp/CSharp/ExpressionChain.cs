@@ -179,71 +179,39 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             switch (_state)
             {
                 case State.Start:
+                {
+                    if (_chain.BinaryExpression is null)
+                        return false;
+
+                    BinaryExpressionSyntax binaryExpression = _chain.BinaryExpression;
+
+                    ExpressionSyntax left = binaryExpression.Left;
+
+                    if (_chain.Span is null)
                     {
-                        if (_chain.BinaryExpression is null)
-                            return false;
+                        _last = binaryExpression.Right;
 
-                        BinaryExpressionSyntax binaryExpression = _chain.BinaryExpression;
-
-                        ExpressionSyntax left = binaryExpression.Left;
-
-                        if (_chain.Span is null)
+                        while (left.RawKind == binaryExpression.RawKind)
                         {
-                            _last = binaryExpression.Right;
-
-                            while (left.RawKind == binaryExpression.RawKind)
-                            {
-                                binaryExpression = (BinaryExpressionSyntax)left;
-                                left = binaryExpression.Left;
-                            }
-
-                            _current = left;
-                            _state = State.Left;
-                            return true;
+                            binaryExpression = (BinaryExpressionSyntax)left;
+                            left = binaryExpression.Left;
                         }
 
-                        ExpressionSyntax right = binaryExpression.Right;
+                        _current = left;
+                        _state = State.Left;
+                        return true;
+                    }
 
-                        TextSpan span = _chain.Span.Value;
+                    ExpressionSyntax right = binaryExpression.Right;
 
-                        if (IsInSpan(span, right.Span))
-                        {
-                            _last = right;
-                        }
-                        else
-                        {
-                            while (true)
-                            {
-                                left = binaryExpression.Left;
+                    TextSpan span = _chain.Span.Value;
 
-                                if (left.RawKind == binaryExpression.RawKind)
-                                {
-                                    binaryExpression = (BinaryExpressionSyntax)left;
-                                    right = binaryExpression.Right;
-
-                                    if (IsInSpan(span, right.Span))
-                                    {
-                                        _last = right;
-                                        break;
-                                    }
-                                }
-                                else if (IsInSpan(span, left.Span))
-                                {
-                                    _last = left;
-                                    _current = _last;
-                                    _state = State.Left;
-                                    return true;
-                                }
-                                else
-                                {
-                                    _state = State.End;
-                                    return false;
-                                }
-                            }
-                        }
-
-                        ExpressionSyntax first = _last;
-
+                    if (IsInSpan(span, right.Span))
+                    {
+                        _last = right;
+                    }
+                    else
+                    {
                         while (true)
                         {
                             left = binaryExpression.Left;
@@ -255,66 +223,98 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
 
                                 if (IsInSpan(span, right.Span))
                                 {
-                                    first = right;
-                                }
-                                else
-                                {
+                                    _last = right;
                                     break;
                                 }
                             }
+                            else if (IsInSpan(span, left.Span))
+                            {
+                                _last = left;
+                                _current = _last;
+                                _state = State.Left;
+                                return true;
+                            }
                             else
                             {
-                                if (IsInSpan(span, left.Span))
-                                {
-                                    _current = left;
-                                    _state = State.Left;
-                                    return true;
-                                }
+                                _state = State.End;
+                                return false;
+                            }
+                        }
+                    }
 
+                    ExpressionSyntax first = _last;
+
+                    while (true)
+                    {
+                        left = binaryExpression.Left;
+
+                        if (left.RawKind == binaryExpression.RawKind)
+                        {
+                            binaryExpression = (BinaryExpressionSyntax)left;
+                            right = binaryExpression.Right;
+
+                            if (IsInSpan(span, right.Span))
+                            {
+                                first = right;
+                            }
+                            else
+                            {
                                 break;
                             }
                         }
+                        else
+                        {
+                            if (IsInSpan(span, left.Span))
+                            {
+                                _current = left;
+                                _state = State.Left;
+                                return true;
+                            }
 
-                        _current = first;
-                        _state = State.Right;
-
-                        return true;
+                            break;
+                        }
                     }
+
+                    _current = first;
+                    _state = State.Right;
+
+                    return true;
+                }
                 case State.Right:
+                {
+                    if (_current == _last)
                     {
-                        if (_current == _last)
-                        {
-                            _current = null;
-                            _last = null;
-                            _state = State.End;
-                            return false;
-                        }
-
-                        _current = ((BinaryExpressionSyntax)_current!.Parent!.Parent!).Right;
-                        return true;
-                    }
-                case State.Left:
-                    {
-                        if (_current == _last)
-                        {
-                            _current = null;
-                            _last = null;
-                            _state = State.End;
-                            return false;
-                        }
-
-                        _current = ((BinaryExpressionSyntax)_current!.Parent!).Right;
-                        _state = State.Right;
-                        return true;
-                    }
-                case State.End:
-                    {
+                        _current = null;
+                        _last = null;
+                        _state = State.End;
                         return false;
                     }
-                default:
+
+                    _current = ((BinaryExpressionSyntax)_current!.Parent!.Parent!).Right;
+                    return true;
+                }
+                case State.Left:
+                {
+                    if (_current == _last)
                     {
-                        throw new InvalidOperationException();
+                        _current = null;
+                        _last = null;
+                        _state = State.End;
+                        return false;
                     }
+
+                    _current = ((BinaryExpressionSyntax)_current!.Parent!).Right;
+                    _state = State.Right;
+                    return true;
+                }
+                case State.End:
+                {
+                    return false;
+                }
+                default:
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
 

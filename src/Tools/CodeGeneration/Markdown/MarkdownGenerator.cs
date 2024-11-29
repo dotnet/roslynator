@@ -288,7 +288,7 @@ public static class MarkdownGenerator
             while (match.Success)
             {
                 yield return message.Substring(index, match.Index);
-                yield return Link(match.Value, $"./{match.Value}");
+                yield return Link(match.Value, $"/docs/roslynator/analyzers/{match.Value}");
                 index = match.Index + match.Length;
                 match = match.NextMatch();
             }
@@ -471,7 +471,7 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MObject CreateFrontMatter(string title = null, int? position = null, string label = null)
+    private static DocusaurusFrontMatter CreateFrontMatter(string title = null, int? position = null, string label = null)
     {
         return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 

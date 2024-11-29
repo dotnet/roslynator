@@ -136,33 +136,33 @@ public readonly struct GenericInfo
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    return new GenericInfo((TypeDeclarationSyntax)node);
-                }
+            {
+                return new GenericInfo((TypeDeclarationSyntax)node);
+            }
             case SyntaxKind.DelegateDeclaration:
-                {
-                    return new GenericInfo((DelegateDeclarationSyntax)node);
-                }
+            {
+                return new GenericInfo((DelegateDeclarationSyntax)node);
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    return new GenericInfo((LocalFunctionStatementSyntax)node);
-                }
+            {
+                return new GenericInfo((LocalFunctionStatementSyntax)node);
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    return new GenericInfo((MethodDeclarationSyntax)node);
-                }
+            {
+                return new GenericInfo((MethodDeclarationSyntax)node);
+            }
             case SyntaxKind.TypeParameterList:
-                {
-                    return Create((TypeParameterListSyntax)node);
-                }
+            {
+                return Create((TypeParameterListSyntax)node);
+            }
             case SyntaxKind.TypeParameter:
-                {
-                    return Create((TypeParameterSyntax)node);
-                }
+            {
+                return Create((TypeParameterSyntax)node);
+            }
             case SyntaxKind.TypeParameterConstraintClause:
-                {
-                    return Create((TypeParameterConstraintClauseSyntax)node);
-                }
+            {
+                return Create((TypeParameterConstraintClauseSyntax)node);
+            }
         }
 
         if (node is TypeParameterConstraintSyntax typeParameterConstraint)

@@ -27,7 +27,7 @@ public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpDiagnosti
     [InlineData(@"[|f //a
               /*b*/ ? /*c*/ true //d
                                  /*e*/ : /*f*/ false|] /*g*/", @"f //a
-              /*b*/  /*c*/  //d
+                                 /*b*/  /*c*/  //d
                                  /*e*/  /*f*/  /*g*/")]
     public async Task Test_TrueFalse(string source, string expected)
     {

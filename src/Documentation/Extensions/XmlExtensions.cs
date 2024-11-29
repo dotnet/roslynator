@@ -42,128 +42,131 @@ internal static class XmlExtensions
                         switch (XmlTagMapper.GetTagOrDefault(e.Name.LocalName))
                         {
                             case XmlTag.C:
-                                {
-                                    string value = e.Value;
-                                    value = TextUtility.ToSingleLine(value);
-                                    writer.WriteInlineCode(value);
-                                    break;
-                                }
+                            {
+                                string value = e.Value;
+                                value = TextUtility.ToSingleLine(value);
+                                writer.WriteInlineCode(value);
+                                break;
+                            }
                             case XmlTag.Code:
-                                {
-                                    if (inlineOnly)
-                                        break;
-
-                                    string value = e.Value;
-                                    value = TextUtility.RemoveLeadingTrailingNewLine(value);
-
-                                    writer.WriteCodeBlock(value);
-
+                            {
+                                if (inlineOnly)
                                     break;
-                                }
+
+                                string value = e.Value;
+                                value = TextUtility.RemoveLeadingTrailingNewLine(value);
+
+                                writer.WriteCodeBlock(value);
+
+                                break;
+                            }
                             case XmlTag.List:
+                            {
+                                if (inlineOnly)
+                                    break;
+
+                                string type = e.Attribute("type")?.Value;
+
+                                if (!string.IsNullOrEmpty(type))
                                 {
-                                    if (inlineOnly)
-                                        break;
-
-                                    string type = e.Attribute("type")?.Value;
-
-                                    if (!string.IsNullOrEmpty(type))
+                                    switch (type)
                                     {
-                                        switch (type)
+                                        case "bullet":
                                         {
-                                            case "bullet":
-                                                {
-                                                    WriteList(writer, e.Elements());
-                                                    break;
-                                                }
-                                            case "number":
-                                                {
-                                                    WriteList(writer, e.Elements(), isOrdered: true);
-                                                    break;
-                                                }
-                                            case "table":
-                                                {
-                                                    WriteTable(writer, e.Elements());
-                                                    break;
-                                                }
-                                            default:
-                                                {
-                                                    Debug.Fail(type);
-                                                    break;
-                                                }
+                                            WriteList(writer, e.Elements());
+                                            break;
+                                        }
+                                        case "number":
+                                        {
+                                            WriteList(writer, e.Elements(), isOrdered: true);
+                                            break;
+                                        }
+                                        case "table":
+                                        {
+                                            WriteTable(writer, e.Elements());
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            Debug.Fail(type);
+                                            break;
                                         }
                                     }
-
-                                    break;
                                 }
+
+                                break;
+                            }
                             case XmlTag.Para:
-                                {
-                                    writer.WriteLine();
-                                    writer.WriteLine();
-                                    WriteContentTo(e, writer);
-                                    writer.WriteLine();
-                                    writer.WriteLine();
+                            {
+                                if (inlineOnly)
                                     break;
-                                }
+
+                                writer.WriteLine();
+                                writer.WriteLine();
+                                WriteContentTo(e, writer);
+                                writer.WriteLine();
+                                writer.WriteLine();
+                                break;
+                            }
                             case XmlTag.ParamRef:
-                                {
-                                    string parameterName = e.Attribute("name")?.Value;
+                            {
+                                string parameterName = e.Attribute("name")?.Value;
 
-                                    if (parameterName is not null)
-                                        writer.WriteBold(parameterName);
+                                if (parameterName is not null)
+                                    writer.WriteBold(parameterName);
 
-                                    break;
-                                }
+                                break;
+                            }
                             case XmlTag.See:
+                            {
+                                string commentId = e.Attribute("cref")?.Value;
+
+                                if (commentId is not null)
                                 {
-                                    string commentId = e.Attribute("cref")?.Value;
+                                    ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
-                                    if (commentId is not null)
+                                    //TODO: repair roslyn documentation
+                                    Debug.Assert(
+                                        symbol is not null
+                                            || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
+                                            || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
+                                            || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
+                                            || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
+                                            || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
+                                            || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
+                                        commentId);
+
+                                    if (symbol is not null)
                                     {
-                                        ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
-
-                                        //TODO: repair roslyn documentation
-                                        Debug.Assert(
-                                            symbol is not null
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
-                                            commentId);
-
-                                        if (symbol is not null)
+                                        if (symbol.IsKind(SymbolKind.Field)
+                                            && symbol.ContainingType?.TypeKind == TypeKind.Enum)
                                         {
-                                            if (symbol.IsKind(SymbolKind.Field)
-                                                && symbol.ContainingType?.TypeKind == TypeKind.Enum)
-                                            {
-                                                writer.WriteLink(symbol.ContainingType, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
-                                                writer.WriteString(".");
-                                                writer.WriteSymbol(symbol, DocumentationDisplayFormats.SimpleDeclaration, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
-                                            }
-                                            else
-                                            {
-                                                writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
-                                            }
+                                            writer.WriteLink(symbol.ContainingType, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            writer.WriteString(".");
+                                            writer.WriteSymbol(symbol, DocumentationDisplayFormats.SimpleDeclaration, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
                                         }
                                         else
                                         {
-                                            writer.WriteBold(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
+                                            writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
                                         }
                                     }
-
-                                    break;
+                                    else
+                                    {
+                                        writer.WriteBold(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
+                                    }
                                 }
+
+                                break;
+                            }
                             case XmlTag.TypeParamRef:
-                                {
-                                    string typeParameterName = e.Attribute("name")?.Value;
+                            {
+                                string typeParameterName = e.Attribute("name")?.Value;
 
-                                    if (typeParameterName is not null)
-                                        writer.WriteBold(typeParameterName);
+                                if (typeParameterName is not null)
+                                    writer.WriteBold(typeParameterName);
 
-                                    break;
-                                }
+                                break;
+                            }
                             case XmlTag.Example:
                             case XmlTag.Exception:
                             case XmlTag.Exclude:
@@ -177,14 +180,14 @@ internal static class XmlExtensions
                             case XmlTag.Summary:
                             case XmlTag.TypeParam:
                             case XmlTag.Value:
-                                {
-                                    break;
-                                }
+                            {
+                                break;
+                            }
                             default:
-                                {
-                                    Debug.Fail(e.Name.LocalName);
-                                    break;
-                                }
+                            {
+                                Debug.Fail(e.Name.LocalName);
+                                break;
+                            }
                         }
                     }
                     else

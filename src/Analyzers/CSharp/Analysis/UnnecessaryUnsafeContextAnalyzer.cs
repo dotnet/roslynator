@@ -182,19 +182,19 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
                 case UnsafeStatementSyntax:
                     return true;
                 case MemberDeclarationSyntax memberDeclarationSyntax:
-                    {
-                        if (memberDeclarationSyntax.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                            return true;
+                {
+                    if (memberDeclarationSyntax.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
                 case LocalFunctionStatementSyntax localFunctionStatement:
-                    {
-                        if (localFunctionStatement.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                            return true;
+                {
+                    if (localFunctionStatement.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             node = node.Parent;

@@ -40,15 +40,15 @@ public sealed class BaseArgumentListCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.OrderNamedArguments:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Order arguments",
-                        ct => OrderNamedArgumentsAsync(document, baseArgumentList, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Order arguments",
+                    ct => OrderNamedArgumentsAsync(document, baseArgumentList, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

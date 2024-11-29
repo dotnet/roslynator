@@ -42,27 +42,27 @@ public sealed class SyntaxErrorCharExpectedCodeFixProvider : CompilerDiagnosticC
         switch (expression.Parent.Kind())
         {
             case SyntaxKind.ArrayInitializerExpression:
-                {
-                    var initializer = (InitializerExpressionSyntax)expression.Parent;
+            {
+                var initializer = (InitializerExpressionSyntax)expression.Parent;
 
-                    SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+                SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-                    position = FindMissingCommaPosition(expressions, expression);
-                    break;
-                }
+                position = FindMissingCommaPosition(expressions, expression);
+                break;
+            }
             case SyntaxKind.EqualsValueClause:
+            {
+                var equalsValueClause = (EqualsValueClauseSyntax)expression.Parent;
+
+                if (equalsValueClause.Parent is EnumMemberDeclarationSyntax enumMemberDeclaration)
                 {
-                    var equalsValueClause = (EqualsValueClauseSyntax)expression.Parent;
+                    var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
 
-                    if (equalsValueClause.Parent is EnumMemberDeclarationSyntax enumMemberDeclaration)
-                    {
-                        var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
-
-                        position = FindMissingCommaPosition(enumDeclaration.Members, enumMemberDeclaration);
-                    }
-
-                    break;
+                    position = FindMissingCommaPosition(enumDeclaration.Members, enumMemberDeclaration);
                 }
+
+                break;
+            }
         }
 
         if (position == -1)

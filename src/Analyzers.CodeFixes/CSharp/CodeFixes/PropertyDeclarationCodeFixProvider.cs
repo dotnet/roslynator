@@ -33,15 +33,15 @@ public sealed class PropertyDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant initialization",
-                            ct => RemoveRedundantAutoPropertyInitializationRefactoring.RefactorAsync(context.Document, property, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant initialization",
+                        ct => RemoveRedundantAutoPropertyInitializationRefactoring.RefactorAsync(context.Document, property, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

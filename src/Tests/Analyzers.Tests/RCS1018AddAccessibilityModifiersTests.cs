@@ -474,4 +474,20 @@ public class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task TestNoDiagnostic_FileAccessModifier()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+file class C;
+file struct S;
+file interface I;
+file record R;
+file record struct RS;
+file delegate void D();
+file enum E;
+", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
+    }
 }

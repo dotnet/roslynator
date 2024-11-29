@@ -185,95 +185,95 @@ internal static class SymbolExtensions
             switch (part.Kind)
             {
                 case SymbolDisplayPartKind.Keyword:
+                {
+                    switch (part.ToString())
                     {
-                        switch (part.ToString())
+                        case "this":
                         {
-                            case "this":
-                                {
-                                    if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseItemPropertyName) != 0
-                                        && symbol is IPropertySymbol { IsIndexer: true })
-                                    {
-                                        parts = parts.Replace(part, SymbolDisplayPartFactory.PropertyName("Item", part.Symbol));
-                                    }
+                            if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseItemPropertyName) != 0
+                                && symbol is IPropertySymbol { IsIndexer: true })
+                            {
+                                parts = parts.Replace(part, SymbolDisplayPartFactory.PropertyName("Item", part.Symbol));
+                            }
 
-                                    break;
-                                }
-                            case "operator":
-                                {
-                                    if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseOperatorName) != 0
-                                        && symbol is IMethodSymbol methodSymbol
-                                        && methodSymbol.MethodKind == MethodKind.UserDefinedOperator)
-                                    {
-                                        string name = methodSymbol.Name;
-
-                                        Debug.Assert(name.StartsWith("op_", StringComparison.Ordinal), name);
-
-                                        if (name.StartsWith("op_", StringComparison.Ordinal)
-                                            && i < length - 2
-                                            && parts[i + 1].IsSpace()
-                                            && parts[i + 2].Kind == SymbolDisplayPartKind.Operator
-                                            && parts[i + 2].Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
-                                        {
-                                            parts = parts.Replace(parts[i + 2], SymbolDisplayPartFactory.MethodName(name.Substring(3), parts[i + 2].Symbol));
-                                            parts = parts.RemoveRange(i, 2);
-                                            length -= 2;
-                                        }
-                                    }
-
-                                    break;
-                                }
-                            case "implicit":
-                            case "explicit":
-                                {
-                                    if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseOperatorName) != 0
-                                        && symbol is IMethodSymbol methodSymbol
-                                        && methodSymbol.MethodKind == MethodKind.Conversion)
-                                    {
-                                        string name = methodSymbol.Name;
-
-                                        Debug.Assert(name.StartsWith("op_", StringComparison.Ordinal), name);
-
-                                        if (name.StartsWith("op_", StringComparison.Ordinal)
-                                            && i < length - 2
-                                            && parts[i + 1].IsSpace()
-                                            && parts[i + 2].IsKeyword("operator"))
-                                        {
-                                            List<SymbolDisplayPart> list = parts.ToList();
-
-                                            list[i + 2] = SymbolDisplayPartFactory.MethodName(name.Substring(3), list[i + 4].Symbol);
-                                            list.RemoveRange(i, 2);
-                                            length -= 2;
-
-                                            if (i == length - 3
-                                                && list[i + 1].IsSpace()
-                                                && list[i + 2].IsName())
-                                            {
-                                                list.RemoveRange(i + 1, 2);
-                                                length -= 2;
-                                            }
-                                            else if (i < length - 5
-                                                && list[i + 1].IsSpace()
-                                                && list[i + 2].IsName()
-                                                && list[i + 3].IsPunctuation()
-                                                && list[i + 4].IsName()
-                                                && list[i + 5].IsPunctuation())
-                                            {
-                                                list.Insert(i + 5, list[i + 2]);
-                                                list.Insert(i + 5, SymbolDisplayPartFactory.Text(" to "));
-                                                list.RemoveRange(i + 1, 2);
-                                                length -= 5;
-                                            }
-
-                                            parts = list.ToImmutableArray();
-                                        }
-                                    }
-
-                                    break;
-                                }
+                            break;
                         }
+                        case "operator":
+                        {
+                            if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseOperatorName) != 0
+                                && symbol is IMethodSymbol methodSymbol
+                                && methodSymbol.MethodKind == MethodKind.UserDefinedOperator)
+                            {
+                                string name = methodSymbol.Name;
 
-                        break;
+                                Debug.Assert(name.StartsWith("op_", StringComparison.Ordinal), name);
+
+                                if (name.StartsWith("op_", StringComparison.Ordinal)
+                                    && i < length - 2
+                                    && parts[i + 1].IsSpace()
+                                    && parts[i + 2].Kind == SymbolDisplayPartKind.Operator
+                                    && parts[i + 2].Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
+                                {
+                                    parts = parts.Replace(parts[i + 2], SymbolDisplayPartFactory.MethodName(name.Substring(3), parts[i + 2].Symbol));
+                                    parts = parts.RemoveRange(i, 2);
+                                    length -= 2;
+                                }
+                            }
+
+                            break;
+                        }
+                        case "implicit":
+                        case "explicit":
+                        {
+                            if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseOperatorName) != 0
+                                && symbol is IMethodSymbol methodSymbol
+                                && methodSymbol.MethodKind == MethodKind.Conversion)
+                            {
+                                string name = methodSymbol.Name;
+
+                                Debug.Assert(name.StartsWith("op_", StringComparison.Ordinal), name);
+
+                                if (name.StartsWith("op_", StringComparison.Ordinal)
+                                    && i < length - 2
+                                    && parts[i + 1].IsSpace()
+                                    && parts[i + 2].IsKeyword("operator"))
+                                {
+                                    List<SymbolDisplayPart> list = parts.ToList();
+
+                                    list[i + 2] = SymbolDisplayPartFactory.MethodName(name.Substring(3), list[i + 4].Symbol);
+                                    list.RemoveRange(i, 2);
+                                    length -= 2;
+
+                                    if (i == length - 3
+                                        && list[i + 1].IsSpace()
+                                        && list[i + 2].IsName())
+                                    {
+                                        list.RemoveRange(i + 1, 2);
+                                        length -= 2;
+                                    }
+                                    else if (i < length - 5
+                                        && list[i + 1].IsSpace()
+                                        && list[i + 2].IsName()
+                                        && list[i + 3].IsPunctuation()
+                                        && list[i + 4].IsName()
+                                        && list[i + 5].IsPunctuation())
+                                    {
+                                        list.Insert(i + 5, list[i + 2]);
+                                        list.Insert(i + 5, SymbolDisplayPartFactory.Text(" to "));
+                                        list.RemoveRange(i + 1, 2);
+                                        length -= 5;
+                                    }
+
+                                    parts = list.ToImmutableArray();
+                                }
+                            }
+
+                            break;
+                        }
                     }
+
+                    break;
+                }
             }
         }
 
@@ -346,45 +346,45 @@ internal static class SymbolExtensions
         switch (symbol.Kind)
         {
             case SymbolKind.Event:
-                {
-                    var eventSymbol = (IEventSymbol)symbol;
+            {
+                var eventSymbol = (IEventSymbol)symbol;
 
-                    return !eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
-                }
+                return !eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
+            }
             case SymbolKind.Method:
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                if (methodSymbol.MethodKind != MethodKind.ExplicitInterfaceImplementation)
+                    return false;
+
+                ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
+
+                if (explicitInterfaceImplementations.IsDefaultOrEmpty)
+                    return false;
+
+                if (!includeAccessors)
                 {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    if (methodSymbol.MethodKind != MethodKind.ExplicitInterfaceImplementation)
-                        return false;
-
-                    ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
-
-                    if (explicitInterfaceImplementations.IsDefaultOrEmpty)
-                        return false;
-
-                    if (!includeAccessors)
+                    if (methodSymbol.MetadataName.EndsWith(".get_Item", StringComparison.Ordinal))
                     {
-                        if (methodSymbol.MetadataName.EndsWith(".get_Item", StringComparison.Ordinal))
-                        {
-                            if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertyGet)
-                                return false;
-                        }
-                        else if (methodSymbol.MetadataName.EndsWith(".set_Item", StringComparison.Ordinal))
-                        {
-                            if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertySet)
-                                return false;
-                        }
+                        if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertyGet)
+                            return false;
                     }
-
-                    return true;
+                    else if (methodSymbol.MetadataName.EndsWith(".set_Item", StringComparison.Ordinal))
+                    {
+                        if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertySet)
+                            return false;
+                    }
                 }
+
+                return true;
+            }
             case SymbolKind.Property:
-                {
-                    var propertySymbol = (IPropertySymbol)symbol;
+            {
+                var propertySymbol = (IPropertySymbol)symbol;
 
-                    return !propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
-                }
+                return !propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
+            }
         }
 
         return false;

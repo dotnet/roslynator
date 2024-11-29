@@ -130,30 +130,30 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         switch (implementation.Kind)
         {
             case SymbolKind.Property:
+            {
+                foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)implementation).ExplicitInterfaceImplementations)
                 {
-                    foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)implementation).ExplicitInterfaceImplementations)
-                    {
-                        if (SymbolEqualityComparer.Default.Equals(propertySymbol.OriginalDefinition, symbol.OriginalDefinition))
-                            return false;
-                    }
-
-                    break;
+                    if (SymbolEqualityComparer.Default.Equals(propertySymbol.OriginalDefinition, symbol.OriginalDefinition))
+                        return false;
                 }
+
+                break;
+            }
             case SymbolKind.Method:
+            {
+                foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)implementation).ExplicitInterfaceImplementations)
                 {
-                    foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)implementation).ExplicitInterfaceImplementations)
-                    {
-                        if (SymbolEqualityComparer.Default.Equals(methodSymbol.OriginalDefinition, symbol.OriginalDefinition))
-                            return false;
-                    }
+                    if (SymbolEqualityComparer.Default.Equals(methodSymbol.OriginalDefinition, symbol.OriginalDefinition))
+                        return false;
+                }
 
-                    break;
-                }
+                break;
+            }
             default:
-                {
-                    Debug.Fail(implementation.Kind.ToString());
-                    return false;
-                }
+            {
+                Debug.Fail(implementation.Kind.ToString());
+                return false;
+            }
         }
 
         return true;

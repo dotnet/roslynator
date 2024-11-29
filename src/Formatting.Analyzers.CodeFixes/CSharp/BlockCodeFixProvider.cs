@@ -41,22 +41,22 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
         {
             case DiagnosticIdentifiers.FormatBlockBraces:
             case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock:
-                {
-                    bool isSingleLine = block.IsSingleLine(includeExteriorTrivia: false);
-                    string title = (isSingleLine)
-                        ? "Format braces on multiple lines"
-                        : "Format braces on a single line";
+            {
+                bool isSingleLine = block.IsSingleLine(includeExteriorTrivia: false);
+                string title = (isSingleLine)
+                    ? "Format braces on multiple lines"
+                    : "Format braces on a single line";
 
-                    CodeAction codeAction = CodeAction.Create(
-                        title,
-                        ct => (isSingleLine)
-                            ? FormatBlockBracesOnMultipleLinesAsync(document, block, ct)
-                            : FormatBlockBracesOnSingleLineAsync(document, block, ct),
-                        GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = CodeAction.Create(
+                    title,
+                    ct => (isSingleLine)
+                        ? FormatBlockBracesOnMultipleLinesAsync(document, block, ct)
+                        : FormatBlockBracesOnSingleLineAsync(document, block, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

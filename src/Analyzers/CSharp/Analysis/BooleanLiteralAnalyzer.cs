@@ -198,15 +198,15 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
             switch (AnalyzeExpression(right, context.SemanticModel, context.CancellationToken))
             {
                 case AnalysisResult.Boolean:
-                    {
-                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
-                        break;
-                    }
+                {
+                    SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
+                    break;
+                }
                 case AnalysisResult.LogicalNotWithNullableBoolean:
-                    {
-                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
-                        break;
-                    }
+                {
+                    SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                    break;
+                }
             }
         }
         else if (leftKind == kind2)
@@ -214,15 +214,15 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
             switch (AnalyzeExpression(right, context.SemanticModel, context.CancellationToken))
             {
                 case AnalysisResult.Boolean:
-                    {
-                        RemoveRedundantBooleanLiteralAnalysis.ReportDiagnostic(context, binaryExpression, left, right);
-                        break;
-                    }
+                {
+                    RemoveRedundantBooleanLiteralAnalysis.ReportDiagnostic(context, binaryExpression, left, right);
+                    break;
+                }
                 case AnalysisResult.LogicalNotWithNullableBoolean:
-                    {
-                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
-                        break;
-                    }
+                {
+                    SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                    break;
+                }
             }
         }
         else
@@ -234,15 +234,15 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
                 switch (AnalyzeExpression(left, context.SemanticModel, context.CancellationToken))
                 {
                     case AnalysisResult.Boolean:
-                        {
-                            SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
-                            break;
-                        }
+                    {
+                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
+                        break;
+                    }
                     case AnalysisResult.LogicalNotWithNullableBoolean:
-                        {
-                            SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
-                            break;
-                        }
+                    {
+                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                        break;
+                    }
                 }
             }
             else if (rightKind == kind2)
@@ -250,15 +250,15 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
                 switch (AnalyzeExpression(left, context.SemanticModel, context.CancellationToken))
                 {
                     case AnalysisResult.Boolean:
-                        {
-                            RemoveRedundantBooleanLiteralAnalysis.ReportDiagnostic(context, binaryExpression, left, right);
-                            break;
-                        }
+                    {
+                        RemoveRedundantBooleanLiteralAnalysis.ReportDiagnostic(context, binaryExpression, left, right);
+                        break;
+                    }
                     case AnalysisResult.LogicalNotWithNullableBoolean:
-                        {
-                            SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
-                            break;
-                        }
+                    {
+                        SimplifyBooleanComparisonAnalysis.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                        break;
+                    }
                 }
             }
         }
@@ -289,42 +289,42 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.FalseLiteralExpression:
                 return AnalysisResult.BooleanLiteral;
             case SyntaxKind.LogicalNotExpression:
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+                ExpressionSyntax operand = logicalNot.Operand;
+
+                if (operand is not null)
                 {
-                    var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType;
 
-                    ExpressionSyntax operand = logicalNot.Operand;
-
-                    if (operand is not null)
+                    if (typeSymbol is not null)
                     {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType;
-
-                        if (typeSymbol is not null)
+                        if (typeSymbol.SpecialType == SpecialType.System_Boolean)
                         {
-                            if (typeSymbol.SpecialType == SpecialType.System_Boolean)
-                            {
-                                return AnalysisResult.Boolean;
-                            }
-                            else if (typeSymbol.IsNullableOf(SpecialType.System_Boolean))
-                            {
-                                return AnalysisResult.LogicalNotWithNullableBoolean;
-                            }
+                            return AnalysisResult.Boolean;
+                        }
+                        else if (typeSymbol.IsNullableOf(SpecialType.System_Boolean))
+                        {
+                            return AnalysisResult.LogicalNotWithNullableBoolean;
                         }
                     }
-
-                    break;
                 }
+
+                break;
+            }
             default:
+            {
+                if (semanticModel
+                    .GetTypeInfo(expression, cancellationToken)
+                    .ConvertedType?
+                    .SpecialType == SpecialType.System_Boolean)
                 {
-                    if (semanticModel
-                        .GetTypeInfo(expression, cancellationToken)
-                        .ConvertedType?
-                        .SpecialType == SpecialType.System_Boolean)
-                    {
-                        return AnalysisResult.Boolean;
-                    }
-
-                    break;
+                    return AnalysisResult.Boolean;
                 }
+
+                break;
+            }
         }
 
         return AnalysisResult.None;

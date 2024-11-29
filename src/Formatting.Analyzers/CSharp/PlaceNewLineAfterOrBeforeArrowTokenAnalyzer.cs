@@ -49,7 +49,7 @@ public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnostic
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
                 block.GetLocation(),
-                (block.First.IsToken) ? "before" : "after");
+                (newLinePosition == NewLinePosition.Before) ? "before" : "after");
         }
     }
 }

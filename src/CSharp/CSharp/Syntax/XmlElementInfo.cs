@@ -130,23 +130,23 @@ public readonly struct XmlElementInfo
         switch (node)
         {
             case XmlElementSyntax element:
-                {
-                    string? localName = element.StartTag?.Name?.LocalName.ValueText;
+            {
+                string? localName = element.StartTag?.Name?.LocalName.ValueText;
 
-                    if (localName is null)
-                        return default;
+                if (localName is null)
+                    return default;
 
-                    return new XmlElementInfo(element, localName);
-                }
+                return new XmlElementInfo(element, localName);
+            }
             case XmlEmptyElementSyntax element:
-                {
-                    string? localName = element.Name?.LocalName.ValueText;
+            {
+                string? localName = element.Name?.LocalName.ValueText;
 
-                    if (localName is null)
-                        return default;
+                if (localName is null)
+                    return default;
 
-                    return new XmlElementInfo(element, localName);
-                }
+                return new XmlElementInfo(element, localName);
+            }
         }
 
         return default;

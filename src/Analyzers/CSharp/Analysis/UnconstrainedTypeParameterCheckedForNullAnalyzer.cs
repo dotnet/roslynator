@@ -95,44 +95,44 @@ public sealed class UnconstrainedTypeParameterCheckedForNullAnalyzer : BaseDiagn
             switch (type.TypeKind)
             {
                 case TypeKind.Class:
-                    {
-                        if (!allowReference)
-                            return false;
+                {
+                    if (!allowReference)
+                        return false;
 
-                        break;
-                    }
+                    break;
+                }
                 case TypeKind.Struct:
-                    {
-                        if (allowValueType)
-                            return false;
+                {
+                    if (allowValueType)
+                        return false;
 
-                        break;
-                    }
+                    break;
+                }
                 case TypeKind.Interface:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case TypeKind.TypeParameter:
-                    {
-                        var typeParameterSymbol = (ITypeParameterSymbol)type;
+                {
+                    var typeParameterSymbol = (ITypeParameterSymbol)type;
 
-                        if (!CheckConstraint(typeParameterSymbol, allowReference, allowValueType, allowConstructor))
-                            return false;
+                    if (!CheckConstraint(typeParameterSymbol, allowReference, allowValueType, allowConstructor))
+                        return false;
 
-                        if (!VerifyConstraint(typeParameterSymbol.ConstraintTypes, allowReference, allowValueType, allowConstructor))
-                            return false;
+                    if (!VerifyConstraint(typeParameterSymbol.ConstraintTypes, allowReference, allowValueType, allowConstructor))
+                        return false;
 
-                        break;
-                    }
+                    break;
+                }
                 case TypeKind.Error:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
                 default:
-                    {
-                        Debug.Fail(type.TypeKind.ToString());
-                        return false;
-                    }
+                {
+                    Debug.Fail(type.TypeKind.ToString());
+                    return false;
+                }
             }
         }
 

@@ -39,36 +39,36 @@ public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant base constructor call",
-                            ct => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant base constructor call",
+                        ct => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantConstructor:
-                    {
-                        CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
-                            context.Document,
-                            constructor,
-                            title: "Remove redundant constructor",
-                            equivalenceKey: GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                        context.Document,
+                        constructor,
+                        title: "Remove redundant constructor",
+                        equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Change accessibility to 'protected'",
-                            ct => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Change accessibility to 'protected'",
+                        ct => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

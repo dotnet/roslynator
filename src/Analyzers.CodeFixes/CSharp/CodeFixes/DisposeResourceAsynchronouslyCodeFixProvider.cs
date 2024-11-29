@@ -45,32 +45,32 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.DisposeResourceAsynchronously:
+            {
+                if (node is LocalDeclarationStatementSyntax localDeclaration)
                 {
-                    if (node is LocalDeclarationStatementSyntax localDeclaration)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct => RefactorAsync(document, localDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct => RefactorAsync(document, localDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else if (node is UsingStatementSyntax usingStatement)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct => RefactorAsync(document, usingStatement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException();
-                    }
-
-                    break;
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
+                else if (node is UsingStatementSyntax usingStatement)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct => RefactorAsync(document, usingStatement, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
+                break;
+            }
         }
     }
 
@@ -120,7 +120,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
                 var newBody = (BlockSyntax)rewriter.VisitBlock(newNode.Body);
 
                 newNode = newNode
@@ -138,7 +138,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
 
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
                 var newBody = (BlockSyntax)rewriter.VisitBlock(newNode.Body);
 
                 newNode = newNode
@@ -156,7 +156,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
                 var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambdaExpression, cancellationToken);
 
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
                 var newBody = (BlockSyntax)rewriter.VisitBlock((BlockSyntax)newNode.Body);
 
                 newNode = newNode
@@ -174,7 +174,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
                 var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(anonymousMethod, cancellationToken);
 
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
                 var newBody = (BlockSyntax)rewriter.VisitBlock((BlockSyntax)newNode.Body);
 
                 newNode = newNode

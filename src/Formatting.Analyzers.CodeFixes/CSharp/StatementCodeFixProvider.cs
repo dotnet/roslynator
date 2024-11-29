@@ -33,21 +33,21 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.PutStatementOnItsOwnLine:
-                {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                break;
+            }
             case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
             case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
-                {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, increaseIndentation: true).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, increaseIndentation: true).ConfigureAwait(false);
+                break;
+            }
             case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
-                {
-                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+                break;
+            }
         }
     }
 }

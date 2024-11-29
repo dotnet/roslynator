@@ -41,40 +41,40 @@ public sealed class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UnnecessaryInterpolatedString:
-                    {
-                        if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(interpolatedString))
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove '$'",
-                                ct => ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(document, interpolatedString, ct),
-                                GetEquivalenceKey(diagnostic.Id));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            var interpolation = (InterpolationSyntax)interpolatedString.Contents[0];
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Replace interpolated string with '{interpolation.Expression}'",
-                                ct => UnnecessaryInterpolatedStringRefactoring.RefactorAsync(document, interpolatedString, ct),
-                                GetEquivalenceKey(diagnostic.Id));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
-                    }
-                case DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation:
+                {
+                    if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(interpolatedString))
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Convert to concatenation",
-                            ct => ConvertInterpolatedStringToConcatenationRefactoring.RefactorAsync(document, interpolatedString, ct),
+                            "Remove '$'",
+                            ct => ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(document, interpolatedString, ct),
                             GetEquivalenceKey(diagnostic.Id));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
                     }
+                    else
+                    {
+                        var interpolation = (InterpolationSyntax)interpolatedString.Contents[0];
+
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Replace interpolated string with '{interpolation.Expression}'",
+                            ct => UnnecessaryInterpolatedStringRefactoring.RefactorAsync(document, interpolatedString, ct),
+                            GetEquivalenceKey(diagnostic.Id));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    break;
+                }
+                case DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Convert to concatenation",
+                        ct => ConvertInterpolatedStringToConcatenationRefactoring.RefactorAsync(document, interpolatedString, ct),
+                        GetEquivalenceKey(diagnostic.Id));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

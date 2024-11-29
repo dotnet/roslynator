@@ -29,46 +29,46 @@ internal static class AvoidBoxingOfValueTypeAnalysis
         switch (parameters.Length)
         {
             case 1:
+            {
+                if (methodSymbol.IsName("Append"))
                 {
-                    if (methodSymbol.IsName("Append"))
+                    ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
+
+                    if (argument is not null)
                     {
-                        ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
+                        ExpressionSyntax expression = argument.Expression;
 
-                        if (argument is not null)
+                        if (!expression.IsKind(SyntaxKind.InterpolatedStringExpression, SyntaxKind.AddExpression)
+                            && parameters[0].Type.IsObject()
+                            && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsValueType == true)
                         {
-                            ExpressionSyntax expression = argument.Expression;
-
-                            if (!expression.IsKind(SyntaxKind.InterpolatedStringExpression, SyntaxKind.AddExpression)
-                                && parameters[0].Type.IsObject()
-                                && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsValueType == true)
-                            {
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, argument);
-                                return;
-                            }
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, argument);
+                            return;
                         }
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case 2:
+            {
+                if (methodSymbol.IsName("Insert")
+                    && parameters[0].Type.SpecialType == SpecialType.System_Int32
+                    && parameters[1].Type.SpecialType == SpecialType.System_Object)
                 {
-                    if (methodSymbol.IsName("Insert")
-                        && parameters[0].Type.SpecialType == SpecialType.System_Int32
-                        && parameters[1].Type.SpecialType == SpecialType.System_Object)
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                    if (arguments.Count == 2
+                        && context.SemanticModel
+                            .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
+                            .IsValueType)
                     {
-                        SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
-
-                        if (arguments.Count == 2
-                            && context.SemanticModel
-                                .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
-                                .IsValueType)
-                        {
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, arguments[1]);
-                        }
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, arguments[1]);
                     }
-
-                    break;
                 }
+
+                break;
+            }
         }
     }
 }

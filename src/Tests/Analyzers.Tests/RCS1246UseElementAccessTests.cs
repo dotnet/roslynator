@@ -40,6 +40,36 @@ class C
 ", source, expected);
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfFirst_DerivedFromList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list.[|First()|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list[0];
+    }
+}
+");
+    }
+
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
     [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
@@ -69,6 +99,36 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfElementAt_DerivedFromList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list.[|ElementAt(1)|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list[1];
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -89,6 +149,78 @@ class C
         x = ((IEnumerable<object>)x).ElementAt(1);
 
         x = ((Dictionary<object, object>)x).ElementAt(1);
+    }
+}
+");
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [InlineData("((List<object>)x).[|Last()|]", "((List<object>)x)[^1]")]
+    [InlineData("((IList<object>)x).[|Last()|]", "((IList<object>)x)[^1]")]
+    [InlineData("((IReadOnlyList<object>)x).[|Last()|]", "((IReadOnlyList<object>)x)[^1]")]
+    [InlineData("((Collection<object>)x).[|Last()|]", "((Collection<object>)x)[^1]")]
+    [InlineData("((ImmutableArray<object>)x).[|Last()|]", "((ImmutableArray<object>)x)[^1]")]
+    [InlineData("((object[])x).[|Last()|]", "((object[])x)[^1]")]
+    [InlineData("((string)x).[|Last()|]", "((string)x)[^1]")]
+    public async Task Test_UseElementAccessInsteadOfLast(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+
+class C
+{
+    void M()
+    {
+        object x = null;
+        var y = [||];
+    }
+}
+", source, expected);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfLast_CSharp7()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        List<string> x = null;
+        var y = x.Last();
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp7);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOfLast()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+
+class C
+{
+    void M()
+    {
+        object x = null;
+
+        x = ((ICollection<object>)x).Last();
+        x = ((IReadOnlyCollection<object>)x).Last();
+        x = ((IEnumerable<object>)x).Last();
+
+        x = ((Dictionary<object, object>)x).Last();
     }
 }
 ");

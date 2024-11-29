@@ -176,22 +176,22 @@ internal static class ChangeAccessibilityRefactoring
             switch (syntaxReference.GetSyntax(cancellationToken))
             {
                 case MemberDeclarationSyntax memberDeclaration:
-                    {
-                        yield return memberDeclaration;
-                        break;
-                    }
+                {
+                    yield return memberDeclaration;
+                    break;
+                }
                 case VariableDeclaratorSyntax variableDeclarator:
-                    {
-                        if (variableDeclarator.Parent.Parent is MemberDeclarationSyntax memberDeclaration2)
-                            yield return memberDeclaration2;
+                {
+                    if (variableDeclarator.Parent.Parent is MemberDeclarationSyntax memberDeclaration2)
+                        yield return memberDeclaration2;
 
-                        break;
-                    }
+                    break;
+                }
                 default:
-                    {
-                        Debug.Fail(syntaxReference.GetSyntax(cancellationToken).Kind().ToString());
-                        break;
-                    }
+                {
+                    Debug.Fail(syntaxReference.GetSyntax(cancellationToken).Kind().ToString());
+                    break;
+                }
             }
         }
     }

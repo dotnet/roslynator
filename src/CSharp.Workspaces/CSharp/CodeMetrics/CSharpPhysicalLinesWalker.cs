@@ -137,24 +137,24 @@ internal class CSharpPhysicalLinesWalker : CSharpLinesWalker
                 switch (en.Current.Kind())
                 {
                     case SyntaxKind.EndOfLineTrivia:
-                        {
-                            return true;
-                        }
+                    {
+                        return true;
+                    }
                     case SyntaxKind.WhitespaceTrivia:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case SyntaxKind.MultiLineCommentTrivia:
-                        {
-                            if (tree.IsMultiLineSpan(en.Current.Span, CancellationToken))
-                                return true;
+                    {
+                        if (tree.IsMultiLineSpan(en.Current.Span, CancellationToken))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     default:
-                        {
-                            return false;
-                        }
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -171,24 +171,24 @@ internal class CSharpPhysicalLinesWalker : CSharpLinesWalker
                 {
                     case SyntaxKind.EndOfLineTrivia:
                     case SyntaxKind.SingleLineCommentTrivia:
-                        {
-                            return true;
-                        }
+                    {
+                        return true;
+                    }
                     case SyntaxKind.WhitespaceTrivia:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case SyntaxKind.MultiLineCommentTrivia:
-                        {
-                            if (tree.IsMultiLineSpan(en.Current.Span, CancellationToken))
-                                return true;
+                    {
+                        if (tree.IsMultiLineSpan(en.Current.Span, CancellationToken))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
                     default:
-                        {
-                            return false;
-                        }
+                    {
+                        return false;
+                    }
                 }
             }
 

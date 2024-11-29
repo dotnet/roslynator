@@ -89,82 +89,82 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
         switch (node?.Kind())
         {
             case SyntaxKind.IfStatement:
+            {
+                var ifStatement = (IfStatementSyntax)node;
+
+                ElseClauseSyntax elseClause = ifStatement.Else;
+
+                if (elseClause is not null
+                    && ifStatement.IsParentKind(SyntaxKind.ElseClause))
                 {
-                    var ifStatement = (IfStatementSyntax)node;
-
-                    ElseClauseSyntax elseClause = ifStatement.Else;
-
-                    if (elseClause is not null
-                        && ifStatement.IsParentKind(SyntaxKind.ElseClause))
-                    {
-                        return CodeAction.Create(
-                            Title,
-                            cz => document.ReplaceNodeAsync(ifStatement.Parent, elseClause, cz),
-                            GetEquivalenceKey(diagnostic));
-                    }
-
-                    StatementSyntax statement = elseClause?.Statement;
-
-                    if (statement is not null)
-                    {
-                        if (statement is BlockSyntax block)
-                        {
-                            SyntaxList<StatementSyntax> statements = block.Statements;
-
-                            if (statements.Any())
-                            {
-                                return CreateCodeAction(document, diagnostic, ifStatement, statements);
-                            }
-                        }
-                        else
-                        {
-                            return CreateCodeAction(document, diagnostic, ifStatement, statement);
-                        }
-                    }
-
                     return CodeAction.Create(
                         Title,
-                        ct => document.RemoveStatementAsync(ifStatement, ct),
+                        cz => document.ReplaceNodeAsync(ifStatement.Parent, elseClause, cz),
                         GetEquivalenceKey(diagnostic));
                 }
+
+                StatementSyntax statement = elseClause?.Statement;
+
+                if (statement is not null)
+                {
+                    if (statement is BlockSyntax block)
+                    {
+                        SyntaxList<StatementSyntax> statements = block.Statements;
+
+                        if (statements.Any())
+                        {
+                            return CreateCodeAction(document, diagnostic, ifStatement, statements);
+                        }
+                    }
+                    else
+                    {
+                        return CreateCodeAction(document, diagnostic, ifStatement, statement);
+                    }
+                }
+
+                return CodeAction.Create(
+                    Title,
+                    ct => document.RemoveStatementAsync(ifStatement, ct),
+                    GetEquivalenceKey(diagnostic));
+            }
             case SyntaxKind.ElseClause:
+            {
+                var elseClause = (ElseClauseSyntax)node;
+
+                if (elseClause.IsParentKind(SyntaxKind.IfStatement))
                 {
-                    var elseClause = (ElseClauseSyntax)node;
+                    var ifStatement = (IfStatementSyntax)elseClause.Parent;
 
-                    if (elseClause.IsParentKind(SyntaxKind.IfStatement))
+                    if (ifStatement.IsTopmostIf())
                     {
-                        var ifStatement = (IfStatementSyntax)elseClause.Parent;
+                        StatementSyntax statement = ifStatement.Statement;
 
-                        if (ifStatement.IsTopmostIf())
+                        if (statement is not null)
                         {
-                            StatementSyntax statement = ifStatement.Statement;
-
-                            if (statement is not null)
+                            if (statement is BlockSyntax block)
                             {
-                                if (statement is BlockSyntax block)
-                                {
-                                    SyntaxList<StatementSyntax> statements = block.Statements;
+                                SyntaxList<StatementSyntax> statements = block.Statements;
 
-                                    if (statements.Any())
-                                        return CreateCodeAction(document, diagnostic, ifStatement, statements);
-                                }
-                                else
-                                {
-                                    return CreateCodeAction(document, diagnostic, ifStatement, statement);
-                                }
+                                if (statements.Any())
+                                    return CreateCodeAction(document, diagnostic, ifStatement, statements);
+                            }
+                            else
+                            {
+                                return CreateCodeAction(document, diagnostic, ifStatement, statement);
                             }
                         }
                     }
+                }
 
-                    return CodeAction.Create(
-                        Title,
-                        ct => document.RemoveNodeAsync(elseClause, ct),
-                        GetEquivalenceKey(diagnostic));
-                }
+                return CodeAction.Create(
+                    Title,
+                    ct => document.RemoveNodeAsync(elseClause, ct),
+                    GetEquivalenceKey(diagnostic));
+            }
             case SyntaxKind.Block:
-                {
-                    return CreateCodeActionForIfElse(document, diagnostic, node.Parent);
-                }
+            {
+                return CreateCodeActionForIfElse(document, diagnostic, node.Parent);
+            }
         }
 
         return null;

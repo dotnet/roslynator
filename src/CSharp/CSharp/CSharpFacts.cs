@@ -12,19 +12,19 @@ namespace Roslynator.CSharp;
 public static class CSharpFacts
 {
     internal static ImmutableArray<SyntaxKind> AssignmentExpressionKinds { get; } = ImmutableArray.CreateRange(new[]
-        {
-            SyntaxKind.SimpleAssignmentExpression,
-            SyntaxKind.AddAssignmentExpression,
-            SyntaxKind.SubtractAssignmentExpression,
-            SyntaxKind.MultiplyAssignmentExpression,
-            SyntaxKind.DivideAssignmentExpression,
-            SyntaxKind.ModuloAssignmentExpression,
-            SyntaxKind.AndAssignmentExpression,
-            SyntaxKind.ExclusiveOrAssignmentExpression,
-            SyntaxKind.OrAssignmentExpression,
-            SyntaxKind.LeftShiftAssignmentExpression,
-            SyntaxKind.RightShiftAssignmentExpression,
-        });
+    {
+        SyntaxKind.SimpleAssignmentExpression,
+        SyntaxKind.AddAssignmentExpression,
+        SyntaxKind.SubtractAssignmentExpression,
+        SyntaxKind.MultiplyAssignmentExpression,
+        SyntaxKind.DivideAssignmentExpression,
+        SyntaxKind.ModuloAssignmentExpression,
+        SyntaxKind.AndAssignmentExpression,
+        SyntaxKind.ExclusiveOrAssignmentExpression,
+        SyntaxKind.OrAssignmentExpression,
+        SyntaxKind.LeftShiftAssignmentExpression,
+        SyntaxKind.RightShiftAssignmentExpression,
+    });
 
     internal static string GetTitle(SyntaxNode node)
     {
@@ -113,17 +113,17 @@ public static class CSharpFacts
             case SyntaxKind.Parameter:
                 return "parameter";
             default:
-                {
-                    SyntaxDebug.Fail(node);
+            {
+                SyntaxDebug.Fail(node);
 
-                    if (node is StatementSyntax)
-                        return "statement";
+                if (node is StatementSyntax)
+                    return "statement";
 
-                    if (node is MemberDeclarationSyntax)
-                        return "member";
+                if (node is MemberDeclarationSyntax)
+                    return "member";
 
-                    throw new ArgumentException("", nameof(node));
-                }
+                throw new ArgumentException("", nameof(node));
+            }
         }
     }
 
@@ -577,135 +577,135 @@ public static class CSharpFacts
         switch (from)
         {
             case SpecialType.System_Char:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_UInt16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_UInt16:
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_UInt32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_SByte:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int16:
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_Byte:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int16:
-                        case SpecialType.System_UInt16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int16:
+                    case SpecialType.System_UInt16:
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_UInt32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_Int16:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_UInt16:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_UInt32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_Int32:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_UInt32:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_Int64:
             case SpecialType.System_UInt64:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                        case SpecialType.System_Decimal:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                    case SpecialType.System_Decimal:
+                        return true;
                 }
+
+                break;
+            }
             case SpecialType.System_Single:
+            {
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case SpecialType.System_Double:
-                            return true;
-                    }
-
-                    break;
+                    case SpecialType.System_Double:
+                        return true;
                 }
+
+                break;
+            }
         }
 
         return false;

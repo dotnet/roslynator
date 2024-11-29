@@ -43,80 +43,80 @@ public sealed class ExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator:
+                {
+                    if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
                     {
-                        if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
-                        {
-                            CodeAction codeAction = CodeActionFactory.RemoveParentheses(document, parenthesizedExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
+                        CodeAction codeAction = CodeActionFactory.RemoveParentheses(document, parenthesizedExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Parenthesize condition",
-                                ct => ParenthesizeConditionOfConditionalExpressionAsync(document, expression, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+                    else
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Parenthesize condition",
+                            ct => ParenthesizeConditionOfConditionalExpressionAsync(document, expression, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    break;
+                }
                 case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
+                {
+                    if (expression.IsKind(
+                        SyntaxKind.LessThanExpression,
+                        SyntaxKind.LessThanOrEqualExpression,
+                        SyntaxKind.GreaterThanExpression,
+                        SyntaxKind.GreaterThanOrEqualExpression))
                     {
-                        if (expression.IsKind(
-                            SyntaxKind.LessThanExpression,
-                            SyntaxKind.LessThanOrEqualExpression,
-                            SyntaxKind.GreaterThanExpression,
-                            SyntaxKind.GreaterThanOrEqualExpression))
-                        {
-                            var binaryExpression = (BinaryExpressionSyntax)expression;
+                        var binaryExpression = (BinaryExpressionSyntax)expression;
 
-                            LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
+                        LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Replace expression with '{newNode}'",
-                                ct => document.ReplaceNodeAsync(binaryExpression, newNode.WithTriviaFrom(binaryExpression), ct),
-                                GetEquivalenceKey(diagnostic));
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Replace expression with '{newNode}'",
+                            ct => document.ReplaceNodeAsync(binaryExpression, newNode.WithTriviaFrom(binaryExpression), ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else if (diagnostic.Properties.TryGetValue("DoubleNaN", out string leftOrRight))
-                        {
-                            var binaryExpression = (BinaryExpressionSyntax)expression;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Call 'IsNaN'",
-                                ct =>
-                                {
-                                    ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
-                                        CSharpTypeFactory.DoubleType(),
-                                        IdentifierName("IsNaN"),
-                                        Argument((leftOrRight == "Left") ? binaryExpression.Left.WithoutLeadingTrivia() : binaryExpression.Right.WithoutTrailingTrivia()));
-
-                                    if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
-                                        newExpression = LogicalNotExpression(newExpression);
-
-                                    newExpression = newExpression.Parenthesize().WithTriviaFrom(binaryExpression);
-
-                                    return document.ReplaceNodeAsync(binaryExpression, newExpression, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove null check",
-                                ct => RemoveUnnecessaryNullCheckAsync(document, expression, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+                    else if (diagnostic.Properties.TryGetValue("DoubleNaN", out string leftOrRight))
+                    {
+                        var binaryExpression = (BinaryExpressionSyntax)expression;
+
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'IsNaN'",
+                            ct =>
+                            {
+                                ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
+                                    CSharpTypeFactory.DoubleType(),
+                                    IdentifierName("IsNaN"),
+                                    Argument((leftOrRight == "Left") ? binaryExpression.Left.WithoutLeadingTrivia() : binaryExpression.Right.WithoutTrailingTrivia()));
+
+                                if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
+                                    newExpression = LogicalNotExpression(newExpression);
+
+                                newExpression = newExpression.Parenthesize().WithTriviaFrom(binaryExpression);
+
+                                return document.ReplaceNodeAsync(binaryExpression, newExpression, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+                    else
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove null check",
+                            ct => RemoveUnnecessaryNullCheckAsync(document, expression, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    break;
+                }
             }
         }
     }

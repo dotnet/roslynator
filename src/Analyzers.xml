@@ -6827,6 +6827,7 @@ public class C
     <Title>Use element access</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <MinLanguageVersion>8.0 for [^1]</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[list.First()]]></Before>
@@ -6835,6 +6836,10 @@ public class C
       <Sample>
         <Before><![CDATA[list.ElementAt(1)]]></Before>
         <After><![CDATA[list[1]]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[list.Last()]]></Before>
+        <After><![CDATA[list[^1]]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -7417,7 +7422,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <Samples>
       <Sample>
         <Before><![CDATA[syntaxList[syntaxList.Count - 1]]]></Before>
-        <After><![CDATA[!syntaxList.Last()]]></After>
+        <After><![CDATA[syntaxList.Last()]]></After>
       </Sample>
     </Samples>
     <Remarks>This analyzer is applicable for following types:

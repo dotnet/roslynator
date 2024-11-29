@@ -196,104 +196,104 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         switch (node.Kind())
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(methodDeclaration.Body);
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(methodDeclaration.Body);
 
-                    return methodDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
-                        .WithBody(null);
-                }
+                return methodDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(constructorDeclaration.Body);
+            {
+                var constructorDeclaration = (ConstructorDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(constructorDeclaration.Body);
 
-                    return constructorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
-                        .WithBody(null);
-                }
+                return constructorDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.DestructorDeclaration:
-                {
-                    var destructorDeclaration = (DestructorDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(destructorDeclaration.Body);
+            {
+                var destructorDeclaration = (DestructorDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(destructorDeclaration.Body);
 
-                    return destructorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
-                        .WithBody(null);
-                }
+                return destructorDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    var localFunction = (LocalFunctionStatementSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(localFunction.Body);
+            {
+                var localFunction = (LocalFunctionStatementSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(localFunction.Body);
 
-                    return localFunction
-                        .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
-                        .WithBody(null);
-                }
+                return localFunction
+                    .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    var operatorDeclaration = (OperatorDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
+            {
+                var operatorDeclaration = (OperatorDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
-                    return operatorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
-                        .WithBody(null);
-                }
+                return operatorDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    var operatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
+            {
+                var operatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
-                    return operatorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
-                        .WithBody(null);
-                }
+                return operatorDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                    .WithBody(null);
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
 
-                    return propertyDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
-                        .WithAccessorList(null);
-                }
+                return propertyDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithAccessorList(null);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
 
-                    return indexerDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
-                        .WithAccessorList(null);
-                }
+                return indexerDeclaration
+                    .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithAccessorList(null);
+            }
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.InitAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
-                {
-                    var accessor = (AccessorDeclarationSyntax)node;
-                    BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(accessor);
+            {
+                var accessor = (AccessorDeclarationSyntax)node;
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(accessor);
 
-                    return accessor
-                        .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions))
-                        .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
-                        .WithBody(null);
-                }
+                return accessor
+                    .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithBody(null);
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node);
-                    return node;
-                }
+            {
+                SyntaxDebug.Fail(node);
+                return node;
+            }
         }
     }
 
@@ -311,24 +311,24 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         switch (keyword.Kind())
         {
             case SyntaxKind.ThrowKeyword:
-                {
-                    expression = ThrowExpression(keyword, expression);
-                    break;
-                }
+            {
+                expression = ThrowExpression(keyword, expression);
+                break;
+            }
             case SyntaxKind.ReturnKeyword:
-                {
-                    SyntaxTriviaList leading = keyword.LeadingTrivia;
+            {
+                SyntaxTriviaList leading = keyword.LeadingTrivia;
 
-                    if (!leading.IsEmptyOrWhitespace())
-                        arrowToken = arrowToken.WithLeadingTrivia(leading);
+                if (!leading.IsEmptyOrWhitespace())
+                    arrowToken = arrowToken.WithLeadingTrivia(leading);
 
-                    SyntaxTriviaList trailing = keyword.TrailingTrivia;
+                SyntaxTriviaList trailing = keyword.TrailingTrivia;
 
-                    if (!trailing.IsEmptyOrWhitespace())
-                        arrowToken = arrowToken.WithTrailingTrivia(trailing);
+                if (!trailing.IsEmptyOrWhitespace())
+                    arrowToken = arrowToken.WithTrailingTrivia(trailing);
 
-                    break;
-                }
+                break;
+            }
         }
 
         expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);

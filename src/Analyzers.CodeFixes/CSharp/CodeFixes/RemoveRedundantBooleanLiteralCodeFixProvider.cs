@@ -47,42 +47,42 @@ public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixPr
         switch (node.Kind())
         {
             case SyntaxKind.TrueLiteralExpression:
-                {
-                    RegisterCodeFix(
-                        context,
-                        node.ToString(),
-                        ct =>
-                        {
-                            return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
-                                context.Document,
-                                (ForStatementSyntax)node.Parent,
-                                ct);
-                        });
+            {
+                RegisterCodeFix(
+                    context,
+                    node.ToString(),
+                    ct =>
+                    {
+                        return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
+                            context.Document,
+                            (ForStatementSyntax)node.Parent,
+                            ct);
+                    });
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
             case SyntaxKind.LogicalAndExpression:
             case SyntaxKind.LogicalOrExpression:
-                {
-                    var binaryExpression = (BinaryExpressionSyntax)node;
+            {
+                var binaryExpression = (BinaryExpressionSyntax)node;
 
-                    TextSpan span = RemoveRedundantBooleanLiteralAnalysis.GetSpanToRemove(binaryExpression, binaryExpression.Left, binaryExpression.Right);
+                TextSpan span = RemoveRedundantBooleanLiteralAnalysis.GetSpanToRemove(binaryExpression, binaryExpression.Left, binaryExpression.Right);
 
-                    RegisterCodeFix(
-                        context,
-                        binaryExpression.ToString(span),
-                        ct =>
-                        {
-                            return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
-                                context.Document,
-                                binaryExpression,
-                                ct);
-                        });
+                RegisterCodeFix(
+                    context,
+                    binaryExpression.ToString(span),
+                    ct =>
+                    {
+                        return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
+                            context.Document,
+                            binaryExpression,
+                            ct);
+                    });
 
-                    break;
-                }
+                break;
+            }
         }
     }
 

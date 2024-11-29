@@ -171,131 +171,131 @@ internal static class ConfigMigrator
             switch (kvp.Key)
             {
                 case "RCS0011i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "true")
-                            : (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "false");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "true")
+                        : (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "false");
+                }
                 case "RCS0015i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "never")
-                            : (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "separate_groups");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "never")
+                        : (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "separate_groups");
+                }
                 case "RCS0027i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.BinaryOperatorNewLine, "before")
-                            : (ConfigOptionKeys.BinaryOperatorNewLine, "after");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.BinaryOperatorNewLine, "before")
+                        : (ConfigOptionKeys.BinaryOperatorNewLine, "after");
+                }
                 case "RCS0028i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ConditionalOperatorNewLine, "before")
-                            : (ConfigOptionKeys.ConditionalOperatorNewLine, "after");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ConditionalOperatorNewLine, "before")
+                        : (ConfigOptionKeys.ConditionalOperatorNewLine, "after");
+                }
                 case "RCS0032i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ArrowTokenNewLine, "before")
-                            : (ConfigOptionKeys.ArrowTokenNewLine, "after");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ArrowTokenNewLine, "before")
+                        : (ConfigOptionKeys.ArrowTokenNewLine, "after");
+                }
                 case "RCS0051i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "true")
-                            : (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "false");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "true")
+                        : (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "false");
+                }
                 case "RCS0052i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.EqualsTokenNewLine, "before")
-                            : (ConfigOptionKeys.EqualsTokenNewLine, "after");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.EqualsTokenNewLine, "before")
+                        : (ConfigOptionKeys.EqualsTokenNewLine, "after");
+                }
                 case "RCS1014a":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
-                            : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
+                        : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);
+                }
                 case "RCS1014i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
-                            : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
+                        : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
+                }
                 case "RCS1016a":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "false")
-                            : (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "true");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "false")
+                        : (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "true");
+                }
                 case "RCS1016b":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "false")
-                            : (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "false")
+                        : (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
+                }
                 case "RCS1016i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression)
-                            : (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Block);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression)
+                        : (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Block);
+                }
                 case "RCS1018i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit)
-                            : (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit)
+                        : (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit);
+                }
                 case "RCS1036a":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "true")
-                            : (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "false");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "true")
+                        : (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "false");
+                }
                 case "RCS1050i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include)
-                            : (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include)
+                        : (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
+                }
                 case "RCS1051a":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include)
-                            : (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include)
+                        : (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken);
+                }
                 case "RCS1078i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal)
-                            : (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal)
+                        : (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field);
+                }
                 case "RCS1090i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.ConfigureAwait, "true")
-                            : (ConfigOptionKeys.ConfigureAwait, "false");
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.ConfigureAwait, "true")
+                        : (ConfigOptionKeys.ConfigureAwait, "false");
+                }
                 case "RCS1096i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator)
-                            : (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator)
+                        : (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method);
+                }
                 case "RCS1207i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup)
-                            : (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup)
+                        : (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction);
+                }
                 case "RCS1248i":
-                    {
-                        return (kvp.Value == ReportDiagnostic.Suppress)
-                            ? (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching)
-                            : (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_EqualityOperator);
-                    }
+                {
+                    return (kvp.Value == ReportDiagnostic.Suppress)
+                        ? (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching)
+                        : (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_EqualityOperator);
+                }
             }
 
             Debug.Fail(kvp.Key);

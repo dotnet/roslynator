@@ -56,7 +56,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
     {
         var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
-        if (!documentationComment.IsPartOfMemberDeclaration())
+        if (!documentationComment.IsPartOfDeclaration())
             return;
 
         bool? fixDocumentationCommentTagEnabled = null;
@@ -83,89 +83,89 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                 {
                     case XmlTag.Include:
                     case XmlTag.Exclude:
-                        {
-                            if (isFirst)
-                                containsIncludeOrExclude = true;
+                    {
+                        if (isFirst)
+                            containsIncludeOrExclude = true;
 
-                            break;
-                        }
+                        break;
+                    }
                     case XmlTag.InheritDoc:
-                        {
-                            containsInheritDoc = true;
-                            break;
-                        }
+                    {
+                        containsInheritDoc = true;
+                        break;
+                    }
                     case XmlTag.Content:
-                        {
-                            containsContentElement = true;
-                            break;
-                        }
+                    {
+                        containsContentElement = true;
+                        break;
+                    }
                     case XmlTag.Summary:
-                        {
-                            if (info.IsContentEmptyOrWhitespace)
-                                ReportDiagnosticIfEffective(context, DiagnosticRules.AddSummaryToDocumentationComment, info.Element);
+                    {
+                        if (info.IsContentEmptyOrWhitespace)
+                            ReportDiagnosticIfEffective(context, DiagnosticRules.AddSummaryToDocumentationComment, info.Element);
 
-                            containsSummaryElement = true;
+                        containsSummaryElement = true;
 
-                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
-                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+                        if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            break;
-                        }
+                        break;
+                    }
                     case XmlTag.Example:
                     case XmlTag.Remarks:
                     case XmlTag.Returns:
                     case XmlTag.Value:
-                        {
-                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
-                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+                    {
+                        if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            AnalyzeUnusedElement(context, info, tag);
-                            break;
-                        }
+                        AnalyzeUnusedElement(context, info, tag);
+                        break;
+                    }
                     case XmlTag.List:
-                        {
-                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
-                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+                    {
+                        if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            break;
-                        }
+                        break;
+                    }
                     case XmlTag.Exception:
                     case XmlTag.Permission:
-                        {
-                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
-                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+                    {
+                        if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
-                            break;
-                        }
+                        AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
+                        break;
+                    }
                     case XmlTag.Param:
                     case XmlTag.TypeParam:
-                        {
-                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
-                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+                    {
+                        if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            AnalyzeUnusedElement(context, info, tag);
-                            break;
-                        }
+                        AnalyzeUnusedElement(context, info, tag);
+                        break;
+                    }
                     case XmlTag.SeeAlso:
-                        {
-                            AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
-                            break;
-                        }
+                    {
+                        AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
+                        break;
+                    }
                     case XmlTag.C:
                     case XmlTag.Code:
                     case XmlTag.Para:
                     case XmlTag.ParamRef:
                     case XmlTag.See:
                     case XmlTag.TypeParamRef:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     default:
-                        {
-                            SyntaxDebug.Fail(content[i]);
-                            break;
-                        }
+                    {
+                        SyntaxDebug.Fail(content[i]);
+                        break;
+                    }
                 }
 
                 if (isFirst)

@@ -69,21 +69,21 @@ public sealed class AwaitExpressionCodeFixProvider : BaseCodeFixProvider
         switch (expression.Kind())
         {
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    leading = memberAccess.OperatorToken.LeadingTrivia;
-                    break;
-                }
+                leading = memberAccess.OperatorToken.LeadingTrivia;
+                break;
+            }
             case SyntaxKind.InvocationExpression:
-                {
-                    var invocation = (InvocationExpressionSyntax)expression;
+            {
+                var invocation = (InvocationExpressionSyntax)expression;
 
-                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+                SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
 
-                    leading = invocationInfo.OperatorToken.LeadingTrivia;
-                    break;
-                }
+                leading = invocationInfo.OperatorToken.LeadingTrivia;
+                break;
+            }
         }
 
         SyntaxTrivia last = leading.LastOrDefault();

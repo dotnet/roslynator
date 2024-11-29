@@ -102,89 +102,89 @@ internal static class SyntaxFormatter
         switch (parent.Kind())
         {
             case SyntaxKind.ObjectCreationExpression:
+            {
+                var expression = (ObjectCreationExpressionSyntax)parent;
+
+                expression = expression.WithInitializer(newInitializer);
+
+                ArgumentListSyntax argumentList = expression.ArgumentList;
+
+                if (argumentList is not null)
                 {
-                    var expression = (ObjectCreationExpressionSyntax)parent;
-
-                    expression = expression.WithInitializer(newInitializer);
-
-                    ArgumentListSyntax argumentList = expression.ArgumentList;
-
-                    if (argumentList is not null)
-                    {
-                        newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
-                    }
-                    else
-                    {
-                        newParent = expression.WithType(expression.Type.WithTrailingTrivia(Space));
-                    }
-
-                    break;
+                    newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
                 }
+                else
+                {
+                    newParent = expression.WithType(expression.Type.WithTrailingTrivia(Space));
+                }
+
+                break;
+            }
             case SyntaxKind.ImplicitObjectCreationExpression:
+            {
+                var expression = (ImplicitObjectCreationExpressionSyntax)parent;
+
+                expression = expression.WithInitializer(newInitializer);
+
+                ArgumentListSyntax argumentList = expression.ArgumentList;
+
+                if (argumentList is not null)
                 {
-                    var expression = (ImplicitObjectCreationExpressionSyntax)parent;
-
-                    expression = expression.WithInitializer(newInitializer);
-
-                    ArgumentListSyntax argumentList = expression.ArgumentList;
-
-                    if (argumentList is not null)
-                    {
-                        newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
-                    }
-                    else
-                    {
-                        newParent = expression.WithNewKeyword(expression.NewKeyword.WithTrailingTrivia(Space));
-                    }
-
-                    break;
+                    newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
                 }
+                else
+                {
+                    newParent = expression.WithNewKeyword(expression.NewKeyword.WithTrailingTrivia(Space));
+                }
+
+                break;
+            }
             case SyntaxKind.ArrayCreationExpression:
-                {
-                    var expression = (ArrayCreationExpressionSyntax)parent;
+            {
+                var expression = (ArrayCreationExpressionSyntax)parent;
 
-                    newParent = expression
-                        .WithInitializer(newInitializer)
-                        .WithType(expression.Type.WithTrailingTrivia(Space));
+                newParent = expression
+                    .WithInitializer(newInitializer)
+                    .WithType(expression.Type.WithTrailingTrivia(Space));
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ImplicitArrayCreationExpression:
-                {
-                    var expression = (ImplicitArrayCreationExpressionSyntax)parent;
+            {
+                var expression = (ImplicitArrayCreationExpressionSyntax)parent;
 
-                    newParent = expression
-                        .WithInitializer(newInitializer)
-                        .WithCloseBracketToken(expression.CloseBracketToken.WithTrailingTrivia(Space));
+                newParent = expression
+                    .WithInitializer(newInitializer)
+                    .WithCloseBracketToken(expression.CloseBracketToken.WithTrailingTrivia(Space));
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EqualsValueClause:
-                {
-                    var equalsValueClause = (EqualsValueClauseSyntax)parent;
+            {
+                var equalsValueClause = (EqualsValueClauseSyntax)parent;
 
-                    newParent = equalsValueClause
-                        .WithValue(newInitializer)
-                        .WithEqualsToken(equalsValueClause.EqualsToken.WithTrailingTrivia(Space));
+                newParent = equalsValueClause
+                    .WithValue(newInitializer)
+                    .WithEqualsToken(equalsValueClause.EqualsToken.WithTrailingTrivia(Space));
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.SimpleAssignmentExpression:
-                {
-                    var simpleAssignment = (AssignmentExpressionSyntax)parent;
+            {
+                var simpleAssignment = (AssignmentExpressionSyntax)parent;
 
-                    newParent = simpleAssignment
-                        .WithRight(newInitializer)
-                        .WithOperatorToken(simpleAssignment.OperatorToken.WithTrailingTrivia(Space));
+                newParent = simpleAssignment
+                    .WithRight(newInitializer)
+                    .WithOperatorToken(simpleAssignment.OperatorToken.WithoutTrailingTrivia());
 
-                    break;
-                }
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(parent);
+            {
+                SyntaxDebug.Fail(parent);
 
-                    return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
+            }
         }
 
         return document.ReplaceNodeAsync(parent, newParent, cancellationToken);
@@ -413,29 +413,29 @@ internal static class SyntaxFormatter
             switch (node.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)node;
+
+                    if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
+                        break;
+
+                    if (semanticModel
+                        .GetSymbol(memberAccess.Expression, cancellationToken)?
+                        .Kind == SymbolKind.Namespace)
                     {
-                        var memberAccess = (MemberAccessExpressionSyntax)node;
-
-                        if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
-                            break;
-
-                        if (semanticModel
-                            .GetSymbol(memberAccess.Expression, cancellationToken)?
-                            .Kind == SymbolKind.Namespace)
-                        {
-                            break;
-                        }
-
-                        AddTextChange(memberAccess.OperatorToken);
                         break;
                     }
+
+                    AddTextChange(memberAccess.OperatorToken);
+                    break;
+                }
                 case SyntaxKind.MemberBindingExpression:
-                    {
-                        var memberBinding = (MemberBindingExpressionSyntax)node;
+                {
+                    var memberBinding = (MemberBindingExpressionSyntax)node;
 
-                        AddTextChange(memberBinding.OperatorToken);
-                        break;
-                    }
+                    AddTextChange(memberBinding.OperatorToken);
+                    break;
+                }
             }
         }
 

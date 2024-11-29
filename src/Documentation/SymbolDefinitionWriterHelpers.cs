@@ -69,53 +69,53 @@ internal static class SymbolDefinitionWriterHelpers
         switch (symbol.Kind)
         {
             case SymbolKind.NamedType:
+            {
+                var typeSymbol = (INamedTypeSymbol)symbol;
+
+                if (typeSymbol.TypeKind == TypeKind.Delegate
+                    && HasAttributes(typeSymbol.DelegateInvokeMethod?.Parameters ?? ImmutableArray<IParameterSymbol>.Empty))
                 {
-                    var typeSymbol = (INamedTypeSymbol)symbol;
-
-                    if (typeSymbol.TypeKind == TypeKind.Delegate
-                        && HasAttributes(typeSymbol.DelegateInvokeMethod?.Parameters ?? ImmutableArray<IParameterSymbol>.Empty))
-                    {
-                        return true;
-                    }
-
-                    break;
+                    return true;
                 }
+
+                break;
+            }
             case SymbolKind.Event:
-                {
-                    var eventSymbol = (IEventSymbol)symbol;
+            {
+                var eventSymbol = (IEventSymbol)symbol;
 
-                    if (IsMatch(eventSymbol.AddMethod))
-                        return true;
+                if (IsMatch(eventSymbol.AddMethod))
+                    return true;
 
-                    if (IsMatch(eventSymbol.RemoveMethod))
-                        return true;
+                if (IsMatch(eventSymbol.RemoveMethod))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
             case SymbolKind.Method:
-                {
-                    var methodSymbol = (IMethodSymbol)symbol;
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
 
-                    if (HasAttributes(methodSymbol.Parameters))
-                        return true;
+                if (HasAttributes(methodSymbol.Parameters))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
             case SymbolKind.Property:
-                {
-                    var propertySymbol = (IPropertySymbol)symbol;
+            {
+                var propertySymbol = (IPropertySymbol)symbol;
 
-                    if (HasAttributes(propertySymbol.Parameters))
-                        return true;
+                if (HasAttributes(propertySymbol.Parameters))
+                    return true;
 
-                    if (IsMatch(propertySymbol.GetMethod))
-                        return true;
+                if (IsMatch(propertySymbol.GetMethod))
+                    return true;
 
-                    if (IsMatch(propertySymbol.SetMethod))
-                        return true;
+                if (IsMatch(propertySymbol.SetMethod))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
         }
 
         return false;
@@ -173,17 +173,17 @@ internal static class SymbolDefinitionWriterHelpers
         switch (symbol.Kind)
         {
             case SymbolKind.Event:
-                {
-                    var eventSymbol = (IEventSymbol)symbol;
+            {
+                var eventSymbol = (IEventSymbol)symbol;
 
-                    return (eventSymbol.AddMethod, eventSymbol.RemoveMethod);
-                }
+                return (eventSymbol.AddMethod, eventSymbol.RemoveMethod);
+            }
             case SymbolKind.Property:
-                {
-                    var propertySymbol = (IPropertySymbol)symbol;
+            {
+                var propertySymbol = (IPropertySymbol)symbol;
 
-                    return (propertySymbol.GetMethod, propertySymbol.SetMethod);
-                }
+                return (propertySymbol.GetMethod, propertySymbol.SetMethod);
+            }
         }
 
         return default;
@@ -240,44 +240,44 @@ internal static class SymbolDefinitionWriterHelpers
                     switch (Peek(j).ToString())
                     {
                         case "operator":
+                        {
+                            if (Peek(j + 1).IsSpace()
+                                && Peek(j + 2).Kind == SymbolDisplayPartKind.Operator
+                                && Peek(j + 2).Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
                             {
-                                if (Peek(j + 1).IsSpace()
-                                    && Peek(j + 2).Kind == SymbolDisplayPartKind.Operator
-                                    && Peek(j + 2).Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
-                                {
-                                    j += 3;
-                                    return (i, j, parts[j].Symbol);
-                                }
+                                j += 3;
+                                return (i, j, parts[j].Symbol);
+                            }
 
-                                break;
-                            }
+                            break;
+                        }
                         case "this":
-                            {
-                                j++;
-                                return (i, j, symbol);
-                            }
+                        {
+                            j++;
+                            return (i, j, symbol);
+                        }
                         case "implicit":
                         case "explicit":
+                        {
+                            if (Peek(j + 1).IsSpace()
+                                && Peek(j + 2).IsKeyword("operator")
+                                && Peek(j + 3).IsSpace())
                             {
-                                if (Peek(j + 1).IsSpace()
-                                    && Peek(j + 2).IsKeyword("operator")
-                                    && Peek(j + 3).IsSpace())
+                                j += 4;
+
+                                if (IsGlobalPrefix(j + 1))
                                 {
-                                    j += 4;
+                                    j += 2;
 
-                                    if (IsGlobalPrefix(j + 1))
-                                    {
-                                        j += 2;
+                                    ReadNamespaces();
 
-                                        ReadNamespaces();
-
-                                        if (ReadTypeNames())
-                                            return (i, j, symbol);
-                                    }
+                                    if (ReadTypeNames())
+                                        return (i, j, symbol);
                                 }
-
-                                break;
                             }
+
+                            break;
+                        }
                     }
                 }
             }
@@ -374,24 +374,24 @@ internal static class SymbolDefinitionWriterHelpers
                     switch (Peek(j).ToString())
                     {
                         case "<":
-                            {
-                                depth++;
-                                break;
-                            }
+                        {
+                            depth++;
+                            break;
+                        }
                         case ">":
+                        {
+                            Debug.Assert(depth > 0);
+
+                            depth--;
+
+                            if (depth == 0)
                             {
-                                Debug.Assert(depth > 0);
-
-                                depth--;
-
-                                if (depth == 0)
-                                {
-                                    j++;
-                                    return true;
-                                }
-
-                                break;
+                                j++;
+                                return true;
                             }
+
+                            break;
+                        }
                     }
                 }
 

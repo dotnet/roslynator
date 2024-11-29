@@ -106,11 +106,11 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_new_line_before_while_in_do_statement = true|false
 # Applicable to: rcs0051
 
-#roslynator_null_conditional_operator_new_line = after|before
-# Applicable to: rcs0059
-
 #roslynator_null_check_style = equality_operator|pattern_matching
 # Applicable to: rcs1248
+
+#roslynator_null_conditional_operator_new_line = after|before
+# Applicable to: rcs0059
 
 #roslynator_object_creation_parentheses_style = include|omit
 # Applicable to: rcs1050
@@ -916,7 +916,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Use string interpolation instead of 'string.Concat'
 #dotnet_diagnostic.rcs1267.severity = suggestion
 
-# Simplify numeric comparison expression
+# Simplify numeric comparison
 #dotnet_diagnostic.rcs1268.severity = suggestion
 
 # Use pattern matching
@@ -973,6 +973,11 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_refactoring.add_using_static_directive.enabled = true
 #roslynator_refactoring.call_extension_method_as_instance_method.enabled = true
 #roslynator_refactoring.call_indexof_instead_of_contains.enabled = true
+#roslynator_refactoring.change_accessibility.enabled = true
+#roslynator_refactoring.change_method_return_type_to_void.enabled = true
+#roslynator_refactoring.change_type_according_to_expression.enabled = true
+#roslynator_refactoring.check_expression_for_null.enabled = true
+#roslynator_refactoring.check_parameter_for_null.enabled = true
 #roslynator_refactoring.comment_out_member_declaration.enabled = true
 #roslynator_refactoring.comment_out_statement.enabled = true
 #roslynator_refactoring.convert_auto_property_to_full_property.enabled = true

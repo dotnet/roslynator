@@ -19,43 +19,43 @@ internal static class DocumentationUtility
             switch (context.Options.FilesLayout)
             {
                 case FilesLayout.FlatNamespaces:
+                {
+                    string label = symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+
+                    if (context.CommonNamespaces.Count > 0
+                        && !context.CommonNamespaces.Contains((INamespaceSymbol)symbol, MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
                     {
-                        string label = symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+                        (INamespaceSymbol symbol, string displayString) commonNamespace = default;
 
-                        if (context.CommonNamespaces.Count > 0
-                            && !context.CommonNamespaces.Contains((INamespaceSymbol)symbol, MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
+                        foreach ((INamespaceSymbol _, string displayString) cn in context.CommonNamespacesAsText)
                         {
-                            (INamespaceSymbol symbol, string displayString) commonNamespace = default;
-
-                            foreach ((INamespaceSymbol _, string displayString) cn in context.CommonNamespacesAsText)
+                            if (label.StartsWith(cn.displayString)
+                                && label[cn.displayString.Length] == '.')
                             {
-                                if (label.StartsWith(cn.displayString)
-                                    && label[cn.displayString.Length] == '.')
-                                {
-                                    Debug.Assert(commonNamespace == default);
-                                    commonNamespace = cn;
-                                }
+                                Debug.Assert(commonNamespace == default);
+                                commonNamespace = cn;
                             }
-
-                            Debug.Assert(commonNamespace != default);
-
-                            if (commonNamespace != default)
-                                label = label.Substring(commonNamespace.displayString.Length + 1);
                         }
 
-                        return label;
-                    }
-                case FilesLayout.Hierarchical:
-                    {
-                        if (context.CommonNamespaces.Contains((INamespaceSymbol)symbol, MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
-                            return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+                        Debug.Assert(commonNamespace != default);
 
-                        return symbol.Name;
+                        if (commonNamespace != default)
+                            label = label.Substring(commonNamespace.displayString.Length + 1);
                     }
+
+                    return label;
+                }
+                case FilesLayout.Hierarchical:
+                {
+                    if (context.CommonNamespaces.Contains((INamespaceSymbol)symbol, MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
+                        return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+
+                    return symbol.Name;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException($"Unknown value '{context.Options.FilesLayout}'.");
-                    }
+                {
+                    throw new InvalidOperationException($"Unknown value '{context.Options.FilesLayout}'.");
+                }
             }
         }
         else if (symbol.IsKind(SymbolKind.NamedType))

@@ -41,7 +41,7 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
     {
         var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
-        if (!documentationComment.IsPartOfMemberDeclaration())
+        if (!documentationComment.IsPartOfDeclaration())
             return;
 
         foreach (XmlNodeSyntax node in documentationComment.Content)
@@ -146,31 +146,31 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
                 switch (state)
                 {
                     case State.BeforeParagraph:
-                        {
-                            state = State.Paragraph;
-                            index = node.SpanStart;
-                            last = node;
-                            break;
-                        }
+                    {
+                        state = State.Paragraph;
+                        index = node.SpanStart;
+                        last = node;
+                        break;
+                    }
                     case State.Paragraph:
-                        {
-                            last = node;
-                            break;
-                        }
+                    {
+                        last = node;
+                        break;
+                    }
                     case State.NewLine:
                     case State.WhiteSpaceAfterNewLine:
-                        {
-                            state = State.Paragraph;
-                            last = node;
-                            break;
-                        }
+                    {
+                        state = State.Paragraph;
+                        last = node;
+                        break;
+                    }
                     case State.WhiteSpaceBetweenParagraphs:
-                        {
-                            state = State.Paragraph;
-                            index2 = node.SpanStart;
-                            last = node;
-                            break;
-                        }
+                    {
+                        state = State.Paragraph;
+                        index2 = node.SpanStart;
+                        last = node;
+                        break;
+                    }
                 }
             }
             else if (kind == SyntaxKind.XmlText)
@@ -184,112 +184,112 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
                     switch (token.Kind())
                     {
                         case SyntaxKind.XmlTextLiteralToken:
+                        {
+                            switch (state)
                             {
-                                switch (state)
+                                case State.BeforeParagraph:
                                 {
-                                    case State.BeforeParagraph:
-                                        {
-                                            if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                            {
-                                                state = State.Paragraph;
-                                                index = token.SpanStart;
-                                                last = token;
-                                            }
+                                    if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                    {
+                                        state = State.Paragraph;
+                                        index = token.SpanStart;
+                                        last = token;
+                                    }
 
-                                            break;
-                                        }
-                                    case State.Paragraph:
-                                        {
-                                            last = token;
-                                            break;
-                                        }
-                                    case State.NewLine:
-                                        {
-                                            if (StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                            {
-                                                state = State.WhiteSpaceAfterNewLine;
-                                            }
-                                            else
-                                            {
-                                                state = State.Paragraph;
-                                                last = token;
-                                            }
-
-                                            break;
-                                        }
-                                    case State.WhiteSpaceAfterNewLine:
-                                        {
-                                            if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                            {
-                                                state = State.Paragraph;
-                                                last = token;
-                                            }
-
-                                            break;
-                                        }
-                                    case State.WhiteSpaceBetweenParagraphs:
-                                        {
-                                            if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                            {
-                                                state = State.Paragraph;
-                                                index2 = token.SpanStart;
-                                                last = token;
-                                            }
-
-                                            break;
-                                        }
+                                    break;
                                 }
+                                case State.Paragraph:
+                                {
+                                    last = token;
+                                    break;
+                                }
+                                case State.NewLine:
+                                {
+                                    if (StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                    {
+                                        state = State.WhiteSpaceAfterNewLine;
+                                    }
+                                    else
+                                    {
+                                        state = State.Paragraph;
+                                        last = token;
+                                    }
 
-                                break;
+                                    break;
+                                }
+                                case State.WhiteSpaceAfterNewLine:
+                                {
+                                    if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                    {
+                                        state = State.Paragraph;
+                                        last = token;
+                                    }
+
+                                    break;
+                                }
+                                case State.WhiteSpaceBetweenParagraphs:
+                                {
+                                    if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                    {
+                                        state = State.Paragraph;
+                                        index2 = token.SpanStart;
+                                        last = token;
+                                    }
+
+                                    break;
+                                }
                             }
+
+                            break;
+                        }
                         case SyntaxKind.XmlTextLiteralNewLineToken:
+                        {
+                            switch (state)
                             {
-                                switch (state)
+                                case State.BeforeParagraph:
                                 {
-                                    case State.BeforeParagraph:
-                                        {
-                                            break;
-                                        }
-                                    case State.Paragraph:
-                                        {
-                                            state = State.NewLine;
-                                            break;
-                                        }
-                                    case State.NewLine:
-                                    case State.WhiteSpaceAfterNewLine:
-                                        {
-                                            if (index2 != -1)
-                                            {
-                                                endIndex2 = last.Span.End;
-
-                                                if (!stopOnFirstMatch)
-                                                {
-                                                    if (spans is null)
-                                                        spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
-
-                                                    spans.Add(TextSpan.FromBounds(index2, endIndex2));
-                                                    index = index2;
-                                                    index2 = -1;
-                                                }
-                                                else
-                                                {
-                                                    return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
-                                                }
-                                            }
-
-                                            endIndex = last.Span.End;
-                                            last = default;
-                                            state = State.WhiteSpaceBetweenParagraphs;
-                                            break;
-                                        }
-                                    case State.WhiteSpaceBetweenParagraphs:
-                                        {
-                                            break;
-                                        }
+                                    break;
                                 }
+                                case State.Paragraph:
+                                {
+                                    state = State.NewLine;
+                                    break;
+                                }
+                                case State.NewLine:
+                                case State.WhiteSpaceAfterNewLine:
+                                {
+                                    if (index2 != -1)
+                                    {
+                                        endIndex2 = last.Span.End;
 
-                                break;
+                                        if (!stopOnFirstMatch)
+                                        {
+                                            if (spans is null)
+                                                spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
+
+                                            spans.Add(TextSpan.FromBounds(index2, endIndex2));
+                                            index = index2;
+                                            index2 = -1;
+                                        }
+                                        else
+                                        {
+                                            return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
+                                        }
+                                    }
+
+                                    endIndex = last.Span.End;
+                                    last = default;
+                                    state = State.WhiteSpaceBetweenParagraphs;
+                                    break;
+                                }
+                                case State.WhiteSpaceBetweenParagraphs:
+                                {
+                                    break;
+                                }
                             }
+
+                            break;
+                        }
                     }
                 }
             }

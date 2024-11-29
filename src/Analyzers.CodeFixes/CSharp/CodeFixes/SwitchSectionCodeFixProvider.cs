@@ -40,45 +40,45 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant switch section",
-                            ct => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant switch section",
+                        ct => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Move default label to the last position",
-                            ct => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Move default label to the last position",
+                        ct => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            AddBracesToSwitchSectionRefactoring.Title,
-                            ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        AddBracesToSwitchSectionRefactoring.Title,
+                        ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Merge sections",
-                            ct => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Merge sections",
+                        ct => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

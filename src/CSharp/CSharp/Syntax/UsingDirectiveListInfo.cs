@@ -114,21 +114,21 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         switch (declaration?.Kind())
         {
             case SyntaxKind.CompilationUnit:
-                {
-                    var typeDeclaration = (CompilationUnitSyntax)declaration;
-                    return new UsingDirectiveListInfo(typeDeclaration, typeDeclaration.Usings);
-                }
+            {
+                var typeDeclaration = (CompilationUnitSyntax)declaration;
+                return new UsingDirectiveListInfo(typeDeclaration, typeDeclaration.Usings);
+            }
             case SyntaxKind.NamespaceDeclaration:
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)declaration;
-                    return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
-                }
+            {
+                var namespaceDeclaration = (NamespaceDeclarationSyntax)declaration;
+                return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
+            }
 #if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
-                {
-                    var fileScopedNamespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)declaration;
-                    return new UsingDirectiveListInfo(fileScopedNamespaceDeclaration, fileScopedNamespaceDeclaration.Usings);
-                }
+            {
+                var fileScopedNamespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)declaration;
+                return new UsingDirectiveListInfo(fileScopedNamespaceDeclaration, fileScopedNamespaceDeclaration.Usings);
+            }
 #endif
         }
 
@@ -153,15 +153,15 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         switch (Parent)
         {
             case CompilationUnitSyntax compilationUnit:
-                {
-                    compilationUnit = compilationUnit.WithUsings(usings);
-                    return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
-                }
+            {
+                compilationUnit = compilationUnit.WithUsings(usings);
+                return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
+            }
             case NamespaceDeclarationSyntax declaration:
-                {
-                    declaration = declaration.WithUsings(usings);
-                    return new UsingDirectiveListInfo(declaration, declaration.Usings);
-                }
+            {
+                declaration = declaration.WithUsings(usings);
+                return new UsingDirectiveListInfo(declaration, declaration.Usings);
+            }
         }
 
         throw new InvalidOperationException();
@@ -177,15 +177,15 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         switch (Parent)
         {
             case CompilationUnitSyntax compilationUnit:
-                {
-                    compilationUnit = compilationUnit.RemoveNode(node, options)!;
-                    return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
-                }
+            {
+                compilationUnit = compilationUnit.RemoveNode(node, options)!;
+                return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
+            }
             case NamespaceDeclarationSyntax declaration:
-                {
-                    declaration = declaration.RemoveNode(node, options)!;
-                    return new UsingDirectiveListInfo(declaration, declaration.Usings);
-                }
+            {
+                declaration = declaration.RemoveNode(node, options)!;
+                return new UsingDirectiveListInfo(declaration, declaration.Usings);
+            }
         }
 
         throw new InvalidOperationException();
@@ -201,15 +201,15 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         switch (Parent)
         {
             case CompilationUnitSyntax compilationUnit:
-                {
-                    compilationUnit = compilationUnit.ReplaceNode(oldNode, newNode);
-                    return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
-                }
+            {
+                compilationUnit = compilationUnit.ReplaceNode(oldNode, newNode);
+                return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
+            }
             case NamespaceDeclarationSyntax declaration:
-                {
-                    declaration = declaration.ReplaceNode(oldNode, newNode);
-                    return new UsingDirectiveListInfo(declaration, declaration.Usings);
-                }
+            {
+                declaration = declaration.ReplaceNode(oldNode, newNode);
+                return new UsingDirectiveListInfo(declaration, declaration.Usings);
+            }
         }
 
         throw new InvalidOperationException();

@@ -34,19 +34,19 @@ internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
             switch (statement.Kind())
             {
                 case SyntaxKind.ReturnStatement:
-                    {
-                        return ((ReturnStatementSyntax)statement).Expression;
-                    }
+                {
+                    return ((ReturnStatementSyntax)statement).Expression;
+                }
                 case SyntaxKind.ExpressionStatement:
-                    {
-                        return ((ExpressionStatementSyntax)statement).Expression;
-                    }
+                {
+                    return ((ExpressionStatementSyntax)statement).Expression;
+                }
                 case SyntaxKind.ThrowStatement:
-                    {
-                        return ThrowExpression(
-                            Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
-                            ((ThrowStatementSyntax)statement).Expression);
-                    }
+                {
+                    return ThrowExpression(
+                        Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
+                        ((ThrowStatementSyntax)statement).Expression);
+                }
             }
 
             return null;
@@ -57,21 +57,21 @@ internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
             switch (lambda.Kind())
             {
                 case SyntaxKind.SimpleLambdaExpression:
-                    {
-                        return ((SimpleLambdaExpressionSyntax)lambda)
-                            .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
-                            .WithBody(expression);
-                    }
+                {
+                    return ((SimpleLambdaExpressionSyntax)lambda)
+                        .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
+                        .WithBody(expression);
+                }
                 case SyntaxKind.ParenthesizedLambdaExpression:
-                    {
-                        return ((ParenthesizedLambdaExpressionSyntax)lambda)
-                            .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
-                            .WithBody(expression);
-                    }
+                {
+                    return ((ParenthesizedLambdaExpressionSyntax)lambda)
+                        .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
+                        .WithBody(expression);
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
     }

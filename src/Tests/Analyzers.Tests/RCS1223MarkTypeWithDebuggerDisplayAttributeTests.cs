@@ -314,4 +314,29 @@ public record R
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicReadOnlyRefStruct()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Diagnostics;
+
+public readonly ref struct [|Dummy|];
+""", """
+using System.Diagnostics;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly ref struct Dummy
+{
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
+        {
+            return "";
+        }
+    }
+}
+""");
+    }
 }

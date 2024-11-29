@@ -1,18 +1,15 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Roslynator.FindSymbols;
 
 namespace Roslynator.CSharp.FindSymbols;
 
-[Export(typeof(ILanguageService))]
-[ExportMetadata("Language", LanguageNames.CSharp)]
-[ExportMetadata("ServiceType", "Roslynator.FindSymbols.IFindSymbolService")]
+[ExportLanguageService(typeof(IFindSymbolService), LanguageNames.CSharp)]
 internal class CSharpFindSymbolService : FindSymbolService
 {
     public override ISyntaxFactsService SyntaxFacts => CSharpSyntaxFactsService.Instance;

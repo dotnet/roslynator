@@ -148,4 +148,32 @@ class C : I
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_ExpressionIsDefinitelyNotNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#nullable enable
+
+public interface I
+{
+    void M() { }
+}
+
+public class P : I;
+
+public class C
+{
+    public required P P { get; set; }
+
+    public void M()
+    {
+        if (this.P is not null)
+        {
+            (this.P as I).M();
+        }
+    }
+}
+");
+    }
 }

@@ -59,72 +59,72 @@ public sealed class VariableDeclarationCodeFixProvider : CompilerDiagnosticCodeF
             {
                 case CompilerDiagnosticIdentifiers.CS0819_ImplicitlyTypedVariablesCannotHaveMultipleDeclarators:
                 case CompilerDiagnosticIdentifiers.CS0822_ImplicitlyTypedVariablesCannotBeConstant:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, context.Document, root.SyntaxTree))
+                        return;
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    TypeSyntax type = variableDeclaration.Type;
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+                    if (typeSymbol?.SupportsExplicitDeclaration() == true)
                     {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, context.Document, root.SyntaxTree))
-                            return;
+                        CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        TypeSyntax type = variableDeclaration.Type;
-
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
-
-                        if (typeSymbol?.SupportsExplicitDeclaration() == true)
-                        {
-                            CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0128_LocalVariableOrFunctionIsAlreadyDefinedInThisScope:
                 case CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment, context.Document, root.SyntaxTree))
-                            return;
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment, context.Document, root.SyntaxTree))
+                        return;
 
-                        if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclaration)
-                            return;
+                    if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclaration)
+                        return;
 
-                        VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+                    VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-                        if (variableDeclarator is null)
-                            break;
-
-                        ExpressionSyntax value = variableDeclarator.Initializer?.Value;
-
-                        if (value is null)
-                            break;
-
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        VariableDeclaratorSyntax variableDeclarator2 = FindVariableDeclarator(
-                            variableDeclarator.Identifier.ValueText,
-                            semanticModel.GetEnclosingSymbolSyntax(localDeclaration.SpanStart, context.CancellationToken));
-
-                        if (variableDeclarator2?.SpanStart < localDeclaration.SpanStart)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Replace variable declaration with assignment",
-                                ct =>
-                                {
-                                    ExpressionStatementSyntax newNode = CSharpFactory.SimpleAssignmentStatement(
-                                        SyntaxFactory.IdentifierName(variableDeclarator.Identifier),
-                                        value);
-
-                                    newNode = newNode
-                                        .WithTriviaFrom(localDeclaration)
-                                        .WithFormatterAnnotation();
-
-                                    return context.Document.ReplaceNodeAsync(localDeclaration, newNode, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
+                    if (variableDeclarator is null)
                         break;
+
+                    ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+
+                    if (value is null)
+                        break;
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    VariableDeclaratorSyntax variableDeclarator2 = FindVariableDeclarator(
+                        variableDeclarator.Identifier.ValueText,
+                        semanticModel.GetEnclosingSymbolSyntax(localDeclaration.SpanStart, context.CancellationToken));
+
+                    if (variableDeclarator2?.SpanStart < localDeclaration.SpanStart)
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Replace variable declaration with assignment",
+                            ct =>
+                            {
+                                ExpressionStatementSyntax newNode = CSharpFactory.SimpleAssignmentStatement(
+                                    SyntaxFactory.IdentifierName(variableDeclarator.Identifier),
+                                    value);
+
+                                newNode = newNode
+                                    .WithTriviaFrom(localDeclaration)
+                                    .WithFormatterAnnotation();
+
+                                return context.Document.ReplaceNodeAsync(localDeclaration, newNode, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+
+                    break;
+                }
             }
         }
     }

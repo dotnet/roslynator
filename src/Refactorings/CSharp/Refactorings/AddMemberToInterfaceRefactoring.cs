@@ -172,28 +172,28 @@ internal static class AddMemberToInterfaceRefactoring
         switch (kind)
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    return symbol.Kind == SymbolKind.Method;
-                }
+            {
+                return symbol.Kind == SymbolKind.Method;
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    return symbol.Kind == SymbolKind.Property
-                        && !((IPropertySymbol)symbol).IsIndexer;
-                }
+            {
+                return symbol.Kind == SymbolKind.Property
+                    && !((IPropertySymbol)symbol).IsIndexer;
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    return symbol.Kind == SymbolKind.Property
-                        && ((IPropertySymbol)symbol).IsIndexer;
-                }
+            {
+                return symbol.Kind == SymbolKind.Property
+                    && ((IPropertySymbol)symbol).IsIndexer;
+            }
             case SyntaxKind.EventDeclaration:
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    return symbol.Kind == SymbolKind.Event;
-                }
+            {
+                return symbol.Kind == SymbolKind.Event;
+            }
             default:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
         }
     }
 
@@ -220,62 +220,62 @@ internal static class AddMemberToInterfaceRefactoring
         switch (memberDeclaration)
         {
             case MethodDeclarationSyntax methodDeclaration:
-                {
-                    return MethodDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        default(SyntaxTokenList),
-                        methodDeclaration.ReturnType.WithoutTrivia(),
-                        default(ExplicitInterfaceSpecifierSyntax),
-                        methodDeclaration.Identifier.WithoutTrivia(),
-                        methodDeclaration.TypeParameterList?.WithoutTrivia(),
-                        methodDeclaration.ParameterList.WithoutTrivia(),
-                        default(SyntaxList<TypeParameterConstraintClauseSyntax>),
-                        default(BlockSyntax),
-                        default(ArrowExpressionClauseSyntax),
-                        SemicolonToken());
-                }
+            {
+                return MethodDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    default(SyntaxTokenList),
+                    methodDeclaration.ReturnType.WithoutTrivia(),
+                    default(ExplicitInterfaceSpecifierSyntax),
+                    methodDeclaration.Identifier.WithoutTrivia(),
+                    methodDeclaration.TypeParameterList?.WithoutTrivia(),
+                    methodDeclaration.ParameterList.WithoutTrivia(),
+                    default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                    default(BlockSyntax),
+                    default(ArrowExpressionClauseSyntax),
+                    SemicolonToken());
+            }
             case PropertyDeclarationSyntax propertyDeclaration:
-                {
-                    return PropertyDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        default(SyntaxTokenList),
-                        propertyDeclaration.Type.WithoutTrivia(),
-                        default(ExplicitInterfaceSpecifierSyntax),
-                        propertyDeclaration.Identifier.WithoutTrivia(),
-                        CreateInterfaceAccessorList(propertyDeclaration.AccessorList));
-                }
+            {
+                return PropertyDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    default(SyntaxTokenList),
+                    propertyDeclaration.Type.WithoutTrivia(),
+                    default(ExplicitInterfaceSpecifierSyntax),
+                    propertyDeclaration.Identifier.WithoutTrivia(),
+                    CreateInterfaceAccessorList(propertyDeclaration.AccessorList));
+            }
             case IndexerDeclarationSyntax indexerDeclaration:
-                {
-                    return IndexerDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        default(SyntaxTokenList),
-                        indexerDeclaration.Type.WithoutTrivia(),
-                        default(ExplicitInterfaceSpecifierSyntax),
-                        indexerDeclaration.ParameterList.WithoutTrivia(),
-                        CreateInterfaceAccessorList(indexerDeclaration.AccessorList));
-                }
+            {
+                return IndexerDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    default(SyntaxTokenList),
+                    indexerDeclaration.Type.WithoutTrivia(),
+                    default(ExplicitInterfaceSpecifierSyntax),
+                    indexerDeclaration.ParameterList.WithoutTrivia(),
+                    CreateInterfaceAccessorList(indexerDeclaration.AccessorList));
+            }
             case EventDeclarationSyntax eventDeclaration:
-                {
-                    return EventFieldDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        default(SyntaxTokenList),
-                        Token(SyntaxKind.EventKeyword),
-                        VariableDeclaration(eventDeclaration.Type.WithoutTrivia(), eventDeclaration.Identifier.WithoutTrivia()),
-                        SemicolonToken());
-                }
+            {
+                return EventFieldDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    default(SyntaxTokenList),
+                    Token(SyntaxKind.EventKeyword),
+                    VariableDeclaration(eventDeclaration.Type.WithoutTrivia(), eventDeclaration.Identifier.WithoutTrivia()),
+                    SemicolonToken());
+            }
             case EventFieldDeclarationSyntax eventFieldDeclaration:
-                {
-                    return EventFieldDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        default(SyntaxTokenList),
-                        Token(SyntaxKind.EventKeyword),
-                        eventFieldDeclaration.Declaration.WithoutTrivia(),
-                        SemicolonToken());
-                }
+            {
+                return EventFieldDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    default(SyntaxTokenList),
+                    Token(SyntaxKind.EventKeyword),
+                    eventFieldDeclaration.Declaration.WithoutTrivia(),
+                    SemicolonToken());
+            }
             default:
-                {
-                    throw new ArgumentException("", nameof(memberDeclaration));
-                }
+            {
+                throw new ArgumentException("", nameof(memberDeclaration));
+            }
         }
     }
 

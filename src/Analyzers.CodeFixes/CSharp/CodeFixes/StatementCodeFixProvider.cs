@@ -48,68 +48,68 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.InlineLazyInitialization:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Inline lazy initialization",
-                            ct =>
-                            {
-                                return InlineLazyInitializationAsync(
-                                    context.Document,
-                                    (IfStatementSyntax)statement,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Inline lazy initialization",
+                        ct =>
+                        {
+                            return InlineLazyInitializationAsync(
+                                context.Document,
+                                (IfStatementSyntax)statement,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall:
-                    {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
-                        var invocation = (InvocationExpressionSyntax)expressionStatement.Expression;
-                        var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                {
+                    var expressionStatement = (ExpressionStatementSyntax)statement;
+                    var invocation = (InvocationExpressionSyntax)expressionStatement.Expression;
+                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Remove redundant '{memberAccess.Name?.Identifier.ValueText}' call",
-                            ct => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Remove redundant '{memberAccess.Name?.Identifier.ValueText}' call",
+                        ct => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantStatement:
-                    {
-                        CodeAction codeAction = CodeActionFactory.RemoveStatement(
-                            context.Document,
-                            statement,
-                            title: $"Remove redundant {CSharpFacts.GetTitle(statement)}",
-                            equivalenceKey: GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeActionFactory.RemoveStatement(
+                        context.Document,
+                        statement,
+                        title: $"Remove redundant {CSharpFacts.GetTitle(statement)}",
+                        equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseMethodChaining:
+                {
+                    var expressionStatement = (ExpressionStatementSyntax)statement;
+
+                    UseMethodChainingAnalysis analysis;
+                    if (expressionStatement.Expression.Kind() == SyntaxKind.InvocationExpression)
                     {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
-
-                        UseMethodChainingAnalysis analysis;
-                        if (expressionStatement.Expression.Kind() == SyntaxKind.InvocationExpression)
-                        {
-                            analysis = UseMethodChainingAnalysis.WithoutAssignmentAnalysis;
-                        }
-                        else
-                        {
-                            analysis = UseMethodChainingAnalysis.WithAssignmentAnalysis;
-                        }
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use method chaining",
-                            ct => UseMethodChainingRefactoring.RefactorAsync(context.Document, analysis, expressionStatement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
+                        analysis = UseMethodChainingAnalysis.WithoutAssignmentAnalysis;
                     }
+                    else
+                    {
+                        analysis = UseMethodChainingAnalysis.WithAssignmentAnalysis;
+                    }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use method chaining",
+                        ct => UseMethodChainingRefactoring.RefactorAsync(context.Document, analysis, expressionStatement, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

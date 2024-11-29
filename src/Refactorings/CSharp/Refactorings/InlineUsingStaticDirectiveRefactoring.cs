@@ -78,15 +78,15 @@ internal static class InlineUsingStaticDirectiveRefactoring
         switch (node)
         {
             case CompilationUnitSyntax compilationUnit:
-                {
-                    UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
-                    return compilationUnit.RemoveNode(usingDirective);
-                }
+            {
+                UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
+                return compilationUnit.RemoveNode(usingDirective);
+            }
             case NamespaceDeclarationSyntax namespaceDeclaration:
-                {
-                    UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
-                    return namespaceDeclaration.RemoveNode(usingDirective);
-                }
+            {
+                UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
+                return namespaceDeclaration.RemoveNode(usingDirective);
+            }
         }
 
         return node;

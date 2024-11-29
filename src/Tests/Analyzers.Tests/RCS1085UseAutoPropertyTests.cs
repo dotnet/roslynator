@@ -952,4 +952,33 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    public async Task TestNoDiagnostic_BackingFieldUsedByReference()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Buffers;
+
+class Repro(ReadOnlySequence<byte> data)
+{
+    public ReadOnlySequence<byte> Data => _data;
+    private readonly ReadOnlySequence<byte> _data = data;
+
+    public void Method(IBufferWriter<byte> writer)
+    {
+        Write1(in _data, writer);
+        Write2(in _data, writer);
+    }
+
+    private static void Write1(in ReadOnlySequence<byte> data, IBufferWriter<byte> writer)
+    {
+        data.CopyTo(writer.GetSpan((int)data.Length));
+    }
+
+    private static void Write2(ref readonly ReadOnlySequence<byte> data, IBufferWriter<byte> writer)
+    {
+        data.CopyTo(writer.GetSpan((int)data.Length));
+    }
+}");
+    }
 }

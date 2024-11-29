@@ -59,35 +59,35 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
         {
             case SyntaxKind.SingleLineCommentTrivia:
             case SyntaxKind.MultiLineCommentTrivia:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.NonDocumentationComment))
-                        AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
+            {
+                if (ShouldVisit(SpellingScopeFilter.NonDocumentationComment))
+                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.SingleLineDocumentationCommentTrivia:
             case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.DocumentationComment))
-                        base.VisitTrivia(trivia);
+            {
+                if (ShouldVisit(SpellingScopeFilter.DocumentationComment))
+                    base.VisitTrivia(trivia);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.RegionDirectiveTrivia:
             case SyntaxKind.EndRegionDirectiveTrivia:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Region))
-                        base.VisitTrivia(trivia);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Region))
+                    base.VisitTrivia(trivia);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.PreprocessingMessageTrivia:
-                {
-                    Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
+            {
+                Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
 
-                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
-                    break;
-                }
+                AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
+                break;
+            }
         }
     }
 
@@ -120,82 +120,82 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
         {
             case SyntaxKind.LocalDeclarationStatement:
             case SyntaxKind.UsingStatement:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.LocalVariable))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.LocalVariable))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.FieldDeclaration:
-                {
-                    if (ShouldVisitFieldDeclaration(containingNode))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisitFieldDeclaration(containingNode))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
             case SyntaxKind.DelegateDeclaration:
             case SyntaxKind.IndexerDeclaration:
             case SyntaxKind.LocalFunctionStatement:
             case SyntaxKind.MethodDeclaration:
             case SyntaxKind.PropertyDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.ReturnType))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.ReturnType))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EventDeclaration:
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Event))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Event))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ClassDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Class))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Class))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Struct))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Struct))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Interface))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Interface))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Record))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Record))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.Parameter:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Parameter))
-                        base.VisitTupleType(node);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Parameter))
+                    base.VisitTupleType(node);
 
-                    break;
-                }
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(containingNode);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(containingNode);
+                break;
+            }
         }
     }
 
@@ -246,31 +246,31 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
             case SyntaxKind.UsingStatement:
             case SyntaxKind.ForStatement:
             case SyntaxKind.FixedStatement:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.LocalVariable))
-                        AnalyzeIdentifier(node.Identifier);
+            {
+                if (ShouldVisit(SpellingScopeFilter.LocalVariable))
+                    AnalyzeIdentifier(node.Identifier);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.FieldDeclaration:
-                {
-                    if (ShouldVisitFieldDeclaration(containingNode))
-                        AnalyzeIdentifier(node.Identifier);
+            {
+                if (ShouldVisitFieldDeclaration(containingNode))
+                    AnalyzeIdentifier(node.Identifier);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    if (ShouldVisit(SpellingScopeFilter.Event))
-                        AnalyzeIdentifier(node.Identifier);
+            {
+                if (ShouldVisit(SpellingScopeFilter.Event))
+                    AnalyzeIdentifier(node.Identifier);
 
-                    break;
-                }
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(containingNode);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(containingNode);
+                break;
+            }
         }
 
         base.VisitVariableDeclarator(node);
@@ -316,19 +316,19 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
         switch (node)
         {
             case IdentifierNameSyntax identifierName:
-                {
-                    AnalyzeIdentifier(identifierName.Identifier);
-                    break;
-                }
+            {
+                AnalyzeIdentifier(identifierName.Identifier);
+                break;
+            }
             case QualifiedNameSyntax qualifiedName:
-                {
-                    VisitName(qualifiedName.Left);
+            {
+                VisitName(qualifiedName.Left);
 
-                    if (qualifiedName.Right is IdentifierNameSyntax identifierName)
-                        AnalyzeIdentifier(identifierName.Identifier);
+                if (qualifiedName.Right is IdentifierNameSyntax identifierName)
+                    AnalyzeIdentifier(identifierName.Identifier);
 
-                    break;
-                }
+                break;
+            }
         }
     }
 

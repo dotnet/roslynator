@@ -32,25 +32,25 @@ public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
         switch (node.Kind())
         {
             case SyntaxKind.CastExpression:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Remove redundant cast",
-                        ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
-                        GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove redundant cast",
+                    ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
+                    GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                break;
+            }
             case SyntaxKind.InvocationExpression:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Remove redundant cast",
-                        ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
-                        GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove redundant cast",
+                    ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
+                    GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                break;
+            }
         }
     }
 }

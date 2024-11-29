@@ -50,85 +50,85 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Combine 'Where' method chain",
-                            ct => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Combine 'Where' method chain",
+                        ct => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
-                    {
-                        string propertyName = diagnostic.Properties["PropertyName"];
+                {
+                    string propertyName = diagnostic.Properties["PropertyName"];
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Use '{propertyName}' property instead of calling 'Any'",
-                            ct => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Use '{propertyName}' property instead of calling 'Any'",
+                        ct => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantToStringCall:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant 'ToString' call",
-                            ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant 'ToString' call",
+                        ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant 'ToCharArray' call",
-                            ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant 'ToCharArray' call",
+                        ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CallExtensionMethodAsInstanceMethodRefactoring.Title,
-                            ct => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        CallExtensionMethodAsInstanceMethodRefactoring.Title,
+                        ct => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.CallThenByInsteadOfOrderBy:
-                    {
-                        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+                {
+                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
 
-                        string oldName = invocationInfo.NameText;
+                    string oldName = invocationInfo.NameText;
 
-                        string newName = (string.Equals(oldName, "OrderBy", StringComparison.Ordinal))
-                            ? "ThenBy"
-                            : "ThenByDescending";
+                    string newName = (string.Equals(oldName, "OrderBy", StringComparison.Ordinal))
+                        ? "ThenBy"
+                        : "ThenByDescending";
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Call '{newName}' instead of '{oldName}'",
-                            ct => CallThenByInsteadOfOrderByAsync(context.Document, invocation, newName, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Call '{newName}' instead of '{oldName}'",
+                        ct => CallThenByInsteadOfOrderByAsync(context.Document, invocation, newName, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use string interpolation",
-                            ct => UseStringInterpolationInsteadOfStringConcatAsync(context.Document, invocation, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use string interpolation",
+                        ct => UseStringInterpolationInsteadOfStringConcatAsync(context.Document, invocation, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

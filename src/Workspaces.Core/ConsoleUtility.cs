@@ -75,191 +75,191 @@ internal static class ConsoleUtility
             switch (keyInfo.Key)
             {
                 case ConsoleKey.LeftArrow:
+                {
+                    int index = GetIndex();
+
+                    if (index == 0)
+                        break;
+
+                    if (keyInfo.Modifiers == ConsoleModifiers.Control)
                     {
-                        int index = GetIndex();
-
-                        if (index == 0)
-                            break;
-
-                        if (keyInfo.Modifiers == ConsoleModifiers.Control)
+                        int i = index - 1;
+                        while (i > 0)
                         {
-                            int i = index - 1;
-                            while (i > 0)
+                            if (char.IsLetterOrDigit(buffer[i])
+                                && !char.IsLetterOrDigit(buffer[i - 1]))
                             {
-                                if (char.IsLetterOrDigit(buffer[i])
-                                    && !char.IsLetterOrDigit(buffer[i - 1]))
-                                {
-                                    break;
-                                }
-
-                                i--;
+                                break;
                             }
 
-                            MoveCursorLeft(index - i);
-                            break;
+                            i--;
                         }
 
-                        if (Console.CursorLeft == 0)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth - 1, Console.CursorTop - 1);
-                        }
-                        else
-                        {
-                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                        }
-
+                        MoveCursorLeft(index - i);
                         break;
                     }
+
+                    if (Console.CursorLeft == 0)
+                    {
+                        Console.SetCursorPosition(Console.WindowWidth - 1, Console.CursorTop - 1);
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+
+                    break;
+                }
                 case ConsoleKey.RightArrow:
+                {
+                    int index = GetIndex();
+
+                    if (index == buffer.Count)
+                        break;
+
+                    if (keyInfo.Modifiers == ConsoleModifiers.Control)
                     {
-                        int index = GetIndex();
-
-                        if (index == buffer.Count)
-                            break;
-
-                        if (keyInfo.Modifiers == ConsoleModifiers.Control)
+                        int i = index + 1;
+                        while (i < buffer.Count - 1)
                         {
-                            int i = index + 1;
-                            while (i < buffer.Count - 1)
+                            if (char.IsLetterOrDigit(buffer[i])
+                                && !char.IsLetterOrDigit(buffer[i + 1]))
                             {
-                                if (char.IsLetterOrDigit(buffer[i])
-                                    && !char.IsLetterOrDigit(buffer[i + 1]))
-                                {
-                                    break;
-                                }
-
-                                i++;
+                                break;
                             }
 
-                            MoveCursorRight(i + 1 - index);
-                            break;
+                            i++;
                         }
 
-                        if (Console.CursorLeft == Console.WindowWidth - 1)
-                        {
-                            Console.SetCursorPosition(0, Console.CursorTop + 1);
-                        }
-                        else
-                        {
-                            Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
-                        }
-
+                        MoveCursorRight(i + 1 - index);
                         break;
                     }
+
+                    if (Console.CursorLeft == Console.WindowWidth - 1)
+                    {
+                        Console.SetCursorPosition(0, Console.CursorTop + 1);
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    }
+
+                    break;
+                }
                 case ConsoleKey.Home:
-                    {
-                        Console.SetCursorPosition(initLeft, initTop);
-                        break;
-                    }
+                {
+                    Console.SetCursorPosition(initLeft, initTop);
+                    break;
+                }
                 case ConsoleKey.End:
-                    {
-                        MoveCursorRight(buffer.Count - GetIndex());
-                        break;
-                    }
+                {
+                    MoveCursorRight(buffer.Count - GetIndex());
+                    break;
+                }
                 case ConsoleKey.Backspace:
-                    {
-                        if (buffer.Count == 0)
-                            break;
-
-                        int index = GetIndex();
-
-                        if (index == 0)
-                            break;
-
-                        buffer.RemoveAt(index - 1);
-
-                        int left = Console.CursorLeft - 1;
-                        int top = Console.CursorTop;
-
-                        if (Console.CursorLeft == 0)
-                        {
-                            left = Console.WindowWidth - 1;
-                            top--;
-                        }
-
-                        Console.SetCursorPosition(left, top);
-
-                        char[] text = buffer.Skip(index - 1).Append(' ').ToArray();
-                        Console.Write(text);
-
-                        Console.SetCursorPosition(left, top);
+                {
+                    if (buffer.Count == 0)
                         break;
+
+                    int index = GetIndex();
+
+                    if (index == 0)
+                        break;
+
+                    buffer.RemoveAt(index - 1);
+
+                    int left = Console.CursorLeft - 1;
+                    int top = Console.CursorTop;
+
+                    if (Console.CursorLeft == 0)
+                    {
+                        left = Console.WindowWidth - 1;
+                        top--;
                     }
+
+                    Console.SetCursorPosition(left, top);
+
+                    char[] text = buffer.Skip(index - 1).Append(' ').ToArray();
+                    Console.Write(text);
+
+                    Console.SetCursorPosition(left, top);
+                    break;
+                }
                 case ConsoleKey.Delete:
-                    {
-                        if (buffer.Count == 0)
-                            break;
-
-                        int index = GetIndex();
-
-                        if (buffer.Count == index)
-                            break;
-
-                        buffer.RemoveAt(index);
-
-                        int left = Console.CursorLeft;
-                        int top = Console.CursorTop;
-
-                        char[] text = buffer.Skip(index).Append(' ').ToArray();
-                        Console.Write(text);
-
-                        Console.SetCursorPosition(left, top);
-
+                {
+                    if (buffer.Count == 0)
                         break;
-                    }
+
+                    int index = GetIndex();
+
+                    if (buffer.Count == index)
+                        break;
+
+                    buffer.RemoveAt(index);
+
+                    int left = Console.CursorLeft;
+                    int top = Console.CursorTop;
+
+                    char[] text = buffer.Skip(index).Append(' ').ToArray();
+                    Console.Write(text);
+
+                    Console.SetCursorPosition(left, top);
+
+                    break;
+                }
                 case ConsoleKey.Escape:
-                    {
-                        Reset(useDefaultValue: buffer.Count == 0);
-                        break;
-                    }
+                {
+                    Reset(useDefaultValue: buffer.Count == 0);
+                    break;
+                }
                 case ConsoleKey.PageDown:
-                    {
-                        if (keyInfo.Modifiers != ConsoleModifiers.Control)
-                            Reset();
-
-                        break;
-                    }
-                case ConsoleKey.UpArrow:
-                    {
+                {
+                    if (keyInfo.Modifiers != ConsoleModifiers.Control)
                         Reset();
-                        break;
-                    }
+
+                    break;
+                }
+                case ConsoleKey.UpArrow:
+                {
+                    Reset();
+                    break;
+                }
                 default:
+                {
+                    char ch = keyInfo.KeyChar;
+
+                    // ctrl+c
+                    if (keyInfo.Modifiers == ConsoleModifiers.Control
+                        && ch == 3)
                     {
-                        char ch = keyInfo.KeyChar;
-
-                        // ctrl+c
-                        if (keyInfo.Modifiers == ConsoleModifiers.Control
-                            && ch == 3)
-                        {
-                            Console.WriteLine();
-                            throw new OperationCanceledException();
-                        }
-
-                        if (ch < 32)
-                            break;
-
-                        int index = GetIndex();
-
-                        buffer.Insert(index, ch);
-
-                        int left = Console.CursorLeft;
-                        int top = Console.CursorTop;
-
-                        char[] text = buffer.Skip(index).ToArray();
-                        Console.Write(text);
-
-                        if (left == Console.WindowWidth - 1)
-                        {
-                            Console.SetCursorPosition(0, top + 1);
-                        }
-                        else
-                        {
-                            Console.SetCursorPosition(left + 1, top);
-                        }
-
-                        break;
+                        Console.WriteLine();
+                        throw new OperationCanceledException();
                     }
+
+                    if (ch < 32)
+                        break;
+
+                    int index = GetIndex();
+
+                    buffer.Insert(index, ch);
+
+                    int left = Console.CursorLeft;
+                    int top = Console.CursorTop;
+
+                    char[] text = buffer.Skip(index).ToArray();
+                    Console.Write(text);
+
+                    if (left == Console.WindowWidth - 1)
+                    {
+                        Console.SetCursorPosition(0, top + 1);
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(left + 1, top);
+                    }
+
+                    break;
+                }
             }
 
             keyInfo = Console.ReadKey(true);

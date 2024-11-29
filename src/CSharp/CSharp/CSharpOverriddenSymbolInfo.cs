@@ -24,14 +24,14 @@ internal static class CSharpOverriddenSymbolInfo
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SyntaxKind.VariableDeclarator:
-                {
-                    return node.IsParentKind(SyntaxKind.VariableDeclaration)
-                        && node.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration);
-                }
+            {
+                return node.IsParentKind(SyntaxKind.VariableDeclaration)
+                    && node.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration);
+            }
         }
 
         return false;

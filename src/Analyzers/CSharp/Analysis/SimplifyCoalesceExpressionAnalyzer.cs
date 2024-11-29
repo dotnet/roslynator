@@ -98,12 +98,12 @@ public sealed class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.NullLiteralExpression:
                 return BinaryExpressionPart.Left;
             case SyntaxKind.DefaultExpression:
-                {
-                    if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)left, semanticModel, cancellationToken))
-                        return BinaryExpressionPart.Left;
+            {
+                if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)left, semanticModel, cancellationToken))
+                    return BinaryExpressionPart.Left;
 
-                    break;
-                }
+                break;
+            }
         }
 
         Optional<object> optional = semanticModel.GetConstantValue(left, cancellationToken);
@@ -134,16 +134,16 @@ public sealed class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
         switch (rightKind)
         {
             case SyntaxKind.NullLiteralExpression:
-                {
-                    return BinaryExpressionPart.Right;
-                }
+            {
+                return BinaryExpressionPart.Right;
+            }
             case SyntaxKind.DefaultExpression:
-                {
-                    if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)right, semanticModel, cancellationToken))
-                        return BinaryExpressionPart.Right;
+            {
+                if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)right, semanticModel, cancellationToken))
+                    return BinaryExpressionPart.Right;
 
-                    break;
-                }
+                break;
+            }
         }
 
         if (leftKind == rightKind

@@ -26,36 +26,36 @@ internal abstract class UseMethodChainingAnalysis
         switch (parent?.Kind())
         {
             case SyntaxKind.ExpressionStatement:
-                {
-                    var expressionStatement = (ExpressionStatementSyntax)parent;
+            {
+                var expressionStatement = (ExpressionStatementSyntax)parent;
 
-                    if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
-                        break;
+                if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
+                    break;
 
-                    string name = identifierName.Identifier.ValueText;
+                string name = identifierName.Identifier.ValueText;
 
-                    return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                }
+                return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+            }
             case SyntaxKind.SimpleAssignmentExpression:
-                {
-                    var assignmentExpression = (AssignmentExpressionSyntax)parent;
+            {
+                var assignmentExpression = (AssignmentExpressionSyntax)parent;
 
-                    if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
-                        break;
+                if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
+                    break;
 
-                    if (assignmentExpression.Right != invocationExpression)
-                        break;
+                if (assignmentExpression.Right != invocationExpression)
+                    break;
 
-                    if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
-                        break;
+                if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
+                    break;
 
-                    string name = identifierName.Identifier.ValueText;
+                string name = identifierName.Identifier.ValueText;
 
-                    if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
-                        break;
+                if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
+                    break;
 
-                    return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                }
+                return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+            }
         }
 
         return false;
@@ -69,6 +69,9 @@ internal abstract class UseMethodChainingAnalysis
         CancellationToken cancellationToken)
     {
         if (statement.SpanOrTrailingTriviaContainsDirectives())
+            return false;
+
+        if (statement.GetTrailingTrivia().Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)))
             return false;
 
         StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
@@ -99,7 +102,12 @@ internal abstract class UseMethodChainingAnalysis
         int j = i;
         while (j < statements.Count - 1)
         {
-            if (!IsFixableStatement(statements[j + 1], name, returnType, semanticModel, cancellationToken))
+            StatementSyntax statement2 = statements[j + 1];
+
+            if (statement2.GetLeadingTrivia().Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)))
+                break;
+
+            if (!IsFixableStatement(statement2, name, returnType, semanticModel, cancellationToken))
                 break;
 
             j++;

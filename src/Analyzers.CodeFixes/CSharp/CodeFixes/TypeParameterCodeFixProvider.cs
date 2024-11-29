@@ -33,15 +33,15 @@ public sealed class TypeParameterCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UnusedTypeParameter:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Remove unused type parameter '{typeParameter.Identifier}'",
-                            ct => UnusedParameterRefactoring.RefactorAsync(context.Document, typeParameter, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Remove unused type parameter '{typeParameter.Identifier}'",
+                        ct => UnusedParameterRefactoring.RefactorAsync(context.Document, typeParameter, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

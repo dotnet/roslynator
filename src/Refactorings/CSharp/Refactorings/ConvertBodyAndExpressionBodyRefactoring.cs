@@ -45,117 +45,117 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
         switch (memberDeclaration)
         {
             case MethodDeclarationSyntax methodDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(methodDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(methodDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case PropertyDeclarationSyntax propertyDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(propertyDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(propertyDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case IndexerDeclarationSyntax indexerDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(indexerDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(indexerDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case OperatorDeclarationSyntax operatorDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(conversionOperatorDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(conversionOperatorDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case ConstructorDeclarationSyntax constructorDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(constructorDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(constructorDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
             case DestructorDeclarationSyntax destructorDeclaration:
+            {
+                ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                            return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
-                    }
-                    else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration))
-                    {
-                        return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
-                    }
-
-                    return default;
+                    if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                 }
+                else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration))
+                {
+                    return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
+                }
+
+                return default;
+            }
         }
 
         return default;

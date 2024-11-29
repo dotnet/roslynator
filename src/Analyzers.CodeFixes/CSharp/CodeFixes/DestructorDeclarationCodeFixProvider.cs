@@ -32,16 +32,16 @@ public sealed class DestructorDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveEmptyDestructor:
-                    {
-                        CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
-                            context.Document,
-                            destructor,
-                            title: "Remove empty destructor",
-                            equivalenceKey: GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                        context.Document,
+                        destructor,
+                        title: "Remove empty destructor",
+                        equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

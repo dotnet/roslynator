@@ -588,14 +588,19 @@ public static class SyntaxKindTests
                 case SyntaxKind.CollectionExpression:
                 case SyntaxKind.ExpressionElement:
                 case SyntaxKind.SpreadElement:
-                    {
-                        break;
-                    }
+                // new in 4.11.0
+                case SyntaxKind.AllowsConstraintClause:
+                case SyntaxKind.AllowsKeyword:
+                case SyntaxKind.RazorContentToken:
+                case SyntaxKind.RefStructConstraint:
+                {
+                    break;
+                }
                 default:
-                    {
-                        (unknownKinds ??= new List<SyntaxKind>()).Add(value);
-                        break;
-                    }
+                {
+                    (unknownKinds ??= new List<SyntaxKind>()).Add(value);
+                    break;
+                }
             }
         }
 

@@ -18,7 +18,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     private static readonly MetadataName Microsoft_AspNetCore_Components_CascadingParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.CascadingParameterAttribute");
     private static readonly MetadataName Microsoft_AspNetCore_Components_InjectAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.InjectAttribute");
     private static readonly MetadataName Newtonsoft_Json_JsonPropertyAttribute = MetadataName.Parse("Newtonsoft.Json.JsonPropertyAttribute");
-    private static readonly MetadataName UnityEngine_SerializeFieldAttribute = MetadataName.Parse("UnityEngine.SerializeFieldAttribute");
+    private static readonly MetadataName UnityEngine_SerializeField = MetadataName.Parse("UnityEngine.SerializeField");
 
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -93,61 +93,61 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
             switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.PropertyDeclaration:
-                    {
-                        if (skipProperty)
-                            break;
-
-                        var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
-
-                        AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
-
-                        if (setter?.IsKind(SyntaxKind.InitAccessorDeclaration) == false
-                            && setter.BodyOrExpressionBody() is null
-                            && !setter.AttributeLists.Any()
-                            && !setter.SpanContainsDirectives())
-                        {
-                            IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
-
-                            IMethodSymbol setMethod = propertySymbol.SetMethod;
-
-                            if (setMethod?.DeclaredAccessibility == Accessibility.Private
-                                && setMethod.GetAttributes().IsEmpty
-                                && !propertySymbol.IsIndexer
-                                && !propertySymbol.IsReadOnly
-                                && ValidateType(propertySymbol.Type)
-                                && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                                && AnalyzePropertyAttributes(propertySymbol))
-                            {
-                                symbols[propertySymbol.Name] = (propertyDeclaration, propertySymbol);
-                            }
-                        }
-
+                {
+                    if (skipProperty)
                         break;
+
+                    var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
+
+                    AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
+
+                    if (setter?.IsKind(SyntaxKind.InitAccessorDeclaration) == false
+                        && setter.BodyOrExpressionBody() is null
+                        && !setter.AttributeLists.Any()
+                        && !setter.SpanContainsDirectives())
+                    {
+                        IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+
+                        IMethodSymbol setMethod = propertySymbol.SetMethod;
+
+                        if (setMethod?.DeclaredAccessibility == Accessibility.Private
+                            && setMethod.GetAttributes().IsEmpty
+                            && !propertySymbol.IsIndexer
+                            && !propertySymbol.IsReadOnly
+                            && ValidateType(propertySymbol.Type)
+                            && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
+                            && AnalyzePropertyAttributes(propertySymbol))
+                        {
+                            symbols[propertySymbol.Name] = (propertyDeclaration, propertySymbol);
+                        }
                     }
+
+                    break;
+                }
                 case SyntaxKind.FieldDeclaration:
-                    {
-                        if (skipField)
-                            break;
-
-                        var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
-
-                        foreach (VariableDeclaratorSyntax declarator in fieldDeclaration.Declaration.Variables)
-                        {
-                            if (context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken) is IFieldSymbol fieldSymbol
-                                && !fieldSymbol.IsConst
-                                && fieldSymbol.DeclaredAccessibility == Accessibility.Private
-                                && !fieldSymbol.IsReadOnly
-                                && !fieldSymbol.IsVolatile
-                                && ValidateType(fieldSymbol.Type)
-                                && (context.IsUnityCodeAnalysisEnabled() != true
-                                    || !fieldSymbol.HasAttribute(UnityEngine_SerializeFieldAttribute)))
-                            {
-                                symbols[fieldSymbol.Name] = (declarator, fieldSymbol);
-                            }
-                        }
-
+                {
+                    if (skipField)
                         break;
+
+                    var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
+
+                    foreach (VariableDeclaratorSyntax declarator in fieldDeclaration.Declaration.Variables)
+                    {
+                        if (context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken) is IFieldSymbol fieldSymbol
+                            && !fieldSymbol.IsConst
+                            && fieldSymbol.DeclaredAccessibility == Accessibility.Private
+                            && !fieldSymbol.IsReadOnly
+                            && !fieldSymbol.IsVolatile
+                            && ValidateType(fieldSymbol.Type)
+                            && (context.IsUnityCodeAnalysisEnabled() != true
+                                || !fieldSymbol.HasAttribute(UnityEngine_SerializeField)))
+                        {
+                            symbols[fieldSymbol.Name] = (declarator, fieldSymbol);
+                        }
                     }
+
+                    break;
+                }
             }
         }
 

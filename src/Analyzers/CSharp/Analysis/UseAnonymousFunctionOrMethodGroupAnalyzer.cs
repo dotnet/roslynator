@@ -483,18 +483,18 @@ public sealed class UseAnonymousFunctionOrMethodGroupAnalyzer : BaseDiagnosticAn
             switch (expression?.Kind())
             {
                 case SyntaxKind.IdentifierName:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        expression = ((MemberAccessExpressionSyntax)expression).Expression;
-                        break;
-                    }
+                {
+                    expression = ((MemberAccessExpressionSyntax)expression).Expression;
+                    break;
+                }
                 default:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
         }
     }

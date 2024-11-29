@@ -1288,4 +1288,41 @@ class C
 }
 """");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    static void M(string x, int y)
+    {
+        C.M(
+            """
+            
+               xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            """,
+            0);
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawStringLiteral2()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    void M()
+    {
+        string x = "x";
+        var value = $$"""
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{x}}
+            """;
+    }
+}
+"""");
+    }
 }

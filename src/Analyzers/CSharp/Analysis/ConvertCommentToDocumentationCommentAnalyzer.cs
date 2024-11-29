@@ -30,7 +30,6 @@ public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosti
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
 #if ROSLYN_4_0
@@ -51,18 +50,6 @@ public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosti
         context.RegisterSyntaxNodeAction(f => AnalyzeFieldDeclaration(f), SyntaxKind.FieldDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeEventFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeEventDeclaration(f), SyntaxKind.EventDeclaration);
-    }
-
-    private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        if (AnalyzeLeading(context))
-            return;
-
-        var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
-
-        TrailingAnalysis? analysis = AnalyzeTrailing(namespaceDeclaration.Name);
-
-        ReportDiagnostic(context, analysis);
     }
 
     private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)

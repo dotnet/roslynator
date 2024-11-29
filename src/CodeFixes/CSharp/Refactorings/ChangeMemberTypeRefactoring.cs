@@ -181,28 +181,28 @@ internal static class ChangeMemberTypeRefactoring
         switch (semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken))
         {
             case IMethodSymbol methodSymbol:
+            {
+                MethodKind methodKind = methodSymbol.MethodKind;
+
+                if (methodKind == MethodKind.PropertyGet)
                 {
-                    MethodKind methodKind = methodSymbol.MethodKind;
+                    var propertySymbol = (IPropertySymbol)methodSymbol.AssociatedSymbol;
 
-                    if (methodKind == MethodKind.PropertyGet)
-                    {
-                        var propertySymbol = (IPropertySymbol)methodSymbol.AssociatedSymbol;
-
-                        return (propertySymbol, propertySymbol.Type);
-                    }
-
-                    if (methodKind == MethodKind.Ordinary
-                        && methodSymbol.PartialImplementationPart is not null)
-                    {
-                        methodSymbol = methodSymbol.PartialImplementationPart;
-                    }
-
-                    return (methodSymbol, methodSymbol.ReturnType);
+                    return (propertySymbol, propertySymbol.Type);
                 }
+
+                if (methodKind == MethodKind.Ordinary
+                    && methodSymbol.PartialImplementationPart is not null)
+                {
+                    methodSymbol = methodSymbol.PartialImplementationPart;
+                }
+
+                return (methodSymbol, methodSymbol.ReturnType);
+            }
             case IFieldSymbol fieldSymbol:
-                {
-                    return (fieldSymbol, fieldSymbol.Type);
-                }
+            {
+                return (fieldSymbol, fieldSymbol.Type);
+            }
         }
 
         SyntaxDebug.Fail(expression);

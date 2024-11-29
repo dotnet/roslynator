@@ -82,15 +82,15 @@ internal readonly struct TypeParameterConstraintInfo
             {
                 case SyntaxKind.ClassConstraint:
                 case SyntaxKind.StructConstraint:
+                {
+                    for (int i = 0; i < index; i++)
                     {
-                        for (int i = 0; i < index; i++)
-                        {
-                            if (constraints[i].Kind() == kind)
-                                return true;
-                        }
-
-                        break;
+                        if (constraints[i].Kind() == kind)
+                            return true;
                     }
+
+                    break;
+                }
             }
 
             return false;
@@ -120,85 +120,85 @@ internal readonly struct TypeParameterConstraintInfo
         switch (parent?.Kind())
         {
             case SyntaxKind.ClassDeclaration:
-                {
-                    var classDeclaration = (ClassDeclarationSyntax)parent;
+            {
+                var classDeclaration = (ClassDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = classDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = classDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.DelegateDeclaration:
-                {
-                    var delegateDeclaration = (DelegateDeclarationSyntax)parent;
+            {
+                var delegateDeclaration = (DelegateDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = delegateDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = delegateDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
+            {
+                var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = interfaceDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = interfaceDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    var localFunctionStatement = (LocalFunctionStatementSyntax)parent;
+            {
+                var localFunctionStatement = (LocalFunctionStatementSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = localFunctionStatement.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = localFunctionStatement.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)parent;
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = methodDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = methodDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    var recordDeclaration = (RecordDeclarationSyntax)parent;
+            {
+                var recordDeclaration = (RecordDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = recordDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = recordDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    var structDeclaration = (StructDeclarationSyntax)parent;
+            {
+                var structDeclaration = (StructDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax? typeParameterList = structDeclaration.TypeParameterList;
+                TypeParameterListSyntax? typeParameterList = structDeclaration.TypeParameterList;
 
-                    if (!Check(typeParameterList, allowMissing))
-                        return default;
+                if (!Check(typeParameterList, allowMissing))
+                    return default;
 
-                    return new TypeParameterConstraintInfo(constraint, constraintClause);
-                }
+                return new TypeParameterConstraintInfo(constraint, constraintClause);
+            }
         }
 
         return default;

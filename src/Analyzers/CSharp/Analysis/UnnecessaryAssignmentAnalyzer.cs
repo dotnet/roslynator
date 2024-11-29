@@ -133,23 +133,23 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
             switch (statements.Last().Kind())
             {
                 case SyntaxKind.ThrowStatement:
-                    {
-                        continue;
-                    }
+                {
+                    continue;
+                }
                 case SyntaxKind.BreakStatement:
-                    {
-                        if (statements.Count == 1
-                            || !IsSymbolAssignedInStatementWithCorrectType(symbol, statements.LastButOne(), semanticModel, returnTypeSymbol, cancellationToken))
-                        {
-                            return;
-                        }
-
-                        break;
-                    }
-                default:
+                {
+                    if (statements.Count == 1
+                        || !IsSymbolAssignedInStatementWithCorrectType(symbol, statements.LastButOne(), semanticModel, returnTypeSymbol, cancellationToken))
                     {
                         return;
                     }
+
+                    break;
+                }
+                default:
+                {
+                    return;
+                }
             }
         }
 
@@ -176,32 +176,32 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         switch (symbol.Kind)
         {
             case SymbolKind.Local:
-                {
-                    var localSymbol = (ILocalSymbol)symbol;
+            {
+                var localSymbol = (ILocalSymbol)symbol;
 
-                    var localDeclarationStatement = localSymbol.GetSyntax(cancellationToken).Parent.Parent as LocalDeclarationStatementSyntax;
+                var localDeclarationStatement = localSymbol.GetSyntax(cancellationToken).Parent.Parent as LocalDeclarationStatementSyntax;
 
-                    return localDeclarationStatement?.Parent == containingNode;
-                }
+                return localDeclarationStatement?.Parent == containingNode;
+            }
             case SymbolKind.Parameter:
+            {
+                var parameterSymbol = (IParameterSymbol)symbol;
+
+                if (parameterSymbol.RefKind == RefKind.None)
                 {
-                    var parameterSymbol = (IParameterSymbol)symbol;
+                    ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(containingNode.SpanStart, cancellationToken);
 
-                    if (parameterSymbol.RefKind == RefKind.None)
+                    if (enclosingSymbol is not null)
                     {
-                        ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(containingNode.SpanStart, cancellationToken);
+                        ImmutableArray<IParameterSymbol> parameters = enclosingSymbol.ParametersOrDefault();
 
-                        if (enclosingSymbol is not null)
-                        {
-                            ImmutableArray<IParameterSymbol> parameters = enclosingSymbol.ParametersOrDefault();
-
-                            return !parameters.IsDefault
-                                && parameters.Contains(parameterSymbol);
-                        }
+                        return !parameters.IsDefault
+                            && parameters.Contains(parameterSymbol);
                     }
-
-                    break;
                 }
+
+                break;
+            }
         }
 
         return false;

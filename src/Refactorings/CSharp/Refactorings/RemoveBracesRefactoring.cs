@@ -174,19 +174,19 @@ internal static class RemoveBracesRefactoring
                     {
                         case SyntaxKind.LocalDeclarationStatement:
                         case SyntaxKind.LabeledStatement:
-                            {
-                                return false;
-                            }
+                        {
+                            return false;
+                        }
                         case SyntaxKind.IfStatement:
-                            {
-                                return kind != SyntaxKind.IfStatement
-                                    || ((IfStatementSyntax)parent).Else is null
-                                    || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
-                            }
+                        {
+                            return kind != SyntaxKind.IfStatement
+                                || ((IfStatementSyntax)parent).Else is null
+                                || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
+                        }
                         default:
-                            {
-                                return true;
-                            }
+                        {
+                            return true;
+                        }
                     }
                 }
             }

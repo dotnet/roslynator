@@ -32,6 +32,11 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.4.2119" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Package 'MessagePack' 2.2.85 has a known moderate severity vulnerability -->
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-4qm4-8hg2-g2xm" />
+  </ItemGroup>
+
   <PropertyGroup>
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>

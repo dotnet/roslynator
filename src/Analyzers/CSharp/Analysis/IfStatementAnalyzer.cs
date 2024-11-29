@@ -82,29 +82,29 @@ public sealed class IfStatementAnalyzer : BaseDiagnosticAnalyzer
                 case IfAnalysisKind.IfElseToReturnWithCoalesceExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression:
                 case IfAnalysisKind.IfReturnToReturnWithCoalesceExpression:
-                    {
-                        if (DiagnosticRules.UseCoalesceExpressionInsteadOfIf.IsEffective(context))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseCoalesceExpressionInsteadOfIf, ifStatement);
+                {
+                    if (DiagnosticRules.UseCoalesceExpressionInsteadOfIf.IsEffective(context))
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseCoalesceExpressionInsteadOfIf, ifStatement);
 
-                        break;
-                    }
+                    break;
+                }
                 case IfAnalysisKind.IfElseToReturnWithExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithExpression:
                 case IfAnalysisKind.IfReturnToReturnWithExpression:
-                    {
-                        if (DiagnosticRules.ConvertIfToReturnStatement.IsEffective(context))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertIfToReturnStatement, ifStatement);
+                {
+                    if (DiagnosticRules.ConvertIfToReturnStatement.IsEffective(context))
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertIfToReturnStatement, ifStatement);
 
-                        break;
-                    }
+                    break;
+                }
                 case IfAnalysisKind.IfElseToAssignmentWithExpression:
                 case IfAnalysisKind.IfElseToAssignmentWithCondition:
-                    {
-                        if (DiagnosticRules.ConvertIfToAssignment.IsEffective(context))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertIfToAssignment, ifStatement);
+                {
+                    if (DiagnosticRules.ConvertIfToAssignment.IsEffective(context))
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertIfToAssignment, ifStatement);
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
     }

@@ -518,58 +518,58 @@ public static class SymbolExtensions
                 case Accessibility.Public:
                 case Accessibility.Protected:
                 case Accessibility.ProtectedOrInternal:
-                    {
-                        symbol = symbol.ContainingType;
-                        break;
-                    }
+                {
+                    symbol = symbol.ContainingType;
+                    break;
+                }
                 case Accessibility.Internal:
                 case Accessibility.ProtectedAndInternal:
-                    {
-                        if (visibility == Visibility.Public)
-                            visibility = Visibility.Internal;
+                {
+                    if (visibility == Visibility.Public)
+                        visibility = Visibility.Internal;
 
-                        symbol = symbol.ContainingType;
-                        break;
-                    }
+                    symbol = symbol.ContainingType;
+                    break;
+                }
                 case Accessibility.Private:
-                    {
-                        visibility = Visibility.Private;
+                {
+                    visibility = Visibility.Private;
 
-                        symbol = symbol.ContainingType;
-                        break;
-                    }
+                    symbol = symbol.ContainingType;
+                    break;
+                }
                 case Accessibility.NotApplicable:
+                {
+                    switch (symbol.Kind)
                     {
-                        switch (symbol.Kind)
+                        case SymbolKind.Local:
                         {
-                            case SymbolKind.Local:
-                                {
-                                    return Visibility.Private;
-                                }
-                            case SymbolKind.Parameter:
-                            case SymbolKind.TypeParameter:
-                                {
-                                    symbol = symbol.ContainingSymbol;
-                                    break;
-                                }
-                            case SymbolKind.Namespace:
-                            case SymbolKind.Alias:
-                                {
-                                    return Visibility.NotApplicable;
-                                }
-                            default:
-                                {
-                                    Debug.Fail(symbol.ToDisplayString(SymbolDisplayFormats.Test));
-                                    return Visibility.NotApplicable;
-                                }
+                            return Visibility.Private;
                         }
+                        case SymbolKind.Parameter:
+                        case SymbolKind.TypeParameter:
+                        {
+                            symbol = symbol.ContainingSymbol;
+                            break;
+                        }
+                        case SymbolKind.Namespace:
+                        case SymbolKind.Alias:
+                        {
+                            return Visibility.NotApplicable;
+                        }
+                        default:
+                        {
+                            Debug.Fail(symbol.ToDisplayString(SymbolDisplayFormats.Test));
+                            return Visibility.NotApplicable;
+                        }
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException($"Unknown accessibility '{symbol.DeclaredAccessibility}'.");
-                    }
+                {
+                    throw new InvalidOperationException($"Unknown accessibility '{symbol.DeclaredAccessibility}'.");
+                }
             }
         }
         while (symbol is not null);
@@ -1532,30 +1532,30 @@ public static class SymbolExtensions
         {
             case SymbolKind.TypeParameter:
             case SymbolKind.DynamicType:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SymbolKind.ArrayType:
-                {
-                    return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
-                }
+            {
+                return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
+            }
             case SymbolKind.NamedType:
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                if (typeSymbol.IsTupleType)
                 {
-                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-
-                    if (typeSymbol.IsTupleType)
+                    foreach (IFieldSymbol tupleElement in namedTypeSymbol.TupleElements)
                     {
-                        foreach (IFieldSymbol tupleElement in namedTypeSymbol.TupleElements)
-                        {
-                            if (!SupportsExplicitDeclaration(tupleElement.Type))
-                                return false;
-                        }
-
-                        return true;
+                        if (!SupportsExplicitDeclaration(tupleElement.Type))
+                            return false;
                     }
 
-                    return SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments);
+                    return true;
                 }
+
+                return SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments);
+            }
         }
 
         return false;
@@ -1570,18 +1570,18 @@ public static class SymbolExtensions
                 switch (symbol.Kind)
                 {
                     case SymbolKind.NamedType:
-                        {
-                            var namedTypeSymbol = (INamedTypeSymbol)symbol;
+                    {
+                        var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
-                            if (!SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments))
-                                return false;
-
-                            break;
-                        }
-                    case SymbolKind.ErrorType:
-                        {
+                        if (!SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments))
                             return false;
-                        }
+
+                        break;
+                    }
+                    case SymbolKind.ErrorType:
+                    {
+                        return false;
+                    }
                 }
             }
 

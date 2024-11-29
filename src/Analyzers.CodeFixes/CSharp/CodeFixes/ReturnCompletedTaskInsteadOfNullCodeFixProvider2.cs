@@ -127,43 +127,43 @@ public class ReturnCompletedTaskInsteadOfNullCodeFixProvider2 : BaseCodeFixProvi
             switch (node)
             {
                 case MethodDeclarationSyntax methodDeclaration:
-                    {
-                        return methodDeclaration
-                            .WithExpressionBody(null)
-                            .WithBody(Block(statements));
-                    }
+                {
+                    return methodDeclaration
+                        .WithExpressionBody(null)
+                        .WithBody(Block(statements));
+                }
                 case LocalFunctionStatementSyntax localFunction:
-                    {
-                        return localFunction
-                            .WithExpressionBody(null)
-                            .WithBody(Block(statements));
-                    }
+                {
+                    return localFunction
+                        .WithExpressionBody(null)
+                        .WithBody(Block(statements));
+                }
                 case PropertyDeclarationSyntax propertyDeclaration:
-                    {
-                        return propertyDeclaration
-                            .WithExpressionBody(null)
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithAccessorList(AccessorList(GetAccessorDeclaration(Block(statements))));
-                    }
+                {
+                    return propertyDeclaration
+                        .WithExpressionBody(null)
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithAccessorList(AccessorList(GetAccessorDeclaration(Block(statements))));
+                }
                 case IndexerDeclarationSyntax indexerDeclaration:
-                    {
-                        return indexerDeclaration
-                            .WithExpressionBody(null)
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithAccessorList(AccessorList(GetAccessorDeclaration(Block(statements))));
-                    }
+                {
+                    return indexerDeclaration
+                        .WithExpressionBody(null)
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithAccessorList(AccessorList(GetAccessorDeclaration(Block(statements))));
+                }
                 case AccessorDeclarationSyntax accessorDeclaration:
-                    {
-                        return accessorDeclaration
-                            .WithExpressionBody(null)
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(statements));
-                    }
+                {
+                    return accessorDeclaration
+                        .WithExpressionBody(null)
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block(statements));
+                }
                 default:
-                    {
-                        SyntaxDebug.Fail(node);
-                        return node;
-                    }
+                {
+                    SyntaxDebug.Fail(node);
+                    return node;
+                }
             }
         }
     }

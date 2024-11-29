@@ -32,51 +32,51 @@ internal static class RemoveAsyncAwait
             switch (node)
             {
                 case MethodDeclarationSyntax methodDeclaration:
-                    {
-                        return remover
-                            .VisitMethodDeclaration(methodDeclaration)
-                            .RemoveModifier(SyntaxKind.AsyncKeyword);
-                    }
+                {
+                    return remover
+                        .VisitMethodDeclaration(methodDeclaration)
+                        .RemoveModifier(SyntaxKind.AsyncKeyword);
+                }
                 case LocalFunctionStatementSyntax localFunction:
+                {
+                    BlockSyntax body = localFunction.Body;
+
+                    if (body is not null)
                     {
-                        BlockSyntax body = localFunction.Body;
-
-                        if (body is not null)
-                        {
-                            localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
-                        }
-                        else
-                        {
-                            ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
-
-                            if (expressionBody is not null)
-                                localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
-                        }
-
-                        return localFunction.RemoveModifier(SyntaxKind.AsyncKeyword);
+                        localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
                     }
+                    else
+                    {
+                        ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
+
+                        if (expressionBody is not null)
+                            localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
+                    }
+
+                    return localFunction.RemoveModifier(SyntaxKind.AsyncKeyword);
+                }
                 case SimpleLambdaExpressionSyntax lambda:
-                    {
-                        return lambda
-                            .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
-                    }
+                {
+                    return lambda
+                        .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
+                }
                 case ParenthesizedLambdaExpressionSyntax lambda:
-                    {
-                        return lambda
-                            .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
-                    }
+                {
+                    return lambda
+                        .WithBody((CSharpSyntaxNode)remover.Visit(lambda.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(lambda.AsyncKeyword));
+                }
                 case AnonymousMethodExpressionSyntax anonymousMethod:
-                    {
-                        return anonymousMethod
-                            .WithBody((CSharpSyntaxNode)remover.Visit(anonymousMethod.Body))
-                            .WithAsyncKeyword(GetMissingAsyncKeyword(anonymousMethod.AsyncKeyword));
-                    }
+                {
+                    return anonymousMethod
+                        .WithBody((CSharpSyntaxNode)remover.Visit(anonymousMethod.Body))
+                        .WithAsyncKeyword(GetMissingAsyncKeyword(anonymousMethod.AsyncKeyword));
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
         }
     }
@@ -109,19 +109,14 @@ internal static class RemoveAsyncAwait
         {
             ExpressionSyntax expression = awaitExpression.Expression;
 
-            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol)
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol
+                && typeSymbol.IsAwaitable(semanticModel, expression.SpanStart)
+                && expression is InvocationExpressionSyntax invocation)
             {
-                if (typeSymbol.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable)
-                    || typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T))
-                {
-                    if (expression is InvocationExpressionSyntax invocation)
-                    {
-                        var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
+                var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
 
-                        if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
-                            expression = memberAccess.Expression;
-                    }
-                }
+                if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
+                    expression = memberAccess.Expression;
             }
 
             return expression.WithTriviaFrom(awaitExpression);

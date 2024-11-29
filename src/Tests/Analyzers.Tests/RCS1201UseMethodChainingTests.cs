@@ -198,4 +198,50 @@ public class C2
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task TestNoDiagnostic_CommentsBetween()
+    {
+        await VerifyNoDiagnosticAsync("""
+
+using System.Text;
+
+public class C
+{
+    public void M()
+    {
+        var sb = new StringBuilder();
+
+        // first
+        sb.Append("first");
+
+        // second
+        sb.Append("second");
+    }
+}
+
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task TestNoDiagnostic_CommentsBetween2()
+    {
+        await VerifyNoDiagnosticAsync("""
+
+using System.Text;
+
+public class C
+{
+    public void M()
+    {
+        var sb = new StringBuilder();
+
+        sb.Append("first"); // first
+
+        sb.Append("second");
+    }
+}
+
+""");
+    }
 }

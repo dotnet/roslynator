@@ -39,7 +39,7 @@ internal static class TextUtility
 
         return value.Remove(index)
             + replacement
-            + value.Substring(endIndex, value.Length - endIndex);
+            + value.Substring(endIndex);
     }
 
     public static string SetTextCasing(string s, TextCasing textCasing)
