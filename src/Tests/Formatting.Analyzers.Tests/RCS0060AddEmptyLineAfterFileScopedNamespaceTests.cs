@@ -85,7 +85,7 @@ class C
     public async Task Test_AddEmptyLine5()
     {
         await VerifyDiagnosticAndFixAsync(@"
-namespace A.B;[|class|] C
+namespace A.B;[|c|]lass C
 {
 }
 ", @"

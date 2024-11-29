@@ -58,7 +58,7 @@ class C
         do
         {
             M();
-        }[|while|] (x);
+        }[|w|]hile (x);
     }
 }
 ", @"
