@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -32,22 +33,11 @@ internal struct TriviaBlockReader
 
     public readonly SyntaxTrivia Current => _list[_index];
 
-    public SyntaxTrivia ReadLine()
+    public SyntaxTrivia ReadWhile(Func<SyntaxTrivia, bool> predicate)
     {
         while (MoveNext())
         {
-            if (!Current.IsWhitespaceTrivia())
-                return Current;
-        }
-
-        return default;
-    }
-
-    public SyntaxTrivia ReadTo(SyntaxKind kind)
-    {
-        while (MoveNext())
-        {
-            if (Current.IsKind(kind))
+            if (!predicate(Current))
                 return Current;
         }
 
@@ -57,17 +47,12 @@ internal struct TriviaBlockReader
     public void ReadTo(int position)
     {
         while (MoveNext()
-            && Current.SpanStart != position)
+            && Current.SpanStart < position)
         {
         }
     }
 
-    public bool ReadWhiteSpaceTrivia()
-    {
-        return Read(SyntaxKind.WhitespaceTrivia);
-    }
-
-    public bool Read(SyntaxKind kind)
+    public bool TryRead(SyntaxKind kind)
     {
         if (Peek().IsKind(kind))
         {
@@ -78,7 +63,7 @@ internal struct TriviaBlockReader
         return false;
     }
 
-    public void ReadWhiteSpace()
+    public void ReadWhiteSpaces()
     {
         while (Peek().IsWhitespaceOrEndOfLineTrivia())
             MoveNext();
@@ -111,7 +96,7 @@ internal struct TriviaBlockReader
         }
     }
 
-    public readonly SyntaxTrivia Peek(int offset = 0)
+    private readonly SyntaxTrivia Peek(int offset = 0)
     {
         offset++;
         if (_index + offset < _list.Count)

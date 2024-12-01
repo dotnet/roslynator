@@ -54,10 +54,9 @@ internal readonly struct TriviaBlock
         if (Kind == TriviaBlockKind.BlankLine)
         {
             TriviaBlockReader reader = CreateReader();
-
-            reader.ReadTo(SyntaxKind.EndOfLineTrivia);
-            SyntaxTrivia trivia = reader.ReadTo(SyntaxKind.EndOfLineTrivia);
-            span = trivia.Span;
+            reader.ReadWhile(trivia => !trivia.IsEndOfLineTrivia());
+            reader.ReadWhile(trivia => !trivia.IsEndOfLineTrivia());
+            span = reader.Current.Span;
         }
         else
         {
@@ -168,7 +167,7 @@ internal readonly struct TriviaBlock
 
         while (true)
         {
-            SyntaxTrivia trivia = reader.ReadLine();
+            SyntaxTrivia trivia = reader.ReadWhile(trivia => trivia.IsWhitespaceTrivia());
 
             if (trivia.IsDirective)
                 return default;
@@ -212,7 +211,7 @@ internal readonly struct TriviaBlock
                 }
                 case SyntaxKind.SingleLineCommentTrivia:
                 {
-                    if (!reader.Read(SyntaxKind.EndOfLineTrivia))
+                    if (!reader.TryRead(SyntaxKind.EndOfLineTrivia))
                         return default;
 
                     if (first.IsKind(SyntaxKind.None))

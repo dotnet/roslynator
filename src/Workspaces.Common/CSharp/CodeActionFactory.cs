@@ -158,7 +158,7 @@ internal static class CodeActionFactory
             {
                 TriviaBlockReader reader = block.CreateReader();
 
-                if (reader.ReadWhiteSpaceTrivia())
+                if (reader.TryRead(SyntaxKind.WhitespaceTrivia))
                     position = reader.Current.Span.End;
 
                 return new TextChange(new TextSpan(position, 0), endOfLine + endOfLine);
@@ -199,7 +199,7 @@ internal static class CodeActionFactory
         {
             case TriviaBlockKind.NoNewLine:
             {
-                int end = (reader.ReadWhiteSpaceTrivia()) ? reader.Current.Span.End : position;
+                int end = (reader.TryRead(SyntaxKind.WhitespaceTrivia)) ? reader.Current.Span.End : position;
 
                 string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
 
@@ -211,14 +211,14 @@ internal static class CodeActionFactory
             }
             case TriviaBlockKind.NewLine:
             {
-                reader.ReadWhiteSpace();
+                reader.ReadWhiteSpaces();
 
                 return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), newLineReplacement);
             }
             case TriviaBlockKind.BlankLine:
             {
                 reader.ReadTo(position);
-                reader.ReadWhiteSpace();
+                reader.ReadWhiteSpaces();
 
                 return new TextChange(TextSpan.FromBounds(node.Span.End, reader.Current.Span.End), newLineReplacement);
             }
