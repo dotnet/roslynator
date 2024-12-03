@@ -213,8 +213,7 @@ class C
                 return "a";
             }
 [|
-|]
-            case "b":
+|]            case "b":
             {
                 return "b";
             }
@@ -271,8 +270,7 @@ class C
                 return "b";
             }
 [|
-|]
-            default:
+|]            default:
                 return null;
         }
     }
