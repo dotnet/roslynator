@@ -16,8 +16,8 @@ public class RCS0039RemoveNewLineBeforeBaseListTests : AbstractCSharpDiagnosticV
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"
-class C[||]
-    : B
+class C[|
+|]    : B
 {
 }
 
@@ -40,8 +40,8 @@ class B
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
-[||]
-    : B
+[|
+|]    : B
 {
 }
 
@@ -63,8 +63,8 @@ class B
     public async Task Test_ClassWithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
-class C<T>[||]
-    : B
+class C<T>[|
+|]    : B
 {
 }
 
@@ -86,8 +86,8 @@ class B
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
-interface C[||]
-    : B
+interface C[|
+|]    : B
 {
 }
 
@@ -109,8 +109,8 @@ interface B
     public async Task Test_Interface_WithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
-interface C<T>[||]
-    : B
+interface C<T>[|
+|]    : B
 {
 }
 
@@ -132,8 +132,8 @@ interface B
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
-struct C[||]
-    : B
+struct C[|
+|]    : B
 {
 }
 
@@ -155,8 +155,8 @@ interface B
     public async Task Test_Struct_WithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
-struct C<T>[||]
-    : B
+struct C<T>[|
+|]    : B
 {
 }
 
@@ -178,8 +178,8 @@ interface B
     public async Task Test_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
-enum E[||]
-    : int
+enum E[|
+|]    : int
 {
 }
 ", @"

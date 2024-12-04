@@ -18,8 +18,8 @@ public class RCS0009AddEmptyLineBetweenDeclarationAndDocumentationCommentTests :
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P1 { get; set; }[||]
-    /// <summary>
+    string P1 { get; set; }[|
+|]    /// <summary>
     /// x
     /// </summary>
     string P2 { get; set; }
@@ -45,8 +45,8 @@ class C
 {
     void M1()
     {
-    }[||]
-    /// <summary>
+    }[|
+|]    /// <summary>
     /// x
     /// </summary>
     void M2()
@@ -76,8 +76,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
-    A = 0,[||]
-    /// <summary>
+    A = 0,[|
+|]    /// <summary>
     /// x
     /// </summary>
     B = 1
@@ -104,8 +104,8 @@ using System;
 enum E
 {
     [Obsolete]
-    A = 0,[||]
-    /// <summary>
+    A = 0,[|
+|]    /// <summary>
     /// x
     /// </summary>
     [Obsolete]
