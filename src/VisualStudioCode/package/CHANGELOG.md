@@ -7,6 +7,100 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.12.10] - 2024-12-05
+
+### Fixed
+
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1586))
+- Improve code fixer for [RCS1228](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1228) ([PR](https://github.com/dotnet/roslynator/pull/1585))
+- Fix diagnostic message for [RCS0032](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0032) ([PR](https://github.com/dotnet/roslynator/pull/1588))
+
+### Changed
+
+- Update whitespace formatting rules ([PR](https://github.com/dotnet/roslynator/pull/1576))
+- Ensure that diagnostics are not reported with zero length ([PR](https://github.com/dotnet/roslynator/pull/1590))
+
+## [4.12.9] - 2024-10-25
+
+### Fixed
+
+- Fix analyzer [RCS1090](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1090) ([PR](https://github.com/dotnet/roslynator/pull/1566))
+- Fix analyzer [RCS1124](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1124) ([PR](https://github.com/dotnet/roslynator/pull/1572))
+- [CLI] Fix command `generate-doc` ([PR](https://github.com/dotnet/roslynator/pull/1568), [PR](https://github.com/dotnet/roslynator/pull/1570))
+
+### Changed
+
+- Update analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1653))
+    - Do not suggest to change `list.FirstOrDefault(predicate)` to `list.Find(predicate)`.
+      Performance gain is negligible and actually `FirstOrDefault` can be even faster on .NET 9 (see related [issue](https://github.com/dotnet/roslynator/pull/1531) for more details).
+
+## [4.12.8] - 2024-10-11
+
+### Fixed
+
+- Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) ([PR](https://github.com/dotnet/roslynator/pull/1547))
+- Fix analyzer [RCS1223](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1223) ([PR](https://github.com/dotnet/roslynator/pull/1552))
+- Fix analyzer [RCS1140](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1140) ([PR](https://github.com/dotnet/roslynator/pull/1554))
+- Fix analyzer [RCS1096](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1096) ([PR](https://github.com/dotnet/roslynator/pull/1558))
+- [CLI] Improve removing of unused symbols ([PR](https://github.com/dotnet/roslynator/pull/1550))
+- [CLI] Fix command `generate-doc` ([PR](https://github.com/dotnet/roslynator/pull/1559))
+
+## [4.12.7] - 2024-10-01
+
+### Fixed
+
+- Fix analyzer [RCS1202](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1202) ([PR](https://github.com/dotnet/roslynator/pull/1542))
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1543))
+- Fix analyzer [RCS1140](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1140) ([PR](https://github.com/dotnet/roslynator/pull/1524) by @Qluxzz)
+- Fix analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1544))
+
+### Changed
+
+- Add support for duck-typed awaitables and task-like types for Task/Async-related analyzers ([PR](https://github.com/dotnet/roslynator/pull/1535) by @Govorunb)
+    - Affects the following analyzers:
+        - [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046)
+        - [RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047)
+        - [RCS1090](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1090)
+        - [RCS1174](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1174)
+        - [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229)
+        - [RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261)
+    - Affects refactoring [RR0209](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0209)
+
+## [4.12.6] - 2024-09-23
+
+### Added
+
+- Analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) now suggests to use `Order` instead of `OrderBy` ([PR](https://github.com/dotnet/roslynator/pull/1522) by @BenjaminBrienen)
+
+### Fixed
+
+- Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) ([PR](https://github.com/dotnet/roslynator/pull/1518))
+- Fix analyzer [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) ([PR](https://github.com/dotnet/roslynator/pull/1521))
+- Fix analyzer [RCS1181](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1181) ([PR](https://github.com/dotnet/roslynator/pull/1526))
+- Fix analyzer [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([PR](https://github.com/dotnet/roslynator/pull/1533))
+- Fix analyzer [RCS1181](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1181) ([PR](https://github.com/dotnet/roslynator/pull/1534))
+
+## [4.12.5] - 2024-09-13
+
+### Fixed
+
+- Fix analyzer [RCS1182](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1182) ([PR](https://github.com/dotnet/roslynator/pull/1502))
+- Fix analyzer [RCS1198](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1198) ([PR](https://github.com/dotnet/roslynator/pull/1501))
+- Fix analyzer [RCS1214](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1214) ([PR](https://github.com/dotnet/roslynator/pull/1500))
+- Fix analyzer [RCS1018](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1018) ([PR](https://github.com/dotnet/roslynator/pull/1510))
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1511))
+- Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) ([PR](https://github.com/dotnet/roslynator/pull/1512))
+- Fix analyzer [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) ([PR](https://github.com/dotnet/roslynator/pull/1514))
+
+### Changed
+
+- Bump Roslyn to 4.11.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+    - Applies to CLI and testing library.
+
+### Removed
+
+- [CLI] Remove support for .NET SDK 6 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+
 ## [4.12.4] - 2024-06-01
 
 ### Fixed
