@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update whitespace formatting rules ([PR](https://github.com/dotnet/roslynator/pull/1576))
+- Ensure that diagnostics are not reported with zero length ([PR](https://github.com/dotnet/roslynator/pull/1590))
 
 ## [4.12.9] - 2024-10-25
 
