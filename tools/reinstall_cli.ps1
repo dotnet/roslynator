@@ -1,4 +1,4 @@
-Remove-Item -Path "$PSScriptRoot/../src/CommandLine/bin/Release/net8.0" -Recurse
+Remove-Item -Path "$PSScriptRoot/../src/CommandLine/bin/Release/net9.0" -Recurse
 Remove-Item -Path "$PSScriptRoot/../src/CommandLine/bin/Release/Roslynator.DotNet.Cli.*.nupkg"
 
 dotnet pack "$PSScriptRoot/../src/CommandLine/CommandLine.csproj" -c Release -v minimal /p:RoslynatorDotNetCli=true,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1573,1591"
