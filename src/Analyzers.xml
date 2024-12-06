@@ -1630,6 +1630,23 @@ public class C
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS0062</Id>
+    <Identifier>PutExpressionBodyOnItsOwnLine</Identifier>
+    <Title>Put expression body on its own line</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object Foo() => null;]]></Before>
+        <After><![CDATA[object Foo()
+    => null;]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="arrow_token_new_line" IsRequired="false" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS1001</Id>
     <Identifier>AddBracesWhenExpressionSpansOverMultipleLines</Identifier>
     <Title>Add braces (when expression spans over multiple lines)</Title>

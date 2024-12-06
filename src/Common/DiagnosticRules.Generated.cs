@@ -645,6 +645,18 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
             customTags:         []);
 
+        /// <summary>RCS0062</summary>
+        public static readonly DiagnosticDescriptor PutExpressionBodyOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine, 
+            title:              "Put expression body on its own line", 
+            messageFormat:      "Put expression body on its own line", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine, 
+            customTags:         []);
+
         /// <summary>RCS1001</summary>
         public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
