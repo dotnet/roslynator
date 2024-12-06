@@ -645,5 +645,17 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0062</summary>
+        public static readonly DiagnosticDescriptor PutExpressionBodyOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine, 
+            title:              "Put expression body on its own line", 
+            messageFormat:      "Put expression body on its own line", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine, 
+            customTags:         Array.Empty<string>());
+
     }
 }

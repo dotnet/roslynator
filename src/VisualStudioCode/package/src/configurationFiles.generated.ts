@@ -42,7 +42,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Applicable to: rcs1014
 
 #roslynator_arrow_token_new_line = after|before
-# Applicable to: rcs0032
+# Applicable to: rcs0032, rcs0062
 
 #roslynator_binary_operator_new_line = after|before
 # Applicable to: rcs0027
@@ -308,6 +308,10 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add/remove blank line between switch sections
 #dotnet_diagnostic.rcs0061.severity = none
 # Options: roslynator_blank_line_between_switch_sections
+
+# Put expression body on its own line
+#dotnet_diagnostic.rcs0062.severity = none
+# Options: roslynator_arrow_token_new_line
 
 # Add braces (when expression spans over multiple lines)
 #dotnet_diagnostic.rcs1001.severity = suggestion
