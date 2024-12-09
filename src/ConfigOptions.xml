@@ -119,6 +119,10 @@
       <Value>before</Value>
     </Values>
   </Option>
+  <Option Id="ExpressionBodyStyleOnNextLine">
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Place expression body always on next/same line</Description>
+  </Option>
   <Option Id="MaxLineLength">
     <DefaultValue>140</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>

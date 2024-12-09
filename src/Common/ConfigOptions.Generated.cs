@@ -129,6 +129,12 @@ namespace Roslynator
             defaultValuePlaceholder: "after|before", 
             description:             "Place new line after/before equals sign");
 
+        public static readonly ConfigOptionDescriptor ExpressionBodyStyleOnNextLine = new(
+            key:                     ConfigOptionKeys.ExpressionBodyStyleOnNextLine, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Place expression body always on next/same line");
+
         public static readonly ConfigOptionDescriptor InfiniteLoopStyle = new(
             key:                     ConfigOptionKeys.InfiniteLoopStyle, 
             defaultValue:            null, 
@@ -260,7 +266,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS0060", JoinOptionKeys(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration));
             yield return new KeyValuePair<string, string>("RCS0061", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSwitchSections));
             yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.ArrayCreationTypeStyle));
-            yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
+            yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, ConfigOptionKeys.ExpressionBodyStyleOnNextLine));
             yield return new KeyValuePair<string, string>("RCS1018", JoinOptionKeys(ConfigOptionKeys.AccessibilityModifiers));
             yield return new KeyValuePair<string, string>("RCS1050", JoinOptionKeys(ConfigOptionKeys.ObjectCreationParenthesesStyle));
             yield return new KeyValuePair<string, string>("RCS1051", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle));

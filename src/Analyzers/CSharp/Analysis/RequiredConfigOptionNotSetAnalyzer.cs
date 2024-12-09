@@ -15,6 +15,7 @@ internal sealed class RequiredConfigOptionNotSetAnalyzer : AbstractRequiredConfi
 
     private static readonly ConfigOptionDescriptor[] _useBlockBodyOrExpressionBodyOptions = [
         ConfigOptions.BodyStyle,
+        ConfigOptions.ExpressionBodyStyleOnNextLine,
         ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines,
         ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines,
     ];

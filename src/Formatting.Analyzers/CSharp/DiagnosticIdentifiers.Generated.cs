@@ -61,5 +61,6 @@ namespace Roslynator.Formatting.CSharp
         public const string PlaceNewLineAfterOrBeforeNullConditionalOperator = "RCS0059";
         public const string BlankLineAfterFileScopedNamespaceDeclaration = "RCS0060";
         public const string BlankLineBetweenSwitchSections = "RCS0061";
+        public const string PutExpressionBodyOnItsOwnLine = "RCS0062";
     }
 }

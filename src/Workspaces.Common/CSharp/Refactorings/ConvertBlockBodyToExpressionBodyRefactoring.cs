@@ -1,15 +1,19 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.CodeStyle;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings;
@@ -333,6 +337,33 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
         expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);
 
+        NewLinePosition newLinePosition = GetArrowNewLinePosition(declaration.Kind(), configOptions);
+        return CreateArrayExpression(arrowToken, expression, newLinePosition);
+    }
+
+    private static NewLinePosition GetArrowNewLinePosition(SyntaxKind syntaxKind, AnalyzerConfigOptions configOptions)
+    {
+        if (ConvertExpressionBodyAnalysis.BreakExpressionOnNewLine(syntaxKind, configOptions))
+        {
+            return configOptions.GetArrowTokenNewLinePosition();
+        }
+        else
+        {
+            return NewLinePosition.None;
+        }
+    }
+
+    private static ArrowExpressionClauseSyntax CreateArrayExpression(SyntaxToken arrowToken, ExpressionSyntax expression, NewLinePosition newLinePosition)
+    {
+        switch (newLinePosition)
+        {
+            case NewLinePosition.After:
+                arrowToken = arrowToken.AppendToTrailingTrivia(CSharpFactory.NewLine());
+                break;
+            case NewLinePosition.Before:
+                arrowToken = arrowToken.PrependToLeadingTrivia(CSharpFactory.NewLine());
+                break;
+        }
         return ArrowExpressionClause(arrowToken, expression);
     }
 
