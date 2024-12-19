@@ -10,138 +10,39 @@ namespace Roslynator.CodeAnalysis.CSharp
     public static partial class DiagnosticRules
     {
         /// <summary>RCS9001</summary>
-        public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UsePatternMatching, 
-            title:              "Use pattern matching", 
-            messageFormat:      "Use pattern matching", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePatternMatching, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptors.RCS9001_UsePatternMatching;
 
         /// <summary>RCS9002</summary>
-        public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
-            title:              "Use property SyntaxNode.SpanStart", 
-            messageFormat:      "Use property SyntaxNode.SpanStart", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptors.RCS9002_UsePropertySyntaxNodeSpanStart;
 
         /// <summary>RCS9003</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
-            title:              "Unnecessary conditional access", 
-            messageFormat:      "Unnecessary conditional access", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
+        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptors.RCS9003_UnnecessaryConditionalAccess;
 
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccessFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnnecessaryConditionalAccess);
 
         /// <summary>RCS9004</summary>
-        public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
-            title:              "Call 'Any' instead of accessing 'Count'", 
-            messageFormat:      "Call 'Any' instead of accessing 'Count'", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptors.RCS9004_CallAnyInsteadOfAccessingCount;
 
         /// <summary>RCS9005</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnnecessaryNullCheck, 
-            title:              "Unnecessary null check", 
-            messageFormat:      "Unnecessary null check", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullCheck, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
+        public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptors.RCS9005_UnnecessaryNullCheck;
 
         /// <summary>RCS9006</summary>
-        public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseElementAccess, 
-            title:              "Use element access", 
-            messageFormat:      "Use element access", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseElementAccess, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptors.RCS9006_UseElementAccess;
 
         /// <summary>RCS9007</summary>
-        public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseReturnValue, 
-            title:              "Use return value", 
-            messageFormat:      "Use return value", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseReturnValue, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptors.RCS9007_UseReturnValue;
 
         /// <summary>RCS9008</summary>
-        public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
-            title:              "Call 'Last' instead of using []", 
-            messageFormat:      "Call 'Last' instead of using []", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptors.RCS9008_CallLastInsteadOfUsingElementAccess;
 
         /// <summary>RCS9009</summary>
-        public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnknownLanguageName, 
-            title:              "Unknown language name", 
-            messageFormat:      "Unknown language name", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnknownLanguageName, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptors.RCS9009_UnknownLanguageName;
 
         /// <summary>RCS9010</summary>
-        public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
-            title:              "Specify ExportCodeRefactoringProviderAttribute.Name", 
-            messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptors.RCS9010_SpecifyExportCodeRefactoringProviderAttributeName;
 
         /// <summary>RCS9011</summary>
-        public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
-            title:              "Specify ExportCodeFixProviderAttribute.Name", 
-            messageFormat:      "Specify ExportCodeFixProviderAttribute.Name", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptors.RCS9011_SpecifyExportCodeFixProviderAttributeName;
 
     }
 }

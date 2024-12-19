@@ -10,640 +10,163 @@ namespace Roslynator.Formatting.CSharp
     public static partial class DiagnosticRules
     {
         /// <summary>RCS0001</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineAfterEmbeddedStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement, 
-            title:              "Add blank line after embedded statement", 
-            messageFormat:      "Add blank line after embedded statement", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineAfterEmbeddedStatement = DiagnosticDescriptors.RCS0001_AddBlankLineAfterEmbeddedStatement;
 
         /// <summary>RCS0002</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineAfterRegionDirective = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineAfterRegionDirective, 
-            title:              "Add blank line after #region", 
-            messageFormat:      "Add blank line after #region", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterRegionDirective, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineAfterRegionDirective = DiagnosticDescriptors.RCS0002_AddBlankLineAfterRegionDirective;
 
         /// <summary>RCS0003</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineAfterUsingDirectiveList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList, 
-            title:              "Add blank line after using directive list", 
-            messageFormat:      "Add blank line after using directive list", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineAfterUsingDirectiveList = DiagnosticDescriptors.RCS0003_AddBlankLineAfterUsingDirectiveList;
 
         /// <summary>RCS0005</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBeforeEndRegionDirective = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective, 
-            title:              "Add blank line before #endregion", 
-            messageFormat:      "Add blank line before #endregion", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeEndRegionDirective = DiagnosticDescriptors.RCS0005_AddBlankLineBeforeEndRegionDirective;
 
         /// <summary>RCS0006</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBeforeUsingDirectiveList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList, 
-            title:              "Add blank line before using directive list", 
-            messageFormat:      "Add blank line before using directive list", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeUsingDirectiveList = DiagnosticDescriptors.RCS0006_AddBlankLineBeforeUsingDirectiveList;
 
         /// <summary>RCS0007</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenAccessors = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenAccessors, 
-            title:              "Add blank line between accessors", 
-            messageFormat:      "Add blank line between accessors", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenAccessors, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenAccessors = DiagnosticDescriptors.RCS0007_AddBlankLineBetweenAccessors;
 
         /// <summary>RCS0008</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenClosingBraceAndNextStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement, 
-            title:              "Add blank line between closing brace and next statement", 
-            messageFormat:      "Add blank line between closing brace and next statement", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenClosingBraceAndNextStatement = DiagnosticDescriptors.RCS0008_AddBlankLineBetweenClosingBraceAndNextStatement;
 
         /// <summary>RCS0009</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarationAndDocumentationComment = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment, 
-            title:              "Add blank line between declaration and documentation comment", 
-            messageFormat:      "Add blank line between declaration and documentation comment", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarationAndDocumentationComment = DiagnosticDescriptors.RCS0009_AddBlankLineBetweenDeclarationAndDocumentationComment;
 
         /// <summary>RCS0010</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarations = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenDeclarations, 
-            title:              "Add blank line between declarations", 
-            messageFormat:      "Add blank line between declarations", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenDeclarations, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarations = DiagnosticDescriptors.RCS0010_AddBlankLineBetweenDeclarations;
 
         /// <summary>RCS0011</summary>
-        public static readonly DiagnosticDescriptor BlankLineBetweenSingleLineAccessors = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors, 
-            title:              "Add/remove blank line between single-line accessors", 
-            messageFormat:      "{0} blank line between single-line accessors", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor BlankLineBetweenSingleLineAccessors = DiagnosticDescriptors.RCS0011_BlankLineBetweenSingleLineAccessors;
 
         /// <summary>RCS0012</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarations = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations, 
-            title:              "Add blank line between single-line declarations", 
-            messageFormat:      "Add blank line between single-line declarations", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarations = DiagnosticDescriptors.RCS0012_AddBlankLineBetweenSingleLineDeclarations;
 
         /// <summary>RCS0013</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, 
-            title:              "Add blank line between single-line declarations of different kind", 
-            messageFormat:      "Add blank line between single-line declarations of different kind", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind = DiagnosticDescriptors.RCS0013_AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind;
 
         /// <summary>RCS0014</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
-            title:              "[deprecated] Add blank line between switch sections", 
-            messageFormat:      "([deprecated] Use RCS0061 instead) Add blank line between switch sections", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptors.RCS0014_AddBlankLineBetweenSwitchSections;
 
         /// <summary>RCS0015</summary>
-        public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectives = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectives, 
-            title:              "Add/remove blank line between using directives", 
-            messageFormat:      "{0} blank line between using directives", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenUsingDirectives, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectives = DiagnosticDescriptors.RCS0015_BlankLineBetweenUsingDirectives;
 
         /// <summary>RCS0016</summary>
-        public static readonly DiagnosticDescriptor PutAttributeListOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutAttributeListOnItsOwnLine, 
-            title:              "Put attribute list on its own line", 
-            messageFormat:      "Put attribute list on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutAttributeListOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutAttributeListOnItsOwnLine = DiagnosticDescriptors.RCS0016_PutAttributeListOnItsOwnLine;
 
         /// <summary>RCS0020</summary>
-        public static readonly DiagnosticDescriptor FormatAccessorBraces = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FormatAccessorBraces, 
-            title:              "Format accessor's braces on a single line or multiple lines", 
-            messageFormat:      "Format braces on {0}", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatAccessorBraces, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FormatAccessorBraces = DiagnosticDescriptors.RCS0020_FormatAccessorBraces;
 
         /// <summary>RCS0021</summary>
-        public static readonly DiagnosticDescriptor FormatBlockBraces = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FormatBlockBraces, 
-            title:              "Format block's braces on a single line or multiple lines", 
-            messageFormat:      "Format braces on {0}", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatBlockBraces, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FormatBlockBraces = DiagnosticDescriptors.RCS0021_FormatBlockBraces;
 
         /// <summary>RCS0022</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
-            title:              "[deprecated] Add new line after opening brace of empty block", 
-            messageFormat:      "([deprecated] Use RCS0021 instead) Format braces on multiple lines", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptors.RCS0022_AddNewLineAfterOpeningBraceOfEmptyBlock;
 
         /// <summary>RCS0023</summary>
-        public static readonly DiagnosticDescriptor FormatTypeDeclarationBraces = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FormatTypeDeclarationBraces, 
-            title:              "Format type declaration's braces", 
-            messageFormat:      "Format type declaration's braces", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatTypeDeclarationBraces, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FormatTypeDeclarationBraces = DiagnosticDescriptors.RCS0023_FormatTypeDeclarationBraces;
 
         /// <summary>RCS0024</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterSwitchLabel = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterSwitchLabel, 
-            title:              "Add new line after switch label", 
-            messageFormat:      "Add new line after switch label", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterSwitchLabel, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddNewLineAfterSwitchLabel = DiagnosticDescriptors.RCS0024_AddNewLineAfterSwitchLabel;
 
         /// <summary>RCS0025</summary>
-        public static readonly DiagnosticDescriptor PutFullAccessorOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine, 
-            title:              "Put full accessor on its own line", 
-            messageFormat:      "Put full accessor on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutFullAccessorOnItsOwnLine = DiagnosticDescriptors.RCS0025_PutFullAccessorOnItsOwnLine;
 
         /// <summary>RCS0027</summary>
-        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeBinaryOperator = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator, 
-            title:              "Place new line after/before binary operator", 
-            messageFormat:      "Place new line {0} binary operator", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeBinaryOperator = DiagnosticDescriptors.RCS0027_PlaceNewLineAfterOrBeforeBinaryOperator;
 
         /// <summary>RCS0028</summary>
-        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeConditionalOperator = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator, 
-            title:              "Place new line after/before '?:' operator", 
-            messageFormat:      "Place new line {0} operator", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeConditionalOperator = DiagnosticDescriptors.RCS0028_PlaceNewLineAfterOrBeforeConditionalOperator;
 
         /// <summary>RCS0029</summary>
-        public static readonly DiagnosticDescriptor PutConstructorInitializerOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine, 
-            title:              "Put constructor initializer on its own line", 
-            messageFormat:      "Put constructor initializer on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutConstructorInitializerOnItsOwnLine = DiagnosticDescriptors.RCS0029_PutConstructorInitializerOnItsOwnLine;
 
         /// <summary>RCS0030</summary>
-        public static readonly DiagnosticDescriptor PutEmbeddedStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine, 
-            title:              "Put embedded statement on its own line", 
-            messageFormat:      "Put embedded statement on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutEmbeddedStatementOnItsOwnLine = DiagnosticDescriptors.RCS0030_PutEmbeddedStatementOnItsOwnLine;
 
         /// <summary>RCS0031</summary>
-        public static readonly DiagnosticDescriptor PutEnumMemberOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine, 
-            title:              "Put enum member on its own line", 
-            messageFormat:      "Put enum member on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutEnumMemberOnItsOwnLine = DiagnosticDescriptors.RCS0031_PutEnumMemberOnItsOwnLine;
 
         /// <summary>RCS0032</summary>
-        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeArrowToken = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
-            title:              "Place new line after/before arrow token", 
-            messageFormat:      "Place new line {0} arrow token", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeArrowToken = DiagnosticDescriptors.RCS0032_PlaceNewLineAfterOrBeforeArrowToken;
 
         /// <summary>RCS0033</summary>
-        public static readonly DiagnosticDescriptor PutStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutStatementOnItsOwnLine, 
-            title:              "Put statement on its own line", 
-            messageFormat:      "Put statement on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutStatementOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutStatementOnItsOwnLine = DiagnosticDescriptors.RCS0033_PutStatementOnItsOwnLine;
 
         /// <summary>RCS0034</summary>
-        public static readonly DiagnosticDescriptor PutTypeParameterConstraintOnItsOwnLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine, 
-            title:              "Put type parameter constraint on its own line", 
-            messageFormat:      "Put type parameter constraint on its own line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutTypeParameterConstraintOnItsOwnLine = DiagnosticDescriptors.RCS0034_PutTypeParameterConstraintOnItsOwnLine;
 
         /// <summary>RCS0036</summary>
-        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, 
-            title:              "Remove blank line between single-line declarations of same kind", 
-            messageFormat:      "Remove blank line between single-line declarations of same kind", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = DiagnosticDescriptors.RCS0036_RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind;
 
         /// <summary>RCS0038</summary>
-        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
-            title:              "[deprecated] Remove blank line between using directives with same root namespace", 
-            messageFormat:      "([deprecated] Use RCS0015 instead) Remove blank line between using directives", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptors.RCS0038_RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace;
 
         /// <summary>RCS0039</summary>
-        public static readonly DiagnosticDescriptor RemoveNewLineBeforeBaseList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveNewLineBeforeBaseList, 
-            title:              "Remove new line before base list", 
-            messageFormat:      "Remove new line before base list", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveNewLineBeforeBaseList, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor RemoveNewLineBeforeBaseList = DiagnosticDescriptors.RCS0039_RemoveNewLineBeforeBaseList;
 
         /// <summary>RCS0041</summary>
-        public static readonly DiagnosticDescriptor RemoveNewLineBetweenIfKeywordAndElseKeyword = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword, 
-            title:              "Remove new line between 'if' keyword and 'else' keyword", 
-            messageFormat:      "Remove new line between 'if' keyword and 'else' keyword", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor RemoveNewLineBetweenIfKeywordAndElseKeyword = DiagnosticDescriptors.RCS0041_RemoveNewLineBetweenIfKeywordAndElseKeyword;
 
         /// <summary>RCS0042</summary>
-        public static readonly DiagnosticDescriptor PutAutoAccessorsOnSingleLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine, 
-            title:              "Put auto-accessors on a single line", 
-            messageFormat:      "Put auto-accessors on a single line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutAutoAccessorsOnSingleLine = DiagnosticDescriptors.RCS0042_PutAutoAccessorsOnSingleLine;
 
         /// <summary>RCS0043</summary>
-        public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
-            title:              "[deprecated] Format accessor's braces on a single line when expression is on single line", 
-            messageFormat:      "([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line') Format braces on a single line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptors.RCS0043_FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine;
 
         /// <summary>RCS0044</summary>
-        public static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine, 
-            title:              "Use carriage return + linefeed as new line", 
-            messageFormat:      "Use carriage return + linefeed as new line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = DiagnosticDescriptors.RCS0044_UseCarriageReturnAndLinefeedAsNewLine;
 
         /// <summary>RCS0045</summary>
-        public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseLinefeedAsNewLine, 
-            title:              "Use linefeed as new line", 
-            messageFormat:      "Use linefeed as new line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = DiagnosticDescriptors.RCS0045_UseLinefeedAsNewLine;
 
         /// <summary>RCS0046</summary>
-        public static readonly DiagnosticDescriptor UseSpacesInsteadOfTab = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseSpacesInsteadOfTab, 
-            title:              "Use spaces instead of tab", 
-            messageFormat:      "Use spaces instead of tab", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseSpacesInsteadOfTab, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor UseSpacesInsteadOfTab = DiagnosticDescriptors.RCS0046_UseSpacesInsteadOfTab;
 
         /// <summary>RCS0047</summary>
-        public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
-            title:              "[deprecated] Wrap and indent each node in list", 
-            messageFormat:      "([deprecated] Use RCS0053 instead) Wrap and indent each node in list", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptors.RCS0047_WrapAndIndentEachNodeInList;
 
         /// <summary>RCS0048</summary>
-        public static readonly DiagnosticDescriptor PutInitializerOnSingleLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PutInitializerOnSingleLine, 
-            title:              "Put initializer on a single line", 
-            messageFormat:      "Put initializer on a single line", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PutInitializerOnSingleLine, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PutInitializerOnSingleLine = DiagnosticDescriptors.RCS0048_PutInitializerOnSingleLine;
 
         /// <summary>RCS0049</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineAfterTopComment = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineAfterTopComment, 
-            title:              "Add blank line after top comment", 
-            messageFormat:      "Add blank line after top comment", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterTopComment, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineAfterTopComment = DiagnosticDescriptors.RCS0049_AddBlankLineAfterTopComment;
 
         /// <summary>RCS0050</summary>
-        public static readonly DiagnosticDescriptor AddBlankLineBeforeTopDeclaration = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration, 
-            title:              "Add blank line before top declaration", 
-            messageFormat:      "Add blank line before top declaration", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeTopDeclaration = DiagnosticDescriptors.RCS0050_AddBlankLineBeforeTopDeclaration;
 
         /// <summary>RCS0051</summary>
-        public static readonly DiagnosticDescriptor AddOrRemoveNewLineBeforeWhileInDoStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement, 
-            title:              "Add/remove new line before 'while' in 'do' statement", 
-            messageFormat:      "{0} new line before 'while' in 'do' statement", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor AddOrRemoveNewLineBeforeWhileInDoStatement = DiagnosticDescriptors.RCS0051_AddOrRemoveNewLineBeforeWhileInDoStatement;
 
         /// <summary>RCS0052</summary>
-        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeEqualsToken = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken, 
-            title:              "Place new line after/before equals token", 
-            messageFormat:      "Place new line {0} equals token", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeEqualsToken = DiagnosticDescriptors.RCS0052_PlaceNewLineAfterOrBeforeEqualsToken;
 
         /// <summary>RCS0053</summary>
-        public static readonly DiagnosticDescriptor FixFormattingOfList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FixFormattingOfList, 
-            title:              "Fix formatting of a list", 
-            messageFormat:      "Fix formatting of {0}", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfList, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FixFormattingOfList = DiagnosticDescriptors.RCS0053_FixFormattingOfList;
 
         /// <summary>RCS0054</summary>
-        public static readonly DiagnosticDescriptor FixFormattingOfCallChain = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FixFormattingOfCallChain, 
-            title:              "Fix formatting of a call chain", 
-            messageFormat:      "Fix formatting of a call chain", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfCallChain, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FixFormattingOfCallChain = DiagnosticDescriptors.RCS0054_FixFormattingOfCallChain;
 
         /// <summary>RCS0055</summary>
-        public static readonly DiagnosticDescriptor FixFormattingOfBinaryExpressionChain = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain, 
-            title:              "Fix formatting of a binary expression chain", 
-            messageFormat:      "Fix formatting of a binary expression chain", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor FixFormattingOfBinaryExpressionChain = DiagnosticDescriptors.RCS0055_FixFormattingOfBinaryExpressionChain;
 
         /// <summary>RCS0056</summary>
-        public static readonly DiagnosticDescriptor LineIsTooLong = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.LineIsTooLong, 
-            title:              "A line is too long", 
-            messageFormat:      "A line is too long ({0} characters)", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.LineIsTooLong, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor LineIsTooLong = DiagnosticDescriptors.RCS0056_LineIsTooLong;
 
         /// <summary>RCS0057</summary>
-        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile, 
-            title:              "Normalize whitespace at the beginning of a file", 
-            messageFormat:      "Normalize whitespace at the beginning of a file", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptors.RCS0057_NormalizeWhitespaceAtBeginningOfFile;
 
         /// <summary>RCS0058</summary>
-        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
-            title:              "Normalize whitespace at the end of a file", 
-            messageFormat:      "Normalize whitespace at the end of a file", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptors.RCS0058_NormalizeWhitespaceAtEndOfFile;
 
         /// <summary>RCS0059</summary>
-        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeNullConditionalOperator = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
-            title:              "Place new line after/before null-conditional operator", 
-            messageFormat:      "Place new line {0} null-conditional operator", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeNullConditionalOperator = DiagnosticDescriptors.RCS0059_PlaceNewLineAfterOrBeforeNullConditionalOperator;
 
         /// <summary>RCS0060</summary>
-        public static readonly DiagnosticDescriptor BlankLineAfterFileScopedNamespaceDeclaration = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration, 
-            title:              "Add/remove line after file scoped namespace declaration", 
-            messageFormat:      "{0} line after file scoped namespace declaration", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor BlankLineAfterFileScopedNamespaceDeclaration = DiagnosticDescriptors.RCS0060_BlankLineAfterFileScopedNamespaceDeclaration;
 
         /// <summary>RCS0061</summary>
-        public static readonly DiagnosticDescriptor BlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
-            title:              "Add/remove blank line between switch sections", 
-            messageFormat:      "{0} blank line between switch sections", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
-            customTags:         Array.Empty<string>());
+        public static readonly DiagnosticDescriptor BlankLineBetweenSwitchSections = DiagnosticDescriptors.RCS0061_BlankLineBetweenSwitchSections;
 
     }
 }
