@@ -25,8 +25,8 @@ public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyze
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.UsePropertySyntaxNodeSpanStart,
-                    DiagnosticRules.CallAnyInsteadOfAccessingCount);
+                    CodeAnalysisDiagnosticRules.UsePropertySyntaxNodeSpanStart,
+                    CodeAnalysisDiagnosticRules.CallAnyInsteadOfAccessingCount);
             }
 
             return _supportedDiagnostics;
@@ -85,7 +85,7 @@ public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyze
                         if (!symbol2.ContainingType.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                             break;
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
+                        DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
                         break;
                     }
                     case "Count":
@@ -139,7 +139,7 @@ public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyze
                 ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
                 : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
+            DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
         }
     }
 }

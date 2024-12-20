@@ -12,7 +12,7 @@ public class RCS1231MakeParameterRefReadOnlyTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeParameterRefReadOnly;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_Assigned()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -58,7 +58,7 @@ readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ReferencedInLocalFunction()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -75,7 +75,7 @@ readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ReferencedInLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -91,7 +91,7 @@ readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_Iterator()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -107,7 +107,7 @@ readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_DuplicateParameterName()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -122,7 +122,7 @@ readonly struct C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0100"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -143,7 +143,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_LocalFunctionReferencedAsMethodGroup()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -167,7 +167,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_BoolType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -180,7 +180,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"

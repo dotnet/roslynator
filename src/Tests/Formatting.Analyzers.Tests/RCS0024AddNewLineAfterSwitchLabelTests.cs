@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0024AddNewLineAfterSwitchLabelTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterSwitchLabelAnalyzer, StatementCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterSwitchLabel;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.AddNewLineAfterSwitchLabel;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterSwitchLabel)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -45,7 +45,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterSwitchLabel)]
     public async Task Test_MultipleLabels()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -80,7 +80,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterSwitchLabel)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""

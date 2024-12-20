@@ -12,7 +12,7 @@ public class RCS1056AvoidUsageOfUsingAliasDirectiveTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidUsageOfUsingAliasDirective;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidUsageOfUsingAliasDirective)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_FileScopedNamespaces()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -79,7 +79,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_AliasQualifiedName()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -93,7 +93,7 @@ class X : object
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_BlockNamespaces()
     {
         await VerifyDiagnosticAndFixAsync(@"

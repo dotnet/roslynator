@@ -19,7 +19,7 @@ public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectCodeFixProvider :
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject); }
+        get { return ImmutableArray.Create(DiagnosticIds.IncludeParenthesesWhenCreatingNewObject); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

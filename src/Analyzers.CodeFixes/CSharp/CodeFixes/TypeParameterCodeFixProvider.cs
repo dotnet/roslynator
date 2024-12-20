@@ -18,7 +18,7 @@ public sealed class TypeParameterCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnusedTypeParameter); }
+        get { return ImmutableArray.Create(DiagnosticIds.UnusedTypeParameter); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class TypeParameterCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.UnusedTypeParameter:
+                case DiagnosticIds.UnusedTypeParameter:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Remove unused type parameter '{typeParameter.Identifier}'",

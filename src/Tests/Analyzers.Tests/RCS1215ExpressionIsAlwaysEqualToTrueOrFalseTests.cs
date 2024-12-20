@@ -12,7 +12,7 @@ public class RCS1215ExpressionIsAlwaysEqualToTrueOrFalseTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ExpressionIsAlwaysEqualToTrueOrFalse;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_True()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_False()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -168,7 +168,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_NullCheck()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -198,7 +198,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_EqualsToDoubleNaN()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -222,7 +222,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_EqualsToDoubleNaN_Right()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -246,7 +246,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_NotEqualsToDoubleNaN()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -270,7 +270,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task TestNoDiagnostic_ReversedForStatement()
     {
         await VerifyNoDiagnosticAsync(@"

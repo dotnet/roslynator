@@ -12,7 +12,7 @@ public class RCS1226AddParagraphToDocumentationCommentTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParagraphToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Summary()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Returns()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Remarks()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -103,7 +103,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Multiline()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -140,7 +140,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Multiline2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -173,7 +173,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_Multiline3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -206,7 +206,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_ThreeParagraphs()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -238,7 +238,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_ThreeParagraphs_Multiline()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -282,7 +282,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_TwoParagraphs_ElementsOnly()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -319,7 +319,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_ClassWithAttribute()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -354,7 +354,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_StartsWithParaElement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -385,7 +385,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_ContainsParaElement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -418,7 +418,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_EndsWithParaElement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -449,7 +449,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task Test_EndsWithParaElement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -483,7 +483,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_SimpleComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -496,7 +496,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_NoEmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -510,7 +510,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_MissingEndTag()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -526,7 +526,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_CodeElement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -543,7 +543,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_CodeElement2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -560,7 +560,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_InheritDocElement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -575,7 +575,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_InheritDocElement2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -590,7 +590,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_ListElement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -607,7 +607,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_ListElement2()
     {
         await VerifyNoDiagnosticAsync("""

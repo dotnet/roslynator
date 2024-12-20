@@ -12,7 +12,7 @@ public class RCS1124InlineLocalVariableTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InlineLocalVariable;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task Test_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task Test_YieldReturn()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -66,7 +66,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task Test_VarType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,7 +101,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task Test_NullableReturnType_ReturnsNullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task TestNoDiagnostic_YieldReturnIsNotLastStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -146,7 +146,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task TestNoDiagnostic_ForEachWithAwait()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -169,7 +169,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task TestNoDiagnostic_SwitchWithAwait()
     {
         await VerifyNoDiagnosticAsync("""
@@ -193,7 +193,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLocalVariable)]
     public async Task TestNoDiagnostic_Disposable()
     {
         await VerifyNoDiagnosticAsync(@"

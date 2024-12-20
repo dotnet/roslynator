@@ -20,7 +20,7 @@ public sealed class ConditionalAccessExpressionCodeFixProvider : BaseCodeFixProv
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator); }
+        get { return ImmutableArray.Create(FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeNullConditionalOperator); }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

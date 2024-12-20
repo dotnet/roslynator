@@ -17,7 +17,7 @@ public class RCS1090AddCallToConfigureAwaitTests : AbstractCSharpDiagnosticVerif
         get { return base.Options.AddConfigOption(ConfigOptionKeys.ConfigureAwait, "true"); }
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Task_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Task_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -75,7 +75,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Task_Method()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,7 +101,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Task_Parameter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -127,7 +127,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Task_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -157,7 +157,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_ValueTask()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -213,7 +213,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_ValueTaskOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -245,7 +245,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_DuckTyped()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -331,7 +331,7 @@ class DuckTyped
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_ExtensionMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -407,7 +407,7 @@ struct ConfiguredYieldAwaitable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task Test_Indentation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -440,7 +440,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_Task()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -456,7 +456,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_TaskOfT()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -472,7 +472,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_ValueTaskOfT()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -490,7 +490,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_ValueTask()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -508,7 +508,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_ExtensionMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -549,7 +549,7 @@ struct ConfiguredYieldAwaitable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConfigureAwait)]
     public async Task TestNoDiagnostic_Awaitable_Lookalike()
     {
         await VerifyNoDiagnosticAsync(@"

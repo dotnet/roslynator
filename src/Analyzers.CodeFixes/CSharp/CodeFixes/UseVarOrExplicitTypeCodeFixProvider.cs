@@ -21,7 +21,7 @@ public sealed class UseVarOrExplicitTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseVarOrExplicitType); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseVarOrExplicitType); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

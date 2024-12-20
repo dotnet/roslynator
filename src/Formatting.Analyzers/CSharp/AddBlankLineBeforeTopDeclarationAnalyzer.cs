@@ -20,7 +20,7 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeTopDeclaration);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineBeforeTopDeclaration);
 
             return _supportedDiagnostics;
         }
@@ -56,7 +56,7 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddBlankLineBeforeTopDeclaration,
+                FormattingDiagnosticRules.AddBlankLineBeforeTopDeclaration,
                 block.GetLocation());
         }
     }

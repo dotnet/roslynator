@@ -21,7 +21,7 @@ public sealed class BaseArgumentListCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderNamedArguments); }
+        get { return ImmutableArray.Create(DiagnosticIds.OrderNamedArguments); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class BaseArgumentListCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.OrderNamedArguments:
+            case DiagnosticIds.OrderNamedArguments:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Order arguments",

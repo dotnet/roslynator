@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0057NormalizeWhitespaceAtBeginningOfFileTests : AbstractCSharpDiagnosticVerifier<NormalizeWhitespaceAtBeginningOfFileAnalyzer, CompilationUnitCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.NormalizeWhitespaceAtBeginningOfFile;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"[||]
@@ -23,7 +23,7 @@ class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_TrailingWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"[||] 
@@ -34,7 +34,7 @@ class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_TrailingMany()
     {
         await VerifyDiagnosticAndFixAsync(@"[||] 
@@ -47,7 +47,7 @@ class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_SingleLineComment()
     {
         await VerifyDiagnosticAndFixAsync(@"[||]
@@ -60,7 +60,7 @@ class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_MultiLineComment()
     {
         await VerifyDiagnosticAndFixAsync(@"[||]
@@ -73,7 +73,7 @@ class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_Directive()
     {
         await VerifyDiagnosticAndFixAsync(@"[||]
@@ -88,7 +88,7 @@ class C
 #endregion");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile)]
     public async Task Test_WhitespaceOnly()
     {
         await VerifyDiagnosticAndFixAsync(@"[||] class C

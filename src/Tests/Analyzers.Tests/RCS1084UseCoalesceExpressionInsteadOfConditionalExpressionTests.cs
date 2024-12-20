@@ -12,7 +12,7 @@ public class RCS1084UseCoalesceExpressionInsteadOfConditionalExpressionTests : A
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfConditionalExpression;
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     [InlineData("s != null ? s : \"\"", "s ?? \"\"")]
     [InlineData("s == null ? \"\" : s", "s ?? \"\"")]
     [InlineData("(s != null) ? (s) : (\"\")", "s ?? \"\"")]
@@ -32,7 +32,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task Test_PolymorphicType_WithNullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task Test_PolymorphicType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -114,7 +114,7 @@ class C
 ");
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
     [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
     [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
@@ -135,7 +135,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
@@ -152,7 +152,7 @@ class C
 """, options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task TestNoDiagnostic_Pointer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -169,7 +169,7 @@ class C
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task TestNoDiagnostic_DefaultOfTEqualsToNull()
     {
         await VerifyNoDiagnosticAsync("""

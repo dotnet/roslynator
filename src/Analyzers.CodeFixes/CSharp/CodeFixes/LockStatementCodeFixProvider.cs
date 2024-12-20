@@ -18,7 +18,7 @@ public sealed class LockStatementCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance); }
+        get { return ImmutableArray.Create(DiagnosticIds.AvoidLockingOnPubliclyAccessibleInstance); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -36,7 +36,7 @@ public sealed class LockStatementCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Introduce field to lock on",
             ct => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance));
+            GetEquivalenceKey(DiagnosticIds.AvoidLockingOnPubliclyAccessibleInstance));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

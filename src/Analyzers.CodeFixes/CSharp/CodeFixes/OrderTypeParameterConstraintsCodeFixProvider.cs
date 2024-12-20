@@ -21,7 +21,7 @@ public sealed class OrderTypeParameterConstraintsCodeFixProvider : BaseCodeFixPr
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderTypeParameterConstraints); }
+        get { return ImmutableArray.Create(DiagnosticIds.OrderTypeParameterConstraints); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

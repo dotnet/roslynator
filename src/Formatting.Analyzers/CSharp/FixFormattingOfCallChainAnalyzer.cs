@@ -21,7 +21,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfCallChain);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.FixFormattingOfCallChain);
 
             return _supportedDiagnostics;
         }
@@ -183,7 +183,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.FixFormattingOfCallChain,
+                FormattingDiagnosticRules.FixFormattingOfCallChain,
                 expression);
         }
     }

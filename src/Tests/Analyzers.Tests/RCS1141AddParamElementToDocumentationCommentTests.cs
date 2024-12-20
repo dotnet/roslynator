@@ -12,7 +12,7 @@ public class RCS1141AddParamElementToDocumentationCommentTests : AbstractCSharpD
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParamElementToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParamElementToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddParamElementToDocumentationComment)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""

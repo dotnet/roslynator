@@ -25,8 +25,8 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.UnnecessaryRawStringLiteral,
-                DiagnosticIdentifiers.UseRawStringLiteral);
+                DiagnosticIds.UnnecessaryRawStringLiteral,
+                DiagnosticIds.UseRawStringLiteral);
         }
     }
 

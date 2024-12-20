@@ -13,7 +13,7 @@ public class RCS1265RemoveRedundantCatchBlockTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCatchBlock;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCatchBlock)]
     public async Task Test_TryCatchFinally()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCatchBlock)]
     public async Task Test_TryMultipleCatches()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -113,7 +113,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCatchBlock)]
     public async Task Test_TryCatch()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCatchBlock)]
     public async Task Test_NoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

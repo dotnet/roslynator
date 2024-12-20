@@ -20,7 +20,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration);
 
             return _supportedDiagnostics;
         }
@@ -63,7 +63,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
             if (style == BlankLineStyle.Remove)
             {
                 context.ReportDiagnostic(
-                    DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
+                    FormattingDiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
                     block.GetLocation(),
                     "Remove");
             }
@@ -71,7 +71,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         else if (style == BlankLineStyle.Add)
         {
             context.ReportDiagnostic(
-                DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
+                FormattingDiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
                 block.GetLocation(),
                 "Add");
         }

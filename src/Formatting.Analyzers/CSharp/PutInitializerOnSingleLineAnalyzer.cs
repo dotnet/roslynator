@@ -19,7 +19,7 @@ public sealed class PutInitializerOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutInitializerOnSingleLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutInitializerOnSingleLine);
 
             return _supportedDiagnostics;
         }
@@ -74,6 +74,6 @@ public sealed class PutInitializerOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
         if (!initializer.OpenBraceToken.GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
             return;
 
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutInitializerOnSingleLine, initializer);
+        DiagnosticHelpers.ReportDiagnostic(context, FormattingDiagnosticRules.PutInitializerOnSingleLine, initializer);
     }
 }

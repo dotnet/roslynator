@@ -20,7 +20,7 @@ public sealed class WrapAndIndentEachNodeInListAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.WrapAndIndentEachNodeInList);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.WrapAndIndentEachNodeInList);
 
             return _supportedDiagnostics;
         }
@@ -194,7 +194,7 @@ public sealed class WrapAndIndentEachNodeInListAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.WrapAndIndentEachNodeInList,
+                FormattingDiagnosticRules.WrapAndIndentEachNodeInList,
                 Location.Create(syntaxTree, TextSpan.FromBounds(nodes[0].SpanStart, nodes.Last().Span.End)));
         }
     }

@@ -26,7 +26,7 @@ public sealed class NormalizeUsageOfInfiniteLoopCodeFixProvider : BaseCodeFixPro
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop); }
+        get { return ImmutableArray.Create(DiagnosticIds.NormalizeUsageOfInfiniteLoop); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

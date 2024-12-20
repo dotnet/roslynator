@@ -12,7 +12,7 @@ public class RCS1089UseUnaryOperatorInsteadOfAssignmentTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseUnaryOperatorInsteadOfAssignment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PostIncrement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PostIncrement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PostDecrement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PostDecrement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PreIncrement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PreIncrement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -168,7 +168,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PreDecrement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -194,7 +194,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task Test_PreDecrement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -220,7 +220,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -236,7 +236,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task TestNoDiagnostic_ObjectInitializer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -254,7 +254,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseUnaryOperatorInsteadOfAssignment)]
     public async Task TestNoDiagnostic_PointerIndirection()
     {
         await VerifyNoDiagnosticAsync(@"

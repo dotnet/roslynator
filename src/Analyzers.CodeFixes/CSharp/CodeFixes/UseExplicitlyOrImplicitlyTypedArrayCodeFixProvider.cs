@@ -28,7 +28,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray); }
     }
 
 #if ROSLYN_4_0

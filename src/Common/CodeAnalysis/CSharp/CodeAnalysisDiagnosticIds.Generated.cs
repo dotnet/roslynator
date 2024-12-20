@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.CodeAnalysis.CSharp
 {
-    public static partial class DiagnosticIdentifiers
+    public static partial class CodeAnalysisDiagnosticIds
     {
         public const string UsePatternMatching = "RCS9001";
         public const string UsePropertySyntaxNodeSpanStart = "RCS9002";

@@ -12,7 +12,7 @@ public class RCS1191DeclareEnumValueAsCombinationOfNamesTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumValueAsCombinationOfNames;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -76,7 +76,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -110,7 +110,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test4()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -140,7 +140,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test5()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -174,7 +174,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test6()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -210,7 +210,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumValueAsCombinationOfNames)]
     public async Task Test_SByte()
     {
         await VerifyDiagnosticAndFixAsync(@"

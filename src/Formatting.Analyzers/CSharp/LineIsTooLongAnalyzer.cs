@@ -20,7 +20,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.LineIsTooLong);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, Roslynator.Formatting.CSharp.FormattingDiagnosticRules.LineIsTooLong);
 
             return _supportedDiagnostics;
         }
@@ -203,7 +203,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.LineIsTooLong,
+                Roslynator.Formatting.CSharp.FormattingDiagnosticRules.LineIsTooLong,
                 Location.Create(tree, line.Span),
                 line.Span.Length);
         }

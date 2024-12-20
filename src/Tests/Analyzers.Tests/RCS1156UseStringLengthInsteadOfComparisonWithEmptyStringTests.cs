@@ -12,7 +12,7 @@ public class RCS1156UseStringLengthInsteadOfComparisonWithEmptyStringTests : Abs
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringLengthInsteadOfComparisonWithEmptyString)]
     public async Task Test_ComparisonToEmptyString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -36,7 +36,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringLengthInsteadOfComparisonWithEmptyString)]
     public async Task Test_ComparisonToEmptyString2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -60,7 +60,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringLengthInsteadOfComparisonWithEmptyString)]
     public async Task Test_ComparisonToStringEmpty()
     {
         await VerifyDiagnosticAndFixAsync(@"

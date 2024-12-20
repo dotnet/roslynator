@@ -17,7 +17,7 @@ public sealed class InvalidArgumentNullCheckCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.InvalidArgumentNullCheck); }
+        get { return ImmutableArray.Create(DiagnosticIds.InvalidArgumentNullCheck); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

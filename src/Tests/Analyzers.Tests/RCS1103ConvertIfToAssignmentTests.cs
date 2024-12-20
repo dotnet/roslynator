@@ -12,7 +12,7 @@ public class RCS1103ConvertIfToAssignmentTests : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToAssignment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToAssignment)]
     public async Task Test_InvertCondition()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -49,7 +49,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToAssignment)]
     public async Task TestNoDiagnostic_ContainsComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -73,7 +73,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToAssignment)]
     public async Task TestNoDiagnostic_ContainsDirective()
     {
         await VerifyNoDiagnosticAsync(@"

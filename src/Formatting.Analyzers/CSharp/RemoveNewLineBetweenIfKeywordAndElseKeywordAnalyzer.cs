@@ -20,7 +20,7 @@ public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDi
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword);
 
             return _supportedDiagnostics;
         }
@@ -52,7 +52,7 @@ public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDi
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
+                FormattingDiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                 block.GetLocation());
         }
     }

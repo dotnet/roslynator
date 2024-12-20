@@ -19,7 +19,7 @@ public class RCS1241ImplementNonGenericCounterpartTests : AbstractCSharpDiagnost
         _explicitEquivalenceKey = new ImplementNonGenericCounterpartCodeFixProvider().ExplicitEquivalenceKey;
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IComparable()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -63,7 +63,7 @@ public abstract class Comparable : IComparable<C>, IComparable
 """, equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_Record_IComparable()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -107,7 +107,7 @@ public abstract record class Comparable : IComparable<C>, IComparable
 """, equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IComparable_Explicit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -151,7 +151,7 @@ public abstract class Comparable : IComparable<C>, IComparable
 """, equivalenceKey: _explicitEquivalenceKey);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IComparer()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -208,7 +208,7 @@ public abstract class Comparer : IComparer<C>, IComparer
 """, equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IComparer_Explicit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -265,7 +265,7 @@ public abstract class Comparer : IComparer<C>, IComparer
 """, equivalenceKey: _explicitEquivalenceKey);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IEqualityComparer()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -335,7 +335,7 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
 """, equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementNonGenericCounterpart)]
     public async Task Test_IEqualityComparer_Explicit()
     {
         await VerifyDiagnosticAndFixAsync("""

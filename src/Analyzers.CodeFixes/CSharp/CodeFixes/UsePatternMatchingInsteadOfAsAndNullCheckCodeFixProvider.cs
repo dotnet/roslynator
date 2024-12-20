@@ -24,7 +24,7 @@ public sealed class UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider : B
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck); }
+        get { return ImmutableArray.Create(DiagnosticIds.UsePatternMatchingInsteadOfAsAndNullCheck); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -12,7 +12,7 @@ public class RCS1081SplitVariableDeclarationTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SplitVariableDeclaration;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SplitVariableDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SplitVariableDeclaration)]
     public async Task Test_SwitchSection()
     {
         await VerifyDiagnosticAndFixAsync("""

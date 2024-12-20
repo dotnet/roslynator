@@ -12,7 +12,7 @@ public class RCS1203UseAttributeUsageAttributeTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAttributeUsageAttribute;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAttributeUsageAttribute)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class FooAttribute : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAttributeUsageAttribute)]
     public async Task TestNoDiagnostic_AttributeUsageAttributeAlreadyExistsOrIsInherited()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -48,7 +48,7 @@ class BarAttribute : FooAttribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAttributeUsageAttribute)]
     public async Task TestNoDiagnostic_DoesNotInheritFromAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -58,7 +58,7 @@ class FooAttribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAttributeUsageAttribute)]
     public async Task TestNoDiagnostic_NameDoesNotEndWithAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -70,7 +70,7 @@ class Foo : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAttributeUsageAttribute)]
     public async Task TestNoDiagnostic_AbstractAttribute()
     {
         await VerifyNoDiagnosticAsync(@"

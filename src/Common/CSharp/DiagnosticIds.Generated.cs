@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.CSharp
 {
-    public static partial class DiagnosticIdentifiers
+    public static partial class DiagnosticIds
     {
         public const string AddBracesWhenExpressionSpansOverMultipleLines = "RCS1001";
         public const string RemoveBraces = "RCS1002";

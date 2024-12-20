@@ -12,7 +12,7 @@ public class RCS1243DuplicateWordInCommentTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DuplicateWordInComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_MoreWhiteSpace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_EndOfText()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_StartOfText()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_ThreeConsecutiveWords()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_TwoConsecutiveDuplicateWords()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -168,7 +168,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateWordInComment)]
     public async Task Test_TwoDuplicateWords()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -12,7 +12,7 @@ public class RCS1208ReduceIfNestingTests : AbstractCSharpDiagnosticVerifier<Redu
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReduceIfNesting;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsConstructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_IsWhenIsNotIsInvalid()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -100,7 +100,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsConversionOperator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -143,7 +143,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsGetAccessor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -188,7 +188,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsLambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -232,7 +232,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsLocalFunction()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -278,7 +278,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenParentIsMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -316,7 +316,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -343,7 +343,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -381,7 +381,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -419,7 +419,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToUnknown()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -457,7 +457,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConversionOperator()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -486,7 +486,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsGetAccessor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -517,7 +517,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -547,7 +547,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsLocalFunction()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -580,7 +580,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -609,7 +609,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task TestDiagnostic_DoesNot_IncorrectlyRecurse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -667,7 +667,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenIsExpressionCsharp8()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -705,7 +705,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp8);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReduceIfNesting)]
     public async Task Test_WhenIsExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -10,7 +10,7 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0046UseSpacesInsteadOfTabTests : AbstractCSharpDiagnosticVerifier<UseSpacesInsteadOfTabAnalyzer, ReplaceTabWithSpacesCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseSpacesInsteadOfTab;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.UseSpacesInsteadOfTab;
 
     private readonly string _fourSpacesEquivalenceKey;
 
@@ -19,7 +19,7 @@ public class RCS0046UseSpacesInsteadOfTabTests : AbstractCSharpDiagnosticVerifie
         _fourSpacesEquivalenceKey = new ReplaceTabWithSpacesCodeFixProvider().FourSpacesEquivalenceKey;
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.UseSpacesInsteadOfTab)]
     public async Task Test_FourSpaces()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ", equivalenceKey: _fourSpacesEquivalenceKey);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.UseSpacesInsteadOfTab)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

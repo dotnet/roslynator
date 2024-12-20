@@ -12,7 +12,7 @@ public class RCS1264UseVarOrExplicitTypeTests5 : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarOrExplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach)]
     public async Task TestDiagnostic()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach)]
     public async Task TestDiagnostic_Tuple_DeclarationExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach)]
     public async Task TestDiagnostic_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach)]
     public async Task TestDiagnostic_TupleExpression_AllVar()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -170,7 +170,7 @@ class C
 }", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
     public async Task Test_TupleExpression_WithDiscardPredefinedType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -206,7 +206,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
     public async Task Test_TupleExpression_WithDiscardNonPredefinedType()
     {
         await VerifyDiagnosticAndFixAsync(@"

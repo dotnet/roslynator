@@ -19,7 +19,7 @@ public sealed class UnnecessaryUnsafeContextCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUnsafeContext); }
+        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryUnsafeContext); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

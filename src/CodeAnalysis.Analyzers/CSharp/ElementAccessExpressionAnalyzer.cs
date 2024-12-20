@@ -20,7 +20,7 @@ public sealed class ElementAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.CallLastInsteadOfUsingElementAccess);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, CodeAnalysisDiagnosticRules.CallLastInsteadOfUsingElementAccess);
 
             return _supportedDiagnostics;
         }
@@ -79,6 +79,6 @@ public sealed class ElementAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
             return;
         }
 
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
+        DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
     }
 }

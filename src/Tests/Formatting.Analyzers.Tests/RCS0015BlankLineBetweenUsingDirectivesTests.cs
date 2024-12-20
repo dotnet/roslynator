@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0015BlankLineBetweenUsingDirectivesTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenUsingDirectivesAnalyzer, SyntaxTriviaCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.BlankLineBetweenUsingDirectives;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.BlankLineBetweenUsingDirectives;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task Test_AddEmptyLine_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task Test_AddEmptyLine_GlobalAlias()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task Test_RemoveEmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task Test_RemoveEmptyLines_Between_DifferentGroups()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -106,7 +106,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task Test_RemoveEmptyLines_Between_SameGroups()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -127,7 +127,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_AddEmptyLine_SameRootNamespace()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -140,7 +140,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_AddEmptyLine_UsingStatic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -153,7 +153,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_AddEmptyLine_Alias()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -166,7 +166,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_Keep_Empty_Lines()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -182,7 +182,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_SeparateGroups()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -197,7 +197,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_NoEmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -211,7 +211,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_RemoveEmptyLine_UsingStatic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -225,7 +225,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenUsingDirectives)]
     public async Task TestNoDiagnostic_RemoveEmptyLine_Alias()
     {
         await VerifyNoDiagnosticAsync(@"

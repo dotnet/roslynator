@@ -12,7 +12,7 @@ public class RCS1197OptimizeStringBuilderAppendCallTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeStringBuilderAppendCall;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Substring_Int32_Int32()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Substring_Int32_Int32_Calculation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Substring_Int32()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -112,7 +112,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Substring_Int32_Int32_AppendLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -144,7 +144,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Substring_Int32_AppendLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -176,7 +176,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Remove()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -208,7 +208,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Remove_AppendLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -240,7 +240,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_StringFormat()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -272,7 +272,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_StringFormat_AppendLine()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -304,7 +304,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -323,7 +323,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_Braces()
     {
         await VerifyNoDiagnosticAsync("""
@@ -343,7 +343,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedRawString_ContainingQuotes()
     {
         await VerifyNoDiagnosticAsync("""""
@@ -360,7 +360,7 @@ class C
 """"", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedMultilineRawString_ContainingQuotes()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -380,7 +380,7 @@ class C
 """", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_Char()
     {
         await VerifyNoDiagnosticAsync("""
@@ -399,7 +399,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_AppendLine()
     {
         await VerifyNoDiagnosticAsync("""
@@ -418,7 +418,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_AppendLine2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -436,7 +436,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_AppendLine3()
     {
         await VerifyNoDiagnosticAsync("""
@@ -454,7 +454,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_WithFormat_AppendLine()
     {
         await VerifyNoDiagnosticAsync("""
@@ -473,7 +473,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_InterpolatedString_WithFormat_AppendLine2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -492,7 +492,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation()
     {
         await VerifyNoDiagnosticAsync("""
@@ -511,7 +511,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_Char()
     {
         await VerifyNoDiagnosticAsync("""
@@ -531,7 +531,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_AppendLine()
     {
         await VerifyNoDiagnosticAsync("""
@@ -550,7 +550,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_AppendLine2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -569,7 +569,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_AppendLine3()
     {
         await VerifyNoDiagnosticAsync("""
@@ -588,7 +588,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_AppendLine4()
     {
         await VerifyNoDiagnosticAsync("""
@@ -607,7 +607,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Concatenation_AppendLine5()
     {
         await VerifyNoDiagnosticAsync("""
@@ -626,7 +626,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_AppendLine()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -656,7 +656,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_AppendLine2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -688,7 +688,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task Test_Join()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -728,7 +728,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_Const()
     {
         await VerifyNoDiagnosticAsync("""
@@ -748,7 +748,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -780,7 +780,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_ConstantInterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -797,7 +797,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeStringBuilderAppendCall)]
     public async Task TestNoDiagnostic_NoAppendMethodChain()
     {
         await VerifyNoDiagnosticAsync(@"

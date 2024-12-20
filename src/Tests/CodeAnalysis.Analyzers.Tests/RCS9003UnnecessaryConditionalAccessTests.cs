@@ -6,13 +6,13 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9003UnnecessaryConditionalAccessTests : AbstractCSharpDiagnosticVerifier<UnnecessaryConditionalAccessAnalyzer, ConditionalAccessExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryConditionalAccess;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccess;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryConditionalAccess)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

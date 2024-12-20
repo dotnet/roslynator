@@ -28,13 +28,13 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                DiagnosticIdentifiers.RemoveRedundantToStringCall,
-                DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
-                DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
-                DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod,
-                DiagnosticIdentifiers.CallThenByInsteadOfOrderBy,
-                DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat);
+                DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                DiagnosticIds.RemoveRedundantToStringCall,
+                DiagnosticIds.RemoveRedundantStringToCharArrayCall,
+                DiagnosticIds.CombineEnumerableWhereMethodChain,
+                DiagnosticIds.CallExtensionMethodAsInstanceMethod,
+                DiagnosticIds.CallThenByInsteadOfOrderBy,
+                DiagnosticIds.UseStringInterpolationInsteadOfStringConcat);
         }
     }
 
@@ -49,7 +49,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
+                case DiagnosticIds.CombineEnumerableWhereMethodChain:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Combine 'Where' method chain",
@@ -59,7 +59,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
+                case DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod:
                 {
                     string propertyName = diagnostic.Properties["PropertyName"];
 
@@ -71,7 +71,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveRedundantToStringCall:
+                case DiagnosticIds.RemoveRedundantToStringCall:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant 'ToString' call",
@@ -81,7 +81,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall:
+                case DiagnosticIds.RemoveRedundantStringToCharArrayCall:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant 'ToCharArray' call",
@@ -91,7 +91,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
+                case DiagnosticIds.CallExtensionMethodAsInstanceMethod:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         CallExtensionMethodAsInstanceMethodRefactoring.Title,
@@ -101,7 +101,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.CallThenByInsteadOfOrderBy:
+                case DiagnosticIds.CallThenByInsteadOfOrderBy:
                 {
                     SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
 
@@ -119,7 +119,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat:
+                case DiagnosticIds.UseStringInterpolationInsteadOfStringConcat:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use string interpolation",

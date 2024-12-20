@@ -18,7 +18,7 @@ public sealed class VariableDeclaratorCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantFieldInitialization); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantFieldInitialization); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class VariableDeclaratorCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveRedundantFieldInitialization:
+                case DiagnosticIds.RemoveRedundantFieldInitialization:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant initialization",

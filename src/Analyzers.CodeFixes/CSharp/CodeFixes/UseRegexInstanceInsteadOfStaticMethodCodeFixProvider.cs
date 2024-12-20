@@ -18,7 +18,7 @@ public sealed class UseRegexInstanceInsteadOfStaticMethodCodeFixProvider : BaseC
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseRegexInstanceInsteadOfStaticMethod); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -40,7 +40,7 @@ public sealed class UseRegexInstanceInsteadOfStaticMethodCodeFixProvider : BaseC
         CodeAction codeAction = CodeAction.Create(
             "Use Regex instance",
             ct => UseRegexInstanceInsteadOfStaticMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod));
+            GetEquivalenceKey(DiagnosticIds.UseRegexInstanceInsteadOfStaticMethod));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

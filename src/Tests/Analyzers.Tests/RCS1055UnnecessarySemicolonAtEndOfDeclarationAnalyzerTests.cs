@@ -12,7 +12,7 @@ public class RCS1055UnnecessarySemicolonAtEndOfDeclarationAnalyzerTests : Abstra
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Class()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -20,7 +20,7 @@ class C;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -28,7 +28,7 @@ struct C;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Interface()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -36,7 +36,7 @@ interface C;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Enum()
     {
         await VerifyNoDiagnosticAsync(@"

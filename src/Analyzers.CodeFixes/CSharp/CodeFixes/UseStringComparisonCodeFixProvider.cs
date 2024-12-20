@@ -25,7 +25,7 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseStringComparison); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseStringComparison); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -20,7 +20,7 @@ public sealed class UseEmptyStringLiteralOrStringEmptyCodeFixProvider : BaseCode
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseEmptyStringLiteralOrStringEmpty); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

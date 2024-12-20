@@ -12,7 +12,7 @@ public class RCS1242DoNotPassNonReadOnlyStructByReadOnlyReferenceTests : Abstrac
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DoNotPassNonReadOnlyStructByReadOnlyReference)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DoNotPassNonReadOnlyStructByReadOnlyReference)]
     public async Task TestNoDiagnostic_ReadOnlyStruct()
     {
         await VerifyNoDiagnosticAsync(@"

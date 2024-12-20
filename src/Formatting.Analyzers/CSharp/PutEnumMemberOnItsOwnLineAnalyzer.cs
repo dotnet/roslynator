@@ -19,7 +19,7 @@ public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEnumMemberOnItsOwnLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutEnumMemberOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -47,7 +47,7 @@ public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.PutEnumMemberOnItsOwnLine,
+                    FormattingDiagnosticRules.PutEnumMemberOnItsOwnLine,
                     block.GetLocation());
             }
 

@@ -12,7 +12,7 @@ public class RCS1113UseStringIsNullOrEmptyMethodTests : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringIsNullOrEmptyMethod;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringIsNullOrEmptyMethod)]
     public async Task Test_LogicalOr()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringIsNullOrEmptyMethod)]
     public async Task Test_LogicalAnd()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseStringIsNullOrEmptyMethod)]
     public async Task TestNoDiagnostics()
     {
         await VerifyNoDiagnosticAsync("""

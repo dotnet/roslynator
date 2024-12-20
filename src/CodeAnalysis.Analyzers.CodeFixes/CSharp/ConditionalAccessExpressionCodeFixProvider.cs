@@ -18,7 +18,7 @@ public sealed class ConditionalAccessExpressionCodeFixProvider : BaseCodeFixProv
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryConditionalAccess); }
+        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIds.UnnecessaryConditionalAccess); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

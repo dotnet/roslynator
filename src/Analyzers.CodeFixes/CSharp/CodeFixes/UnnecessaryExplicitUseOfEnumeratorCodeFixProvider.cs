@@ -24,7 +24,7 @@ public sealed class UnnecessaryExplicitUseOfEnumeratorCodeFixProvider : BaseCode
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator); }
+        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryExplicitUseOfEnumerator); }
     }
 
     public override FixAllProvider GetFixAllProvider() => null;

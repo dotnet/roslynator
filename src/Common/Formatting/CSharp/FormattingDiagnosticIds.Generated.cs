@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.Formatting.CSharp
 {
-    public static partial class DiagnosticIdentifiers
+    public static partial class FormattingDiagnosticIds
     {
         public const string AddBlankLineAfterEmbeddedStatement = "RCS0001";
         public const string AddBlankLineAfterRegionDirective = "RCS0002";

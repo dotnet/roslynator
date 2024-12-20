@@ -24,7 +24,7 @@ public sealed class AwaitExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.ConfigureAwait); }
+        get { return ImmutableArray.Create(DiagnosticIds.ConfigureAwait); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

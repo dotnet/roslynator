@@ -12,7 +12,7 @@ public class RCS1154SortEnumMembersTests : AbstractCSharpDiagnosticVerifier<Sort
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SortEnumMembers;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test_TrailingSeparator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test_EmptyLines()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test_WithComments()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -114,7 +114,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test_Comments_EmptyLines()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SortEnumMembers)]
     public async Task Test_Comments_EmptyLines_TrailingSeparator()
     {
         await VerifyDiagnosticAndFixAsync(@"

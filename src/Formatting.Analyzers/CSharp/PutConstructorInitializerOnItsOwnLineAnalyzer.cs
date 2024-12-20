@@ -19,7 +19,7 @@ public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnost
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutConstructorInitializerOnItsOwnLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutConstructorInitializerOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -45,7 +45,7 @@ public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnost
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.PutConstructorInitializerOnItsOwnLine,
+                FormattingDiagnosticRules.PutConstructorInitializerOnItsOwnLine,
                 block.GetLocation());
         }
     }

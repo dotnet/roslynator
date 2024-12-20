@@ -12,7 +12,7 @@ public class RCS1041RemoveEmptyInitializerTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyInitializer;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyInitializer)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyInitializer)]
     public async Task TestNoDiagnostic_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"

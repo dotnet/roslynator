@@ -21,7 +21,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement);
 
             return _supportedDiagnostics;
         }
@@ -141,7 +141,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
+            FormattingDiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
             block.GetLocation());
     }
 }

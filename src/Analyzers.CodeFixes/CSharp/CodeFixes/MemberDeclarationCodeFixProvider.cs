@@ -26,16 +26,16 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.RemoveRedundantOverridingMember,
-                DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers,
-                DiagnosticIdentifiers.RemoveRedundantSealedModifier,
-                DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration,
-                DiagnosticIdentifiers.OrderModifiers,
-                DiagnosticIdentifiers.MakeFieldReadOnly,
-                DiagnosticIdentifiers.UseConstantInsteadOfField,
-                DiagnosticIdentifiers.UseReadOnlyAutoProperty,
-                DiagnosticIdentifiers.ConvertCommentToDocumentationComment,
-                DiagnosticIdentifiers.MakeMethodExtensionMethod);
+                DiagnosticIds.RemoveRedundantOverridingMember,
+                DiagnosticIds.AddOrRemoveAccessibilityModifiers,
+                DiagnosticIds.RemoveRedundantSealedModifier,
+                DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration,
+                DiagnosticIds.OrderModifiers,
+                DiagnosticIds.MakeFieldReadOnly,
+                DiagnosticIds.UseConstantInsteadOfField,
+                DiagnosticIds.UseReadOnlyAutoProperty,
+                DiagnosticIds.ConvertCommentToDocumentationComment,
+                DiagnosticIds.MakeMethodExtensionMethod);
         }
     }
 
@@ -50,14 +50,14 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveRedundantOverridingMember:
+                case DiagnosticIds.RemoveRedundantOverridingMember:
                 {
                     CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(context.Document, memberDeclaration, equivalenceKey: GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers:
+                case DiagnosticIds.AddOrRemoveAccessibilityModifiers:
                 {
                     if (diagnostic.Properties.TryGetValue(nameof(Accessibility), out string accessibilityText))
                     {
@@ -92,12 +92,12 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
+                case DiagnosticIds.RemoveRedundantSealedModifier:
                 {
                     ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
                     break;
                 }
-                case DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration:
+                case DiagnosticIds.UnnecessarySemicolonAtEndOfDeclaration:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove unnecessary semicolon",
@@ -107,7 +107,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.OrderModifiers:
+                case DiagnosticIds.OrderModifiers:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Order modifiers",
@@ -117,7 +117,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.MakeFieldReadOnly:
+                case DiagnosticIds.MakeFieldReadOnly:
                 {
                     var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
 
@@ -130,7 +130,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
                     break;
                 }
-                case DiagnosticIdentifiers.UseConstantInsteadOfField:
+                case DiagnosticIds.UseConstantInsteadOfField:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use constant instead of field",
@@ -140,7 +140,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.UseReadOnlyAutoProperty:
+                case DiagnosticIds.UseReadOnlyAutoProperty:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use read-only auto-property",
@@ -150,7 +150,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.ConvertCommentToDocumentationComment:
+                case DiagnosticIds.ConvertCommentToDocumentationComment:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         ConvertCommentToDocumentationCommentRefactoring.Title,
@@ -160,7 +160,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.MakeMethodExtensionMethod:
+                case DiagnosticIds.MakeMethodExtensionMethod:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
 

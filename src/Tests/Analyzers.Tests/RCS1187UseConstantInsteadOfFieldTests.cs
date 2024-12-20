@@ -12,7 +12,7 @@ public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConstantInsteadOfField;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_AssignmentInInStaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -28,7 +28,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_RefInStaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_OutInStaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -69,7 +69,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_InInStaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -89,7 +89,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_SelfReference()
     {
         await VerifyNoDiagnosticAsync(@"

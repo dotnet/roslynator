@@ -13,7 +13,7 @@ public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticV
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryRawStringLiteral;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task Test_SingleLineRawStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync(""""
@@ -35,7 +35,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task Test_InterpolatedSingleLineRawString()
     {
         await VerifyDiagnosticAndFixAsync(""""
@@ -59,7 +59,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task Test_InterpolatedString_MultipleDollarSigns()
     {
         await VerifyDiagnosticAndFixAsync(""""
@@ -85,7 +85,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsQuote()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -99,7 +99,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsEscape()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -113,7 +113,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString_ContainsQuote()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -127,7 +127,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString_ContainsEscape()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -141,7 +141,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_MultipleDollarSigns()
     {
         await VerifyNoDiagnosticAsync(""""

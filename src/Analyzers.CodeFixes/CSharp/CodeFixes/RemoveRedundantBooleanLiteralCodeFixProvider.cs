@@ -23,7 +23,7 @@ public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixPr
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantBooleanLiteral); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -91,7 +91,7 @@ public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixPr
         CodeAction codeAction = CodeAction.Create(
             $"Remove redundant '{textToRemove}'",
             createChangedDocument,
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral));
+            GetEquivalenceKey(DiagnosticIds.RemoveRedundantBooleanLiteral));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

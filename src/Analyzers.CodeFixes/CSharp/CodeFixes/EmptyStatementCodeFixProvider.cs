@@ -18,7 +18,7 @@ public sealed class EmptyStatementCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyStatement); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptyStatement); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class EmptyStatementCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove empty statement",
             ct => RemoveEmptyStatementRefactoring.RefactorAsync(context.Document, emptyStatement, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyStatement));
+            GetEquivalenceKey(DiagnosticIds.RemoveEmptyStatement));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

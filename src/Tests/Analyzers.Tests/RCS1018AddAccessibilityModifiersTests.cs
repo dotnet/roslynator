@@ -12,7 +12,7 @@ public class RCS1018AddAccessibilityModifiersTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_NonNestedType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -54,7 +54,7 @@ namespace N
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_MemberDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ namespace N
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_OperatorDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -198,7 +198,7 @@ namespace N
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit).AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0558_UserDefinedOperatorMustBeDeclaredStaticAndPublic));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -234,7 +234,7 @@ namespace N
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -270,7 +270,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -290,7 +290,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass4()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -310,7 +310,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass5()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -330,7 +330,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass6()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -350,7 +350,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass7()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -370,7 +370,7 @@ public class Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass8()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -404,7 +404,7 @@ public class C3 : C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task TestNoDiagnostic_StaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -417,7 +417,7 @@ public class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task TestNoDiagnostic_Destructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -430,7 +430,7 @@ public class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, "implicit"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task TestNoDiagnostic_ExplicitInterfaceImplementation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -475,7 +475,7 @@ public class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
     public async Task TestNoDiagnostic_FileAccessModifier()
     {
         await VerifyNoDiagnosticAsync(@"

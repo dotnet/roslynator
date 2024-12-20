@@ -12,7 +12,7 @@ public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantBaseInterface;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task Test_IEnumerableOfT()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -24,7 +24,7 @@ class Foo1<T> : List<T>, IEnumerable<T> where T : class
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_ExplicitImplementation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -40,7 +40,7 @@ class C : List<object>, ICollection<object>
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_MethodImplementedWithNewKeyword()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -65,7 +65,7 @@ class C : B, IFoo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_PropertyImplementedWithNewKeyword()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -86,7 +86,7 @@ class C : B, IFoo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_IndexerImplementedWithNewKeyword()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -113,7 +113,7 @@ class C : B, IFoo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_EventFieldImplementedWithNewKeyword()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -136,7 +136,7 @@ class C : B, IFoo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantBaseInterface)]
     public async Task TestNoDiagnostic_EventImplementedWithNewKeyword()
     {
         await VerifyNoDiagnosticAsync(@"

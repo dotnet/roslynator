@@ -21,7 +21,7 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
         {
             if (_supportedDiagnostics.IsDefault)
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken);
             }
 
             return _supportedDiagnostics;
@@ -107,7 +107,7 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken,
+                FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken,
                 block.GetLocation(),
                 (block.First.IsToken) ? "before" : "after");
         }

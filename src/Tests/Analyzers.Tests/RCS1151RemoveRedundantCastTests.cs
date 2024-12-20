@@ -12,7 +12,7 @@ public class RCS1151RemoveRedundantCastTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCast;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_CastToDerivedType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ class B : C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_CastToDerivedType_ConditionalAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -92,7 +92,7 @@ class B : C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_CastToImplementedInterface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -122,7 +122,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_CastToImplementedInterface_ConditionalAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -152,7 +152,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_CastToIDisposable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -196,7 +196,7 @@ class Disposable : IDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_Accessibility()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -262,7 +262,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task Test_Accessibility_ProtectedInternal()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -298,7 +298,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_NotAccessible()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -321,7 +321,7 @@ class C : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_ExplicitImplementation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -364,7 +364,7 @@ class ExplicitDisposable : IDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_ExplicitImplementationOfGenericMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -385,7 +385,7 @@ class C : IC
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_CastToDerivedType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -407,7 +407,7 @@ class B : C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
     internal async Task TestNoDiagnostic_DefaultInterfaceImplementation()
     {
         await VerifyNoDiagnosticAsync(@"

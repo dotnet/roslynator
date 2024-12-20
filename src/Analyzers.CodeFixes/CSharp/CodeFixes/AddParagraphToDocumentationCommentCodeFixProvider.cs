@@ -23,7 +23,7 @@ public sealed class AddParagraphToDocumentationCommentCodeFixProvider : BaseCode
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddParagraphToDocumentationComment); }
+        get { return ImmutableArray.Create(DiagnosticIds.AddParagraphToDocumentationComment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

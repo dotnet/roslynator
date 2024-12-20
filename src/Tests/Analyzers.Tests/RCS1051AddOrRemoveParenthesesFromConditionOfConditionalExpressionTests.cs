@@ -12,7 +12,7 @@ public class RCS1051AddOrRemoveParenthesesFromConditionOfConditionalExpressionTe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_AddParentheses()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -36,7 +36,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_AddParentheses_SingleTokenExpression()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -60,7 +60,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -84,7 +84,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses_SingleTokenExpression()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -108,7 +108,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses_OmitWhenSingleToken()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -132,7 +132,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task TestNoDiagnostic_NoParentheses_SingleTokenExpression()
     {
         await VerifyNoDiagnosticAsync("""
@@ -147,7 +147,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task TestNoDiagnostic_Parentheses_SingleTokenExpression()
     {
         await VerifyNoDiagnosticAsync("""

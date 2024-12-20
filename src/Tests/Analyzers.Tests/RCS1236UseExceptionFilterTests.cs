@@ -12,7 +12,7 @@ public class RCS1236UseExceptionFilterTests : AbstractCSharpDiagnosticVerifier<U
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExceptionFilter;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfThrow()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfThrow_Embedded()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -98,7 +98,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfThrowElse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -143,7 +143,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfThrowElse_Embedded()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -184,7 +184,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfThrowElseIf()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -236,7 +236,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task Test_IfElseThrow()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -281,7 +281,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_HasFilter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -308,7 +308,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ConditionContainsAwait()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -336,7 +336,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_BothBranchesThrow()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -365,7 +365,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsMethodThatCanThrow()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -390,7 +390,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsMethodThatCanThrow2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -415,7 +415,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsMethodThatCanThrow3()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -440,7 +440,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
     {
         await VerifyNoDiagnosticAsync("""
@@ -470,7 +470,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsThrowExpression()
     {
         await VerifyNoDiagnosticAsync(@"

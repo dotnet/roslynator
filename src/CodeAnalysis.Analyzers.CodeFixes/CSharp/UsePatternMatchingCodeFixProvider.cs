@@ -26,7 +26,7 @@ public sealed class UsePatternMatchingCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatching); }
+        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIds.UsePatternMatching); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

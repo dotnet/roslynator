@@ -27,7 +27,7 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseConditionalAccess); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseConditionalAccess); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -54,7 +54,7 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
                 CodeAction codeAction = CodeAction.Create(
                     Title,
                     ct => UseConditionalAccessAsync(context.Document, (BinaryExpressionSyntax)node, ct),
-                    GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
+                    GetEquivalenceKey(DiagnosticIds.UseConditionalAccess));
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
                 break;
@@ -64,7 +64,7 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
                 CodeAction codeAction = CodeAction.Create(
                     Title,
                     ct => UseConditionalAccessAsync(context.Document, (IfStatementSyntax)node, ct),
-                    GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
+                    GetEquivalenceKey(DiagnosticIds.UseConditionalAccess));
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
                 break;

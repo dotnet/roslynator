@@ -18,7 +18,7 @@ public sealed class RegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyRegion); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptyRegion); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class RegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove empty region",
             ct => RemoveEmptyRegionRefactoring.RefactorAsync(context.Document, SyntaxInfo.RegionInfo(regionDirective), ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyRegion));
+            GetEquivalenceKey(DiagnosticIds.RemoveEmptyRegion));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

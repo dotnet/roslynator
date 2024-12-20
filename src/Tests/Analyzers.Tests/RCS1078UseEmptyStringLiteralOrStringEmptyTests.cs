@@ -12,7 +12,7 @@ public class RCS1078UseEmptyStringLiteralOrStringEmptyTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEmptyStringLiteralOrStringEmpty;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEmptyStringLiteralOrStringEmpty)]
     public async Task Test_StringEmpty()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -46,7 +46,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEmptyStringLiteralOrStringEmpty)]
     public async Task Test_EmptyString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -78,7 +78,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEmptyStringLiteralOrStringEmpty)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
@@ -94,7 +94,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEmptyStringLiteralOrStringEmpty)]
     public async Task TestNoDiagnostic_ExpressionMustBeConstant()
     {
         await VerifyNoDiagnosticAsync("""

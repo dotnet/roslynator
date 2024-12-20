@@ -12,7 +12,7 @@ public class RCS1225MakeClassSealedTests : AbstractCSharpDiagnosticVerifier<Make
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassSealed;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task Test_ClassWithoutAccessibilityModifier()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ sealed class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task Test_ClassWithAccessibilityModifier()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ public sealed class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task Test_ClassWithTwoConstructors()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ public sealed class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_StaticClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -93,7 +93,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_SealedClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -106,7 +106,7 @@ sealed class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_ProtectedConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -119,7 +119,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_NoExplicitConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -129,7 +129,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_VirtualMember()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -146,7 +146,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_ContainsDerivedClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -166,7 +166,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassSealed)]
     public async Task TestNoDiagnostic_ContainsDerivedClass2()
     {
         await VerifyNoDiagnosticAsync(@"

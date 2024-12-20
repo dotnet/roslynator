@@ -12,7 +12,7 @@ public class RCS1043RemovePartialModifierFromTypeWithSinglePartTests : AbstractC
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemovePartialModifierFromTypeWithSinglePart;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -26,7 +26,7 @@ public class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -40,7 +40,7 @@ public interface Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -54,7 +54,7 @@ public struct Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task Test_MultipleMethodsNestedInClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task Test_MultipleMethodsNestedInStruct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -106,7 +106,7 @@ public struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_NoPartialModifier()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -116,7 +116,7 @@ public class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_MultipleClassesNestedInStaticClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -133,7 +133,7 @@ public static class A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_MultipleClassesNestedInStruct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -150,7 +150,7 @@ public struct A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_MultipleInterfacesNestedInStaticClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -167,7 +167,7 @@ public static class A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_MultipleInterfacesNestedInStruct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -184,7 +184,7 @@ public struct A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_MultipleNestedClassesWithSameName()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -212,7 +212,7 @@ public struct FooStruct
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_InheritsFromAspNetCoreComponentBase()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -229,7 +229,7 @@ namespace Microsoft.AspNetCore.Components
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart)]
     public async Task TestNoDiagnostic_InheritsFromWpfComponentBase()
     {
         await VerifyNoDiagnosticAsync(@"

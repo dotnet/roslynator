@@ -23,7 +23,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEnumFieldExplicitly); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseEnumFieldExplicitly); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Use enum field explicitly",
             ct => UseEnumFieldExplicitlyAsync(castExpression, document, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.UseEnumFieldExplicitly));
+            GetEquivalenceKey(DiagnosticIds.UseEnumFieldExplicitly));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }

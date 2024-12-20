@@ -128,6 +128,6 @@ public sealed class MergePreprocessorDirectivesAnalyzer : BaseDiagnosticAnalyzer
     private static bool IsSuppressingThisAnalyzer(SeparatedSyntaxList<ExpressionSyntax> errorCodes)
     {
         return errorCodes.SingleOrDefault(shouldThrow: false) is IdentifierNameSyntax identifierName
-            && string.Equals(identifierName.Identifier.ValueText, DiagnosticIdentifiers.MergePreprocessorDirectives, StringComparison.Ordinal);
+            && string.Equals(identifierName.Identifier.ValueText, DiagnosticIds.MergePreprocessorDirectives, StringComparison.Ordinal);
     }
 }

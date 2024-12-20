@@ -12,7 +12,7 @@ public class RCS1194ImplementExceptionConstructorsTests : AbstractCSharpDiagnost
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ImplementExceptionConstructors;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementExceptionConstructors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ImplementExceptionConstructors)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

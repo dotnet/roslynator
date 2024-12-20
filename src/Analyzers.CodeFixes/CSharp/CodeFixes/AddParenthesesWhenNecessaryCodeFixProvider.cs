@@ -21,7 +21,7 @@ public sealed class AddParenthesesWhenNecessaryCodeFixProvider : BaseCodeFixProv
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddParenthesesWhenNecessary); }
+        get { return ImmutableArray.Create(DiagnosticIds.AddParenthesesWhenNecessary); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -46,7 +46,7 @@ public sealed class AddParenthesesWhenNecessaryCodeFixProvider : BaseCodeFixProv
                     return AddParenthesesAccordingToOperatorPrecedenceAsync(document, expression, ct);
                 }
             },
-            GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesWhenNecessary));
+            GetEquivalenceKey(DiagnosticIds.AddParenthesesWhenNecessary));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

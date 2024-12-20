@@ -18,7 +18,7 @@ public sealed class UsingDirectiveCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective); }
+        get { return ImmutableArray.Create(DiagnosticIds.AvoidUsageOfUsingAliasDirective); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class UsingDirectiveCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Inline alias expression",
             ct => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective));
+            GetEquivalenceKey(DiagnosticIds.AvoidUsageOfUsingAliasDirective));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

@@ -12,7 +12,7 @@ public class RCS1093FileContainsNoCodeTests : AbstractCSharpDiagnosticVerifier<F
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FileContainsNoCode;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FileContainsNoCode)]
     public async Task Test()
     {
         await VerifyDiagnosticAsync(@"[||]// copyright ...
@@ -20,7 +20,7 @@ public class RCS1093FileContainsNoCodeTests : AbstractCSharpDiagnosticVerifier<F
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FileContainsNoCode)]
     public async Task TestNoDiagnostic_FileScopedNamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"// copyright ...
@@ -28,7 +28,7 @@ namespace N;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FileContainsNoCode)]
     public async Task TestNoDiagnostic_IfDirective()
     {
         await VerifyNoDiagnosticAsync(@"// copyright ...
@@ -42,7 +42,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FileContainsNoCode)]
     public async Task TestNoDiagnostic_PragmaWarningDirective()
     {
         await VerifyNoDiagnosticAsync(@"#pragma warning disable RCS1093 // Remove file with no code.

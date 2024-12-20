@@ -25,7 +25,7 @@ public sealed class UsePatternMatchingInsteadOfIsAndCastCodeFixProvider : BaseCo
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast); }
+        get { return ImmutableArray.Create(DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast); }
     }
 
     public override FixAllProvider GetFixAllProvider()

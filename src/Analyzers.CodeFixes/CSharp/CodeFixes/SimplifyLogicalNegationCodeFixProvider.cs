@@ -22,7 +22,7 @@ public sealed class SimplifyLogicalNegationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLogicalNegation); }
+        get { return ImmutableArray.Create(DiagnosticIds.SimplifyLogicalNegation); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

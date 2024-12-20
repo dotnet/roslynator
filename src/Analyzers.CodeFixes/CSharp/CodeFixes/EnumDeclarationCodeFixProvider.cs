@@ -27,9 +27,9 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.SortEnumMembers,
-                DiagnosticIdentifiers.EnumShouldDeclareExplicitValues,
-                DiagnosticIdentifiers.UseBitShiftOperator);
+                DiagnosticIds.SortEnumMembers,
+                DiagnosticIds.EnumShouldDeclareExplicitValues,
+                DiagnosticIds.UseBitShiftOperator);
         }
     }
 
@@ -46,7 +46,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.SortEnumMembers:
+                case DiagnosticIds.SortEnumMembers:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Sort '{enumDeclaration.Identifier}' members",
@@ -56,7 +56,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.EnumShouldDeclareExplicitValues:
+                case DiagnosticIds.EnumShouldDeclareExplicitValues:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -99,7 +99,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIdentifiers.UseBitShiftOperator:
+                case DiagnosticIds.UseBitShiftOperator:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use '<<' operator",

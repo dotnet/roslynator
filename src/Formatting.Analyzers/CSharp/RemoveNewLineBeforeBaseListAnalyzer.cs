@@ -19,7 +19,7 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveNewLineBeforeBaseList);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.RemoveNewLineBeforeBaseList);
 
             return _supportedDiagnostics;
         }
@@ -85,7 +85,7 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveNewLineBeforeBaseList,
+                FormattingDiagnosticRules.RemoveNewLineBeforeBaseList,
                 block.GetLocation());
         }
     }

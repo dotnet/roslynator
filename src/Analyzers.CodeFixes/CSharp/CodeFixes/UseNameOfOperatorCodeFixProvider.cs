@@ -20,7 +20,7 @@ public sealed class UseNameOfOperatorCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseNameOfOperator); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseNameOfOperator); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

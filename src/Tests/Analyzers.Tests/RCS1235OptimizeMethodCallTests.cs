@@ -12,7 +12,7 @@ public class RCS1235OptimizeMethodCallTests : AbstractCSharpDiagnosticVerifier<I
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeMethodCall;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallCompareOrdinalInsteadOfCompare()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallEqualsInsteadOfCompare()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallNotEqualsInsteadOfCompare()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -138,7 +138,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringLiteral2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -160,7 +160,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_StringEmpty()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -182,7 +182,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringConstant()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -208,7 +208,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -234,7 +234,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -260,7 +260,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert3()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -286,7 +286,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_OptimizeDictionaryContainsKey()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -327,7 +327,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_OptimizeDictionaryContainsKey_EmbeddedStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -364,7 +364,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_OptimizeDictionaryContainsKey_LogicalNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -405,7 +405,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_OptimizeAdd()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -438,7 +438,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_OptimizeAdd_EmbeddedStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -469,7 +469,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task Test_NoDiagnostic_OptimizeAdd()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -491,7 +491,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_OptimizeAdd_Await()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -512,7 +512,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_OptimizeAdd_Await2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -536,7 +536,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_OptimizeAdd_DifferentType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -566,7 +566,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_CallCompareOrdinalInsteadOfCompare_NotStringComparisonOrdinal()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -585,7 +585,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_CallStringConcatInsteadOfStringJoin()
     {
         await VerifyNoDiagnosticAsync("""
@@ -604,7 +604,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_ForEachVariableUsedInExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -628,7 +628,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_Recursion()
     {
         await VerifyNoDiagnosticAsync(@"

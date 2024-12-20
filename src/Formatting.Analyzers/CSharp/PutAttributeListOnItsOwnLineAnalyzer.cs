@@ -19,7 +19,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutAttributeListOnItsOwnLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutAttributeListOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -318,7 +318,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.PutAttributeListOnItsOwnLine,
+                FormattingDiagnosticRules.PutAttributeListOnItsOwnLine,
                 block.GetLocation());
         }
     }

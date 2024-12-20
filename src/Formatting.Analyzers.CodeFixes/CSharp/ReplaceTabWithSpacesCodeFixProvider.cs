@@ -18,8 +18,8 @@ public sealed class ReplaceTabWithSpacesCodeFixProvider : BaseCodeFixProvider
 {
     public ReplaceTabWithSpacesCodeFixProvider()
     {
-        TwoSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "TwoSpaces");
-        FourSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "FourSpaces");
+        TwoSpacesEquivalenceKey = GetEquivalenceKey(FormattingDiagnosticIds.UseSpacesInsteadOfTab, "TwoSpaces");
+        FourSpacesEquivalenceKey = GetEquivalenceKey(FormattingDiagnosticIds.UseSpacesInsteadOfTab, "FourSpaces");
     }
 
     internal string TwoSpacesEquivalenceKey { get; }
@@ -28,7 +28,7 @@ public sealed class ReplaceTabWithSpacesCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseSpacesInsteadOfTab); }
+        get { return ImmutableArray.Create(FormattingDiagnosticIds.UseSpacesInsteadOfTab); }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -21,9 +21,9 @@ public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
-                DiagnosticIdentifiers.RemoveRedundantConstructor,
-                DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors);
+                DiagnosticIds.RemoveRedundantBaseConstructorCall,
+                DiagnosticIds.RemoveRedundantConstructor,
+                DiagnosticIds.AbstractTypeShouldNotHavePublicConstructors);
         }
     }
 
@@ -38,7 +38,7 @@ public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall:
+                case DiagnosticIds.RemoveRedundantBaseConstructorCall:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant base constructor call",
@@ -48,7 +48,7 @@ public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveRedundantConstructor:
+                case DiagnosticIds.RemoveRedundantConstructor:
                 {
                     CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
                         context.Document,
@@ -59,7 +59,7 @@ public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors:
+                case DiagnosticIds.AbstractTypeShouldNotHavePublicConstructors:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Change accessibility to 'protected'",

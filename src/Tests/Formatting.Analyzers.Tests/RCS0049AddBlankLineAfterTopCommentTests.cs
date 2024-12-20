@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0049AddBlankLineAfterTopCommentTests : AbstractCSharpDiagnosticVerifier<AddBlankLineAfterTopCommentAnalyzer, SyntaxTriviaCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineAfterTopComment;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.AddBlankLineAfterTopComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"// x[|
@@ -27,7 +27,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task Test_ExternAlias()
     {
         await VerifyDiagnosticAndFixAsync(@"// x[|
@@ -46,7 +46,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticIds(new[] { "CS0430", "CS8020" }));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task Test_Using()
     {
         await VerifyDiagnosticAndFixAsync(@"// x[|
@@ -65,7 +65,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task Test_AttributeList()
     {
         await VerifyDiagnosticAndFixAsync(@"// x[|
@@ -92,7 +92,7 @@ class AssemblyAttribute : System.Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"// x
@@ -103,7 +103,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddBlankLineAfterTopComment)]
     public async Task TestNoDiagnostic_NoComment()
     {
         await VerifyNoDiagnosticAsync(@"

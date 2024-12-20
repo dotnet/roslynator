@@ -24,7 +24,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.InlineLocalVariable); }
+        get { return ImmutableArray.Create(DiagnosticIds.InlineLocalVariable); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.InlineLocalVariable:
+            case DiagnosticIds.InlineLocalVariable:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Inline local variable",

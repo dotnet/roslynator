@@ -19,7 +19,7 @@ public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineAfterSwitchLabel);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddNewLineAfterSwitchLabel);
 
             return _supportedDiagnostics;
         }
@@ -52,7 +52,7 @@ public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddNewLineAfterSwitchLabel,
+                FormattingDiagnosticRules.AddNewLineAfterSwitchLabel,
                 block.GetLocation());
         }
     }

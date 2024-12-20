@@ -21,7 +21,7 @@ public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosti
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfBinaryExpressionChain);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.FixFormattingOfBinaryExpressionChain);
 
             return _supportedDiagnostics;
         }
@@ -177,7 +177,7 @@ public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosti
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.FixFormattingOfBinaryExpressionChain,
+                FormattingDiagnosticRules.FixFormattingOfBinaryExpressionChain,
                 topBinaryExpression);
         }
     }

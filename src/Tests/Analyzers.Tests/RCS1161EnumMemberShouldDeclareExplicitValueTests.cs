@@ -12,7 +12,7 @@ public class RCS1161EnumShouldDeclareExplicitValuesTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.EnumShouldDeclareExplicitValues;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_AllValues()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_AllValues_MissingComma()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ enum Foo
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1003"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_WithComments()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -76,7 +76,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_SomeValues()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -102,7 +102,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_Flags()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -130,7 +130,7 @@ enum Foo
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_Flags_BitShift()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -158,7 +158,7 @@ enum Foo
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id, "BitShift"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_Flags2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -190,7 +190,7 @@ enum Foo
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_Flags_SByte()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -226,7 +226,7 @@ enum Foo : sbyte
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.EnumShouldDeclareExplicitValues)]
     public async Task Test_Flags_SByte_MaxValue()
     {
         await VerifyDiagnosticAndNoFixAsync(@"

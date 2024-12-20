@@ -12,7 +12,7 @@ public class RCS1046AsynchronousMethodNameShouldEndWithAsyncTests : AbstractCSha
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_Task()
     {
         await VerifyDiagnosticAsync(@"
@@ -36,7 +36,7 @@ class C : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_Task_TypeParameter()
     {
         await VerifyDiagnosticAsync(@"
@@ -52,7 +52,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_TaskOfT()
     {
         await VerifyDiagnosticAsync(@"
@@ -68,7 +68,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_TaskOfT_TypeParameter()
     {
         await VerifyDiagnosticAsync(@"
@@ -84,7 +84,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_ValueTaskOfT()
     {
         await VerifyDiagnosticAsync(@"
@@ -100,7 +100,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task Test_DuckTyped()
     {
         await VerifyDiagnosticAsync(@"
@@ -136,7 +136,7 @@ struct CustomAwaiter<T> : System.Runtime.CompilerServices.INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task TestNoDiagnostic_EntryPointMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -152,7 +152,7 @@ class Program
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task TestNoDiagnostic_Interface()
     {
         await VerifyNoDiagnosticAsync(@"

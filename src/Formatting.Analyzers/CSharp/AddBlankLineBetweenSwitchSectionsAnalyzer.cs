@@ -19,7 +19,7 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBetweenSwitchSections);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineBetweenSwitchSections);
 
             return _supportedDiagnostics;
         }
@@ -61,7 +61,7 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.AddBlankLineBetweenSwitchSections,
+                        FormattingDiagnosticRules.AddBlankLineBetweenSwitchSections,
                         block.GetLocation());
                 }
             }

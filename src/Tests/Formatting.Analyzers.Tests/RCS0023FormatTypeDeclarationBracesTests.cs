@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0023FormatTypeDeclarationBracesTests : AbstractCSharpDiagnosticVerifier<FormatTypeDeclarationBracesAnalyzer, MemberDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatTypeDeclarationBraces;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.FormatTypeDeclarationBraces;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatTypeDeclarationBraces)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -25,7 +25,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatTypeDeclarationBraces)]
     public async Task Test_WithWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatTypeDeclarationBraces)]
     public async Task TestNoDiagnostic_EmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -49,7 +49,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatTypeDeclarationBraces)]
     public async Task TestNoDiagnostic_NoBraces()
     {
         await VerifyNoDiagnosticAsync(@"

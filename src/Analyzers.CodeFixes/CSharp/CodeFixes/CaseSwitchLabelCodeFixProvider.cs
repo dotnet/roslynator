@@ -18,7 +18,7 @@ public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveUnnecessaryCaseLabel); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -37,7 +37,7 @@ public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
                     label,
                     ct);
             },
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel));
+            GetEquivalenceKey(DiagnosticIds.RemoveUnnecessaryCaseLabel));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

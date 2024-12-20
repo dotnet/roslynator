@@ -19,11 +19,11 @@ public sealed class BlankLineBetweenDeclarationsCodeFixProvider : BaseCodeFixPro
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.AddBlankLineBetweenDeclarations,
-                DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations,
-                DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment,
-                DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind,
-                DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind);
+                FormattingDiagnosticIds.AddBlankLineBetweenDeclarations,
+                FormattingDiagnosticIds.AddBlankLineBetweenSingleLineDeclarations,
+                FormattingDiagnosticIds.AddBlankLineBetweenDeclarationAndDocumentationComment,
+                FormattingDiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind,
+                FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind);
         }
     }
 

@@ -12,7 +12,7 @@ public class RCS1239UseForStatementInsteadOfWhileStatementTests : AbstractCSharp
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseForStatementInsteadOfWhileStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task Test_ContinueStatementInsideNestedLoop()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -95,7 +95,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task TestNoDiagnostic_LocalVariableReferencedAfterWhileStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -118,7 +118,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task TestNoDiagnostic_ContainsContinueStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -147,7 +147,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task TestNoDiagnostic_MultipleIncrementedVariables()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -170,7 +170,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseForStatementInsteadOfWhileStatement)]
     public async Task TestNoDiagnostic_ConditionIsTrue()
     {
         await VerifyNoDiagnosticAsync(@"

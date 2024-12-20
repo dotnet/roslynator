@@ -23,9 +23,9 @@ public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProv
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
-                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
-                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach);
+                DiagnosticIds.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
+                DiagnosticIds.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
+                DiagnosticIds.UseVarInsteadOfExplicitTypeInForEach);
         }
     }
 

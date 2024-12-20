@@ -23,7 +23,7 @@ public sealed class NormalizeNullCheckProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeNullCheck); }
+        get { return ImmutableArray.Create(DiagnosticIds.NormalizeNullCheck); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

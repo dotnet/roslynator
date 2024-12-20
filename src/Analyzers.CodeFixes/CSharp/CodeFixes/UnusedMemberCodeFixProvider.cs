@@ -19,7 +19,7 @@ public sealed class UnusedMemberCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnusedMemberDeclaration); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveUnusedMemberDeclaration); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

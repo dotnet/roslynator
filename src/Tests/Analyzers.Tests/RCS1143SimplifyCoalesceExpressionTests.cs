@@ -12,7 +12,7 @@ public class RCS1143SimplifyCoalesceExpressionTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyCoalesceExpression;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCoalesceExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyCoalesceExpression)]
     public async Task Test_DefaultOfNullableType()
     {
         await VerifyDiagnosticAndFixAsync(@"

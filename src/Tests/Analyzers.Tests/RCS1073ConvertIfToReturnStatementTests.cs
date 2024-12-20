@@ -12,7 +12,7 @@ public class RCS1073ConvertIfToReturnStatementTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToReturnStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task Test_IfElse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -45,7 +45,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task Test_IfReturn()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -76,7 +76,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task Test_IfReturn_EqualsToNull()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task Test_IfReturn_IsNull()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task TestNoDiagnostic_IfElseContainsComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -165,7 +165,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task TestNoDiagnostic_IfElseContainsDirective()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -189,7 +189,7 @@ class C
 ", options: Options.WithDebugPreprocessorSymbol());
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task TestNoDiagnostic_IfReturnContainsComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -210,7 +210,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertIfToReturnStatement)]
     public async Task TestNoDiagnostic_IfReturnContainsDirective()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -12,7 +12,7 @@ public class RCS1085UseAutoPropertyTests : AbstractCSharpDiagnosticVerifier<UseA
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAutoProperty;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -65,7 +65,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_Property_AccessWithExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_ReadOnlyProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -141,7 +141,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_ReadOnlyPropertyWithExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -170,7 +170,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_StaticProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -219,7 +219,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_ReadOnlyStaticProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -251,7 +251,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_PartialClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -300,7 +300,7 @@ partial class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_SealedClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -342,7 +342,7 @@ abstract class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_AccessorWithAttribute()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -375,7 +375,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_FieldInCref()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -402,7 +402,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task Test_InitSetter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -425,7 +425,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_PartialClassInMultipleDocuments()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -464,7 +464,7 @@ partial class C
 ", });
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_ClassWithStructLayoutAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -485,7 +485,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_StructWithStructLayoutAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -506,7 +506,7 @@ struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldWithNonSerializedAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -526,7 +526,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_PropertyWithExplicitImplementation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -550,7 +550,7 @@ interface I
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInRefArgument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -572,7 +572,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInRefArgument2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -594,7 +594,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInRefArgument3()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -616,7 +616,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInOutArgument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -639,7 +639,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInOutArgument2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -662,7 +662,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_FieldUsedInOutArgument3()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -685,7 +685,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_OverriddenPropertyWithNotImplementedAccessor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -706,7 +706,7 @@ class C : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_OverriddenPropertyWithNotImplementedAccessor_ExpressionBody()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -724,7 +724,7 @@ class C : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_PropertyAndFieldHaveDifferentTypes()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -741,7 +741,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_VirtualProperty_BackingFieldAssignedInConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -767,7 +767,7 @@ abstract class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_OverrideProperty_BackingFieldAssignedInConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -788,7 +788,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_PropertyOfStructIsAssigned()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -817,7 +817,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_PropertyOfStructIsAssigned_This()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -846,7 +846,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_IndexerOfStructIsAssigned()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -879,7 +879,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_InitAccessor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -902,7 +902,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_BackingFieldHasAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -922,7 +922,7 @@ class MyAttribute : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestFix_WithLeadingWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -953,7 +953,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAutoProperty)]
     public async Task TestNoDiagnostic_BackingFieldUsedByReference()
     {
         await VerifyNoDiagnosticAsync(@"

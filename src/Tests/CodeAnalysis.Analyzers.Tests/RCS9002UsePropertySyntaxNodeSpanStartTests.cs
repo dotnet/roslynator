@@ -6,13 +6,13 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9002UsePropertySyntaxNodeSpanStartTests : AbstractCSharpDiagnosticVerifier<SimpleMemberAccessExpressionAnalyzer, SimpleMemberAccessExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePropertySyntaxNodeSpanStart;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UsePropertySyntaxNodeSpanStart;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePropertySyntaxNodeSpanStart)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

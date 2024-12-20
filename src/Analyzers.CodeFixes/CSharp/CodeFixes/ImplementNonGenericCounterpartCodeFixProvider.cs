@@ -21,7 +21,7 @@ public sealed class ImplementNonGenericCounterpartCodeFixProvider : BaseCodeFixP
 {
     public ImplementNonGenericCounterpartCodeFixProvider()
     {
-        ExplicitEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.ImplementNonGenericCounterpart, "Explicit");
+        ExplicitEquivalenceKey = GetEquivalenceKey(DiagnosticIds.ImplementNonGenericCounterpart, "Explicit");
     }
 
     internal readonly string ExplicitEquivalenceKey;
@@ -123,7 +123,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.ImplementNonGenericCounterpart); }
+        get { return ImmutableArray.Create(DiagnosticIds.ImplementNonGenericCounterpart); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

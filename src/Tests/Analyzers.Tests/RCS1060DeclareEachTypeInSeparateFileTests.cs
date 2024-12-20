@@ -12,7 +12,7 @@ public class RCS1060DeclareEachTypeInSeparateFileTests : AbstractCSharpDiagnosti
 {
     public override DiagnosticDescriptor Descriptor => DiagnosticRules.DeclareEachTypeInSeparateFile;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEachTypeInSeparateFile)]
     public async Task Test_Namespace()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -36,7 +36,7 @@ namespace N
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEachTypeInSeparateFile)]
     public async Task Test_FileScopedNamespace()
     {
         await VerifyDiagnosticAndFixAsync("""

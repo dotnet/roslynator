@@ -12,7 +12,7 @@ public class RCS1101FormatDocumentationSummaryOnMultipleLinesTests : AbstractCSh
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationSummaryOnMultipleLines;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationSummaryOnMultipleLines)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -30,7 +30,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationSummaryOnMultipleLines)]
     public async Task Test_EmptySummary()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationSummaryOnMultipleLines)]
     public async Task Test_Tab()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationSummaryOnMultipleLines)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -85,7 +85,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationSummaryOnMultipleLines)]
     public async Task TestNoDiagnostic_EmptySummary()
     {
         await VerifyNoDiagnosticAsync(@"

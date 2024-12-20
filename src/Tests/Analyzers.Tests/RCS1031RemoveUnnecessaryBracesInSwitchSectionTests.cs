@@ -12,7 +12,7 @@ public class RCS1031RemoveUnnecessaryBracesInSwitchSectionTests : AbstractCSharp
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_Section()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -55,7 +55,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_SectionWithComments()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -104,7 +104,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_LastSection()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -142,7 +142,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_WithLocalVariablesThatDoNotOverlap()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -193,7 +193,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_SectionWithoutBlock()
     {
         await VerifyNoDiagnosticAsync("""
@@ -213,7 +213,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_UsingLocalVariable()
     {
         await VerifyNoDiagnosticAsync("""
@@ -238,7 +238,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableDeclaration()
     {
         await VerifyNoDiagnosticAsync("""
@@ -268,7 +268,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableWithPatternMatchDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -296,7 +296,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableWithRecursivePatternMatchDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"

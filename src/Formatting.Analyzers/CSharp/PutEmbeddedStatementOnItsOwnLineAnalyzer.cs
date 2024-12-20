@@ -19,7 +19,7 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEmbeddedStatementOnItsOwnLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutEmbeddedStatementOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -127,7 +127,7 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.PutEmbeddedStatementOnItsOwnLine,
+            FormattingDiagnosticRules.PutEmbeddedStatementOnItsOwnLine,
             block.GetLocation());
     }
 }

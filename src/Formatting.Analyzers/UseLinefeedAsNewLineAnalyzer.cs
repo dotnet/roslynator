@@ -18,7 +18,7 @@ public sealed class UseLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseLinefeedAsNewLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.UseLinefeedAsNewLine);
 
             return _supportedDiagnostics;
         }
@@ -46,7 +46,7 @@ public sealed class UseLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.UseLinefeedAsNewLine,
+                    FormattingDiagnosticRules.UseLinefeedAsNewLine,
                     Location.Create(context.Tree, new TextSpan(end, 2)));
             }
         }

@@ -24,11 +24,11 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.AddBlankLineBetweenDeclarations,
-                    DiagnosticRules.AddBlankLineBetweenSingleLineDeclarations,
-                    DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment,
-                    DiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind,
-                    DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind);
+                    FormattingDiagnosticRules.AddBlankLineBetweenDeclarations,
+                    FormattingDiagnosticRules.AddBlankLineBetweenSingleLineDeclarations,
+                    FormattingDiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment,
+                    FormattingDiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind,
+                    FormattingDiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind);
             }
 
             return _supportedDiagnostics;
@@ -109,7 +109,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             if (block.Kind != TriviaBlockKind.BlankLine
                 && block.ContainsDocumentationComment)
             {
-                ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, block);
+                ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, block);
                 continue;
             }
 
@@ -121,20 +121,20 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
                     if (!block.ContainsDocumentationComment
                         && MemberKindEquals(previousMember, member))
                     {
-                        ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
+                        ReportDiagnostic(context, FormattingDiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
                     }
                 }
                 else
                 {
-                    ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
+                    ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
 
                     if (!MemberKindEquals(previousMember, member))
-                        ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, block);
+                        ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, block);
                 }
             }
             else if (block.Kind != TriviaBlockKind.BlankLine)
             {
-                ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarations, block);
+                ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenDeclarations, block);
             }
         }
     }
@@ -197,7 +197,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             if (block.Kind != TriviaBlockKind.BlankLine
                 && block.ContainsDocumentationComment)
             {
-                ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, block);
+                ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, block);
                 continue;
             }
 
@@ -208,17 +208,17 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
                 {
                     if (block.Kind == TriviaBlockKind.BlankLine)
                     {
-                        ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
+                        ReportDiagnostic(context, FormattingDiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
                     }
                     else
                     {
-                        ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
+                        ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
                     }
                 }
             }
             else if (block.Kind != TriviaBlockKind.BlankLine)
             {
-                ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarations, block);
+                ReportDiagnostic(context, FormattingDiagnosticRules.AddBlankLineBetweenDeclarations, block);
             }
         }
     }

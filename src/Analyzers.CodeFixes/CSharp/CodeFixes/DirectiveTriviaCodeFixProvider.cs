@@ -22,7 +22,7 @@ public sealed class DirectiveTriviaCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.MergePreprocessorDirectives); }
+        get { return ImmutableArray.Create(DiagnosticIds.MergePreprocessorDirectives); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

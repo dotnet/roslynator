@@ -25,8 +25,8 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.AddBlankLineBetweenAccessors,
-                    DiagnosticRules.BlankLineBetweenSingleLineAccessors);
+                    FormattingDiagnosticRules.AddBlankLineBetweenAccessors,
+                    FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors);
             }
 
             return _supportedDiagnostics;
@@ -69,7 +69,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
             && accessorList.SyntaxTree.IsSingleLineSpan(accessor2.Span, context.CancellationToken))
         {
-            if (DiagnosticRules.BlankLineBetweenSingleLineAccessors.IsEffective(context))
+            if (FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors.IsEffective(context))
             {
                 BlankLineStyle style = context.GetBlankLineBetweenSingleLineAccessors();
 
@@ -79,7 +79,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.BlankLineBetweenSingleLineAccessors,
+                            FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors,
                             block.GetLocation(),
                             properties: DiagnosticProperties.AnalyzerOption_Invert,
                             "Remove");
@@ -89,7 +89,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.BlankLineBetweenSingleLineAccessors,
+                        FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors,
                         block.GetLocation(),
                         "Add");
                 }
@@ -99,7 +99,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,
-                DiagnosticRules.AddBlankLineBetweenAccessors,
+                FormattingDiagnosticRules.AddBlankLineBetweenAccessors,
                 block.GetLocation());
         }
     }

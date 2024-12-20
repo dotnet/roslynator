@@ -19,7 +19,7 @@ public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixPro
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.ParameterNameDiffersFromBase); }
+        get { return ImmutableArray.Create(DiagnosticIds.ParameterNameDiffersFromBase); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -38,7 +38,7 @@ public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixPro
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.ParameterNameDiffersFromBase:
+                case DiagnosticIds.ParameterNameDiffersFromBase:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

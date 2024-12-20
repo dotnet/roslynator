@@ -18,7 +18,7 @@ public sealed class AddBracesToIfElseCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
+        get { return ImmutableArray.Create(DiagnosticIds.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ public sealed class AddBracesToIfElseCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Add braces to if-else",
             ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
+            GetEquivalenceKey(DiagnosticIds.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

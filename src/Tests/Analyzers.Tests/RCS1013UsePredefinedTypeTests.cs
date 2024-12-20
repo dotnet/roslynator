@@ -12,7 +12,7 @@ public class RCS1013UsePredefinedTypeTests : AbstractCSharpDiagnosticVerifier<Us
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePredefinedType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePredefinedType)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -70,7 +70,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePredefinedType)]
     public async Task Test_NullableReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -94,7 +94,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePredefinedType)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""

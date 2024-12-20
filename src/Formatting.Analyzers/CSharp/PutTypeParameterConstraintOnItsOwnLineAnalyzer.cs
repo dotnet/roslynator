@@ -19,7 +19,7 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PutTypeParameterConstraintOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -104,7 +104,7 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine,
+                    FormattingDiagnosticRules.PutTypeParameterConstraintOnItsOwnLine,
                     block.GetLocation());
             }
 

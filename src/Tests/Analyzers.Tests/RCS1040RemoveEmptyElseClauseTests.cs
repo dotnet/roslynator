@@ -12,7 +12,7 @@ public class RCS1040RemoveEmptyElseClauseTests : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyElseClause;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyElseClause)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -45,7 +45,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyElseClause)]
     public async Task TestNoDiagnostic_ElseIf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -66,7 +66,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyElseClause)]
     public async Task TestNoDiagnostic_NonEmptyElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -88,7 +88,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyElseClause)]
     public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyElseClause)]
     public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse2()
     {
         await VerifyNoDiagnosticAsync(@"

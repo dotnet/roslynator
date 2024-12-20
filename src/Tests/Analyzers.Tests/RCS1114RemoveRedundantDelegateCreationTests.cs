@@ -12,7 +12,7 @@ public class RCS1114RemoveRedundantDelegateCreationTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantDelegateCreation;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantDelegateCreation)]
     public async Task Test_EventHandler()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantDelegateCreation)]
     public async Task Test_EventHandlerOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -92,7 +92,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantDelegateCreation)]
     public async Task Test_CustomEventHandler()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -140,7 +140,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantDelegateCreation)]
     public async Task Test_TEventArgs()
     {
         await VerifyDiagnosticAndFixAsync(@"

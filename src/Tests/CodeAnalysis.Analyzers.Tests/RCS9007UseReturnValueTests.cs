@@ -6,13 +6,13 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9007UseReturnValueTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseReturnValue;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UseReturnValue;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnValue)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UseReturnValue)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

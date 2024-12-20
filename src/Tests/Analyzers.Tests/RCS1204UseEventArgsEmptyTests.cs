@@ -12,7 +12,7 @@ public class RCS1204UseEventArgsEmptyTests : AbstractCSharpDiagnosticVerifier<Us
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEventArgsEmpty;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEventArgsEmpty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEventArgsEmpty)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

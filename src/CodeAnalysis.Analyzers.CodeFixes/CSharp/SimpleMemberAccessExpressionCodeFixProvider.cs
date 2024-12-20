@@ -18,7 +18,7 @@ public sealed class SimpleMemberAccessExpressionCodeFixProvider : BaseCodeFixPro
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart); }
+        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIds.UsePropertySyntaxNodeSpanStart); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

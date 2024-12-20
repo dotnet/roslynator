@@ -20,8 +20,8 @@ public sealed class NewLineCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.UseLinefeedAsNewLine,
-                DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine);
+                FormattingDiagnosticIds.UseLinefeedAsNewLine,
+                FormattingDiagnosticIds.UseCarriageReturnAndLinefeedAsNewLine);
         }
     }
 
@@ -33,7 +33,7 @@ public sealed class NewLineCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.UseLinefeedAsNewLine:
+            case FormattingDiagnosticIds.UseLinefeedAsNewLine:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use linefeed as newline",
@@ -43,7 +43,7 @@ public sealed class NewLineCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine:
+            case FormattingDiagnosticIds.UseCarriageReturnAndLinefeedAsNewLine:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use carriage return + linefeed as newline",

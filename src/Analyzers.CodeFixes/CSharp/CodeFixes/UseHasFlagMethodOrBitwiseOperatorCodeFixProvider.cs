@@ -22,7 +22,7 @@ public sealed class UseHasFlagMethodOrBitwiseOperatorCodeFixProvider : BaseCodeF
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseHasFlagMethodOrBitwiseOperator); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

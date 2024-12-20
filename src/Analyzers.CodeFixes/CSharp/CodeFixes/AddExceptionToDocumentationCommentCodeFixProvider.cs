@@ -19,7 +19,7 @@ public sealed class AddExceptionToDocumentationCommentCodeFixProvider : BaseCode
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddExceptionToDocumentationComment); }
+        get { return ImmutableArray.Create(DiagnosticIds.AddExceptionToDocumentationComment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ public sealed class AddExceptionToDocumentationCommentCodeFixProvider : BaseCode
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddExceptionToDocumentationComment:
+                case DiagnosticIds.AddExceptionToDocumentationComment:
                 {
                     switch (node.Kind())
                     {

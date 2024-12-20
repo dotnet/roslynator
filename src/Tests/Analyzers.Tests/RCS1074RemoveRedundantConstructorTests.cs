@@ -12,7 +12,7 @@ public class RCS1074RemoveRedundantConstructorTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantConstructor;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task Test_SingleInstanceConstructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -29,7 +29,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_UsedImplicitlyAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -50,7 +50,7 @@ namespace JetBrains.Annotations
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_StructWithFieldInitializer()
     {
         await VerifyNoDiagnosticAsync("""
@@ -65,7 +65,7 @@ struct C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_StructWithPropertyInitializer()
     {
         await VerifyNoDiagnosticAsync("""
@@ -80,7 +80,7 @@ struct C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_RecordStructWithFieldInitializer()
     {
         await VerifyNoDiagnosticAsync("""
@@ -95,7 +95,7 @@ record struct C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_RecordStructWithPropertyInitializer()
     {
         await VerifyNoDiagnosticAsync("""

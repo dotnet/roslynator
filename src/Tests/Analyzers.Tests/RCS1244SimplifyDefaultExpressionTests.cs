@@ -12,7 +12,7 @@ public class RCS1244SimplifyDefaultExpressionTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyDefaultExpression;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_ParameterDefaultValue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_ReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_ReturnStatement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_ReturnStatement3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -158,7 +158,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task Test_YieldReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -184,7 +184,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_NonObjectValueAssignedToObject()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -200,7 +200,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_NonNullableValueAssignedToNullable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -216,7 +216,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ValueAssignedToDynamic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -232,7 +232,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ConditionalExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -250,7 +250,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ConditionalExpression_Nullable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -268,7 +268,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -282,7 +282,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_CoalesceExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -298,7 +298,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ExpressionBody()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -309,7 +309,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ObjectInitializer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -325,7 +325,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_ConstantPattern()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -343,7 +343,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_CaseSwitchLabel()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -363,7 +363,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_Argument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -377,7 +377,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_CSharp7()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -390,7 +390,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_Nullable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -406,7 +406,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_TypeInferredFromReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -428,7 +428,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_TypeInferredFromReturnStatement2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -456,7 +456,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_OverloadedEqualityOperator()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -476,7 +476,7 @@ internal readonly struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_LambdaExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -493,7 +493,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyDefaultExpression)]
     public async Task TestNoDiagnostic_LambdaExpression2()
     {
         await VerifyNoDiagnosticAsync("""

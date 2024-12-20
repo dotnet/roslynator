@@ -12,7 +12,7 @@ public class RCS1237UseBitShiftOperatorTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBitShiftOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseBitShiftOperator)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +42,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseBitShiftOperator)]
     public async Task TestNoDiagnostic_WithoutFlags()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -56,7 +56,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseBitShiftOperator)]
     public async Task TestNoDiagnostic_BitShift()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -72,7 +72,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseBitShiftOperator)]
     public async Task TestNoDiagnostic_CombinedValue()
     {
         await VerifyNoDiagnosticAsync(@"

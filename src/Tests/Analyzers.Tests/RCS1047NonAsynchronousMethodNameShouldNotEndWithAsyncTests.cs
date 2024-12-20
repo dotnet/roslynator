@@ -12,7 +12,7 @@ public class RCS1047NonAsynchronousMethodNameShouldNotEndWithAsyncTests : Abstra
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task Test()
     {
         await VerifyDiagnosticAsync(@"
@@ -27,7 +27,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task Test_Tuple()
     {
         await VerifyDiagnosticAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task Test_String()
     {
         await VerifyDiagnosticAsync(@"
@@ -59,7 +59,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task Test_Array()
     {
         await VerifyDiagnosticAsync(@"
@@ -75,7 +75,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task Test_T()
     {
         await VerifyDiagnosticAsync(@"
@@ -91,7 +91,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task TestNoDiagnostic_Task()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -177,7 +177,7 @@ struct CustomAwaiter<T> : System.Runtime.CompilerServices.INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NonAsynchronousMethodNameShouldNotEndWithAsync)]
     public async Task TestNoDiagnostic_AsyncEnumerable()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -12,7 +12,7 @@ public class RCS1211RemoveUnnecessaryElseTests : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryElse;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryElse)]
     public async Task Test_UnnecessaryElse_Removed()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_PreprocessorDirectives()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -93,7 +93,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_OverlappingLocalVariablesWithSwitch()
     {
         await VerifyNoDiagnosticAsync(@"

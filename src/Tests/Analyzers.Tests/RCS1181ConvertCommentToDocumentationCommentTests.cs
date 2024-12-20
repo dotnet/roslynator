@@ -12,7 +12,7 @@ public class RCS1181ConvertCommentToDocumentationCommentTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertCommentToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_LeadingComment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_LeadingMultipleComments()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -62,7 +62,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -85,7 +85,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -110,7 +110,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment_EnumMember()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -129,7 +129,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment_EnumMemberWithValueAndWithComma()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment_EnumMemberWithoutValueAndWithComma()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -171,7 +171,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_LeadingTodoCommentTrailingComment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -196,7 +196,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task Test_CommentContainsXmlSpecialChars()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -227,7 +227,7 @@ namespace N
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_DocumentationComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -243,7 +243,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -259,7 +259,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_DocumentationComment_DocumentationModeIsEqualToNone()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -275,7 +275,7 @@ class C
 ", options: Options.WithParseOptions(Options.ParseOptions.WithDocumentationMode(DocumentationMode.None)));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment_DocumentationModeIsEqualToNone()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -291,7 +291,7 @@ class C
 ", options: Options.WithParseOptions(Options.ParseOptions.WithDocumentationMode(DocumentationMode.None)));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_LeadingTaskListItem()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -333,7 +333,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_TrailingTaskListItem()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -347,7 +347,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_LeadingTaskListItemWithNonTaskListItem()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -362,7 +362,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_NamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"

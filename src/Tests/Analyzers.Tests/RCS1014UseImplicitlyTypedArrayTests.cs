@@ -12,7 +12,7 @@ public class RCS1014UseImplicitlyTypedArrayTests : AbstractCSharpDiagnosticVerif
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -34,7 +34,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_TypeIsNotObvious()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_TypeIsObvious()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -82,7 +82,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_TypesAreNotEqual()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -108,7 +108,7 @@ class B : A
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_NestedArray()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -130,7 +130,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task TestNoDiagnostic_TypeIsObvious()
     {
         await VerifyNoDiagnosticAsync("""
@@ -150,7 +150,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task TestNoDiagnostic_NoInitializer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -164,7 +164,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task TestNoDiagnostic_ArrayInitializer_DerivedType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -182,7 +182,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task TestNoDiagnostic_UseVarInsteadOfObjectCreation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -197,7 +197,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_UseVarInsteadOfImplicitCreation()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -232,7 +232,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation()
     {
         await VerifyNoDiagnosticAsync("""
@@ -252,7 +252,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation_CollectionExpression()
     {
         await VerifyNoDiagnosticAsync("""

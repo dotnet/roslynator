@@ -24,8 +24,8 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.SimplifyLazyInitialization,
-                DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection);
+                DiagnosticIds.SimplifyLazyInitialization,
+                DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection);
         }
     }
 
@@ -42,7 +42,7 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.SimplifyLazyInitialization:
+                case DiagnosticIds.SimplifyLazyInitialization:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Simplify lazy initialization",
@@ -52,7 +52,7 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection:
+                case DiagnosticIds.RemoveUnnecessaryBracesInSwitchSection:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove braces",

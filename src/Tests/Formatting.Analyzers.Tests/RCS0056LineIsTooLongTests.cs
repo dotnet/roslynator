@@ -10,11 +10,11 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0056LineIsTooLongTests : AbstractCSharpDiagnosticVerifier<LineIsTooLongAnalyzer, LineIsTooLongCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.LineIsTooLong;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.LineIsTooLong;
 
     public override CSharpTestOptions Options => base.Options.AddConfigOption(ConfigOptionKeys.MaxLineLength, "125");
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ExpressionBody_AddNewLineBeforeArrow()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ExpressionBody_AddNewLineAfterArrow()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ParameterList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -75,7 +75,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ArgumentList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -110,7 +110,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ArgumentList_PreferOuterArgumentList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -145,7 +145,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverCallChain()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -177,7 +177,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverCallChain2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -206,7 +206,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverCallChain_WhenLeftIsSimpleName()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -247,7 +247,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverCallChain_WhenLeftIsCastExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -288,7 +288,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverBinaryExpression()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -325,7 +325,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferArgumentListOverBinaryExpression2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -369,7 +369,7 @@ static class E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_BracketedArgumentList()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -401,7 +401,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_CallChain()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -428,7 +428,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_CallChain_SimpleMemberAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -458,7 +458,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferCallChainOverArgumentList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -486,7 +486,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferCallChainOverArgumentList2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -516,7 +516,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferCallChainOverArgumentList3()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -550,7 +550,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_BinaryExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -583,7 +583,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_InitializerExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -611,7 +611,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PropertyInitializer()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -629,7 +629,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_FieldInitializer()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -647,7 +647,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -671,7 +671,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_Assignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -699,7 +699,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_Assignment2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -727,7 +727,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_AttributeList()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -763,7 +763,7 @@ class FooAttribute : Attribute
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_AttributeArgumentList()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -800,7 +800,7 @@ class FooAttribute : Attribute
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ConditionalExpression()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -829,7 +829,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_PreferConditionalExpressionOverCallChain()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -860,7 +860,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_ForStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -898,7 +898,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_BaseList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -936,7 +936,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task Test_BaseList_Constraint()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -975,7 +975,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_TooLongAfterWrapping()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -986,7 +986,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_TooLongAfterWrapping2()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -997,7 +997,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped()
     {
         await VerifyNoDiagnosticAsync(
@@ -1010,7 +1010,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1022,7 +1022,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_Banner()
     {
         await VerifyNoDiagnosticAsync(@"//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1033,7 +1033,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_DoNotWrapNameof()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -1047,7 +1047,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_DocumentationComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1063,7 +1063,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_SingleLineComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1078,7 +1078,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_StringLiteral()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1098,7 +1098,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_ThisExpression_BaseExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1146,7 +1146,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_EnumField()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -1163,7 +1163,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_Namespace()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -1181,7 +1181,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongStringLiteral_Argument()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1197,7 +1197,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1214,7 +1214,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1236,7 +1236,7 @@ class MyAttribute : Attribute
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongVerbatimStringLiteral()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1254,7 +1254,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongInterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1270,7 +1270,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongRawInterpolatedString()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -1289,7 +1289,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongRawStringLiteral()
     {
         await VerifyNoDiagnosticAsync(""""
@@ -1308,7 +1308,7 @@ class C
 """");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongRawStringLiteral2()
     {
         await VerifyNoDiagnosticAsync(""""

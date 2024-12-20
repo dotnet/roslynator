@@ -12,7 +12,7 @@ public class RCS1096ConvertHasFlagCallToBitwiseOperationTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseHasFlagMethodOrBitwiseOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +42,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag_Flag()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlags()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -102,7 +102,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag_Parentheses()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -132,7 +132,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotHasFlag()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -162,7 +162,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotHasFlag_Flag()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -192,7 +192,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotHasFlags()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -222,7 +222,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag_EqualsTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -252,7 +252,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlags_EqualsTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -282,7 +282,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag_EqualsFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -312,7 +312,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlags_EqualsFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -342,7 +342,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_HasFlag_WithTrivia()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -372,7 +372,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_TypeIsSystemEnum()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -393,7 +393,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_ConditionalAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -413,7 +413,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_ConvertBitwiseOperationToHasFlagCall()
     {
         await VerifyNoDiagnosticAsync(@"

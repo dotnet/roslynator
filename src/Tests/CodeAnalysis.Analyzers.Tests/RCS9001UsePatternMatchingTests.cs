@@ -6,13 +6,13 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9001UsePatternMatchingTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingAnalyzer, UsePatternMatchingCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatching;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UsePatternMatching;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_SwitchStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -75,7 +75,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_SwitchStatement_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -140,7 +140,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_IsKind()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -179,7 +179,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_IsKind_Conditional()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -218,7 +218,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_Kind()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -257,7 +257,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_Kind_Conditional()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -296,7 +296,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_NotIsKind()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -338,7 +338,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_NotIsKind_Embedded()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -376,7 +376,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_NotIsKind_Conditional()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -418,7 +418,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_NotKind()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -460,7 +460,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task Test_IfStatement_NotKind_Conditional()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -502,7 +502,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task TestNoDiagnostic_SwitchStatement_VariableIsReferenced()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -533,7 +533,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePatternMatching)]
     public async Task TestNoDiagnostic_IfStatement_SimpleMemberAccessExpression()
     {
         await VerifyNoDiagnosticAsync(@"

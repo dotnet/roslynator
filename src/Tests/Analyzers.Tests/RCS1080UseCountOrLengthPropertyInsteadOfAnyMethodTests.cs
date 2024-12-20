@@ -12,7 +12,7 @@ public class RCS1080UseCountOrLengthPropertyInsteadOfAnyMethodTests : AbstractCS
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCountOrLengthPropertyInsteadOfAnyMethod;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_List()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_ListNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -114,7 +114,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IListNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IReadOnlyList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -182,7 +182,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IReadOnlyListNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -216,7 +216,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_Collection()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -250,7 +250,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_CollectionNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -284,7 +284,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_ICollection()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -318,7 +318,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_ICollectionNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -352,7 +352,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IReadOnlyCollection()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -386,7 +386,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_IReadOnlyCollectionNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -420,7 +420,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_Array()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -452,7 +452,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_ArrayNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -484,7 +484,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_String()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -516,7 +516,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_StringNot()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -548,7 +548,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task Test_DerivedFromListOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -592,7 +592,7 @@ public class List2 : List<string>
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task TestNoDiagnostic_ImmutableArray()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -608,7 +608,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCountOrLengthPropertyInsteadOfAnyMethod)]
     public async Task TestNoDiagnostic_IEnumerable()
     {
         await VerifyNoDiagnosticAsync(@"

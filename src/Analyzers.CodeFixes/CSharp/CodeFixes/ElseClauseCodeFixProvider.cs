@@ -22,8 +22,8 @@ public sealed class ElseClauseCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.RemoveEmptyElseClause,
-                DiagnosticIdentifiers.MergeElseWithNestedIf);
+                DiagnosticIds.RemoveEmptyElseClause,
+                DiagnosticIds.MergeElseWithNestedIf);
         }
     }
 
@@ -38,7 +38,7 @@ public sealed class ElseClauseCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveEmptyElseClause:
+                case DiagnosticIds.RemoveEmptyElseClause:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove empty 'else' clause",
@@ -48,7 +48,7 @@ public sealed class ElseClauseCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.MergeElseWithNestedIf:
+                case DiagnosticIds.MergeElseWithNestedIf:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove braces",

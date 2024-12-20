@@ -31,13 +31,13 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.MergeIfWithNestedIf,
-                DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                DiagnosticIdentifiers.ConvertIfToReturnStatement,
-                DiagnosticIdentifiers.ConvertIfToAssignment,
-                DiagnosticIdentifiers.ReduceIfNesting,
-                DiagnosticIdentifiers.UseExceptionFilter,
-                DiagnosticIdentifiers.SimplifyArgumentNullCheck);
+                DiagnosticIds.MergeIfWithNestedIf,
+                DiagnosticIds.UseCoalesceExpressionInsteadOfIf,
+                DiagnosticIds.ConvertIfToReturnStatement,
+                DiagnosticIds.ConvertIfToAssignment,
+                DiagnosticIds.ReduceIfNesting,
+                DiagnosticIds.UseExceptionFilter,
+                DiagnosticIds.SimplifyArgumentNullCheck);
         }
     }
 
@@ -52,7 +52,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.MergeIfWithNestedIf:
+                case DiagnosticIds.MergeIfWithNestedIf:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Merge 'if' with nested 'if'",
@@ -62,9 +62,9 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf:
-                case DiagnosticIdentifiers.ConvertIfToReturnStatement:
-                case DiagnosticIdentifiers.ConvertIfToAssignment:
+                case DiagnosticIds.UseCoalesceExpressionInsteadOfIf:
+                case DiagnosticIds.ConvertIfToReturnStatement:
+                case DiagnosticIds.ConvertIfToAssignment:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -83,7 +83,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.ReduceIfNesting:
+                case DiagnosticIds.ReduceIfNesting:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Invert if",
@@ -101,7 +101,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.UseExceptionFilter:
+                case DiagnosticIds.UseExceptionFilter:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use exception filter",
@@ -117,7 +117,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
+                case DiagnosticIds.SimplifyArgumentNullCheck:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Call ArgumentNullException.ThrowIfNull",

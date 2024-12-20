@@ -18,7 +18,7 @@ public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnost
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
 
             return _supportedDiagnostics;
         }
@@ -45,7 +45,7 @@ public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnost
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
+                    FormattingDiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
                     Location.Create(context.Tree, new TextSpan(end, 1)));
             }
         }

@@ -12,7 +12,7 @@ public class RCS1142AddTypeParamElementToDocumentationCommentTests : AbstractCSh
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddTypeParamElementToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddTypeParamElementToDocumentationComment)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -36,7 +36,7 @@ class C<T1, T2, T3>
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddTypeParamElementToDocumentationComment)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""

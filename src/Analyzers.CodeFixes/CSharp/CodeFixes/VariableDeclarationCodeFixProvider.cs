@@ -18,7 +18,7 @@ public sealed class VariableDeclarationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.SplitVariableDeclaration); }
+        get { return ImmutableArray.Create(DiagnosticIds.SplitVariableDeclaration); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class VariableDeclarationCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             SplitVariableDeclarationRefactoring.GetTitle(variableDeclaration),
             ct => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.SplitVariableDeclaration));
+            GetEquivalenceKey(DiagnosticIds.SplitVariableDeclaration));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

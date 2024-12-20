@@ -21,7 +21,7 @@ public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseSpacesInsteadOfTab);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.UseSpacesInsteadOfTab);
 
             return _supportedDiagnostics;
         }
@@ -81,7 +81,7 @@ public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
                     while (i < text.Length && text[i] == '\t');
 
                     AnalysisContext.ReportDiagnostic(
-                        DiagnosticRules.UseSpacesInsteadOfTab,
+                        FormattingDiagnosticRules.UseSpacesInsteadOfTab,
                         Location.Create(AnalysisContext.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                 }
             }

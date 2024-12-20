@@ -12,7 +12,7 @@ public class RCS1222MergePreprocessorDirectivesTests : AbstractCSharpDiagnosticV
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MergePreprocessorDirectives;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task Test_PragmaWarningDisable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task Test_PragmaWarningRestore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -66,7 +66,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_SingleDirective()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_DisableAndRestore()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -95,7 +95,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_TrailingComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -110,7 +110,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_TrailingComma_TrailingComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_PreviousDirectiveIsSuppressingThisAnalyzer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -141,7 +141,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergePreprocessorDirectives)]
     public async Task TestNoDiagnostic_NextDirectiveIsSuppressingThisAnalyzer()
     {
         await VerifyNoDiagnosticAsync(@"

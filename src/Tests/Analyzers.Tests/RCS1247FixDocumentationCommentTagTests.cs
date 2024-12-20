@@ -12,7 +12,7 @@ public class RCS1247FixDocumentationCommentTagTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixDocumentationCommentTag;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task Test_C_Multiline()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -72,7 +72,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task Test_C_Multiline_List()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -148,7 +148,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task Test_Code_Singleline()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -192,7 +192,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task Test_Code_Singleline_List()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -252,7 +252,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task TestNoDiagnostic_C_Singleline()
     {
         await VerifyNoDiagnosticAsync("""
@@ -276,7 +276,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixDocumentationCommentTag)]
     public async Task TestNoDiagnostic_Code_Multiline()
     {
         await VerifyNoDiagnosticAsync("""

@@ -12,7 +12,7 @@ public class RCS1234DuplicateEnumValueTests : AbstractCSharpDiagnosticVerifier<E
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DuplicateEnumValue;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test4()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -94,7 +94,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test5()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -114,7 +114,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task Test6()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -153,7 +153,7 @@ enum E
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DuplicateEnumValue)]
     public async Task TestNoDiagnostic2()
     {
         await VerifyNoDiagnosticAsync(@"

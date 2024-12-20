@@ -12,7 +12,7 @@ public class RCS1205OrderNamedArgumentsTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderNamedArguments;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -34,7 +34,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task Test_OptionalArguments()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -56,7 +56,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task Test_OptionalArguments2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -88,7 +88,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task Test_OptionalArguments3()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -116,7 +116,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task TestNoDiagnostic_OptionalArguments()
     {
         await VerifyNoDiagnosticAsync("""
@@ -133,7 +133,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderNamedArguments)]
     public async Task TestNoDiagnostic_OptionalArguments2()
     {
         await VerifyNoDiagnosticAsync(@"

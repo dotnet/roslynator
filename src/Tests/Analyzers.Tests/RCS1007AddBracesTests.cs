@@ -12,7 +12,7 @@ public class RCS1007AddBracesTests : AbstractCSharpDiagnosticVerifier<AddBracesA
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBraces;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_If()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +42,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_IfElse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_IfElseIf()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -126,7 +126,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_IfElseIfElse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -182,7 +182,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_Foreach()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -220,7 +220,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_ForeachTuple()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -250,7 +250,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_For()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -280,7 +280,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_Using()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -310,7 +310,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_While()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -340,7 +340,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_DoWhile()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -372,7 +372,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_Lock()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -402,7 +402,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task Test_Fixed()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -440,7 +440,7 @@ class C
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task TestNoDiagnostic_IfElseIf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -459,7 +459,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task TestNoDiagnostic_Using()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -475,7 +475,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBraces)]
     public async Task TestNoDiagnostic_ConsecutiveUsing()
     {
         await VerifyNoDiagnosticAsync(@"

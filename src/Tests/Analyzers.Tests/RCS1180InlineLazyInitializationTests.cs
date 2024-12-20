@@ -12,7 +12,7 @@ public class RCS1180InlineLazyInitializationTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InlineLazyInitialization;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLazyInitialization)]
     public async Task Test_If()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -51,7 +51,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLazyInitialization)]
     public async Task Test_If_WithoutBraces()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -88,7 +88,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLazyInitialization)]
     public async Task Test_If_Trivia()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -132,7 +132,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InlineLazyInitialization)]
     public async Task Test_If_CSharp7_3()
     {
         await VerifyDiagnosticAndFixAsync("""

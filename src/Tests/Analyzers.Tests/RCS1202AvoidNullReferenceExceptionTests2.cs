@@ -12,7 +12,7 @@ public class RCS1202AvoidNullReferenceExceptionTests2 : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNullReferenceException;
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     [InlineData("(x as string)[|.|]ToString()", "(x as string)?.ToString()")]
     [InlineData("(x as string)[|[[|]0]", "(x as string)?[0]")]
     public async Task Test_AsExpression(string source, string expected)
@@ -32,7 +32,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task Test_AwaitExpression()
     {
         await VerifyDiagnosticAsync(@"
@@ -50,7 +50,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoFix_AwaitExpression()
     {
         await VerifyDiagnosticAndNoFixAsync(@"
@@ -68,7 +68,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_UnconstrainedTypeParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -86,7 +86,7 @@ class C<T>
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_UnconstrainedTypeParameter2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -109,7 +109,7 @@ class B<T>
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ExtensionMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -130,7 +130,7 @@ static class E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ThisCastedToItsInterface()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -149,7 +149,7 @@ class C : I
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ExpressionIsDefinitelyNotNull()
     {
         await VerifyNoDiagnosticAsync(@"

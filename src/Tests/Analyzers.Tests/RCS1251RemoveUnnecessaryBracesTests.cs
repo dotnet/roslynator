@@ -12,7 +12,7 @@ public class RCS1251RemoveUnnecessaryBracesTests : AbstractCSharpDiagnosticVerif
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBraces;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Record()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_RecordStruct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Class_WithBaseClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -92,7 +92,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Class_WhereConstraint()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -110,7 +110,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -146,7 +146,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_Class_CSharp11()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -159,7 +159,7 @@ namespace N
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task Test_NoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -172,7 +172,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnnecessaryBraces)]
     public async Task TestNoDiagnostic_Class_WithParameterList()
     {
         await VerifyNoDiagnosticAsync(@"

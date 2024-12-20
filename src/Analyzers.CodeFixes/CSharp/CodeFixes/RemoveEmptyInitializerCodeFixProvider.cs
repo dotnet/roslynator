@@ -18,7 +18,7 @@ public sealed class RemoveEmptyInitializerCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyInitializer); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptyInitializer); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class RemoveEmptyInitializerCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove empty initializer",
             ct => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyInitializer));
+            GetEquivalenceKey(DiagnosticIds.RemoveEmptyInitializer));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

@@ -12,7 +12,7 @@ public class RCS1097RemoveRedundantToStringCallTests : AbstractCSharpDiagnosticV
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantToStringCall;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task Test_StringVariable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task Test_StringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -58,7 +58,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task Test_InterpolatedString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -80,7 +80,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task Test_PlusString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -106,7 +106,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task Test_Interpolation()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -130,7 +130,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task TestNoDiagnostic_Int()
     {
         await VerifyNoDiagnosticAsync("""
@@ -145,7 +145,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantToStringCall)]
     public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync("""

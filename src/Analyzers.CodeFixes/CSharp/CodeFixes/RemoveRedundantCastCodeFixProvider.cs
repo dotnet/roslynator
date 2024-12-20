@@ -19,7 +19,7 @@ public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCast); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantCast); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -36,7 +36,7 @@ public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
                 CodeAction codeAction = CodeAction.Create(
                     "Remove redundant cast",
                     ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
-                    GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
+                    GetEquivalenceKey(DiagnosticIds.RemoveRedundantCast));
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
                 break;
@@ -46,7 +46,7 @@ public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
                 CodeAction codeAction = CodeAction.Create(
                     "Remove redundant cast",
                     ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
-                    GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
+                    GetEquivalenceKey(DiagnosticIds.RemoveRedundantCast));
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
                 break;

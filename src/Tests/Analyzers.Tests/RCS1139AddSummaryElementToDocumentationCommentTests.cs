@@ -12,7 +12,7 @@ public class RCS1139AddSummaryElementToDocumentationCommentTests : AbstractCShar
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddSummaryElementToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddSummaryElementToDocumentationComment)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -31,7 +31,7 @@ class C<T>
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddSummaryElementToDocumentationComment)]
     public async Task TestNoDiagnostic_PartialClassWithContentElement()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -22,7 +22,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseAsyncAwait); }
+        get { return ImmutableArray.Create(DiagnosticIds.UseAsyncAwait); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

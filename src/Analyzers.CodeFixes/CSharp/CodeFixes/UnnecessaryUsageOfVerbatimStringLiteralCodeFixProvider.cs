@@ -21,7 +21,7 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider : Bas
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral); }
+        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,7 +34,7 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider : Bas
         CodeAction codeAction = CodeAction.Create(
             Title,
             ct => RefactorAsync(context.Document, node, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral));
+            GetEquivalenceKey(DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
     }

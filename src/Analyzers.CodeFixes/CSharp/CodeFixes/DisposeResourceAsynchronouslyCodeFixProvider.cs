@@ -23,7 +23,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.DisposeResourceAsynchronously); }
+        get { return ImmutableArray.Create(DiagnosticIds.DisposeResourceAsynchronously); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -44,7 +44,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.DisposeResourceAsynchronously:
+            case DiagnosticIds.DisposeResourceAsynchronously:
             {
                 if (node is LocalDeclarationStatementSyntax localDeclaration)
                 {

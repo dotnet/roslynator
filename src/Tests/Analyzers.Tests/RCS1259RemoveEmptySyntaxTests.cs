@@ -12,7 +12,7 @@ public class RCS1259RemoveEmptySyntaxTests : AbstractCSharpDiagnosticVerifier<Re
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptySyntax;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_Destructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_Destructor_IfDirective()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -54,7 +54,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_Destructor_NotEmpty()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -72,7 +72,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_ElseClause()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_ElseClause_ElseIf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -126,7 +126,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_ElseClause_NonEmptyElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -169,7 +169,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -190,7 +190,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_FinallyClause_TryCatchFinally()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -225,7 +225,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_FinallyClause_TryFinally()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -261,7 +261,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_FinallyClause_NonEmptyFinally()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -284,7 +284,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_ObjectInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -306,7 +306,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_ObjectInitializer2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -376,7 +376,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_ObjectInitializer_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -393,7 +393,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_Namespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -423,7 +423,7 @@ namespace N1
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_FileScopedNamespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -431,7 +431,7 @@ namespace N1
 ", "");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_RegionDirective()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -453,7 +453,7 @@ namespace N1
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task Test_EmptyStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -483,7 +483,7 @@ namespace N1
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_EmptyStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -501,7 +501,7 @@ namespace N1
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0642"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptySyntax)]
     public async Task TestNoDiagnostic_FileScopedNamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -19,7 +19,7 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterTopComment);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineAfterTopComment);
 
             return _supportedDiagnostics;
         }
@@ -51,7 +51,7 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddBlankLineAfterTopComment,
+                FormattingDiagnosticRules.AddBlankLineAfterTopComment,
                 block.GetLocation());
         }
     }

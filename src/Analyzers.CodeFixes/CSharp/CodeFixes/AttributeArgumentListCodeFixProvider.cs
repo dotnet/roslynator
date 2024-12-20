@@ -17,7 +17,7 @@ public sealed class AttributeArgumentListCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveArgumentListFromAttribute); }
+        get { return ImmutableArray.Create(DiagnosticIds.RemoveArgumentListFromAttribute); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -30,7 +30,7 @@ public sealed class AttributeArgumentListCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove parentheses",
             ct => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromAttribute));
+            GetEquivalenceKey(DiagnosticIds.RemoveArgumentListFromAttribute));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

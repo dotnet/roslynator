@@ -21,7 +21,7 @@ public sealed class DeclareTypeInsideNamespaceCodeFixProvider : BaseCodeFixProvi
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareTypeInsideNamespace); }
+        get { return ImmutableArray.Create(DiagnosticIds.DeclareTypeInsideNamespace); }
     }
 
     public override FixAllProvider GetFixAllProvider() => null;

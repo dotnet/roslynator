@@ -12,7 +12,7 @@ public class RCS1258UnnecessaryEnumFlagTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryEnumFlag;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryEnumFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryEnumFlag)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryEnumFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryEnumFlag)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryEnumFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryEnumFlag)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

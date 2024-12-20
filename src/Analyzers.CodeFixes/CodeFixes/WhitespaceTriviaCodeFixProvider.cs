@@ -22,8 +22,8 @@ public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.RemoveTrailingWhitespace,
-                DiagnosticIdentifiers.RemoveUnnecessaryBlankLine);
+                DiagnosticIds.RemoveTrailingWhitespace,
+                DiagnosticIds.RemoveUnnecessaryBlankLine);
         }
     }
 
@@ -44,7 +44,7 @@ public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveTrailingWhitespace:
+                case DiagnosticIds.RemoveTrailingWhitespace:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove trailing white-space",
@@ -54,7 +54,7 @@ public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveUnnecessaryBlankLine:
+                case DiagnosticIds.RemoveUnnecessaryBlankLine:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove blank line",

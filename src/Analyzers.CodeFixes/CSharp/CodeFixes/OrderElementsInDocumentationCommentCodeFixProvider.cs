@@ -22,7 +22,7 @@ public sealed class OrderElementsInDocumentationCommentCodeFixProvider : BaseCod
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderElementsInDocumentationComment); }
+        get { return ImmutableArray.Create(DiagnosticIds.OrderElementsInDocumentationComment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

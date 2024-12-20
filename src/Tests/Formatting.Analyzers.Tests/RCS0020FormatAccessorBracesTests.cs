@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0020FormatAccessorBracesTests : AbstractCSharpDiagnosticVerifier<FormatAccessorBracesAnalyzer, AccessorDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatAccessorBraces;
+    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.FormatAccessorBraces;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_Getter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_Getter_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_Setter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -99,7 +99,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_InitSetter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -139,7 +139,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_Event()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -171,7 +171,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_Event_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -203,7 +203,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_AllowSingeLineGetter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -219,7 +219,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task Test_MultiLineStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -239,7 +239,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
+    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatAccessorBraces)]
     public async Task TestNoDiagnostic_AutoProperty()
     {
         await VerifyNoDiagnosticAsync(@"

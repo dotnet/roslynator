@@ -19,7 +19,7 @@ public sealed class UsePredefinedTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePredefinedType); }
+        get { return ImmutableArray.Create(DiagnosticIds.UsePredefinedType); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -48,7 +48,7 @@ public sealed class UsePredefinedTypeCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             $"Use predefined type '{SymbolDisplay.ToDisplayString(typeSymbol, SymbolDisplayFormats.DisplayName_WithoutNullableReferenceTypeModifier)}'",
             ct => UsePredefinedTypeAsync(context.Document, node, typeSymbol, ct),
-            GetEquivalenceKey(DiagnosticIdentifiers.UsePredefinedType));
+            GetEquivalenceKey(DiagnosticIds.UsePredefinedType));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

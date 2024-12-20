@@ -24,7 +24,7 @@ public sealed class AttributeArgumentCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnknownLanguageName); }
+        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIds.UnknownLanguageName); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class AttributeArgumentCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.UnknownLanguageName:
+            case CodeAnalysisDiagnosticIds.UnknownLanguageName:
             {
                 foreach (string languageName in RoslynUtility.WellKnownLanguageNames)
                 {

@@ -25,8 +25,8 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.FormatAccessorBraces,
-                    DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
+                    FormattingDiagnosticRules.FormatAccessorBraces,
+                    FormattingDiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
             }
 
             return _supportedDiagnostics;
@@ -60,13 +60,13 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
         if (openBrace.IsMissing)
             return;
 
-        if (DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine.IsEffective(context)
+        if (FormattingDiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine.IsEffective(context)
             && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
             && CanBeMadeSingleLine(accessor))
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine,
+                FormattingDiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine,
                 accessor);
         }
 
@@ -82,7 +82,7 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.FormatAccessorBraces,
+                    FormattingDiagnosticRules.FormatAccessorBraces,
                     block.OpenBraceToken,
                     "multiple lines");
             }
@@ -92,7 +92,7 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.FormatAccessorBraces,
+                FormattingDiagnosticRules.FormatAccessorBraces,
                 block.OpenBraceToken,
                 "a single line");
         }

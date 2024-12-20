@@ -12,7 +12,7 @@ public class RCS1061MergeIfWithNestedIfTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor => DiagnosticRules.MergeIfWithNestedIf;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergeIfWithNestedIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergeIfWithNestedIf)]
     public async Task Test_MergeIfStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -44,7 +44,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergeIfWithNestedIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MergeIfWithNestedIf)]
     public async Task TestNoDiagnostic_WhenLocalVariablesOverlap()
     {
         await VerifyNoDiagnosticAsync("""

@@ -6,13 +6,13 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9005UnnecessaryNullCheckTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, BinaryExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullCheck;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UnnecessaryNullCheck;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryNullCheck)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic_ExpressionsAreNotEquivalent()
     {
         await VerifyNoDiagnosticAsync(@"

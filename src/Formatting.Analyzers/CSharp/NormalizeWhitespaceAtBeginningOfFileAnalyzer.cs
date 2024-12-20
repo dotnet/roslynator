@@ -20,7 +20,7 @@ public sealed class NormalizeWhitespaceAtBeginningOfFileAnalyzer : BaseDiagnosti
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.NormalizeWhitespaceAtBeginningOfFile);
 
             return _supportedDiagnostics;
         }
@@ -64,7 +64,7 @@ public sealed class NormalizeWhitespaceAtBeginningOfFileAnalyzer : BaseDiagnosti
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile,
+                FormattingDiagnosticRules.NormalizeWhitespaceAtBeginningOfFile,
                 Location.Create(token.SyntaxTree, new TextSpan(0, 0)));
         }
     }

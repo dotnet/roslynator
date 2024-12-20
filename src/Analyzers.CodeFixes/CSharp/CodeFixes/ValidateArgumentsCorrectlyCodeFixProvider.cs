@@ -24,7 +24,7 @@ public sealed class ValidateArgumentsCorrectlyCodeFixProvider : BaseCodeFixProvi
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.ValidateArgumentsCorrectly); }
+        get { return ImmutableArray.Create(DiagnosticIds.ValidateArgumentsCorrectly); }
     }
 
     public override FixAllProvider GetFixAllProvider()
