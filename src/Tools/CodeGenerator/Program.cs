@@ -125,13 +125,11 @@ internal static class Program
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{descriptorsClassName}.Generated.cs"),
                 DiagnosticRulesGenerators.Default.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
-                normalizeWhitespace: false,
-                fileMustExist: false);
+                normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{identifiersClassName}.Generated.cs"),
-                DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName),
-                fileMustExist: false);
+                DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName));
         }
 
         void WriteCompilationUnit(
