@@ -11,7 +11,7 @@ public class RCS9010SpecifyExportCodeRefactoringProviderAttributeNameTests : Abs
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.SpecifyExportCodeRefactoringProviderAttributeName)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -11,7 +11,7 @@ public class RCS9003UnnecessaryConditionalAccessTests : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccess;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UnnecessaryConditionalAccess)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

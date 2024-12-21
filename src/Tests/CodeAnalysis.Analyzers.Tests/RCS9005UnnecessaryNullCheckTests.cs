@@ -11,7 +11,7 @@ public class RCS9005UnnecessaryNullCheckTests : AbstractCSharpDiagnosticVerifier
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UnnecessaryNullCheck;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic_ExpressionsAreNotEquivalent()
     {
         await VerifyNoDiagnosticAsync(@"

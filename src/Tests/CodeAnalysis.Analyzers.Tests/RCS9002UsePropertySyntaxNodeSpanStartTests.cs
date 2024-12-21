@@ -11,7 +11,7 @@ public class RCS9002UsePropertySyntaxNodeSpanStartTests : AbstractCSharpDiagnost
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UsePropertySyntaxNodeSpanStart;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UsePropertySyntaxNodeSpanStart)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

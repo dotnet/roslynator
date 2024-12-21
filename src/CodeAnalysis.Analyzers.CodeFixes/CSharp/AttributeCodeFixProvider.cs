@@ -23,8 +23,8 @@ public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                CodeAnalysisDiagnosticIds.SpecifyExportCodeFixProviderAttributeName,
-                CodeAnalysisDiagnosticIds.SpecifyExportCodeRefactoringProviderAttributeName);
+                CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName,
+                CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName);
         }
     }
 
@@ -40,8 +40,8 @@ public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case CodeAnalysisDiagnosticIds.SpecifyExportCodeFixProviderAttributeName:
-            case CodeAnalysisDiagnosticIds.SpecifyExportCodeRefactoringProviderAttributeName:
+            case CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName:
+            case CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Specify name",

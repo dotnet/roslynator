@@ -25,8 +25,8 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                CodeAnalysisDiagnosticIds.UseElementAccess,
-                CodeAnalysisDiagnosticIds.UseReturnValue);
+                CodeAnalysisDiagnosticIdentifiers.UseElementAccess,
+                CodeAnalysisDiagnosticIdentifiers.UseReturnValue);
         }
     }
 
@@ -42,7 +42,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case CodeAnalysisDiagnosticIds.UseElementAccess:
+            case CodeAnalysisDiagnosticIdentifiers.UseElementAccess:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use [] instead of calling 'First'",
@@ -52,7 +52,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case CodeAnalysisDiagnosticIds.UseReturnValue:
+            case CodeAnalysisDiagnosticIdentifiers.UseReturnValue:
             {
                 CodeAction codeAction = CodeAction.Create(
                     $"Introduce local for '{invocationExpression}'",

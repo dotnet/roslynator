@@ -11,7 +11,7 @@ public class RCS9011SpecifyExportCodeFixProviderAttributeNameTests : AbstractCSh
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.SpecifyExportCodeFixProviderAttributeName;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.SpecifyExportCodeFixProviderAttributeName)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

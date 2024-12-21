@@ -19,7 +19,7 @@ public sealed class ElementAccessExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess); }
+        get { return ImmutableArray.Create(CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

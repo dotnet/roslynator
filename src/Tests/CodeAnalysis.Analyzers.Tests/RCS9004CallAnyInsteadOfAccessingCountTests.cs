@@ -11,7 +11,7 @@ public class RCS9004CallAnyInsteadOfAccessingCountTests : AbstractCSharpDiagnost
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.CallAnyInsteadOfAccessingCount;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxList_Equals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxList_Equals2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -71,7 +71,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxList_NotEquals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,7 +101,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -131,7 +131,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SeparatedSyntaxList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -161,7 +161,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxTokenList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -191,7 +191,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxTriviaList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -221,7 +221,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_ChildSyntaxList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -251,7 +251,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task Test_SyntaxNodeOrTokenList_GreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -281,7 +281,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task TestNoDiagnostic_LessThanExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -299,7 +299,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task TestNoDiagnostic_NotNumericLiteralExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -318,7 +318,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task TestNoDiagnostic_NotZeroNumericLiteralExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -336,7 +336,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
     public async Task TestNoDiagnostic_NotSyntaxList()
     {
         await VerifyNoDiagnosticAsync(@"

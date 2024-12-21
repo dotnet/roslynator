@@ -11,7 +11,7 @@ public class RCS9008CallLastInsteadOfUsingElementAccessTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.CallLastInsteadOfUsingElementAccess;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_SyntaxList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_SeparatedSyntaxList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -71,7 +71,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_SyntaxTokenList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,7 +101,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_SyntaxTriviaList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -131,7 +131,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_ChildSyntaxList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -161,7 +161,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task Test_SyntaxNodeOrTokenList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -191,7 +191,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task TestNoDiagnostic_NotLastElement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -209,7 +209,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
     public async Task TestNoDiagnostic_ExpressionsAreNotEquivalent()
     {
         await VerifyNoDiagnosticAsync(@"

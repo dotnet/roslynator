@@ -11,7 +11,7 @@ public class RCS9007UseReturnValueTests : AbstractCSharpDiagnosticVerifier<Invoc
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UseReturnValue;
 
-    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIds.UseReturnValue)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseReturnValue)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
