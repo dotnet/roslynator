@@ -44,7 +44,7 @@ internal static class AccessModifierRefactoring
 
                 foreach (SyntaxReference syntaxReference in syntaxReferences)
                 {
-                    SyntaxNode declaration = await syntaxReference.GetSyntaxAsync(context.CancellationToken);
+                    SyntaxNode declaration = await syntaxReference.GetSyntaxAsync(context.CancellationToken).ConfigureAwait(false);
 
                     if (node.RawKind != declaration.RawKind)
                         return;
