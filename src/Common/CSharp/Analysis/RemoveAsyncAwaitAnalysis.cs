@@ -6,8 +6,6 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator;
-using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 

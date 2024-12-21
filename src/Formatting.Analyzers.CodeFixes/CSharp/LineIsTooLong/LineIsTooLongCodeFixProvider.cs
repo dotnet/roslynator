@@ -16,7 +16,6 @@ using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp.Syntax;
 using Roslynator.Formatting.CodeFixes.CSharp;
-using Roslynator.Formatting.CSharp;
 using static Roslynator.Formatting.CodeFixes.CSharp.CodeFixHelpers;
 
 namespace Roslynator.Formatting.CodeFixes.LineIsTooLong;

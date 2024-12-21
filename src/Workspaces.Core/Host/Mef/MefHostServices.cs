@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Host.Mef;
 

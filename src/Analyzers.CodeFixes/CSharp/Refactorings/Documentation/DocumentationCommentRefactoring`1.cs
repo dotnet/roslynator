@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp;
 using Roslynator.CSharp.Analysis.Documentation;
 
 namespace Roslynator.CSharp.Refactorings.Documentation;
