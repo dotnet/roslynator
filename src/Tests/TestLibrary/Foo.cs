@@ -3,7 +3,18 @@
 #pragma warning disable RCS1018, RCS1213, CA1822, IDE0051, IDE0005
 
 #region usings
-
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using Roslynator;
 #endregion usings
 
 namespace Roslynator;
