@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Documentation;
@@ -150,7 +149,7 @@ public class DiagnosticRulesGenerator
                         NameColon("customTags"),
                         (analyzer.SupportsFadeOut)
                             ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName(WellKnownDiagnosticTags.Unnecessary))
-                            : ParseExpression("Array.Empty<string>()"))
+                            : CollectionExpression())
                     )))
             .AddObsoleteAttributeIf(analyzer.Status == AnalyzerStatus.Disabled, error: true);
 

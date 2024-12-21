@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Spelling;
-using Roslynator.Text;
 using static Roslynator.Logger;
 
 namespace Roslynator;

@@ -2,17 +2,16 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9006UseElementAccessTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UseElementAccess;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_SyntaxList_First()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_SyntaxList_First_Multiline()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -73,7 +72,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_SyntaxTriviaList_ElementAt()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -103,7 +102,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_FirstWithPredicate()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -122,7 +121,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_NotSyntaxList()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -142,7 +141,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_TrailingTrivia()
     {
         await VerifyNoDiagnosticAsync(@"
