@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
 
@@ -42,13 +43,13 @@ internal sealed class AnalyzerOptionIsObsoleteAnalyzer : AbstractAnalyzerOptionI
 
                 AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-                Validate(ref context, compilationOptions, configOptions, Flags.AddOrRemoveNewLineBeforeWhileInDoStatement, ref flags, FormattingDiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement, ConfigOptions.NewLineBeforeWhileInDoStatement, LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, "false");
-                Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenSingleLineAccessors, ref flags, FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors, ConfigOptions.BlankLineBetweenSingleLineAccessors, LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, "false");
-                Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenUsingDirectives, ref flags, FormattingDiagnosticRules.BlankLineBetweenUsingDirectives, ConfigOptions.BlankLineBetweenUsingDirectives, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never);
-                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeArrowToken, ref flags, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken, ConfigOptions.ArrowTokenNewLine, LegacyConfigOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt, "after");
-                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeConditionalOperator, ref flags, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator, ConfigOptions.ConditionalOperatorNewLine, LegacyConfigOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, "after");
-                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeBinaryOperator, ref flags, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator, ConfigOptions.BinaryOperatorNewLine, LegacyConfigOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt, "after");
-                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeEqualsToken, ref flags, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken, ConfigOptions.EqualsTokenNewLine, LegacyConfigOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt, "after");
+                Validate(ref context, compilationOptions, configOptions, Flags.AddOrRemoveNewLineBeforeWhileInDoStatement, ref flags, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement, ConfigOptions.NewLineBeforeWhileInDoStatement, LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, "false");
+                Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenSingleLineAccessors, ref flags, DiagnosticRules.BlankLineBetweenSingleLineAccessors, ConfigOptions.BlankLineBetweenSingleLineAccessors, LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, "false");
+                Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenUsingDirectives, ref flags, DiagnosticRules.BlankLineBetweenUsingDirectives, ConfigOptions.BlankLineBetweenUsingDirectives, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never);
+                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeArrowToken, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken, ConfigOptions.ArrowTokenNewLine, LegacyConfigOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt, "after");
+                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeConditionalOperator, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator, ConfigOptions.ConditionalOperatorNewLine, LegacyConfigOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, "after");
+                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeBinaryOperator, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator, ConfigOptions.BinaryOperatorNewLine, LegacyConfigOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt, "after");
+                Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeEqualsToken, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken, ConfigOptions.EqualsTokenNewLine, LegacyConfigOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt, "after");
             });
         });
     }

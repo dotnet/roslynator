@@ -22,7 +22,7 @@ public sealed class FixFormattingOfListCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(FormattingDiagnosticIds.FixFormattingOfList); }
+        get { return ImmutableArray.Create(DiagnosticIds.FixFormattingOfList); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

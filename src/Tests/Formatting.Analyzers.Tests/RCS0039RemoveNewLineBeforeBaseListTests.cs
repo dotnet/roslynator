@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0039RemoveNewLineBeforeBaseListTests : AbstractCSharpDiagnosticVerifier<RemoveNewLineBeforeBaseListAnalyzer, SyntaxTriviaCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.RemoveNewLineBeforeBaseList;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLineBeforeBaseList;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Class_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_ClassWithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ interface B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Interface_WithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ interface B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -151,7 +151,7 @@ interface B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Struct_WithTypeParameters()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -174,7 +174,7 @@ interface B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task Test_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -189,7 +189,7 @@ enum E : int
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveNewLineBeforeBaseList)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBeforeBaseList)]
     public async Task TestNoDiagnostic_Comment()
     {
         await VerifyNoDiagnosticAsync(@"

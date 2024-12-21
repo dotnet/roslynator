@@ -17,7 +17,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeBinaryOperator); }
+        get { return ImmutableArray.Create(DiagnosticIds.PlaceNewLineAfterOrBeforeBinaryOperator); }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

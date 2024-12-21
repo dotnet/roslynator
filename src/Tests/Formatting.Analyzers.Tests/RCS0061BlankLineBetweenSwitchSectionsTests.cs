@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0061BlankLineBetweenSwitchSectionsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenSwitchSectionsAnalyzer, SwitchSectionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.BlankLineBetweenSwitchSections;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.BlankLineBetweenSwitchSections;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Statement_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -54,7 +54,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Statement_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -97,7 +97,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Statement_OmitAfterBlock()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -147,7 +147,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_OmitAfterBlock));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Block_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -197,7 +197,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Block_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -248,7 +248,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task Test_Block_OmitAfterBlock()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -299,7 +299,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_OmitAfterBlock));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSwitchSections)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSwitchSections)]
     public async Task TestNoDiagnostic_IfDirective()
     {
         await VerifyNoDiagnosticAsync("""

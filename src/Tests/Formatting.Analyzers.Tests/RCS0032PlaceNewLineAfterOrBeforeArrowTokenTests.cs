@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0032PlaceNewLineAfterOrBeforeArrowTokenTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeArrowTokenAnalyzer, SyntaxTokenCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
     public async Task Test_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -30,7 +30,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
     public async Task Test_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -67,7 +67,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken)]
     public async Task TestNoDiagnostic_AfterInsteadOfBefore_Comment()
     {
         await VerifyNoDiagnosticAsync(@"

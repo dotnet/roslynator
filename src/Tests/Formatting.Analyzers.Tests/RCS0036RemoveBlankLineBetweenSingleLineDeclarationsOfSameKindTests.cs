@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0036RemoveBlankLineBetweenSingleLineDeclarationsOfSameKindTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task Test_Properties()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task Test_Events()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -55,7 +55,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task TestNoDiagnostic_MultilineEvent()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task TestNoDiagnostic_PropertyAndIndexer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -87,7 +87,7 @@ abstract class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task TestNoDiagnostic_ConstAndField()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -100,7 +100,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task TestNoDiagnostic_DocCommentBetweenMembers()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -115,7 +115,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task TestNoDiagnostic_DocCommentBetweenEnumMembers()
     {
         await VerifyNoDiagnosticAsync(@"

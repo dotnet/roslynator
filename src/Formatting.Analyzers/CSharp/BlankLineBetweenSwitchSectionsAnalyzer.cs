@@ -20,7 +20,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.BlankLineBetweenSwitchSections);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.BlankLineBetweenSwitchSections);
 
             return _supportedDiagnostics;
         }
@@ -88,7 +88,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
     private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlock block, string messageArg)
     {
         context.ReportDiagnostic(
-            FormattingDiagnosticRules.BlankLineBetweenSwitchSections,
+            DiagnosticRules.BlankLineBetweenSwitchSections,
             block.GetLocation(),
             messageArg);
     }

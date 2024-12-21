@@ -19,7 +19,7 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineBeforeUsingDirectiveList);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeUsingDirectiveList);
 
             return _supportedDiagnostics;
         }
@@ -52,7 +52,7 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
+                DiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
                 block.GetLocation());
         }
     }

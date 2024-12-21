@@ -17,7 +17,7 @@ public sealed class FixFormattingOfBinaryExpressionChainCodeFixProvider : BaseCo
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain); }
+        get { return ImmutableArray.Create(DiagnosticIds.FixFormattingOfBinaryExpressionChain); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

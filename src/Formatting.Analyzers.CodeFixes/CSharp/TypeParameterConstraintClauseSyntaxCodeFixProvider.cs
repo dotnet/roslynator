@@ -18,7 +18,7 @@ public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCod
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(FormattingDiagnosticIds.PutTypeParameterConstraintOnItsOwnLine); }
+        get { return ImmutableArray.Create(DiagnosticIds.PutTypeParameterConstraintOnItsOwnLine); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

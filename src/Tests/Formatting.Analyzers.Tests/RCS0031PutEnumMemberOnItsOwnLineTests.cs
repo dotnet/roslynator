@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0031PutEnumMemberOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutEnumMemberOnItsOwnLineAnalyzer, EnumDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.PutEnumMemberOnItsOwnLine;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutEnumMemberOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutEnumMemberOnItsOwnLine)]
     public async Task Test_WithoutExplicitValues()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutEnumMemberOnItsOwnLine)]
     public async Task Test_WithExplicitValues()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutEnumMemberOnItsOwnLine)]
     public async Task Test_WithoutTrailingComma()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -69,7 +69,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutEnumMemberOnItsOwnLine)]
     public async Task TestNoDiagnostic_SingleMember()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -80,7 +80,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutEnumMemberOnItsOwnLine)]
     public async Task TestNoDiagnostic_MultipleMembers()
     {
         await VerifyNoDiagnosticAsync(@"

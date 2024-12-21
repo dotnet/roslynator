@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0028PlaceNewLineAfterOrBeforeConditionalExpressionOperatorTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer, SyntaxTokenCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +42,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_BeforeInsteadOfAfter_QuestionToken()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_BeforeInsteadOfAfter_ColonToken()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -102,7 +102,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -132,7 +132,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_AfterInsteadOfBefore_QuestionToken()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -162,7 +162,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task Test_AfterInsteadOfBefore_ColonToken()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -192,7 +192,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -210,7 +210,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator)]
     public async Task TestNoDiagnostic_AfterInsteadOfBefore()
     {
         await VerifyNoDiagnosticAsync(@"

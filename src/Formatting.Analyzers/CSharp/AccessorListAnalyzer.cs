@@ -24,8 +24,8 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    FormattingDiagnosticRules.PutAutoAccessorsOnSingleLine,
-                    FormattingDiagnosticRules.PutFullAccessorOnItsOwnLine);
+                    DiagnosticRules.PutAutoAccessorsOnSingleLine,
+                    DiagnosticRules.PutFullAccessorOnItsOwnLine);
             }
 
             return _supportedDiagnostics;
@@ -47,7 +47,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
 
         if (accessors.Any(f => f.BodyOrExpressionBody() is not null))
         {
-            if (FormattingDiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
+            if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
             {
                 SyntaxToken token = accessorList.OpenBraceToken;
 
@@ -58,7 +58,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            FormattingDiagnosticRules.PutFullAccessorOnItsOwnLine,
+                            DiagnosticRules.PutFullAccessorOnItsOwnLine,
                             Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
 
                         break;
@@ -71,7 +71,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                 }
             }
         }
-        else if (FormattingDiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
+        else if (DiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
         {
             SyntaxNode parent = accessorList.Parent;
 
@@ -97,7 +97,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                                     .DescendantTrivia(span)
                                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                 {
-                                    DiagnosticHelpers.ReportDiagnostic(context, FormattingDiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
+                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                 }
                             }
                         }
@@ -130,7 +130,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                                         .DescendantTrivia(span)
                                         .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                     {
-                                        DiagnosticHelpers.ReportDiagnostic(context, FormattingDiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                     }
                                 }
                             }

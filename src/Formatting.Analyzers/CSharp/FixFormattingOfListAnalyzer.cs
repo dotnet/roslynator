@@ -21,7 +21,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.FixFormattingOfList);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfList);
 
             return _supportedDiagnostics;
         }
@@ -248,7 +248,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.FixFormattingOfList,
+                DiagnosticRules.FixFormattingOfList,
                 Location.Create(first.SyntaxTree, nodes.Span),
                 GetTitle());
         }

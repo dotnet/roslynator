@@ -22,7 +22,7 @@ public sealed class NormalizeWhitespaceAtEndOfFileAnalyzer : BaseDiagnosticAnaly
         {
             if (_supportedDiagnostics.IsDefault)
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.NormalizeWhitespaceAtEndOfFile);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtEndOfFile);
             }
 
             return _supportedDiagnostics;
@@ -128,7 +128,7 @@ public sealed class NormalizeWhitespaceAtEndOfFileAnalyzer : BaseDiagnosticAnaly
 
         static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken eof)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, FormattingDiagnosticRules.NormalizeWhitespaceAtEndOfFile, eof);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.NormalizeWhitespaceAtEndOfFile, eof);
         }
     }
 }

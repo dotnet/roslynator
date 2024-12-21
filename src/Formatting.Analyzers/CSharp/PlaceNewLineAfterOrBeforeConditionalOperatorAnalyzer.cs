@@ -20,7 +20,7 @@ public sealed class PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer : BaseD
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator);
 
             return _supportedDiagnostics;
         }
@@ -65,7 +65,7 @@ public sealed class PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer : BaseD
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator,
                 block.GetLocation(),
                 (block.First.IsToken) ? "before" : "after");
         }

@@ -16,7 +16,7 @@ public sealed class FileScopedNamespaceDeclarationCodeFixProvider : BaseCodeFixP
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(FormattingDiagnosticIds.BlankLineAfterFileScopedNamespaceDeclaration); }
+        get { return ImmutableArray.Create(DiagnosticIds.BlankLineAfterFileScopedNamespaceDeclaration); }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

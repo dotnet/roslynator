@@ -21,7 +21,7 @@ public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagno
         {
             if (_supportedDiagnostics.IsDefault)
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator);
             }
 
             return _supportedDiagnostics;
@@ -78,7 +78,7 @@ public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagno
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
                 block.GetLocation(),
                 (block.First.IsToken) ? "before" : "after");
         }

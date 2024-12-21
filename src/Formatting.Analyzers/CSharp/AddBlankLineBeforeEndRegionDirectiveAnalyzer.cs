@@ -19,7 +19,7 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineBeforeEndRegionDirective);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeEndRegionDirective);
 
             return _supportedDiagnostics;
         }
@@ -40,7 +40,7 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.AddBlankLineBeforeEndRegionDirective,
+                DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
                 Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
         }
 

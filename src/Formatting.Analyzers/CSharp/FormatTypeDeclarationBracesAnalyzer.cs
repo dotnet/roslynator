@@ -19,7 +19,7 @@ public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.FormatTypeDeclarationBraces);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatTypeDeclarationBraces);
 
             return _supportedDiagnostics;
         }
@@ -63,7 +63,7 @@ public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.FormatTypeDeclarationBraces,
+                DiagnosticRules.FormatTypeDeclarationBraces,
                 openBrace);
         }
     }

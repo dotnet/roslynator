@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0021FormatBlockBracesTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.FormatBlockBraces;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatBlockBraces;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_Constructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_Destructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -66,7 +66,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_Method()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -92,7 +92,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_Method_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -115,7 +115,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_SingleLineWhenEmpty));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_ExplicitOperator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -134,7 +134,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task Test_Operator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -153,7 +153,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task TestNoDiagnostic_SingleLineAccessorList()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -178,7 +178,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FormatBlockBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatBlockBraces)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

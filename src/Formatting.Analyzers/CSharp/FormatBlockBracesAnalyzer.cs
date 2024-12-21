@@ -24,8 +24,8 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    FormattingDiagnosticRules.FormatBlockBraces,
-                    FormattingDiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock);
+                    DiagnosticRules.FormatBlockBraces,
+                    DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock);
             }
 
             return _supportedDiagnostics;
@@ -54,12 +54,12 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
         if (openBrace.IsMissing)
             return;
 
-        if (FormattingDiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
+        if (DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
             && block.SyntaxTree.IsSingleLineSpan(block.Span))
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
+                DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
                 Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
         }
 
@@ -75,7 +75,7 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    FormattingDiagnosticRules.FormatBlockBraces,
+                    DiagnosticRules.FormatBlockBraces,
                     block.OpenBraceToken,
                     "multiple lines");
             }
@@ -85,7 +85,7 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.FormatBlockBraces,
+                DiagnosticRules.FormatBlockBraces,
                 block.OpenBraceToken,
                 "a single line");
         }

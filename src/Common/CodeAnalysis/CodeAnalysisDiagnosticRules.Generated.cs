@@ -5,7 +5,7 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis
 {
     public static partial class CodeAnalysisDiagnosticRules
     {

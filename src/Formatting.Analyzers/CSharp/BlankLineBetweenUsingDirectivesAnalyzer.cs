@@ -24,8 +24,8 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    FormattingDiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
-                    FormattingDiagnosticRules.BlankLineBetweenUsingDirectives);
+                    DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
+                    DiagnosticRules.BlankLineBetweenUsingDirectives);
             }
 
             return _supportedDiagnostics;
@@ -98,26 +98,26 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 if (block.Kind == TriviaBlockKind.BlankLine)
                 {
-                    if (FormattingDiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
+                    if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            FormattingDiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
+                            DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
                             block.GetLocation());
                     }
 
-                    if (FormattingDiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
+                    if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
                         && context.GetBlankLineBetweenUsingDirectives() == UsingDirectiveBlankLineStyle.Never)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            FormattingDiagnosticRules.BlankLineBetweenUsingDirectives,
+                            DiagnosticRules.BlankLineBetweenUsingDirectives,
                             block.GetLocation(),
                             "Remove");
                     }
                 }
             }
-            else if (FormattingDiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context))
+            else if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context))
             {
                 UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
 
@@ -127,7 +127,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            FormattingDiagnosticRules.BlankLineBetweenUsingDirectives,
+                            DiagnosticRules.BlankLineBetweenUsingDirectives,
                             block.GetLocation(),
                             "Remove");
                     }
@@ -136,7 +136,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        FormattingDiagnosticRules.BlankLineBetweenUsingDirectives,
+                        DiagnosticRules.BlankLineBetweenUsingDirectives,
                         block.GetLocation(),
                         "Add");
                 }

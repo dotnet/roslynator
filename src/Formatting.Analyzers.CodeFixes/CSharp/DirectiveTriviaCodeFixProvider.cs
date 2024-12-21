@@ -23,8 +23,8 @@ public sealed class DirectiveTriviaCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                FormattingDiagnosticIds.AddBlankLineAfterRegionDirective,
-                FormattingDiagnosticIds.AddBlankLineBeforeEndRegionDirective);
+                DiagnosticIds.AddBlankLineAfterRegionDirective,
+                DiagnosticIds.AddBlankLineBeforeEndRegionDirective);
         }
     }
 
@@ -40,8 +40,8 @@ public sealed class DirectiveTriviaCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case FormattingDiagnosticIds.AddBlankLineAfterRegionDirective:
-            case FormattingDiagnosticIds.AddBlankLineBeforeEndRegionDirective:
+            case DiagnosticIds.AddBlankLineAfterRegionDirective:
+            case DiagnosticIds.AddBlankLineBeforeEndRegionDirective:
             {
                 CodeAction codeAction = CodeAction.Create(
                     CodeFixTitles.AddBlankLine,

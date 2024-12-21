@@ -21,7 +21,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddBlankLineAfterEmbeddedStatement);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterEmbeddedStatement);
 
             return _supportedDiagnostics;
         }
@@ -148,7 +148,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            FormattingDiagnosticRules.AddBlankLineAfterEmbeddedStatement,
+            DiagnosticRules.AddBlankLineAfterEmbeddedStatement,
             block.GetLocation());
     }
 }

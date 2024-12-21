@@ -20,7 +20,7 @@ public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnostic
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken);
 
             return _supportedDiagnostics;
         }
@@ -47,7 +47,7 @@ public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnostic
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                FormattingDiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
                 block.GetLocation(),
                 (newLinePosition == NewLinePosition.Before) ? "before" : "after");
         }

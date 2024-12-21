@@ -22,7 +22,7 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         {
             if (_supportedDiagnostics.IsDefault)
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
 
             return _supportedDiagnostics;
@@ -60,7 +60,7 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
             if (newLineStyle == NewLineStyle.Add)
             {
                 context.ReportDiagnostic(
-                    FormattingDiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                    DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
                     block.GetLocation(),
                     "Add");
             }
@@ -68,7 +68,7 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         else if (newLineStyle == NewLineStyle.Remove)
         {
             context.ReportDiagnostic(
-                FormattingDiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
                 block.GetLocation(),
                 "Remove");
         }

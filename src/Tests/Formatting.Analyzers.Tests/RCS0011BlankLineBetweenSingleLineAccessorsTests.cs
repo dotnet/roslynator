@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0011BlankLineBetweenSingleLineAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.BlankLineBetweenSingleLineAccessors;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.BlankLineBetweenSingleLineAccessors;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task Test_RemoveEmptyLine_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task Test_RemoveEmptyLines_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -100,7 +100,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task Test_RemoveEmptyLine_Event()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -129,7 +129,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task TestNoDiagnostic_Property_FirstIsMultiline()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -149,7 +149,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.BlankLineBetweenSingleLineAccessors)]
     public async Task TestNoDiagnostic_Property_SecondIsMultiline()
     {
         await VerifyNoDiagnosticAsync(@"

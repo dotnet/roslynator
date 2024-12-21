@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis
 {
     public static partial class CodeAnalysisDiagnosticIds
     {

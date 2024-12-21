@@ -19,8 +19,8 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                FormattingDiagnosticIds.AddBlankLineBetweenSwitchSections,
-                FormattingDiagnosticIds.BlankLineBetweenSwitchSections);
+                DiagnosticIds.AddBlankLineBetweenSwitchSections,
+                DiagnosticIds.BlankLineBetweenSwitchSections);
         }
     }
 

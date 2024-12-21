@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0025PutFullAccessorOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.PutFullAccessorOnItsOwnLine;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutFullAccessorOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_Property_Setter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -63,7 +63,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_Property_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -87,7 +87,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_Property_ExpressionBody_Setter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -114,7 +114,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_ReadOnlyProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -137,7 +137,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task Test_ReadOnlyProperty_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -160,7 +160,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutFullAccessorOnItsOwnLine)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

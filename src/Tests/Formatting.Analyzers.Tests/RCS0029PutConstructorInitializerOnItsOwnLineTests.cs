@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0029PutConstructorInitializerOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.PutConstructorInitializerOnItsOwnLine;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_ThisInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_ThisInitializer_Multiline()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_BaseInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"

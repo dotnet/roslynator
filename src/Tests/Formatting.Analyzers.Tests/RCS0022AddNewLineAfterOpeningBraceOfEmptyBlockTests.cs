@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task Test_WithWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task TestNoDiagnostic_EmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"

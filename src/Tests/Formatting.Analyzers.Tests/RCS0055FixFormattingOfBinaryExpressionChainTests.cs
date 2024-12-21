@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS0055FixFormattingOfBinaryExpressionChainTests : AbstractCSharpDiagnosticVerifier<FixFormattingOfBinaryExpressionChainAnalyzer, FixFormattingOfBinaryExpressionChainCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = FormattingDiagnosticRules.FixFormattingOfBinaryExpressionChain;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixFormattingOfBinaryExpressionChain;
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NotWrapped()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NotWrapped2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NoIndentation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -100,7 +100,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NoIndentation2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -128,7 +128,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_WrongIndentation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -158,7 +158,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_StartsOnSeparateLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -189,7 +189,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_LeftIsMultiline_RightIsSingleLine()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -220,7 +220,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NestedBinaryExpressionOfDifferentKind()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -256,7 +256,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task TestDiagnostic_StringConcatInsideTopLevelAttribute()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -282,7 +282,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -299,7 +299,7 @@ class C
         ");
     }
 
-    [Fact, Trait(Traits.Analyzer, FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FixFormattingOfBinaryExpressionChain)]
     public async Task TestNoDiagnostic_StartsOnSeparateLine()
     {
         await VerifyNoDiagnosticAsync(@"

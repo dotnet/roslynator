@@ -28,7 +28,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
     private const string Title = "Wrap line";
 
     public override ImmutableArray<string> FixableDiagnosticIds
-        => ImmutableArray.Create(FormattingDiagnosticIds.LineIsTooLong);
+        => ImmutableArray.Create(DiagnosticIds.LineIsTooLong);
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting;
@@ -18,7 +19,7 @@ public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnost
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, FormattingDiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
 
             return _supportedDiagnostics;
         }
@@ -45,7 +46,7 @@ public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnost
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    FormattingDiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
+                    DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
                     Location.Create(context.Tree, new TextSpan(end, 1)));
             }
         }
