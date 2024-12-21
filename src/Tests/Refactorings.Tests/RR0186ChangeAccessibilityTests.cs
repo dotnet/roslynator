@@ -163,4 +163,17 @@ class C : B
     [||]public override string M() => null;
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
     }
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
+    public async Task Test_InvalidCode()
+    {
+        await VerifyNoRefactoringAsync("""
+[||]internal class Program;
+{
+    static void Main(string[] args)
+    {
+    }
+}
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Internal)), options: Options.AddAllowedCompilerDiagnosticIds(["CS8803", "CS0260", "CS7022"]));
+    }
 }
