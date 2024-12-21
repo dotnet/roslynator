@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
-- Fix refactoring 'Change accessibility' ([RR0186](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0186) ([PR](https://github.com/dotnet/roslynator/pull/1599))
-
 ## [4.12.10] - 2024-12-17
 
 ### Fixed
