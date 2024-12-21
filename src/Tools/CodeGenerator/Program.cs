@@ -119,8 +119,8 @@ internal static class Program
             IEnumerable<AnalyzerMetadata> analyzers,
             string @namespace,
             string categoryName,
-            string descriptorsClassName = "DiagnosticRules",
-            string identifiersClassName = "DiagnosticIdentifiers")
+            string descriptorsClassName,
+            string identifiersClassName)
         {
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{descriptorsClassName}.Generated.cs"),
