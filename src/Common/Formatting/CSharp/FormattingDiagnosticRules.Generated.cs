@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineAfterEmbeddedStatement, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0002</summary>
         public static readonly DiagnosticDescriptor AddBlankLineAfterRegionDirective = DiagnosticDescriptorFactory.Create(
@@ -31,7 +31,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineAfterRegionDirective, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0003</summary>
         public static readonly DiagnosticDescriptor AddBlankLineAfterUsingDirectiveList = DiagnosticDescriptorFactory.Create(
@@ -43,7 +43,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineAfterUsingDirectiveList, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0005</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBeforeEndRegionDirective = DiagnosticDescriptorFactory.Create(
@@ -55,7 +55,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBeforeEndRegionDirective, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0006</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBeforeUsingDirectiveList = DiagnosticDescriptorFactory.Create(
@@ -67,7 +67,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBeforeUsingDirectiveList, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0007</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenAccessors = DiagnosticDescriptorFactory.Create(
@@ -79,7 +79,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenAccessors, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0008</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenClosingBraceAndNextStatement = DiagnosticDescriptorFactory.Create(
@@ -91,7 +91,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenClosingBraceAndNextStatement, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0009</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarationAndDocumentationComment = DiagnosticDescriptorFactory.Create(
@@ -103,7 +103,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenDeclarationAndDocumentationComment, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0010</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarations = DiagnosticDescriptorFactory.Create(
@@ -115,7 +115,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenDeclarations, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0011</summary>
         public static readonly DiagnosticDescriptor BlankLineBetweenSingleLineAccessors = DiagnosticDescriptorFactory.Create(
@@ -127,7 +127,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.BlankLineBetweenSingleLineAccessors, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0012</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarations = DiagnosticDescriptorFactory.Create(
@@ -139,7 +139,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenSingleLineDeclarations, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0013</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind = DiagnosticDescriptorFactory.Create(
@@ -151,7 +151,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0014</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
@@ -163,7 +163,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBetweenSwitchSections, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0015</summary>
         public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectives = DiagnosticDescriptorFactory.Create(
@@ -175,7 +175,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.BlankLineBetweenUsingDirectives, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0016</summary>
         public static readonly DiagnosticDescriptor PutAttributeListOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -187,7 +187,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutAttributeListOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0020</summary>
         public static readonly DiagnosticDescriptor FormatAccessorBraces = DiagnosticDescriptorFactory.Create(
@@ -199,7 +199,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FormatAccessorBraces, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0021</summary>
         public static readonly DiagnosticDescriptor FormatBlockBraces = DiagnosticDescriptorFactory.Create(
@@ -211,7 +211,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FormatBlockBraces, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0022</summary>
         public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
@@ -223,7 +223,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0023</summary>
         public static readonly DiagnosticDescriptor FormatTypeDeclarationBraces = DiagnosticDescriptorFactory.Create(
@@ -235,7 +235,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FormatTypeDeclarationBraces, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0024</summary>
         public static readonly DiagnosticDescriptor AddNewLineAfterSwitchLabel = DiagnosticDescriptorFactory.Create(
@@ -247,7 +247,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddNewLineAfterSwitchLabel, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0025</summary>
         public static readonly DiagnosticDescriptor PutFullAccessorOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -259,7 +259,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutFullAccessorOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0027</summary>
         public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeBinaryOperator = DiagnosticDescriptorFactory.Create(
@@ -271,7 +271,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeBinaryOperator, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0028</summary>
         public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeConditionalOperator = DiagnosticDescriptorFactory.Create(
@@ -283,7 +283,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0029</summary>
         public static readonly DiagnosticDescriptor PutConstructorInitializerOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -295,7 +295,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutConstructorInitializerOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0030</summary>
         public static readonly DiagnosticDescriptor PutEmbeddedStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -307,7 +307,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutEmbeddedStatementOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0031</summary>
         public static readonly DiagnosticDescriptor PutEnumMemberOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -319,7 +319,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutEnumMemberOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0032</summary>
         public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeArrowToken = DiagnosticDescriptorFactory.Create(
@@ -331,7 +331,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0033</summary>
         public static readonly DiagnosticDescriptor PutStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -343,7 +343,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutStatementOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0034</summary>
         public static readonly DiagnosticDescriptor PutTypeParameterConstraintOnItsOwnLine = DiagnosticDescriptorFactory.Create(
@@ -355,7 +355,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutTypeParameterConstraintOnItsOwnLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0036</summary>
         public static readonly DiagnosticDescriptor RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = DiagnosticDescriptorFactory.Create(
@@ -367,7 +367,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0038</summary>
         public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
@@ -379,7 +379,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0039</summary>
         public static readonly DiagnosticDescriptor RemoveNewLineBeforeBaseList = DiagnosticDescriptorFactory.Create(
@@ -391,7 +391,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.RemoveNewLineBeforeBaseList, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0041</summary>
         public static readonly DiagnosticDescriptor RemoveNewLineBetweenIfKeywordAndElseKeyword = DiagnosticDescriptorFactory.Create(
@@ -403,7 +403,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0042</summary>
         public static readonly DiagnosticDescriptor PutAutoAccessorsOnSingleLine = DiagnosticDescriptorFactory.Create(
@@ -415,7 +415,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutAutoAccessorsOnSingleLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0043</summary>
         public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptorFactory.Create(
@@ -427,7 +427,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0044</summary>
         public static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
@@ -439,7 +439,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.UseCarriageReturnAndLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0045</summary>
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
@@ -451,7 +451,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.UseLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0046</summary>
         public static readonly DiagnosticDescriptor UseSpacesInsteadOfTab = DiagnosticDescriptorFactory.Create(
@@ -463,7 +463,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.UseSpacesInsteadOfTab, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0047</summary>
         public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptorFactory.Create(
@@ -475,7 +475,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.WrapAndIndentEachNodeInList, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0048</summary>
         public static readonly DiagnosticDescriptor PutInitializerOnSingleLine = DiagnosticDescriptorFactory.Create(
@@ -487,7 +487,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PutInitializerOnSingleLine, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0049</summary>
         public static readonly DiagnosticDescriptor AddBlankLineAfterTopComment = DiagnosticDescriptorFactory.Create(
@@ -499,7 +499,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineAfterTopComment, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0050</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBeforeTopDeclaration = DiagnosticDescriptorFactory.Create(
@@ -511,7 +511,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddBlankLineBeforeTopDeclaration, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0051</summary>
         public static readonly DiagnosticDescriptor AddOrRemoveNewLineBeforeWhileInDoStatement = DiagnosticDescriptorFactory.Create(
@@ -523,7 +523,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0052</summary>
         public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeEqualsToken = DiagnosticDescriptorFactory.Create(
@@ -535,7 +535,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0053</summary>
         public static readonly DiagnosticDescriptor FixFormattingOfList = DiagnosticDescriptorFactory.Create(
@@ -547,7 +547,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FixFormattingOfList, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0054</summary>
         public static readonly DiagnosticDescriptor FixFormattingOfCallChain = DiagnosticDescriptorFactory.Create(
@@ -559,7 +559,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FixFormattingOfCallChain, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0055</summary>
         public static readonly DiagnosticDescriptor FixFormattingOfBinaryExpressionChain = DiagnosticDescriptorFactory.Create(
@@ -571,7 +571,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.FixFormattingOfBinaryExpressionChain, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0056</summary>
         public static readonly DiagnosticDescriptor LineIsTooLong = DiagnosticDescriptorFactory.Create(
@@ -583,7 +583,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.LineIsTooLong, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0057</summary>
         public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptorFactory.Create(
@@ -595,7 +595,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.NormalizeWhitespaceAtBeginningOfFile, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0058</summary>
         public static readonly DiagnosticDescriptor NormalizeWhitespaceAtEndOfFile = DiagnosticDescriptorFactory.Create(
@@ -607,7 +607,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.NormalizeWhitespaceAtEndOfFile, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0059</summary>
         public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeNullConditionalOperator = DiagnosticDescriptorFactory.Create(
@@ -619,7 +619,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0060</summary>
         public static readonly DiagnosticDescriptor BlankLineAfterFileScopedNamespaceDeclaration = DiagnosticDescriptorFactory.Create(
@@ -631,7 +631,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.BlankLineAfterFileScopedNamespaceDeclaration, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS0061</summary>
         public static readonly DiagnosticDescriptor BlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
@@ -643,7 +643,7 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        FormattingDiagnosticIds.BlankLineBetweenSwitchSections, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
     }
 }

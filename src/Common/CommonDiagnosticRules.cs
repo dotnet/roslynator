@@ -18,7 +18,7 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: true,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 
     public static readonly DiagnosticDescriptor AnalyzerOptionIsObsolete = DiagnosticDescriptorFactory.Create(
         id: CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete,
@@ -29,7 +29,7 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: false,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 
     public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = DiagnosticDescriptorFactory.Create(
         id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
@@ -40,5 +40,5 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: false,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 }

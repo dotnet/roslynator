@@ -150,7 +150,7 @@ public class DiagnosticRulesGenerator
                         NameColon("customTags"),
                         (analyzer.SupportsFadeOut)
                             ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName(WellKnownDiagnosticTags.Unnecessary))
-                            : ParseExpression("Array.Empty<string>()"))
+                            : CollectionExpression())
                     )))
             .AddObsoleteAttributeIf(analyzer.Status == AnalyzerStatus.Disabled, error: true);
 

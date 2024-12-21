@@ -19,7 +19,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.UsePatternMatching, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9002</summary>
         public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Create(
@@ -31,7 +31,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.UsePropertySyntaxNodeSpanStart, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9003</summary>
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Create(
@@ -57,7 +57,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.CallAnyInsteadOfAccessingCount, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9005</summary>
         public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Create(
@@ -81,7 +81,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.UseElementAccess, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9007</summary>
         public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Create(
@@ -93,7 +93,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.UseReturnValue, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9008</summary>
         public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Create(
@@ -105,7 +105,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.CallLastInsteadOfUsingElementAccess, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9009</summary>
         public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Create(
@@ -117,7 +117,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.UnknownLanguageName, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9010</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Create(
@@ -129,7 +129,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.SpecifyExportCodeRefactoringProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
         /// <summary>RCS9011</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Create(
@@ -141,7 +141,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        CodeAnalysisDiagnosticIds.SpecifyExportCodeFixProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+            customTags:         []);
 
     }
 }
