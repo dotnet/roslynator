@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Move `DiagnosticRules` and `DiagnosticIds` to project `Common` ([PR](https://github.com/dotnet/roslynator/pull/1597))
+- Move `DiagnosticRules` and `DiagnosticIdentifiers` to `Roslynator.Common` ([PR](https://github.com/dotnet/roslynator/pull/1597))
 
 ## [4.12.10] - 2024-12-17
 
