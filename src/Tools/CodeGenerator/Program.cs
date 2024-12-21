@@ -48,9 +48,9 @@ internal static class Program
             "VisualStudio/RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
-        WriteDiagnostics("Common", metadata.CommonAnalyzers.Concat(metadata.FormattingAnalyzers), @namespace: "Roslynator", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "DiagnosticRules", identifiersClassName: "DiagnosticIds");
+        WriteDiagnostics("Common", metadata.CommonAnalyzers.Concat(metadata.FormattingAnalyzers), @namespace: "Roslynator", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "DiagnosticRules", identifiersClassName: "DiagnosticIdentifiers");
 
-        WriteDiagnostics("Common/CodeAnalysis", metadata.CodeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "CodeAnalysisDiagnosticRules", identifiersClassName: "CodeAnalysisDiagnosticIds");
+        WriteDiagnostics("Common/CodeAnalysis", metadata.CodeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "CodeAnalysisDiagnosticRules", identifiersClassName: "CodeAnalysisDiagnosticIdentifiers");
 
         WriteCompilationUnit(
             "CodeFixes/CSharp/CompilerDiagnosticRules.Generated.cs",

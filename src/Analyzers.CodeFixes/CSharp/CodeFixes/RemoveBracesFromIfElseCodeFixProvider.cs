@@ -18,7 +18,7 @@ public sealed class RemoveBracesFromIfElseCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveBracesFromIfElse); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElse); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ public sealed class RemoveBracesFromIfElseCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove braces from if-else",
             ct => RemoveBracesFromIfElseElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveBracesFromIfElse));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveBracesFromIfElse));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

@@ -12,7 +12,7 @@ public class RCS1005SimplifyNestedUsingStatementTests : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNestedUsingStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNestedUsingStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNestedUsingStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
     public async Task Test_OpenBraceAtTheEndOfLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -98,7 +98,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNestedUsingStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
     public async Task TestNoDiagnostic_MultipleStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -124,7 +124,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNestedUsingStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
     public async Task TestNoDiagnostic_WithComment()
     {
         await VerifyNoDiagnosticAsync(@"

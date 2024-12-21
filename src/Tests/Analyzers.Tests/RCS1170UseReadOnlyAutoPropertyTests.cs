@@ -13,7 +13,7 @@ public class RCS1170UseReadOnlyAutoPropertyTests : AbstractCSharpDiagnosticVerif
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseReadOnlyAutoProperty;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task Test_InstanceProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task Test_InstanceProperty_Int32()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -67,7 +67,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task Test_InstanceProperty_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -97,7 +97,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task Test_InstanceProperty_ReadOnlyStruct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -131,7 +131,7 @@ readonly struct B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task Test_StaticProperty()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -161,7 +161,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_ReadOnlyProperty()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -172,7 +172,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_FullProperty()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -189,7 +189,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_Assigned()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -205,7 +205,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -220,7 +220,7 @@ struct B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_Tuple()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -237,7 +237,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_AssignedInConstructor_LocalFunction()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -256,7 +256,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_AssignedInConstructor_SimpleLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -281,7 +281,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_AssignedInConstructor_ParenthesizedLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -306,7 +306,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_AssignedInConstructor_AnonymousMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -331,7 +331,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_StaticPropertyAssignedInInstanceConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -347,7 +347,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_Generic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -367,7 +367,7 @@ class C<T> : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_VariablePropertyAssignedInConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -385,7 +385,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_DateMemberAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -407,7 +407,7 @@ namespace System.Runtime.Serialization
 }", options: Options.AddAllowedCompilerDiagnosticId("CS0436"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_SetterHasAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -420,7 +420,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_AssignedSymbolIsNull()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -444,7 +444,7 @@ class C2
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1061"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_ReadOnlyAutoPropertyNotAvailableInCSharp5()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -455,7 +455,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_InitSetter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -466,7 +466,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_DependencyAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -485,7 +485,7 @@ class DependencyAttribute : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_ParameterAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -508,7 +508,7 @@ namespace Microsoft.AspNetCore.Components
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_CascadingParameterAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -531,7 +531,7 @@ namespace Microsoft.AspNetCore.Components
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseReadOnlyAutoProperty)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
     public async Task TestNoDiagnostic_InjectAttribute()
     {
         await VerifyNoDiagnosticAsync(@"

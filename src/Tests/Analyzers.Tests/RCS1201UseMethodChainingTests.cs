@@ -12,7 +12,7 @@ public class RCS1201UseMethodChainingTests : AbstractCSharpDiagnosticVerifier<In
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseMethodChaining;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -54,7 +54,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -88,7 +88,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test_Assignment()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -132,7 +132,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic_ReturnTypesAreNotEqual()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -152,7 +152,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic_NoAssignment()
     {
         await VerifyNoDiagnosticAsync("""
@@ -172,7 +172,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -199,7 +199,7 @@ public class C2
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic_CommentsBetween()
     {
         await VerifyNoDiagnosticAsync("""
@@ -223,7 +223,7 @@ public class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseMethodChaining)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic_CommentsBetween2()
     {
         await VerifyNoDiagnosticAsync("""

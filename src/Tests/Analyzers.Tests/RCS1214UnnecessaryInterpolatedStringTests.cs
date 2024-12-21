@@ -12,7 +12,7 @@ public class RCS1214UnnecessaryInterpolatedStringTests : AbstractCSharpDiagnosti
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryInterpolatedString;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_StringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -34,7 +34,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_InterpolatedString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -58,7 +58,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NonNullStringConstant()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -82,7 +82,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -104,7 +104,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -126,7 +126,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation3()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -148,7 +148,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
@@ -163,7 +163,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -176,7 +176,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -189,7 +189,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString3()
     {
         await VerifyNoDiagnosticAsync("""
@@ -207,7 +207,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_TryWriteInterpolatedStringHandler()
     {
         await VerifyNoDiagnosticAsync("""

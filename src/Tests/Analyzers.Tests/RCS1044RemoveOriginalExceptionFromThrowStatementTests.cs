@@ -12,7 +12,7 @@ public class RCS1044RemoveOriginalExceptionFromThrowStatementTests : AbstractCSh
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveOriginalExceptionFromThrowStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveOriginalExceptionFromThrowStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
     public async Task Test_OriginalExceptionUsed()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ public class A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveOriginalExceptionFromThrowStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
     public async Task TestNoDiagnostic_OnlyThrowStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -75,7 +75,7 @@ public class A
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveOriginalExceptionFromThrowStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
     public async Task TestNoDiagnostic_NewExceptionInstantiated()
     {
         await VerifyNoDiagnosticAsync(@"

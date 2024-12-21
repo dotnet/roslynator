@@ -12,7 +12,7 @@ public class RCS1233UseShortCircuitingOperatorTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseShortCircuitingOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseShortCircuitingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
     public async Task Test_Or()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseShortCircuitingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
     public async Task Test_And()
     {
         await VerifyDiagnosticAndFixAsync(@"

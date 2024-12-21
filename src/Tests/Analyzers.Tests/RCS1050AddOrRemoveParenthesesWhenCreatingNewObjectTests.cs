@@ -12,7 +12,7 @@ public class RCS1050AddOrRemoveParenthesesWhenCreatingNewObjectTests : AbstractC
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.IncludeParenthesesWhenCreatingNewObject;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.IncludeParenthesesWhenCreatingNewObject)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task Test_AddParentheses()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -32,7 +32,7 @@ public class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.IncludeParenthesesWhenCreatingNewObject)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task Test_RemoveParentheses()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -52,7 +52,7 @@ public class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.IncludeParenthesesWhenCreatingNewObject)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task TestNoDiagnostic_AddParentheses()
     {
         await VerifyNoDiagnosticAsync("""
@@ -65,7 +65,7 @@ public class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.IncludeParenthesesWhenCreatingNewObject)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task TestNoDiagnostic_RemoveParentheses()
     {
         await VerifyNoDiagnosticAsync("""
@@ -78,7 +78,7 @@ public class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.IncludeParenthesesWhenCreatingNewObject)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task TestNoDiagnostic_RemoveParentheses_NoInitializer()
     {
         await VerifyNoDiagnosticAsync(@"

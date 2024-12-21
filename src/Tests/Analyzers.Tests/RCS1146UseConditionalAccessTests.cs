@@ -12,7 +12,7 @@ public class RCS1146UseConditionalAccessTests : AbstractCSharpDiagnosticVerifier
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConditionalAccess;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_IfStatement_ReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_IfStatement_ValueType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ struct S
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_IfStatement_PatternMatching()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ReferenceType()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -212,7 +212,7 @@ class Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ReferenceType_PatternMatching()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -238,7 +238,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalOr_ReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -284,7 +284,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ElementAccess()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -322,7 +322,7 @@ class Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_Nested()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -366,7 +366,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_NullableType()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -432,7 +432,7 @@ struct Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalOr_NullableType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -462,7 +462,7 @@ struct Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_Nested_NullableType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -491,7 +491,7 @@ struct Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ReferenceType()
     {
         await VerifyNoDiagnosticAsync("""
@@ -530,7 +530,7 @@ class Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_ReferenceType()
     {
         await VerifyNoDiagnosticAsync("""
@@ -580,7 +580,7 @@ class Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ValueType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -601,7 +601,7 @@ struct Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ValueTypeFieldAccess()
     {
         await VerifyNoDiagnosticAsync("""
@@ -621,7 +621,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_NullableType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -668,7 +668,7 @@ struct Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_NullableType()
     {
         await VerifyNoDiagnosticAsync("""
@@ -734,7 +734,7 @@ struct Foo
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_OutParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -756,7 +756,7 @@ if (dic != null && dic.TryGetValue(0, out value)) { }
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_OutParameter2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -780,7 +780,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_OutParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -802,7 +802,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -821,7 +821,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -840,7 +840,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LocalDeclaration_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -857,7 +857,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_TypeOverloadsOrOperatorAndImplicitConversionToBooleanDoesNotExist()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -904,7 +904,7 @@ struct SqlBoolean
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_PreprocessorDirective()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -925,7 +925,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_PointerType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -945,7 +945,7 @@ unsafe class C
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LanguageVersion()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -964,7 +964,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseConditionalAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_IsNotPattern()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -13,7 +13,7 @@ public class RCS1210ReturnCompletedTaskInsteadOfNullTests2 : AbstractCSharpDiagn
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReturnCompletedTaskInsteadOfNull)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
     public async Task Test_TaskOfT_ConditionalAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -51,7 +51,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReturnCompletedTaskInsteadOfNull)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
     public async Task Test_Task_ConditionalAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"

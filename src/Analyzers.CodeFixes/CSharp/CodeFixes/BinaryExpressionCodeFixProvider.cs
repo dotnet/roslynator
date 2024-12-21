@@ -26,19 +26,19 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
-                DiagnosticIds.UseStringIsNullOrEmptyMethod,
-                DiagnosticIds.SimplifyCoalesceExpression,
-                DiagnosticIds.RemoveRedundantAsOperator,
-                DiagnosticIds.UseStringLengthInsteadOfComparisonWithEmptyString,
-                DiagnosticIds.UnconstrainedTypeParameterCheckedForNull,
-                DiagnosticIds.ValueTypeObjectIsNeverEqualToNull,
-                DiagnosticIds.JoinStringExpressions,
-                DiagnosticIds.UseExclusiveOrOperator,
-                DiagnosticIds.UnnecessaryNullCheck,
-                DiagnosticIds.UseShortCircuitingOperator,
-                DiagnosticIds.UnnecessaryOperator,
-                DiagnosticIds.SimplifyNumericComparison);
+                DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
+                DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
+                DiagnosticIdentifiers.SimplifyCoalesceExpression,
+                DiagnosticIdentifiers.RemoveRedundantAsOperator,
+                DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
+                DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
+                DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull,
+                DiagnosticIdentifiers.JoinStringExpressions,
+                DiagnosticIdentifiers.UseExclusiveOrOperator,
+                DiagnosticIdentifiers.UnnecessaryNullCheck,
+                DiagnosticIdentifiers.UseShortCircuitingOperator,
+                DiagnosticIdentifiers.UnnecessaryOperator,
+                DiagnosticIdentifiers.SimplifyNumericComparison);
         }
     }
 
@@ -55,7 +55,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons:
+                case DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Swap operands",
@@ -65,7 +65,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseStringIsNullOrEmptyMethod:
+                case DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use 'string.IsNullOrEmpty' method",
@@ -75,7 +75,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.SimplifyCoalesceExpression:
+                case DiagnosticIdentifiers.SimplifyCoalesceExpression:
                 {
                     ExpressionSyntax expression = binaryExpression.Left;
 
@@ -93,7 +93,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.RemoveRedundantAsOperator:
+                case DiagnosticIdentifiers.RemoveRedundantAsOperator:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant 'as' operator",
@@ -103,7 +103,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseStringLengthInsteadOfComparisonWithEmptyString:
+                case DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use string.Length",
@@ -113,7 +113,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UnconstrainedTypeParameterCheckedForNull:
+                case DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -127,7 +127,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.ValueTypeObjectIsNeverEqualToNull:
+                case DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -155,7 +155,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.JoinStringExpressions:
+                case DiagnosticIdentifiers.JoinStringExpressions:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Join string expressions",
@@ -165,7 +165,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseExclusiveOrOperator:
+                case DiagnosticIdentifiers.UseExclusiveOrOperator:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use ^ operator",
@@ -175,7 +175,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UnnecessaryNullCheck:
+                case DiagnosticIdentifiers.UnnecessaryNullCheck:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove unnecessary null check",
@@ -185,7 +185,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseShortCircuitingOperator:
+                case DiagnosticIdentifiers.UseShortCircuitingOperator:
                 {
                     SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
@@ -224,7 +224,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UnnecessaryOperator:
+                case DiagnosticIdentifiers.UnnecessaryOperator:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use '==' operator",
@@ -244,7 +244,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.SimplifyNumericComparison:
+                case DiagnosticIdentifiers.SimplifyNumericComparison:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Simplify numeric comparison",

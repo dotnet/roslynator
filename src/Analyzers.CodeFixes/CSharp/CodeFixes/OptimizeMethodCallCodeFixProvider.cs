@@ -22,7 +22,7 @@ public sealed class OptimizeMethodCallCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.OptimizeMethodCall); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.OptimizeMethodCall); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

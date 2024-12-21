@@ -12,7 +12,7 @@ public class RCS1020SimplifyNullableOfTTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNullableOfT;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -54,7 +54,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task Test_NameOf()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task TestNoDiagnostic_NameOf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -106,7 +106,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task TestNoDiagnostic_TypeOfNullableOfT()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -122,7 +122,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task TestNoDiagnostic_Cref()
     {
         await VerifyNoDiagnosticAsync("""
@@ -145,7 +145,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNullableOfT)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task TestNoDiagnostic_UsingDirective()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -12,7 +12,7 @@ public class RCS1199UnnecessaryNullCheckTests : AbstractCSharpDiagnosticVerifier
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullCheck;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_Bool()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_Bool_EqualsTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_Bool_Parentheses()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_Bool_False()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_Bool_EqualsFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_HasValue_ValueEquals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -174,7 +174,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_NotEqualsToNull_ValueEquals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -206,7 +206,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_NotEqualsToNull_ValueLessThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -238,7 +238,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_NotEqualsToNull_ValueLessThanOrEquals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -270,7 +270,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_NotEqualsToNull_ValueGreaterThan()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -302,7 +302,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task Test_NotEqualsToNull_ValueGreaterThanOrEquals()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -334,7 +334,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -367,7 +367,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -394,7 +394,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic_RightSideIsNullable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -421,7 +421,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
     public async Task TestNoDiagnostic_RightSideIsNullOrDefault()
     {
         await VerifyNoDiagnosticAsync(@"

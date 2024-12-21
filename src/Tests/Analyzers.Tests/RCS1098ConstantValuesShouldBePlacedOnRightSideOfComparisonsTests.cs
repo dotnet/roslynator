@@ -12,7 +12,7 @@ public class RCS1098ConstantValuesShouldBePlacedOnRightSideOfComparisonsTests : 
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_NullLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_DefaultLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_DefaultExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_StringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -116,7 +116,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_CharacterLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_TrueLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -168,7 +168,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_FalseLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -194,7 +194,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_NumericLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -220,7 +220,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

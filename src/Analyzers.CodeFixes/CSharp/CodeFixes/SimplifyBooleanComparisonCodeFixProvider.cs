@@ -24,7 +24,7 @@ public sealed class SimplifyBooleanComparisonCodeFixProvider : BaseCodeFixProvid
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.SimplifyBooleanComparison); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyBooleanComparison); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -17,7 +17,7 @@ public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpDiagnosticVer
         get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected); }
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_Method_Body_ReturnAwait()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -73,7 +73,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_Method_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -93,7 +93,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_LocalFunction_Body_ReturnAwait()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_LocalFunction_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -151,7 +151,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_SimpleLambda_Body()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -189,7 +189,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_SimpleLambda_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -221,7 +221,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_ParenthesizedLambda_Body()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -259,7 +259,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_ParenthesizedLambda_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -291,7 +291,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_AnonymousMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -329,7 +329,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_IfElseIfReturn()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -377,7 +377,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_IfElse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -421,7 +421,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_SwitchWithoutDefaultSection()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -475,7 +475,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_SwitchWithDefaultSection()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -533,7 +533,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_DuckTyped_TaskType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -605,7 +605,7 @@ static class ConfigureAwaitExtensions
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_IfElse_ReturnWithoutAwait()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -636,7 +636,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_IfElse_AwaitWithoutReturn()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -663,7 +663,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_Switch_ReturnWithoutAwait()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -699,7 +699,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_Switch_AwaitWithoutReturn()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -731,7 +731,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_Method_ReturnWithoutAwait()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -759,7 +759,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_Method_AwaitWithoutReturn()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -787,7 +787,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_Method_ReturnsTask()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -803,7 +803,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_ReturnTypeAndAwaitTypeDoNotEqual()
     {
         await VerifyNoDiagnosticAsync("""
@@ -923,7 +923,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_AwaitContainsAwait()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1045,7 +1045,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_UsingDeclaration()
     {
         await VerifyNoDiagnosticAsync("""

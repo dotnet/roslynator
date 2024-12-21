@@ -12,7 +12,7 @@ public class RCS1021ConvertLambdaExpressionBodyToExpressionBodyTests : AbstractC
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertLambdaExpressionBodyToExpressionBody)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ConvertLambdaExpressionBodyToExpressionBody)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"

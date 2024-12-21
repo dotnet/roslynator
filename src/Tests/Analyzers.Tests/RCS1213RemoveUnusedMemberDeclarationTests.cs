@@ -13,7 +13,7 @@ public class RCS1213RemoveUnusedMemberDeclarationTests : AbstractCSharpDiagnosti
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnusedMemberDeclaration;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -28,7 +28,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method_Recursive()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method_IfElsePreprocessorDirectives()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -81,7 +81,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method_PragmaPreprocessorDirectives()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -102,7 +102,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method_RegionPreprocessorDirectives()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -124,7 +124,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Property_AttributeArgument_NameOf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -147,7 +147,7 @@ class FooAttribute : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Method_AttributeArgument_NameOf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -170,7 +170,7 @@ class FooAttribute : Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Method_Argument_NameOf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Indexer_Argument_NameOf()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -196,7 +196,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_ExtensionMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -215,7 +215,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_DelegateAsReturnType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -233,7 +233,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_UnbalancedPreprocessorDirectives()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -251,7 +251,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_LateBound()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -273,7 +273,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_StructLayoutAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -287,7 +287,7 @@ struct S
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_DelegateAsTypeArgument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -305,7 +305,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_OverloadResolutionFailure()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -327,7 +327,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0246"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Stackalloc()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -345,7 +345,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_UnityScriptMethods()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -367,7 +367,7 @@ namespace UnityEngine
 ", options: Options.AddConfigOption(ConfigOptionKeys.SuppressUnityScriptMethods, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_UnityScriptMethods2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -389,7 +389,7 @@ namespace UnityEngine
 ", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_UnityScriptMethods_Start()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -413,7 +413,7 @@ namespace UnityEngine
 ", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_PrimaryConstructor()
     {
         await VerifyNoDiagnosticAsync("""
@@ -433,7 +433,7 @@ class MyAttribute : Attribute
 """, options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveUnusedMemberDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_BaseList()
     {
         await VerifyNoDiagnosticAsync(@"

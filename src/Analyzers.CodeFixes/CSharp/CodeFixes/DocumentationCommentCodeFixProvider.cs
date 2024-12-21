@@ -18,7 +18,7 @@ public sealed class DocumentationCommentCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AddSummaryElementToDocumentationComment); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddSummaryElementToDocumentationComment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class DocumentationCommentCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.AddSummaryElementToDocumentationComment:
+                case DiagnosticIdentifiers.AddSummaryElementToDocumentationComment:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Add summary element",

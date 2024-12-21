@@ -18,10 +18,10 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.PutStatementOnItsOwnLine,
-                DiagnosticIds.PutEmbeddedStatementOnItsOwnLine,
-                DiagnosticIds.AddNewLineAfterSwitchLabel,
-                DiagnosticIds.AddBlankLineAfterEmbeddedStatement);
+                DiagnosticIdentifiers.PutStatementOnItsOwnLine,
+                DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine,
+                DiagnosticIdentifiers.AddNewLineAfterSwitchLabel,
+                DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement);
         }
     }
 
@@ -31,18 +31,18 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.PutStatementOnItsOwnLine:
+            case DiagnosticIdentifiers.PutStatementOnItsOwnLine:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.PutEmbeddedStatementOnItsOwnLine:
-            case DiagnosticIds.AddNewLineAfterSwitchLabel:
+            case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
+            case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, increaseIndentation: true).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.AddBlankLineAfterEmbeddedStatement:
+            case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
             {
                 await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                 break;

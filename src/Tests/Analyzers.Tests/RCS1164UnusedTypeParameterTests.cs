@@ -12,7 +12,7 @@ public class RCS1164UnusedTypeParameterTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedTypeParameter;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnusedTypeParameter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedTypeParameter)]
     public async Task TestNoDiagnostic_DependencyPropertyEventArgs()
     {
         await VerifyNoDiagnosticAsync(@"

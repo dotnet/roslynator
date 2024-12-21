@@ -12,7 +12,7 @@ public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpDiagnosti
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyConditionalExpression;
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     [InlineData("f ? true : false", "f")]
     [InlineData("!f ? false : true", "f")]
     [InlineData("((f)) ? ((true)) : ((false))", "f")]
@@ -42,7 +42,7 @@ class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     [InlineData("f ? g : false", "f && g")]
     [InlineData("f ? g || g : false", "f && (g || g)")]
     [InlineData(@"[|f
@@ -62,7 +62,7 @@ class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     [InlineData("f ? true : g", "f || g")]
     [InlineData(@"[|f
             ? true
@@ -81,7 +81,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     public async Task Test_NegateCondition()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     public async Task Test_NegateCondition2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -133,7 +133,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -156,7 +156,7 @@ class C
 ", options: Options.WithDebugPreprocessorSymbol());
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     public async Task TestNoDiagnostic_NullableBool()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -172,7 +172,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyConditionalExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
     public async Task TestNoDiagnostic_ThrowExpression()
     {
         await VerifyNoDiagnosticAsync(@"

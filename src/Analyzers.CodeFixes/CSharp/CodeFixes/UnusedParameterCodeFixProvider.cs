@@ -20,7 +20,7 @@ public sealed class UnusedParameterCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UnusedParameter); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnusedParameter); }
     }
 
     public override FixAllProvider GetFixAllProvider()

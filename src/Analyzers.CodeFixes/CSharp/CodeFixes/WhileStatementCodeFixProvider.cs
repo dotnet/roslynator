@@ -22,8 +22,8 @@ public sealed class WhileStatementCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
-                DiagnosticIds.UseForStatementInsteadOfWhileStatement);
+                DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
+                DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement);
         }
     }
 
@@ -40,7 +40,7 @@ public sealed class WhileStatementCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.AvoidUsageOfWhileStatementToCreateInfiniteLoop:
+            case DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Convert to 'for'",
@@ -56,7 +56,7 @@ public sealed class WhileStatementCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIds.UseForStatementInsteadOfWhileStatement:
+            case DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Convert to 'for'",

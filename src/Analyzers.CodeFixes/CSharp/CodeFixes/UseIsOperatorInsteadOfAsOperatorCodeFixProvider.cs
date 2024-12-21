@@ -18,7 +18,7 @@ public sealed class UseIsOperatorInsteadOfAsOperatorCodeFixProvider : BaseCodeFi
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseIsOperatorInsteadOfAsOperator); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

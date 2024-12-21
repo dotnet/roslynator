@@ -12,7 +12,7 @@ public class RCS0001AddBlankLineAfterEmbeddedStatementTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineAfterEmbeddedStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_If()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_ElseIf()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -78,7 +78,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Else()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -113,7 +113,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_ForEach()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_ForEachVariable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -187,7 +187,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_For()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -224,7 +224,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Using()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -259,7 +259,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_While()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -290,7 +290,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Lock()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -321,7 +321,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Fixed()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -358,7 +358,7 @@ class C
 """, options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Switch()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -399,7 +399,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task TestNoDiagnostic_EmbeddedStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -435,7 +435,7 @@ class C
 """, options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineAfterEmbeddedStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task TestNoDiagnostic_NoEmbeddedStatement()
     {
         await VerifyNoDiagnosticAsync("""

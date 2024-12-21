@@ -18,7 +18,7 @@ public sealed class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixPro
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.SimplifyNestedUsingStatement); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixPro
         CodeAction codeAction = CodeAction.Create(
             "Remove braces",
             ct => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, ct),
-            GetEquivalenceKey(DiagnosticIds.SimplifyNestedUsingStatement));
+            GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNestedUsingStatement));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

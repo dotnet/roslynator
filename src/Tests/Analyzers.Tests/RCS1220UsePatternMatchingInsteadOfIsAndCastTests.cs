@@ -13,7 +13,7 @@ public class RCS1220UsePatternMatchingInsteadOfIsAndCastTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -69,7 +69,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,7 +101,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression4()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -133,7 +133,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression5()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -165,7 +165,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression6()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression7()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -227,7 +227,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_LogicalAndExpression_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -263,7 +263,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement1()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -297,7 +297,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -329,7 +329,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -367,7 +367,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement4()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -405,7 +405,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement5()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -443,7 +443,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement6()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -483,7 +483,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement7()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -519,7 +519,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement8()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -553,7 +553,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task Test_IfStatement_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -589,7 +589,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task TestNoDiagnostic_LogicalAndExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -611,7 +611,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task TestNoDiagnostic_IfStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -642,7 +642,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -662,7 +662,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task TestNoDiagnostic_NullableType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -683,7 +683,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UsePatternMatchingInsteadOfIsAndCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
     public async Task TestNoDiagnostic_LanguageVersion()
     {
         await VerifyNoDiagnosticAsync(@"

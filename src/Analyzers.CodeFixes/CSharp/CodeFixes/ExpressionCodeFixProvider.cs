@@ -24,8 +24,8 @@ public sealed class ExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse,
-                DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator);
+                DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse,
+                DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator);
         }
     }
 
@@ -42,7 +42,7 @@ public sealed class ExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.AddOrRemoveParenthesesFromConditionInConditionalOperator:
+                case DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator:
                 {
                     if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
                     {
@@ -62,7 +62,7 @@ public sealed class ExpressionCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIds.ExpressionIsAlwaysEqualToTrueOrFalse:
+                case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
                 {
                     if (expression.IsKind(
                         SyntaxKind.LessThanExpression,

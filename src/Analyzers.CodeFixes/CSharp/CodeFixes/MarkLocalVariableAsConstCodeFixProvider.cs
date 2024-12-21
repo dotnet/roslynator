@@ -22,7 +22,7 @@ public sealed class MarkLocalVariableAsConstCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.MarkLocalVariableAsConst); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkLocalVariableAsConst); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

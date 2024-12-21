@@ -20,7 +20,7 @@ public sealed class UseExplicitTypeInsteadOfVarInForEachCodeFixProvider : BaseCo
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseExplicitTypeInsteadOfVarInForEach); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

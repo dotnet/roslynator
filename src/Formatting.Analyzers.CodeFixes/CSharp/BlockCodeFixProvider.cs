@@ -21,8 +21,8 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.FormatBlockBraces,
-                DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock);
+                DiagnosticIdentifiers.FormatBlockBraces,
+                DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock);
         }
     }
 
@@ -38,8 +38,8 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.FormatBlockBraces:
-            case DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock:
+            case DiagnosticIdentifiers.FormatBlockBraces:
+            case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock:
             {
                 bool isSingleLine = block.IsSingleLine(includeExteriorTrivia: false);
                 string title = (isSingleLine)

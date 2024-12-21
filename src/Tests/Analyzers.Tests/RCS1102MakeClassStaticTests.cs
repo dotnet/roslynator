@@ -12,7 +12,7 @@ public class RCS1102MakeClassStaticTests : AbstractCSharpDiagnosticVerifier<Make
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassStatic;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ public static class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task TestNoDiagnostic_SealedClass()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -119,7 +119,7 @@ sealed class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task TestNoDiagnostic_ImplementsInterface()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -134,7 +134,7 @@ interface I
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task TestNoDiagnostic_TypeArgument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -150,7 +150,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task TestNoDiagnostic_ReturnType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -164,7 +164,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeClassStatic)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
     public async Task TestNoDiagnostic_NestedClass()
     {
         await VerifyNoDiagnosticAsync(@"

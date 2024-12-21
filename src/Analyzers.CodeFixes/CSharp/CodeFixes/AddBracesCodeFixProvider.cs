@@ -21,9 +21,9 @@ public sealed class AddBracesCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.AddBracesWhenExpressionSpansOverMultipleLines,
-                DiagnosticIds.AddBraces,
-                DiagnosticIds.AddBracesToIfElse);
+                DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines,
+                DiagnosticIdentifiers.AddBraces,
+                DiagnosticIdentifiers.AddBracesToIfElse);
         }
     }
 

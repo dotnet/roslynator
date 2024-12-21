@@ -22,8 +22,8 @@ public sealed class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.UnnecessaryInterpolatedString,
-                DiagnosticIds.ConvertInterpolatedStringToConcatenation);
+                DiagnosticIdentifiers.UnnecessaryInterpolatedString,
+                DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation);
         }
     }
 
@@ -40,7 +40,7 @@ public sealed class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.UnnecessaryInterpolatedString:
+                case DiagnosticIdentifiers.UnnecessaryInterpolatedString:
                 {
                     if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(interpolatedString))
                     {
@@ -65,7 +65,7 @@ public sealed class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIds.ConvertInterpolatedStringToConcatenation:
+                case DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Convert to concatenation",

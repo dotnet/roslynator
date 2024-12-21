@@ -13,7 +13,7 @@ public class RCS1118MarkLocalVariableAsConstTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MarkLocalVariableAsConst;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MarkLocalVariableAsConst)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task Test_ConstantValue()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -37,7 +37,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MarkLocalVariableAsConst)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task Test_NullableReferenceType()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -65,7 +65,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MarkLocalVariableAsConst)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -81,7 +81,7 @@ class C
 """, options: WellKnownCSharpTestOptions.Default_CSharp9);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MarkLocalVariableAsConst)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task TestNoDiagnostic_RefParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -102,7 +102,7 @@ public static class C
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MarkLocalVariableAsConst)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task TestNoDiagnostic_RefParameter_ExtensionMethod()
     {
         await VerifyNoDiagnosticAsync(@"

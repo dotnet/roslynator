@@ -12,7 +12,7 @@ public class RCS1261DisposeResourceAsynchronouslyTests : AbstractCSharpDiagnosti
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DisposeResourceAsynchronously;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_LocalStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_LocalStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -156,7 +156,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -206,7 +206,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_LocalStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -260,7 +260,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_LocalStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -314,7 +314,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_UsingStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -362,7 +362,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_UsingStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -410,7 +410,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_UsingStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -458,7 +458,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_UsingStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -508,7 +508,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_UsingStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -562,7 +562,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_UsingStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -616,7 +616,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_SimpleLambda_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -666,7 +666,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_SimpleLambda_LocalStatement_WithoutAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -718,7 +718,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_ParenthesizedLambda_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -768,7 +768,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_ParenthesizedLambda_LocalStatement_WithoutAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -820,7 +820,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_AnonymousMethod_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -870,7 +870,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_AnonymousMethod_LocalStatement_WithoutAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -922,7 +922,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_DuckTyped_TaskType_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1020,7 +1020,7 @@ public struct Awaiter<T> : INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_DuckTyped_TaskType_WithoutAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1118,7 +1118,7 @@ public struct Awaiter<T> : INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task TestNoDiagnostic_LockStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1142,7 +1142,7 @@ abstract class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task TestNoDiagnostic_DuckTyped_NotTaskType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1194,7 +1194,7 @@ public struct Awaiter<T> : INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DisposeResourceAsynchronously)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task TestNoDiagnostic_NonAwaitable_TaskType()
     {
         await VerifyNoDiagnosticAsync(@"

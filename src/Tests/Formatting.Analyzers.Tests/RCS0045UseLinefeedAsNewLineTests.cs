@@ -12,7 +12,7 @@ public class RCS0045UseLinefeedAsNewLineTests : AbstractCSharpDiagnosticVerifier
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseLinefeedAsNewLine;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseLinefeedAsNewLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseLinefeedAsNewLine)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("\n"
@@ -37,7 +37,7 @@ public class RCS0045UseLinefeedAsNewLineTests : AbstractCSharpDiagnosticVerifier
                 + "}\n");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseLinefeedAsNewLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseLinefeedAsNewLine)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("\n"

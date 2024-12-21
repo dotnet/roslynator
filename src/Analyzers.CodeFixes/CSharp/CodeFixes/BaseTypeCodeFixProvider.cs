@@ -18,7 +18,7 @@ public sealed class BaseTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantBaseInterface); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBaseInterface); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class BaseTypeCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove redundant base interface",
             ct => RemoveRedundantBaseInterfaceRefactoring.RefactorAsync(context.Document, baseType, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveRedundantBaseInterface));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBaseInterface));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

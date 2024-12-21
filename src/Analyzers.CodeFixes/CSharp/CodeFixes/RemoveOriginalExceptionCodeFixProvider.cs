@@ -18,7 +18,7 @@ public sealed class RemoveOriginalExceptionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveOriginalExceptionFromThrowStatement); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class RemoveOriginalExceptionCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove original exception from throw statement",
             ct => RemoveOriginalExceptionFromThrowStatementRefactoring.RefactorAsync(context.Document, throwStatement, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveOriginalExceptionFromThrowStatement));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

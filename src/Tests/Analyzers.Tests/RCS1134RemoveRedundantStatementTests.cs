@@ -12,7 +12,7 @@ public class RCS1134RemoveRedundantStatementTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_SimpleIf_ReturnNull()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_SimpleIf_ReturnDefault()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_SimpleIf_ReturnTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -117,7 +117,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_SimpleIf_ReturnFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -152,7 +152,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_SimpleLambdaBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_ParenthesizedLambdaBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -242,7 +242,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task Test_AnonymousMethodBody()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -287,7 +287,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
     public async Task TestNoDiagnostic_SimpleIf_ExpressionsAreNotEquivalent()
     {
         await VerifyNoDiagnosticAsync(@"

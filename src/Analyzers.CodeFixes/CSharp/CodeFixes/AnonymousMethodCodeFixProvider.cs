@@ -18,7 +18,7 @@ public sealed class AnonymousMethodCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseLambdaExpressionInsteadOfAnonymousMethod); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class AnonymousMethodCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Use lambda expression instead of anonymous method",
             ct => UseLambdaInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, ct),
-            GetEquivalenceKey(DiagnosticIds.UseLambdaExpressionInsteadOfAnonymousMethod));
+            GetEquivalenceKey(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

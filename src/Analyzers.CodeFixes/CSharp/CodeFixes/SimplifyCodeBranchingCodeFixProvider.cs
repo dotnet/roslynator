@@ -23,7 +23,7 @@ public sealed class SimplifyCodeBranchingCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.SimplifyCodeBranching); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyCodeBranching); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

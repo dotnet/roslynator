@@ -12,7 +12,7 @@ public class RCS1158StaticMemberInGenericTypeShouldUseTypeParameterTests : Abstr
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.StaticMemberInGenericTypeShouldUseTypeParameter;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.StaticMemberInGenericTypeShouldUseTypeParameter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.StaticMemberInGenericTypeShouldUseTypeParameter)]
     public async Task TestNoDiagnostic_Property()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -27,7 +27,7 @@ public interface IFoo<T>
 }");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.StaticMemberInGenericTypeShouldUseTypeParameter)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.StaticMemberInGenericTypeShouldUseTypeParameter)]
     public async Task TestNoDiagnostic_Field()
     {
         await VerifyNoDiagnosticAsync(@"

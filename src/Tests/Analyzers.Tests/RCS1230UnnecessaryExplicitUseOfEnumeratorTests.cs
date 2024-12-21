@@ -12,7 +12,7 @@ public class RCS1230UnnecessaryExplicitUseOfEnumeratorTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryExplicitUseOfEnumerator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -53,7 +53,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task Test_EmbeddedStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -86,7 +86,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task Test_NestedCurrent()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task TestNoDiagnostic_WhileDoesNotContainCurrent()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task TestNoDiagnostic_UsingContainsMultipleStatements()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -174,7 +174,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task TestNoDiagnostic_IfInsteadOfWhile()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -198,7 +198,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryExplicitUseOfEnumerator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
     public async Task TestNoDiagnostic_WhileContainsMoveNext()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -12,7 +12,7 @@ public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyBooleanComparison;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test_IsTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -104,7 +104,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test_IsFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test_IsNotTrue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -152,7 +152,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task Test_IsNotFalse()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -176,7 +176,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyBooleanComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
     public async Task TestNoDiagnostic_NullableIsTrue()
     {
         await VerifyNoDiagnosticAsync(@"

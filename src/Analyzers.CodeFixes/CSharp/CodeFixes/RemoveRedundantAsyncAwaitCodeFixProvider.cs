@@ -18,7 +18,7 @@ public sealed class RemoveRedundantAsyncAwaitCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantAsyncAwait); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAsyncAwait); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

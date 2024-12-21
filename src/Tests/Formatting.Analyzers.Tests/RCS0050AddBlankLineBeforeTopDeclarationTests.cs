@@ -12,7 +12,7 @@ public class RCS0050AddBlankLineBeforeTopDeclarationTests : AbstractCSharpDiagno
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeTopDeclaration;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_ExternAlias()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -29,7 +29,7 @@ class C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0430"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_Using()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_Attribute()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -71,7 +71,7 @@ class AssemblyAttribute : System.Attribute
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_If()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -88,7 +88,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_Namespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -122,7 +122,7 @@ struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -139,7 +139,7 @@ interface IC
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBeforeTopDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

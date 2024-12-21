@@ -17,7 +17,7 @@ public class RCS1096UseHasFlagMethodOrBitwiseOperatorTests : AbstractCSharpDiagn
         get { return base.Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method); }
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotEquals_Zero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotEquals_Value()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -77,7 +77,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotEquals_Parentheses()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NotEquals_WithTrivia()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -137,7 +137,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_Equals_ZeroOnLeftSide()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -167,7 +167,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_Equals_Value()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task Test_NoDiagnostic_ConditionalAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -219,7 +219,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_HasFlag()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -237,7 +237,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_Equals_CompositeValue()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -256,7 +256,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_NotEnumType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -270,7 +270,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseHasFlagMethodOrBitwiseOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
     public async Task TestNoDiagnostic_NotConstant()
     {
         await VerifyNoDiagnosticAsync(@"

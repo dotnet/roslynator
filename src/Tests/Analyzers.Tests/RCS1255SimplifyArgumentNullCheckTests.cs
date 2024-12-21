@@ -12,7 +12,7 @@ public class RCS1255SimplifyArgumentNullCheckTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyArgumentNullCheck;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task Test_IfStatement_Block_Nameof()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task Test_IfStatement_Block_Literal()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -70,7 +70,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task Test_IfStatement_Embedded_Nameof()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -97,7 +97,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task TestNoDiagnostic_TwoArguments()
     {
         await VerifyNoDiagnosticAsync("""

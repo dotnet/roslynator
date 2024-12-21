@@ -12,7 +12,7 @@ public class RCS1246UseElementAccessTests : AbstractCSharpDiagnosticVerifier<Inv
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     [InlineData("((List<object>)x).[|First()|]", "((List<object>)x)[0]")]
     [InlineData("((IList<object>)x).[|First()|]", "((IList<object>)x)[0]")]
     [InlineData("((IReadOnlyList<object>)x).[|First()|]", "((IReadOnlyList<object>)x)[0]")]
@@ -40,7 +40,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_UseElementAccessInsteadOfFirst_DerivedFromList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C : List<string>
 ");
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
     [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
     [InlineData("((IReadOnlyList<object>)x).[|ElementAt(1)|]", "((IReadOnlyList<object>)x)[1]")]
@@ -98,7 +98,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_UseElementAccessInsteadOfElementAt_DerivedFromList()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ class C : List<string>
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -154,7 +154,7 @@ class C
 ");
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     [InlineData("((List<object>)x).[|Last()|]", "((List<object>)x)[^1]")]
     [InlineData("((IList<object>)x).[|Last()|]", "((IList<object>)x)[^1]")]
     [InlineData("((IReadOnlyList<object>)x).[|Last()|]", "((IReadOnlyList<object>)x)[^1]")]
@@ -182,7 +182,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task Test_UseElementAccessInsteadOfLast_CSharp7()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -200,7 +200,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfLast()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -226,7 +226,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfFirst()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -252,7 +252,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessOnElementAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -274,7 +274,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccess_ExpressionStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -294,7 +294,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseElementAccess)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt_InfiniteRecursion()
     {
         await VerifyNoDiagnosticAsync(@"

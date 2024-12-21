@@ -12,7 +12,7 @@ public class RCS1212RemoveRedundantAssignmentTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAssignment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Parameter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Local_WithComment()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -100,7 +100,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Local_ReferencedInRightSideOfAssignment()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -125,7 +125,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_LocalInsideLambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -191,7 +191,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_ParameterInsideLambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -228,7 +228,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_OutParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -243,7 +243,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_SequenceOfAssignments()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -260,7 +260,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_LocalReferencedInLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -293,7 +293,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_LocalAssignedInsideLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -317,7 +317,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_ParameterAssignedInsideLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -339,7 +339,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_FinallyClause()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -370,7 +370,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task TestNoDiagnostic_CatchClause()
     {
         await VerifyNoDiagnosticAsync(@"

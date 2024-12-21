@@ -18,7 +18,7 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantCommaInInitializer); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCommaInInitializer); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveRedundantCommaInInitializer:
+                case DiagnosticIdentifiers.RemoveRedundantCommaInInitializer:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant comma",

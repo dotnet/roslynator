@@ -12,7 +12,7 @@ public class RCS0033PutStatementOnItsOwnLineTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutStatementOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutStatementOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_Block()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutStatementOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_Block_SingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -53,7 +53,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutStatementOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_SwitchSection()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -88,7 +88,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutStatementOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task TestNoDiagnostic_EmptyStatement()
     {
         await VerifyNoDiagnosticAsync(@"

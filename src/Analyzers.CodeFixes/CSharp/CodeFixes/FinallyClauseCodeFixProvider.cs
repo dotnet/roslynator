@@ -20,7 +20,7 @@ public sealed class FinallyClauseCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptyFinallyClause); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyFinallyClause); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ public sealed class FinallyClauseCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove empty 'finally' clause",
             ct => RemoveEmptyFinallyClauseAsync(context.Document, finallyClause, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveEmptyFinallyClause));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyFinallyClause));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
     }

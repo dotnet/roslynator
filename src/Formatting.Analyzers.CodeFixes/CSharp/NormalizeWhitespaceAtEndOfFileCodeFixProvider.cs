@@ -17,7 +17,7 @@ public sealed class NormalizeWhitespaceAtEndOfFileCodeFixProvider : BaseCodeFixP
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.NormalizeWhitespaceAtEndOfFile); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class NormalizeWhitespaceAtEndOfFileCodeFixProvider : BaseCodeFixP
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.NormalizeWhitespaceAtEndOfFile:
+            case DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile:
             {
                 bool preferNewLineAtEndOfFile = document.GetConfigOptions(compilationUnit.SyntaxTree).PreferNewLineAtEndOfFile() ?? false;
 

@@ -12,8 +12,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryUnsafeContext;
 
-    [Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Class()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -40,7 +40,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -67,7 +67,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Record()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -94,7 +94,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -121,7 +121,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_RecordStruct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Method()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Constructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -202,7 +202,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_StaticMember()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -229,7 +229,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_UnsafeLocalFunction()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -263,7 +263,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_UnsafeBlock()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -296,7 +296,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -331,7 +331,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 """, options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Operator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -360,7 +360,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Indexer()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -395,7 +395,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 """, options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -428,7 +428,7 @@ class C
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUnsafeContext)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_NoDiagnostic_UnwrappedUnsafeBlock()
     {
         await VerifyNoDiagnosticAsync(@"

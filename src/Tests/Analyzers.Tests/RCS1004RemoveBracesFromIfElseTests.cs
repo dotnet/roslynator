@@ -12,7 +12,7 @@ public class RCS1004RemoveBracesFromIfElseTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBracesFromIfElse;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task Test2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -130,7 +130,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task TestNoDiagnostic_CommentAboveStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -152,7 +152,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task TestNoDiagnostic_CommentBelowStatement()
     {
         await VerifyNoDiagnosticAsync(@"

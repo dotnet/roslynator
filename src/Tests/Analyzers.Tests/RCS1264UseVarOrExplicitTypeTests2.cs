@@ -12,7 +12,7 @@ public class RCS1264UseVarOrExplicitTypeTests2 : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarOrExplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Tuple_DeclarationExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression_AllVar()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -104,7 +104,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_ParseMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -130,7 +130,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_NestedTuple()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -162,7 +162,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -182,7 +182,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach_TupleExpression()
     {
         await VerifyNoDiagnosticAsync(@"

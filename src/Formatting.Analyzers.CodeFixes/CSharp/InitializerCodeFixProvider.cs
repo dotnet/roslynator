@@ -17,7 +17,7 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.PutInitializerOnSingleLine); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutInitializerOnSingleLine); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.PutInitializerOnSingleLine:
+            case DiagnosticIdentifiers.PutInitializerOnSingleLine:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Put initializer on a single line",

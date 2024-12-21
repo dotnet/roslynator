@@ -13,7 +13,7 @@ public class RCS1129RemoveRedundantFieldInitializationTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantFieldInitialization;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_MultipleDeclarations()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -29,7 +29,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Number()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -65,7 +65,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Bool()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -81,7 +81,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Bool_Nullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -99,7 +99,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Char()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -115,7 +115,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Int()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -131,7 +131,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_ULong()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -147,7 +147,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task TestString()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task Test_StructWithoutConstructor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -223,7 +223,7 @@ struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -239,7 +239,7 @@ const bool K = false;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task TestNoDiagnostic_StructWithConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -254,7 +254,7 @@ struct C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
     {
         await VerifyNoDiagnosticAsync(@"

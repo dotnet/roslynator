@@ -12,7 +12,7 @@ public class RCS1107RemoveRedundantStringToCharArrayCallTests : AbstractCSharpDi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantStringToCharArrayCall;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStringToCharArrayCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall)]
     public async Task Test_ElementAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStringToCharArrayCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall)]
     public async Task Test_ForEach()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -68,7 +68,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStringToCharArrayCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall)]
     public async Task Test_ForEach_ParenthesizedExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -98,7 +98,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantStringToCharArrayCall)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

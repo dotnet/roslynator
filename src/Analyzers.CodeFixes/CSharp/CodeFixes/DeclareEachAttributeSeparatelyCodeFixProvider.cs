@@ -18,7 +18,7 @@ public sealed class DeclareEachAttributeSeparatelyCodeFixProvider : BaseCodeFixP
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.DeclareEachAttributeSeparately); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachAttributeSeparately); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class DeclareEachAttributeSeparatelyCodeFixProvider : BaseCodeFixP
         CodeAction codeAction = CodeAction.Create(
             "Split attributes",
             ct => DeclareEachAttributeSeparatelyRefactoring.RefactorAsync(context.Document, attributeList, ct),
-            GetEquivalenceKey(DiagnosticIds.DeclareEachAttributeSeparately));
+            GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachAttributeSeparately));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

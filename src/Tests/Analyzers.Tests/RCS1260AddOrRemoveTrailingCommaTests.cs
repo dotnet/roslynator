@@ -12,7 +12,7 @@ public class RCS1260AddOrRemoveTrailingCommaTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveTrailingComma;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_EnumDeclaration_Include()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -30,7 +30,7 @@ enum Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_EnumDeclaration_Omit()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ enum Foo
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineEnumDeclaration_Include()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +58,7 @@ enum Foo { A, B, }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineEnumDeclaration_Omit()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -68,7 +68,7 @@ enum Foo { A, B }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineEnumDeclaration_OmitWhenSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -78,7 +78,7 @@ enum Foo { A, B }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_ArrayInitializer_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -108,7 +108,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_ArrayInitializer_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -138,7 +138,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -160,7 +160,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -182,7 +182,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_OmitWhenSingleLine()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -204,7 +204,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_AnonymousObjectCreationExpression_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -234,7 +234,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_AnonymousObjectCreationExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -264,7 +264,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_Include()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -286,7 +286,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -308,7 +308,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveTrailingComma)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_OmitWhenSingleLine()
     {
         await VerifyDiagnosticAndFixAsync("""

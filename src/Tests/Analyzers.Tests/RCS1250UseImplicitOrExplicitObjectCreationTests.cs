@@ -12,7 +12,7 @@ public class RCS1250UseImplicitOrExplicitObjectCreationTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseImplicitOrExplicitObjectCreation;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_ThrowStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_ThrowExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -66,7 +66,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_LocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -96,7 +96,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_DoNotPreferVar_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -119,7 +119,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_DoNotPreferVar_LocalDeclaration2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_UsingStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -160,7 +160,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_DoNotPreferVar_UsingStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -191,7 +191,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_DoNotPreferVar_UsingStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -222,7 +222,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_ArrowExpressionClause()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -238,7 +238,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Array()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -260,7 +260,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_ReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -282,7 +282,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_YieldReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -308,7 +308,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Assignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -332,7 +332,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_CoalesceExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -358,7 +358,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_CollectionInitializer_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -392,7 +392,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_CollectionInitializer_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -424,7 +424,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ThrowStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -446,7 +446,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ThrowExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -462,7 +462,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -478,7 +478,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -494,7 +494,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_LocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -508,7 +508,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_DoNotPreferVar_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -531,7 +531,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_DoNotPreferVar_LocalDeclaration2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -554,7 +554,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_UsingStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -572,7 +572,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_DoNotPreferVar_UsingStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -603,7 +603,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_DoNotPreferVar_UsingStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -634,7 +634,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ArrowExpressionClause()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -650,7 +650,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_Array()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -672,7 +672,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -686,7 +686,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_YieldReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -702,7 +702,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_Assignment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -717,7 +717,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_CoalesceExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -733,7 +733,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_CollectionInitializer_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -767,7 +767,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_CollectionInitializer_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -799,7 +799,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInFieldInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -815,7 +815,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInPropertyInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -831,7 +831,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInLocalVariableInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -853,7 +853,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_PropertyLazyInitialization()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -881,7 +881,7 @@ public class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicitWhenTypeIsObvious_FieldLazyInitialization()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -909,7 +909,7 @@ public class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_ThrowStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -931,7 +931,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_ThrowExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -947,7 +947,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -963,7 +963,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -979,7 +979,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_LocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -993,7 +993,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_DoNotPreferVar_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1016,7 +1016,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_DoNotPreferVar_LocalDeclaration2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1039,7 +1039,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_UsingStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1057,7 +1057,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_DoNotPreferVar_UsingStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1088,7 +1088,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_DoNotPreferVar_UsingStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1119,7 +1119,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_ArrowExpressionClause()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1135,7 +1135,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_Array()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1157,7 +1157,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_ReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1171,7 +1171,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_YieldReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1187,7 +1187,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_Assignment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1202,7 +1202,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_CoalesceExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1218,7 +1218,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_ThrowStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1232,7 +1232,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_ThrowExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1243,7 +1243,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_Property()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1254,7 +1254,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_Field()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1265,7 +1265,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_LocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1279,7 +1279,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_DoNotPreferVar_LocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1294,7 +1294,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_DoNotPreferVar_LocalDeclaration2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1309,7 +1309,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_UsingStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1327,7 +1327,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_DoNotPreferVar_UsingStatement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1346,7 +1346,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_DoNotPreferVar_UsingStatement2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1365,7 +1365,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_ArrowExpressionClause()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1376,7 +1376,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_Array()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1390,7 +1390,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_ReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1404,7 +1404,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_YieldReturnStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1420,7 +1420,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_Assignment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1435,7 +1435,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_CoalesceExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1451,7 +1451,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_CollectionInitializer_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1485,7 +1485,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferExplicit_CollectionInitializer_Local()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1517,7 +1517,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferVarInsteadOfImplicitObjectCreation_DoNotPreferVar_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1539,7 +1539,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferVarInsteadOfImplicitObjectCreation_DoNotPreferVar_LocalDeclaration2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1553,7 +1553,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferVarInsteadOfImplicitObjectCreation_DoNotPreferVar_UsingStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1583,7 +1583,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferVarInsteadOfImplicitObjectCreation_DoNotPreferVar_UsingStatement2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1601,7 +1601,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_ForEachExpression2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1615,7 +1615,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ExplicitToCollectionExpression_ImplicitStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1640,7 +1640,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ExplicitToCollectionExpression_ImplicitWhenObviousStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1659,7 +1659,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ImplicitToCollectionExpression_ImplicitStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1684,7 +1684,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ImplicitToCollectionExpression_ImplicitWhenObviousStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1703,7 +1703,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_CollectionExpressionToExplicit_ImplicitStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1727,7 +1727,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_CollectionExpressionToExplicit_ImplicitWhenObviousStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1755,7 +1755,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_CollectionExpressionToImplicit_ImplicitStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1781,7 +1781,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_CollectionExpressionToImplicit_ImplicitWhenObviousStyle()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1800,7 +1800,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ExplicitWithParameters()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -1831,7 +1831,7 @@ class C : List<string>
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_CollectionExpressionToExplicit()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -1855,7 +1855,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_ObjectInitializerWithPropertySet()
     {
         await VerifyNoDiagnosticAsync("""
@@ -1882,7 +1882,7 @@ class C : IEnumerable<int>
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseImplicitOrExplicitObjectCreation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_Array()
     {
         await VerifyNoDiagnosticAsync("""

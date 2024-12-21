@@ -21,7 +21,7 @@ public sealed class DeclareEnumMemberWithZeroValueCodeFixProvider : BaseCodeFixP
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.DeclareEnumMemberWithZeroValue); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue); }
     }
 
     public override FixAllProvider GetFixAllProvider() => null;
@@ -36,7 +36,7 @@ public sealed class DeclareEnumMemberWithZeroValueCodeFixProvider : BaseCodeFixP
         CodeAction codeAction = CodeAction.Create(
             "Declare enum member with zero value",
             ct => RefactorAsync(context.Document, enumDeclaration, ct),
-            GetEquivalenceKey(DiagnosticIds.DeclareEnumMemberWithZeroValue));
+            GetEquivalenceKey(DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

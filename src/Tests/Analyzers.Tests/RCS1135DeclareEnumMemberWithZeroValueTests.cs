@@ -12,7 +12,7 @@ public class RCS1135DeclareEnumMemberWithZeroValueTests : AbstractCSharpDiagnost
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumMemberWithZeroValue;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumMemberWithZeroValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumMemberWithZeroValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
     public async Task TestNoDiagnostic_HasZeroValue()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -51,7 +51,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareEnumMemberWithZeroValue)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
     public async Task TestNoDiagnostic_WithoutFlags()
     {
         await VerifyNoDiagnosticAsync(@"

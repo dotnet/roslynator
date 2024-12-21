@@ -12,7 +12,7 @@ public class RCS1257UseEnumFieldExplicitlyTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEnumFieldExplicitly;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEnumFieldExplicitly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEnumFieldExplicitly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task Test_Flags()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEnumFieldExplicitly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task Test_Flags_SByte()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -96,7 +96,7 @@ enum TestEnum : sbyte
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEnumFieldExplicitly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task TestNoDiagnostic_UndefinedValue()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -122,7 +122,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseEnumFieldExplicitly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task TestNoDiagnostic_ZeroNotDefined()
     {
         await VerifyNoDiagnosticAsync(@"

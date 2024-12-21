@@ -18,7 +18,7 @@ public sealed class ExtractMemberToNewDocumentCodeFixProvider : BaseCodeFixProvi
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.DeclareEachTypeInSeparateFile); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -39,7 +39,7 @@ public sealed class ExtractMemberToNewDocumentCodeFixProvider : BaseCodeFixProvi
         CodeAction codeAction = CodeAction.Create(
             title,
             ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
-            GetEquivalenceKey(DiagnosticIds.DeclareEachTypeInSeparateFile));
+            GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

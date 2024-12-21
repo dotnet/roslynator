@@ -12,7 +12,7 @@ public class RCS0013AddBlankLineBetweenSingleLineDeclarationsOfDifferentKindTest
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
     public async Task Test_MemberDeclaration_PropertyAndIndexer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ abstract class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
     public async Task Test_ConstAndField()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
     public async Task TestNoDiagnostic_MultilineMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -64,7 +64,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
     public async Task TestNoDiagnostic_Properties()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -76,7 +76,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
     public async Task TestNoDiagnostic_Event2()
     {
         await VerifyNoDiagnosticAsync(@"

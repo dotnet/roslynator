@@ -22,7 +22,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullCodeFixProvider : BaseCodeFi
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.ReturnCompletedTaskInsteadOfNull); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

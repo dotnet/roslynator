@@ -21,7 +21,7 @@ public sealed class CompositeEnumValueContainsUndefinedFlagCodeFixProvider : Bas
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.CompositeEnumValueContainsUndefinedFlag); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag); }
     }
 
     public override FixAllProvider GetFixAllProvider() => null;

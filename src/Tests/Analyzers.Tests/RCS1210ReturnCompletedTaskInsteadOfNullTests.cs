@@ -13,7 +13,7 @@ public class RCS1210ReturnCompletedTaskInsteadOfNullTests : AbstractCSharpDiagno
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReturnCompletedTaskInsteadOfNull)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
     public async Task Test_TaskOfT_Body()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReturnCompletedTaskInsteadOfNull)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
     public async Task Test_Task_Body()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -65,7 +65,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ReturnCompletedTaskInsteadOfNull)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
     public async Task Test_TaskOfT_ExpressionBody()
     {
         await VerifyDiagnosticAndFixAsync(@"

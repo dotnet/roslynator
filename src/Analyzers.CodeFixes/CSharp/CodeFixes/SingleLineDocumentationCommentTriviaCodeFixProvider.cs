@@ -49,11 +49,11 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.FormatDocumentationSummaryOnSingleLine,
-                DiagnosticIds.FormatDocumentationSummaryOnMultipleLines,
-                DiagnosticIds.FormatDocumentationCommentSummary,
-                DiagnosticIds.AddParamElementToDocumentationComment,
-                DiagnosticIds.AddTypeParamElementToDocumentationComment);
+                DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
+                DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
+                DiagnosticIdentifiers.FormatDocumentationCommentSummary,
+                DiagnosticIdentifiers.AddParamElementToDocumentationComment,
+                DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment);
         }
     }
 
@@ -68,7 +68,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.FormatDocumentationCommentSummary:
+                case DiagnosticIdentifiers.FormatDocumentationCommentSummary:
                 {
                     XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
@@ -95,7 +95,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
 
                     break;
                 }
-                case DiagnosticIds.FormatDocumentationSummaryOnSingleLine:
+                case DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Format summary on a single line",
@@ -105,7 +105,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.FormatDocumentationSummaryOnMultipleLines:
+                case DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Format summary on multiple lines",
@@ -115,7 +115,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.AddParamElementToDocumentationComment:
+                case DiagnosticIdentifiers.AddParamElementToDocumentationComment:
                 {
                     var refactoring = new AddParamElementToDocumentationCommentRefactoring();
 
@@ -127,7 +127,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.AddTypeParamElementToDocumentationComment:
+                case DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment:
                 {
                     var refactoring = new AddTypeParamElementToDocumentationCommentRefactoring();
 

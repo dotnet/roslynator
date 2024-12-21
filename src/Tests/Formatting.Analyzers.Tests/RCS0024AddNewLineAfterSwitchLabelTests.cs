@@ -12,7 +12,7 @@ public class RCS0024AddNewLineAfterSwitchLabelTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterSwitchLabel;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -45,7 +45,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task Test_MultipleLabels()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -80,7 +80,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterSwitchLabel)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""

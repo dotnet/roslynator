@@ -17,7 +17,7 @@ public sealed class ParenthesizedExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantParentheses); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantParentheses); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

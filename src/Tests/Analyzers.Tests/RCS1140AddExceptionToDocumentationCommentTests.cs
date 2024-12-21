@@ -12,7 +12,7 @@ public class RCS1140AddExceptionToDocumentationCommentTests : AbstractCSharpDiag
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddExceptionToDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddExceptionToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
     public async Task Test_Example_From_Documentation()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -51,7 +51,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddExceptionToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
     public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Method()
     {
         await VerifyNoDiagnosticAsync("""
@@ -76,7 +76,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddExceptionToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
     public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Method_Nested()
     {
         await VerifyNoDiagnosticAsync("""
@@ -105,7 +105,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddExceptionToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
     public async Task Test_Diagnostic_If_Not_Correct_Exception_Is_Caught_In_Method()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -152,7 +152,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddExceptionToDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
     public async Task TestNoDiagnostic_CatchWithoutDeclaration()
     {
         await VerifyNoDiagnosticAsync("""

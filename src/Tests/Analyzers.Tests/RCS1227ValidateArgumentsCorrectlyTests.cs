@@ -12,7 +12,7 @@ public class RCS1227ValidateArgumentsCorrectlyTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ValidateArgumentsCorrectly;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task Test_PreprocessorDirectives()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -110,7 +110,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task Test_IAsyncEnumerable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -153,7 +153,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_NoStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -166,7 +166,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_NoNullCheck()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -184,7 +184,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_NullChecksOnly()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -204,7 +204,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_IfElse_PreprocessorDirectives()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -226,7 +226,7 @@ class C
 ", options: Options.WithDebugPreprocessorSymbol());
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_NoParameters()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -243,7 +243,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.ValidateArgumentsCorrectly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
     public async Task TestNoDiagnostic_NoMethodBody()
     {
         await VerifyNoDiagnosticAsync(@"

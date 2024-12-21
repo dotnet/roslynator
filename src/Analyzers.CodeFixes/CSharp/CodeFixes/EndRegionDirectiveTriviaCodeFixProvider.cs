@@ -19,7 +19,7 @@ public sealed class EndRegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AddOrRemoveRegionName); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddOrRemoveRegionName); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,7 +38,7 @@ public sealed class EndRegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvide
                 ? "Add region name to #endregion"
                 : "Remove region name from #endregion",
             ct => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, ct),
-            GetEquivalenceKey(DiagnosticIds.AddOrRemoveRegionName));
+            GetEquivalenceKey(DiagnosticIdentifiers.AddOrRemoveRegionName));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

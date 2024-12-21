@@ -12,7 +12,7 @@ public class RCS1193OverridingMemberShouldNotChangeParamsModifierTests : Abstrac
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
     public async Task Test_WithoutParams()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
     public async Task Test_WithParams()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
     public async Task Test_WithoutParams_Indexer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -106,7 +106,7 @@ class B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
     public async Task Test_WithParams_Indexer()
     {
         await VerifyDiagnosticAndFixAsync(@"

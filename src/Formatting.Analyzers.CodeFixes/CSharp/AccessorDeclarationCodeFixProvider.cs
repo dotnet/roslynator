@@ -21,9 +21,9 @@ public sealed class AccessorDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.PutFullAccessorOnItsOwnLine,
-                DiagnosticIds.FormatAccessorBraces,
-                DiagnosticIds.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
+                DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine,
+                DiagnosticIdentifiers.FormatAccessorBraces,
+                DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
         }
     }
 
@@ -39,8 +39,8 @@ public sealed class AccessorDeclarationCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.FormatAccessorBraces:
-            case DiagnosticIds.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine:
+            case DiagnosticIdentifiers.FormatAccessorBraces:
+            case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine:
             {
                 bool isSingleLine = accessorDeclaration.IsSingleLine(includeExteriorTrivia: false);
                 string title = (isSingleLine)
@@ -57,7 +57,7 @@ public sealed class AccessorDeclarationCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIds.PutFullAccessorOnItsOwnLine:
+            case DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Put accessor on its own line",

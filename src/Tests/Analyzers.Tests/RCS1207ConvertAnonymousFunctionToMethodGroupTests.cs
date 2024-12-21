@@ -17,7 +17,7 @@ public class RCS1207ConvertAnonymousFunctionToMethodGroupTests : AbstractCSharpD
         get { return base.Options.AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup); }
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("f => M(f)", "M")]
     [InlineData("f => { M(f); }", "M")]
     [InlineData("(f) => M(f)", "M")]
@@ -48,7 +48,7 @@ static class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("f => M(f)", "M")]
     [InlineData("f => { return M(f); }", "M")]
     [InlineData("delegate (string f) { return M(f); }", "M")]
@@ -76,7 +76,7 @@ static class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("(f, i) => M(f, i)", "M")]
     [InlineData("(f, i) => { return M(f, i); }", "M")]
     [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
@@ -104,7 +104,7 @@ static class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("f => M(f)", "M")]
     [InlineData("f => { return M(f); }", "M")]
     [InlineData("delegate (string f) { return M(f); }", "M")]
@@ -128,7 +128,7 @@ static class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("(f, i) => M(f, i)", "M")]
     [InlineData("(f, i) => { return M(f, i); }", "M")]
     [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
@@ -152,7 +152,7 @@ static class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     [InlineData("() => Foo.M()", "Foo.M")]
     [InlineData("delegate () { return Foo.M(); }", "Foo.M")]
     public async Task Test_StaticMethod_Assignment(string source, string expected)
@@ -176,7 +176,7 @@ static class Foo
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task Test_SwitchExpressionArm()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -220,7 +220,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_NullReferenceException()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -244,7 +244,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_FuncToAction()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -260,7 +260,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_FuncToAction2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -278,7 +278,7 @@ class Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_ReportsDiagnosticBeforeCSharp73()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -300,7 +300,7 @@ class C
             .AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_ReducedExtensionFromOtherClassInvokedOnLambdaParameter()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -320,7 +320,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_ConditionalAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -346,7 +346,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_ConditionalAccess2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -369,7 +369,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_DelegateInvoke()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -389,7 +389,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAnonymousFunctionOrMethodGroup)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task TestNoDiagnostic_InParameter()
     {
         await VerifyNoDiagnosticAsync(@"

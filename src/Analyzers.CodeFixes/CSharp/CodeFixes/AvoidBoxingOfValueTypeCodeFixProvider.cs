@@ -21,7 +21,7 @@ public sealed class AvoidBoxingOfValueTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AvoidBoxingOfValueType); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidBoxingOfValueType); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,7 +35,7 @@ public sealed class AvoidBoxingOfValueTypeCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.AvoidBoxingOfValueType:
+                case DiagnosticIdentifiers.AvoidBoxingOfValueType:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         (expression.IsKind(SyntaxKind.CharacterLiteralExpression))

@@ -12,7 +12,7 @@ public class RCS0023FormatTypeDeclarationBracesTests : AbstractCSharpDiagnosticV
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatTypeDeclarationBraces;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -25,7 +25,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
     public async Task Test_WithWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
     public async Task TestNoDiagnostic_EmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -49,7 +49,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatTypeDeclarationBraces)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
     public async Task TestNoDiagnostic_NoBraces()
     {
         await VerifyNoDiagnosticAsync(@"

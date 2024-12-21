@@ -18,14 +18,14 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.AddBlankLineAfterTopComment,
-                DiagnosticIds.AddBlankLineBeforeTopDeclaration,
-                DiagnosticIds.AddBlankLineBetweenAccessors,
-                DiagnosticIds.BlankLineBetweenSingleLineAccessors,
-                DiagnosticIds.BlankLineBetweenUsingDirectives,
-                DiagnosticIds.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
-                DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword,
-                DiagnosticIds.RemoveNewLineBeforeBaseList);
+                DiagnosticIdentifiers.AddBlankLineAfterTopComment,
+                DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration,
+                DiagnosticIdentifiers.AddBlankLineBetweenAccessors,
+                DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors,
+                DiagnosticIdentifiers.BlankLineBetweenUsingDirectives,
+                DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
+                DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword,
+                DiagnosticIdentifiers.RemoveNewLineBeforeBaseList);
         }
     }
 
@@ -35,18 +35,18 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.AddBlankLineBeforeTopDeclaration:
-            case DiagnosticIds.AddBlankLineBetweenAccessors:
-            case DiagnosticIds.BlankLineBetweenSingleLineAccessors:
-            case DiagnosticIds.BlankLineBetweenUsingDirectives:
-            case DiagnosticIds.AddBlankLineAfterTopComment:
-            case DiagnosticIds.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:
+            case DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration:
+            case DiagnosticIdentifiers.AddBlankLineBetweenAccessors:
+            case DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors:
+            case DiagnosticIdentifiers.BlankLineBetweenUsingDirectives:
+            case DiagnosticIdentifiers.AddBlankLineAfterTopComment:
+            case DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:
             {
                 await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                 return;
             }
-            case DiagnosticIds.RemoveNewLineBeforeBaseList:
-            case DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword:
+            case DiagnosticIdentifiers.RemoveNewLineBeforeBaseList:
+            case DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                 break;

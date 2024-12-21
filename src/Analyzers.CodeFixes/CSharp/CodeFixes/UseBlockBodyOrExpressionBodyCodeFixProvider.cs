@@ -19,7 +19,7 @@ public sealed class UseBlockBodyOrExpressionBodyCodeFixProvider : BaseCodeFixPro
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseBlockBodyOrExpressionBody); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseBlockBodyOrExpressionBody); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

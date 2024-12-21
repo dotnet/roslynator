@@ -19,12 +19,12 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.AddBlankLineBetweenClosingBraceAndNextStatement,
-                DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator,
-                DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken,
-                DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken,
-                DiagnosticIds.PutAttributeListOnItsOwnLine,
-                DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement);
+                DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement,
+                DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator,
+                DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
+                DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
+                DiagnosticIdentifiers.PutAttributeListOnItsOwnLine,
+                DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
         }
     }
 
@@ -34,28 +34,28 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.AddBlankLineBetweenClosingBraceAndNextStatement:
+            case DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement:
             {
                 await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.PlaceNewLineAfterOrBeforeConditionalOperator:
+            case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsParentKind(SyntaxKind.ConditionalExpression)).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.PlaceNewLineAfterOrBeforeArrowToken:
+            case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(SyntaxKind.EqualsGreaterThanToken)).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken:
+            case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(SyntaxKind.EqualsToken)).ConfigureAwait(false);
                 break;
             }
-            case DiagnosticIds.PutAttributeListOnItsOwnLine:
-            case DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement:
+            case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:
+            case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                 break;

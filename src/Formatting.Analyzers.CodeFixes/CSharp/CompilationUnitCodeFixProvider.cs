@@ -18,7 +18,7 @@ public sealed class CompilationUnitCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.NormalizeWhitespaceAtBeginningOfFile); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ public sealed class CompilationUnitCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.NormalizeWhitespaceAtBeginningOfFile:
+            case DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile:
             {
                 SyntaxToken token = compilationUnit.EndOfFileToken;
 

@@ -18,7 +18,7 @@ public sealed class RemoveBracesCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveBraces); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBraces); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class RemoveBracesCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove braces",
             ct => RemoveBracesRefactoring.RefactorAsync(context.Document, block, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveBraces));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveBraces));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

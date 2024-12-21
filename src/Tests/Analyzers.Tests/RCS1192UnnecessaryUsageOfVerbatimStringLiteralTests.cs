@@ -12,7 +12,7 @@ public class RCS1192UnnecessaryUsageOfVerbatimStringLiteralTests : AbstractCShar
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task Test_EmptyStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -34,7 +34,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task Test_NonEmptyStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -56,7 +56,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task Test_EmptyInterpolatedString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -78,7 +78,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task Test_EmptyInterpolatedString_AmpersandIsFirst()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -100,7 +100,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task Test_NonEmptyInterpolatedString()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -122,7 +122,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task TestNoDiagnostic_StringLiteral()
     {
         await VerifyNoDiagnosticAsync("""
@@ -141,7 +141,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -163,7 +163,7 @@ s}s";
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryUsageOfVerbatimStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString_FormatClauseContainsBackslash()
     {
         await VerifyNoDiagnosticAsync("""

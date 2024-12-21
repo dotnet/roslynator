@@ -27,9 +27,9 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.DeclareEnumValueAsCombinationOfNames,
-                DiagnosticIds.DuplicateEnumValue,
-                DiagnosticIds.NormalizeFormatOfEnumFlagValue);
+                DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames,
+                DiagnosticIdentifiers.DuplicateEnumValue,
+                DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue);
         }
     }
 
@@ -45,7 +45,7 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.DeclareEnumValueAsCombinationOfNames:
+            case DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Declare value as combination of names",
@@ -55,7 +55,7 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIds.DuplicateEnumValue:
+            case DiagnosticIdentifiers.DuplicateEnumValue:
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -75,7 +75,7 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIds.NormalizeFormatOfEnumFlagValue:
+            case DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue:
             {
                 EnumFlagValueStyle style = document.GetConfigOptions(enumMemberDeclaration.SyntaxTree).GetEnumFlagValueStyle();
 

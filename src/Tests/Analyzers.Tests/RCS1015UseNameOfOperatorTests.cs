@@ -12,7 +12,7 @@ public class RCS1015UseNameOfOperatorTests : AbstractCSharpDiagnosticVerifier<Us
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseNameOfOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseNameOfOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -48,7 +48,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseNameOfOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
     public async Task TestNoDiagnostic_LanguageVersion()
     {
         await VerifyNoDiagnosticAsync("""

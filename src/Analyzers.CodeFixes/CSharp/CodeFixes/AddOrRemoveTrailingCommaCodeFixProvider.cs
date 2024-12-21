@@ -20,7 +20,7 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AddOrRemoveTrailingComma); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddOrRemoveTrailingComma); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

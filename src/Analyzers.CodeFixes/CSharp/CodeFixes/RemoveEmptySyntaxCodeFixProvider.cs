@@ -19,7 +19,7 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptySyntax); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptySyntax); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

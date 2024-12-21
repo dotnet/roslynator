@@ -23,7 +23,7 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.OptimizeStringBuilderAppendCall); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.OptimizeStringBuilderAppendCall); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

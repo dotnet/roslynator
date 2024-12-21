@@ -28,7 +28,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
     public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseImplicitOrExplicitObjectCreation); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation); }
     }
 
     public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)

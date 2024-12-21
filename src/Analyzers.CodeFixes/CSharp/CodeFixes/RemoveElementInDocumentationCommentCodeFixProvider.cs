@@ -26,8 +26,8 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.UnusedElementInDocumentationComment,
-                DiagnosticIds.InvalidReferenceInDocumentationComment);
+                DiagnosticIdentifiers.UnusedElementInDocumentationComment,
+                DiagnosticIdentifiers.InvalidReferenceInDocumentationComment);
         }
     }
 

@@ -13,7 +13,7 @@ public class RCS1188RemoveRedundantAutoPropertyInitializationTests : AbstractCSh
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAutoPropertyInitialization;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_Bool()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_Bool_Nullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_Char()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -81,7 +81,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_String()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_Numeric_Int()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -129,7 +129,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_ULong()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -151,7 +151,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task Test_Numeric()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantFieldInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -199,7 +199,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task TestNoDiagnostic_NoInitializer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -210,7 +210,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAutoPropertyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
     public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
     {
         await VerifyNoDiagnosticAsync(@"

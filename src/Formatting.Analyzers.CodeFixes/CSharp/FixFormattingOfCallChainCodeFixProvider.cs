@@ -19,7 +19,7 @@ public sealed class FixFormattingOfCallChainCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.FixFormattingOfCallChain); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfCallChain); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

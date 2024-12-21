@@ -12,7 +12,7 @@ public class RCS1151RemoveRedundantCastTests2 : AbstractCSharpDiagnosticVerifier
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCast;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     public async Task Test_CastToDerivedType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_CastFromObject()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -66,7 +66,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_CastFromDynamic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -85,7 +85,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantCast)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     internal async Task TestNoDiagnostic_NullableReferenceType()
     {
         await VerifyNoDiagnosticAsync(@"

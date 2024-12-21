@@ -18,7 +18,7 @@ public sealed class ForStatementCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AvoidUsageOfForStatementToCreateInfiniteLoop); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class ForStatementCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.AvoidUsageOfForStatementToCreateInfiniteLoop:
+                case DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use while to create an infinite loop",

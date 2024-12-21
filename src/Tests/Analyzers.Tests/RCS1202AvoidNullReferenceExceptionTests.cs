@@ -12,7 +12,7 @@ public class RCS1202AvoidNullReferenceExceptionTests : AbstractCSharpDiagnosticV
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNullReferenceException;
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
     [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
     [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
@@ -38,7 +38,7 @@ class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
     [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
     [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
@@ -74,7 +74,7 @@ class C : IEnumerable<object>
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     [InlineData("((x.ElementAtOrDefault(1)))[|.|]ToString()", "((x.ElementAtOrDefault(1)))?.ToString()")]
     [InlineData("((Enumerable.ElementAtOrDefault(x, 1)))[|.|]ToString()", "((Enumerable.ElementAtOrDefault(x, 1)))?.ToString()")]
     public async Task Test_MemberAccessExpression_Parenthesized(string source, string expected)
@@ -94,7 +94,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task Test_MemberAccessExpression_AddCoalesceExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -124,7 +124,7 @@ class C
 ");
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
     [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
     [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
@@ -150,7 +150,7 @@ class C
 ", source, expected);
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
     [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
     [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
@@ -186,7 +186,7 @@ class C : IEnumerable<object>
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task Test_ElementAccessExpression_AddCoalesceExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -216,7 +216,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ValueType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -240,7 +240,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_NullableType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -264,7 +264,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_NoMemberAccessOrElementAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -288,7 +288,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ConditionalAccess()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -329,7 +329,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNullReferenceException)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ExtensionMethod()
     {
         await VerifyNoDiagnosticAsync("""

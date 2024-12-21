@@ -15,7 +15,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.PutEnumMemberOnItsOwnLine); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine); }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

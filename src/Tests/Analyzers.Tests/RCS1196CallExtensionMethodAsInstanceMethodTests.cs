@@ -12,7 +12,7 @@ public class RCS1196CallExtensionMethodAsInstanceMethodTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CallExtensionMethodAsInstanceMethod;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.CallExtensionMethodAsInstanceMethod)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

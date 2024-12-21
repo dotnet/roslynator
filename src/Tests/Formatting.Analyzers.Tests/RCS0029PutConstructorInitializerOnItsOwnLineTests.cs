@@ -12,7 +12,7 @@ public class RCS0029PutConstructorInitializerOnItsOwnLineTests : AbstractCSharpD
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_ThisInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_ThisInitializer_Multiline()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PutConstructorInitializerOnItsOwnLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
     public async Task Test_BaseInitializer()
     {
         await VerifyDiagnosticAndFixAsync(@"

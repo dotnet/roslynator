@@ -32,8 +32,8 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.OptimizeLinqMethodCall,
-                DiagnosticIds.UseElementAccess);
+                DiagnosticIdentifiers.OptimizeLinqMethodCall,
+                DiagnosticIdentifiers.UseElementAccess);
         }
     }
 

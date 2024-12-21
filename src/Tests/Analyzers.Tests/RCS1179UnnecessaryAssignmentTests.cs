@@ -12,7 +12,7 @@ public class RCS1179UnnecessaryAssignmentTests : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryAssignment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_IfStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -55,7 +55,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_IfStatement2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -102,7 +102,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_IfStatement_Throw()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -158,7 +158,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -205,7 +205,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -256,7 +256,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement_Throw()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -312,7 +312,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_NoDiagnostic_ForPolymorphicIf()
     {
         await VerifyNoDiagnosticAsync(
@@ -342,7 +342,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_NoDiagnostic_ForPolymorphicSwitch()
     {
         await VerifyNoDiagnosticAsync(

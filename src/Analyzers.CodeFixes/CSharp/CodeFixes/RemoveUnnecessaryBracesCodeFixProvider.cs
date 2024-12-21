@@ -20,7 +20,7 @@ public class RemoveUnnecessaryBracesCodeFixProvider : BaseCodeFixProvider
 {
     public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveUnnecessaryBraces); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryBraces); }
     }
 
     public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)

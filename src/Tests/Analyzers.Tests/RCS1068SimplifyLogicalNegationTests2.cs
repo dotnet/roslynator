@@ -12,7 +12,7 @@ public class RCS1068SimplifyLogicalNegationTests2 : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyLogicalNegation;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAny()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAny2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAny3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -120,7 +120,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAll()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -156,7 +156,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAll2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -192,7 +192,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLogicalNegation)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAll3()
     {
         await VerifyDiagnosticAndFixAsync(@"

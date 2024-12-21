@@ -18,7 +18,7 @@ public sealed class ObjectCreationExpressionCodeFixProvider : BaseCodeFixProvide
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseEventArgsEmpty); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEventArgsEmpty); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class ObjectCreationExpressionCodeFixProvider : BaseCodeFixProvide
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.UseEventArgsEmpty:
+                case DiagnosticIdentifiers.UseEventArgsEmpty:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use EventArgs.Empty",

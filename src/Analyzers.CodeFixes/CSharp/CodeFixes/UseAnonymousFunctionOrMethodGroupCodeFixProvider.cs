@@ -21,7 +21,7 @@ public sealed class UseAnonymousFunctionOrMethodGroupCodeFixProvider : BaseCodeF
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseAnonymousFunctionOrMethodGroup); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

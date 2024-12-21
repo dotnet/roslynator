@@ -19,7 +19,7 @@ public class RCS0046UseSpacesInsteadOfTabTests : AbstractCSharpDiagnosticVerifie
         _fourSpacesEquivalenceKey = new ReplaceTabWithSpacesCodeFixProvider().FourSpacesEquivalenceKey;
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseSpacesInsteadOfTab)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
     public async Task Test_FourSpaces()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ", equivalenceKey: _fourSpacesEquivalenceKey);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseSpacesInsteadOfTab)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

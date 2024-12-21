@@ -12,7 +12,7 @@ public class RCS0044UseCarriageReturnAndLinefeedAsNewLineTests : AbstractCSharpD
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCarriageReturnAndLinefeedAsNewLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("\r\n"
@@ -37,7 +37,7 @@ public class RCS0044UseCarriageReturnAndLinefeedAsNewLineTests : AbstractCSharpD
                 + "}\r\n");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCarriageReturnAndLinefeedAsNewLine)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("\r\n"

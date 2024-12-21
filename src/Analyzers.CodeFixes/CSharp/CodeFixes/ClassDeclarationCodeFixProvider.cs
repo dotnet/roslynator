@@ -28,11 +28,11 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.MakeClassStatic,
-                DiagnosticIds.AddStaticModifierToAllPartialClassDeclarations,
-                DiagnosticIds.ImplementExceptionConstructors,
-                DiagnosticIds.UseAttributeUsageAttribute,
-                DiagnosticIds.MakeClassSealed);
+                DiagnosticIdentifiers.MakeClassStatic,
+                DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
+                DiagnosticIdentifiers.ImplementExceptionConstructors,
+                DiagnosticIdentifiers.UseAttributeUsageAttribute,
+                DiagnosticIdentifiers.MakeClassSealed);
         }
     }
 
@@ -47,7 +47,7 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.MakeClassStatic:
+                case DiagnosticIdentifiers.MakeClassStatic:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -67,12 +67,12 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIds.AddStaticModifierToAllPartialClassDeclarations:
+                case DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations:
                 {
                     ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, classDeclaration, SyntaxKind.StaticKeyword);
                     break;
                 }
-                case DiagnosticIds.ImplementExceptionConstructors:
+                case DiagnosticIdentifiers.ImplementExceptionConstructors:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Generate exception constructors",
@@ -88,7 +88,7 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseAttributeUsageAttribute:
+                case DiagnosticIdentifiers.UseAttributeUsageAttribute:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use AttributeUsageAttribute",
@@ -98,7 +98,7 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.MakeClassSealed:
+                case DiagnosticIdentifiers.MakeClassSealed:
                 {
                     ModifiersCodeFixRegistrator.AddModifier(
                         context,

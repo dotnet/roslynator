@@ -12,7 +12,7 @@ public class RCS1128UseCoalesceExpressionTests2 : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpression;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_GetValueOrDefault()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpression)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_GetValueOrDefault_ConditionalAccess()
     {
         await VerifyDiagnosticAndFixAsync(@"

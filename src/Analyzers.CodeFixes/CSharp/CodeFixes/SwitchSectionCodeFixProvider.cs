@@ -21,10 +21,10 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.RemoveRedundantDefaultSwitchSection,
-                DiagnosticIds.DefaultLabelShouldBeLastLabelInSwitchSection,
-                DiagnosticIds.AddBracesToSwitchSectionWithMultipleStatements,
-                DiagnosticIds.MergeSwitchSectionsWithEquivalentContent);
+                DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
+                DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
+                DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
+                DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent);
         }
     }
 
@@ -39,7 +39,7 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveRedundantDefaultSwitchSection:
+                case DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant switch section",
@@ -49,7 +49,7 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.DefaultLabelShouldBeLastLabelInSwitchSection:
+                case DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Move default label to the last position",
@@ -59,7 +59,7 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.AddBracesToSwitchSectionWithMultipleStatements:
+                case DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         AddBracesToSwitchSectionRefactoring.Title,
@@ -69,7 +69,7 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.MergeSwitchSectionsWithEquivalentContent:
+                case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Merge sections",

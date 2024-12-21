@@ -19,7 +19,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider :
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -55,7 +55,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider :
 
                 return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
             },
-            GetEquivalenceKey(DiagnosticIds.RemovePartialModifierFromTypeWithSinglePart));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }

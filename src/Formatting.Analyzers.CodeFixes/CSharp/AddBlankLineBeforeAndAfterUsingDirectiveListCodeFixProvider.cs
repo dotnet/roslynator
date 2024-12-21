@@ -18,8 +18,8 @@ public sealed class AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider 
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.AddBlankLineBeforeUsingDirectiveList,
-                DiagnosticIds.AddBlankLineAfterUsingDirectiveList);
+                DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList,
+                DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList);
         }
     }
 

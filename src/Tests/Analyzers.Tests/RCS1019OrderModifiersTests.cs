@@ -12,7 +12,7 @@ public class RCS1019OrderModifiersTests : AbstractCSharpDiagnosticVerifier<Order
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderModifiers;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderModifiers)]
     public async Task Test()
     {
         await VerifyNoDiagnosticAsync("""

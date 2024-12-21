@@ -12,7 +12,7 @@ public class RCS1253FormatDocumentationCommentSummaryTests : AbstractCSharpDiagn
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationCommentSummary;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_ToMultiLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -30,7 +30,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_EmptySummary_ToMultiLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_Tab_ToMultiLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_EmptySummary_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task Test_Tab_ToSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -132,7 +132,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task TestNoDiagnostic_MultiLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -145,7 +145,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task TestNoDiagnostic_EmptySummary_ToMultiLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -157,7 +157,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task TestNoDiagnostic_SingleLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -168,7 +168,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.FormatDocumentationCommentSummary)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
     public async Task TestNoDiagnostic_ToSingleLine()
     {
         await VerifyNoDiagnosticAsync(@"

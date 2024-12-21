@@ -24,7 +24,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseAutoProperty); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseAutoProperty); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -21,8 +21,8 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.RemoveEmptyNamespaceDeclaration,
-                DiagnosticIds.DeclareUsingDirectiveOnTopLevel);
+                DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration,
+                DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel);
         }
     }
 
@@ -37,7 +37,7 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveEmptyNamespaceDeclaration:
+                case DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove empty namespace declaration",
@@ -47,7 +47,7 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.DeclareUsingDirectiveOnTopLevel:
+                case DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel:
                 {
                     string title = (namespaceDeclaration.Usings.Count == 1)
                         ? "Move using to top level"

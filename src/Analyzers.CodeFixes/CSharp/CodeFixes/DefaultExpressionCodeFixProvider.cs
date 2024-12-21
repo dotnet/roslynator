@@ -18,7 +18,7 @@ public sealed class DefaultExpressionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.SimplifyDefaultExpression); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyDefaultExpression); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,7 +34,7 @@ public sealed class DefaultExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.SimplifyDefaultExpression:
+                case DiagnosticIdentifiers.SimplifyDefaultExpression:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Simplify 'default' expression",

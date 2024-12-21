@@ -12,7 +12,7 @@ public class RCS1058UseCompoundAssignmentTests : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCompoundAssignment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class C
 ");
     }
 
-    [Theory, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     [InlineData("i = i + 1", "i += 1")]
     [InlineData("i = (i + 1)", "i += 1")]
     [InlineData("i = i - 1", "i -= 1")]
@@ -63,7 +63,7 @@ class C
 ", source, expected);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task Test_CoalesceExpression()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -85,7 +85,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task Test_LazyInitialization()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -111,7 +111,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_ObjectInitializer()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -127,7 +127,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_CoalesceExpression_CSharp6()
     {
         await VerifyNoDiagnosticAsync("""
@@ -141,7 +141,7 @@ class C
 """, options: WellKnownCSharpTestOptions.Default_CSharp6);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_LazyInitialization_ExpressionsAreNotEquivalent()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -158,7 +158,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_LazyInitialization_CSharp7_3()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -174,7 +174,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCompoundAssignment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_ThrowExpression()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -12,7 +12,7 @@ public class RCS1037RemoveTrailingWhitespaceTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveTrailingWhitespace;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveTrailingWhitespace)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveTrailingWhitespace)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"[| |]
@@ -29,7 +29,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveTrailingWhitespace)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveTrailingWhitespace)]
     public async Task Test_DocumentationComment()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -12,7 +12,7 @@ public class RCS1132RemoveRedundantOverridingMemberTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantOverridingMember;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantOverridingMember)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantOverridingMember)]
     public async Task TestNoDiagnostic_Record()
     {
         await VerifyNoDiagnosticAsync("""

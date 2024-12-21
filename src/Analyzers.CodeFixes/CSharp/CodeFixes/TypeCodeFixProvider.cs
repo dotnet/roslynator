@@ -18,7 +18,7 @@ public sealed class TypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseGenericEventHandler); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseGenericEventHandler); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

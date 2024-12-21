@@ -13,7 +13,7 @@ public class RCS1268SimplifyNumericComparisonTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNumericComparison;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task Test_LeftSideSubtraction_EqualsZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task Test_RightSideSubtraction_EqualsZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -65,7 +65,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task Test_LeftSideSubtraction_WithoutParenthesis_EqualsZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -91,7 +91,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task Test_LeftSideSubtraction_SubtractionGreaterThanZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -117,7 +117,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task Test_RightSideSubtraction_SubtractionSmallerThanZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -143,7 +143,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task TestSubtractionLessThanZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -169,7 +169,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task TestSubtractionGreaterThanOrEqualToZero()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -195,7 +195,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyNumericComparison)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNumericComparison)]
     public async Task TestSubtractionLessThanOrEqualToZero()
     {
         await VerifyDiagnosticAndFixAsync(@"

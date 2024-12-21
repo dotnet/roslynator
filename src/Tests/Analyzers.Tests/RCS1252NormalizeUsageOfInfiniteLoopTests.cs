@@ -12,7 +12,7 @@ public class RCS1252NormalizeUsageOfInfiniteLoopTests : AbstractCSharpDiagnostic
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeUsageOfInfiniteLoop;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task Test_ForToWhile()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -40,7 +40,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_While));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task Test_WhileToFor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -68,7 +68,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_For));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task Test_DoToWhile()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -97,7 +97,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_While));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task Test_DoToFor()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -126,7 +126,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_For));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task TestNoDiagnostic_ForToWhile()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -143,7 +143,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_For));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task TestNoDiagnostic_ForToWhile2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -160,7 +160,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task TestNoDiagnostic_WhileToFor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -177,7 +177,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.InfiniteLoopStyle, ConfigOptionValues.InfiniteLoopStyle_While));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task TestNoDiagnostic_WhileToFor2()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -194,7 +194,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.NormalizeUsageOfInfiniteLoop)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop)]
     public async Task TestNoDiagnostic_DoToWhile()
     {
         await VerifyNoDiagnosticAsync(@"

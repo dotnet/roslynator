@@ -12,7 +12,7 @@ public class RCS1145RemoveRedundantAsOperatorTests : AbstractCSharpDiagnosticVer
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAsOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveRedundantAsOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsOperator)]
     public async Task TestNoDiagnostic_Dynamic()
     {
         await VerifyNoDiagnosticAsync(@"

@@ -18,7 +18,7 @@ public sealed class PropertyDeclarationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantAutoPropertyInitialization); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class PropertyDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveRedundantAutoPropertyInitialization:
+                case DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant initialization",

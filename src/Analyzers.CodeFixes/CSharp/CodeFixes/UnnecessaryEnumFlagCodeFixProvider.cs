@@ -17,7 +17,7 @@ public sealed class UnnecessaryEnumFlagCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryEnumFlag); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryEnumFlag); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ public sealed class UnnecessaryEnumFlagCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.UnnecessaryEnumFlag:
+            case DiagnosticIdentifiers.UnnecessaryEnumFlag:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Remove unnecessary flag",

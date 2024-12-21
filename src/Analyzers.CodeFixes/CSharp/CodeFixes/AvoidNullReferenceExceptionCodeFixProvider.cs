@@ -21,7 +21,7 @@ public sealed class AvoidNullReferenceExceptionCodeFixProvider : BaseCodeFixProv
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AvoidNullReferenceException); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidNullReferenceException); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -60,7 +60,7 @@ public sealed class AvoidNullReferenceExceptionCodeFixProvider : BaseCodeFixProv
         CodeAction codeAction = CodeAction.Create(
             "Use conditional access",
             ct => RefactorAsync(context.Document, expression, ct),
-            GetEquivalenceKey(DiagnosticIds.AvoidNullReferenceException));
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidNullReferenceException));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
 

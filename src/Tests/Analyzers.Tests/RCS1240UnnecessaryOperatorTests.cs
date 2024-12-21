@@ -12,7 +12,7 @@ public class RCS1240UnnecessaryOperatorTests : AbstractCSharpDiagnosticVerifier<
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryOperator)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +58,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryOperator)]
     public async Task Test_RightToLeft()
     {
         await VerifyDiagnosticAndFixAsync(@"

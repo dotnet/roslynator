@@ -18,7 +18,7 @@ public sealed class InterpolationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryInterpolation); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryInterpolation); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

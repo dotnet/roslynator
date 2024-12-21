@@ -17,7 +17,7 @@ public class RCS1018RemoveAccessibilityModifiersTests : AbstractCSharpDiagnostic
         get { return base.Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit); }
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_NonNestedType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_MemberDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -147,7 +147,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
     public async Task Test_PartialClass2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -203,7 +203,7 @@ namespace N
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveAccessibilityModifiers)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
     public async Task TestNoDiagnostic_OperatorDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"

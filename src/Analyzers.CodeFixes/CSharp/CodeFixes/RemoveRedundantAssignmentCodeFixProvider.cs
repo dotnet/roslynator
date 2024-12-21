@@ -23,7 +23,7 @@ public sealed class RemoveRedundantAssignmentCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveRedundantAssignment); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAssignment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class RemoveRedundantAssignmentCodeFixProvider : BaseCodeFixProvid
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveRedundantAssignment:
+                case DiagnosticIdentifiers.RemoveRedundantAssignment:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant assignment",

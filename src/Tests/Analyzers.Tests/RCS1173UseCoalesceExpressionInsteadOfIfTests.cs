@@ -12,7 +12,7 @@ public class RCS1173UseCoalesceExpressionInsteadOfIfTests : AbstractCSharpDiagno
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfIf;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task Test_IfElseToAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task Test_IfElseToReturn()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task Test_IfElseToYieldReturn()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task Test_IfReturnToReturn()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -138,7 +138,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task TestNoDiagnostic_IfElseContainsComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -160,7 +160,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task TestNoDiagnostic_IfElseContainsDirective()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task TestNoDiagnostic_IfReturnContainsComment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -203,7 +203,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseCoalesceExpressionInsteadOfIf)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
     public async Task TestNoDiagnostic_IfReturnContainsDirective()
     {
         await VerifyNoDiagnosticAsync(@"

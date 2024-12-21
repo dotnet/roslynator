@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticIds.FixDocumentationCommentTag);
+    public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticIdentifiers.FixDocumentationCommentTag);
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {

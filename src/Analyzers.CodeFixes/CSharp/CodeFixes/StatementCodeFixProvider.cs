@@ -29,10 +29,10 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.InlineLazyInitialization,
-                DiagnosticIds.RemoveRedundantDisposeOrCloseCall,
-                DiagnosticIds.RemoveRedundantStatement,
-                DiagnosticIds.UseMethodChaining);
+                DiagnosticIdentifiers.InlineLazyInitialization,
+                DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
+                DiagnosticIdentifiers.RemoveRedundantStatement,
+                DiagnosticIdentifiers.UseMethodChaining);
         }
     }
 
@@ -47,7 +47,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.InlineLazyInitialization:
+                case DiagnosticIdentifiers.InlineLazyInitialization:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Inline lazy initialization",
@@ -63,7 +63,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.RemoveRedundantDisposeOrCloseCall:
+                case DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall:
                 {
                     var expressionStatement = (ExpressionStatementSyntax)statement;
                     var invocation = (InvocationExpressionSyntax)expressionStatement.Expression;
@@ -77,7 +77,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.RemoveRedundantStatement:
+                case DiagnosticIdentifiers.RemoveRedundantStatement:
                 {
                     CodeAction codeAction = CodeActionFactory.RemoveStatement(
                         context.Document,
@@ -88,7 +88,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseMethodChaining:
+                case DiagnosticIdentifiers.UseMethodChaining:
                 {
                     var expressionStatement = (ExpressionStatementSyntax)statement;
 

@@ -12,7 +12,7 @@ public class RCS1256InvalidArgumentNullCheckTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidArgumentNullCheck;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Method_OptionalParameter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Method_NullableReferenceTypeParameter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Method_OptionalParameter_ThrowIfNull()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Method_NullableReferenceTypeParameter_ThrowIfNull()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Constructor_OptionalParameter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -174,7 +174,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidArgumentNullCheck)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Constructor_NullableReferenceTypeParameter()
     {
         await VerifyDiagnosticAndFixAsync("""

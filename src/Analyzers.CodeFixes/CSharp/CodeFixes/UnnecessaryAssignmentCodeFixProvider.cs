@@ -27,7 +27,7 @@ public sealed class UnnecessaryAssignmentCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryAssignment); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryAssignment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

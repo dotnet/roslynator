@@ -12,7 +12,7 @@ public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCShar
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task Test_WithWhitespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
     public async Task TestNoDiagnostic_EmptyLine()
     {
         await VerifyNoDiagnosticAsync(@"

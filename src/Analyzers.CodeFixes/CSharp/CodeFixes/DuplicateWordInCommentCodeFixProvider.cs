@@ -17,7 +17,7 @@ public sealed class DuplicateWordInCommentCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.DuplicateWordInComment); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DuplicateWordInComment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -42,7 +42,7 @@ public sealed class DuplicateWordInCommentCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             "Remove duplicate word",
             ct => context.Document.WithTextChangeAsync(TextSpan.FromBounds(start, context.Span.End), "", ct),
-            GetEquivalenceKey(DiagnosticIds.DuplicateWordInComment));
+            GetEquivalenceKey(DiagnosticIdentifiers.DuplicateWordInComment));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
     }

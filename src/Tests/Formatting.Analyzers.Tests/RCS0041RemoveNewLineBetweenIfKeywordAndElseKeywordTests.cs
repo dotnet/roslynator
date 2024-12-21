@@ -12,7 +12,7 @@ public class RCS0041RemoveNewLineBetweenIfKeywordAndElseKeywordTests : AbstractC
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -49,7 +49,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
     public async Task Test_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -87,7 +87,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -108,7 +108,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
     public async Task TestNoDiagnostic_Comment()
     {
         await VerifyNoDiagnosticAsync(@"

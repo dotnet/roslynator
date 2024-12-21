@@ -12,7 +12,7 @@ public class RCS1263InvalidReferenceInDocumentationCommentTests : AbstractCSharp
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidReferenceInDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -31,7 +31,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -50,7 +50,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement_Empty()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -69,7 +69,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -88,7 +88,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -107,7 +107,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement_Empty()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -126,7 +126,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_ParamElement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -140,7 +140,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_TypeParamElement()
     {
         await VerifyNoDiagnosticAsync("""
@@ -154,7 +154,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_Record()
     {
         await VerifyNoDiagnosticAsync("""
@@ -166,7 +166,7 @@ public record Foo(string Bar);
 """, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_RecordStruct()
     {
         await VerifyNoDiagnosticAsync("""
@@ -178,7 +178,7 @@ public record struct Foo(string Bar);
 """, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_ClassPrimaryConstructor()
     {
         await VerifyNoDiagnosticAsync("""
@@ -193,7 +193,7 @@ public class Foo(string value)
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.InvalidReferenceInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_StructPrimaryConstructor()
     {
         await VerifyNoDiagnosticAsync("""

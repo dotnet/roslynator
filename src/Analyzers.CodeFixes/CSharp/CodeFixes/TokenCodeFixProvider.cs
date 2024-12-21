@@ -18,7 +18,7 @@ public sealed class TokenCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UnnecessaryNullForgivingOperator); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryNullForgivingOperator); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,7 +39,7 @@ public sealed class TokenCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.UnnecessaryNullForgivingOperator:
+            case DiagnosticIdentifiers.UnnecessaryNullForgivingOperator:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Remove null-forgiving operator",

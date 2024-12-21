@@ -18,7 +18,7 @@ public sealed class RemoveEnumDefaultBaseTypeCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveEnumDefaultUnderlyingType); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class RemoveEnumDefaultBaseTypeCodeFixProvider : BaseCodeFixProvid
         CodeAction codeAction = CodeAction.Create(
             "Remove default underlying type",
             ct => RemoveEnumDefaultUnderlyingTypeRefactoring.RefactorAsync(context.Document, baseType, ct),
-            GetEquivalenceKey(DiagnosticIds.RemoveEnumDefaultUnderlyingType));
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

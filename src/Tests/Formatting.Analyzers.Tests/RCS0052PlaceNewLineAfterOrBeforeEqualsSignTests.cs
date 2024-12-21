@@ -12,7 +12,7 @@ public class RCS0052PlaceNewLineAfterOrBeforeEqualsSignTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_LocalDeclaration_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_LocalDeclaration_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_Assignment_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -88,7 +88,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_Assignment_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_PropertyInitializer_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -134,7 +134,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_PropertyInitializer_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -152,7 +152,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_FieldValue_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -170,7 +170,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_FieldValue_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -188,7 +188,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_Parameter_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -210,7 +210,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_Parameter_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -232,7 +232,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AnonymousType_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -264,7 +264,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AnonymousType_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -296,7 +296,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_BeforeInsteadOfAfter()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -318,7 +318,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_AfterInsteadOfBefore()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -340,7 +340,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_UsingAlias_Before()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -360,7 +360,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_UsingAlias_After()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -380,7 +380,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -395,7 +395,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.PlaceNewLineAfterOrBeforeEqualsToken)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task TestNoDiagnostic_AfterInsteadOfBefore_Comment()
     {
         await VerifyNoDiagnosticAsync(@"

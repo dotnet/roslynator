@@ -18,7 +18,7 @@ public sealed class ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider :
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.ConvertLambdaExpressionBodyToExpressionBody); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider :
         CodeAction codeAction = CodeAction.Create(
             ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
             ct => ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
-            GetEquivalenceKey(DiagnosticIds.ConvertLambdaExpressionBodyToExpressionBody));
+            GetEquivalenceKey(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

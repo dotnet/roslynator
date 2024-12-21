@@ -12,7 +12,7 @@ public class RCS1264UseVarOrExplicitTypeTests4 : AbstractCSharpDiagnosticVerifie
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarOrExplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_LocalVariable()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -36,7 +36,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_DeclarationExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Tuple()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -96,7 +96,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Parameter_NullableReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -120,7 +120,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Parameter_NullableReferenceType_Disable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -149,7 +149,7 @@ options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes
             .AddAllowedCompilerDiagnosticId("CS8632"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Tuple_DeclarationExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -201,7 +201,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression_AllVar()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -227,7 +227,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_DiscardDesignation()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -253,7 +253,7 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Func_Lambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -282,7 +282,7 @@ class C
             .AddAllowedCompilerDiagnosticId("CS8603"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Func_Lambda_Nullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -315,7 +315,7 @@ class C
             .AddAllowedCompilerDiagnosticId("CS8603"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -336,7 +336,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ObjectCreation()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -352,7 +352,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -372,7 +372,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseVarOrExplicitType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ParseMethod()
     {
         await VerifyNoDiagnosticAsync(@"

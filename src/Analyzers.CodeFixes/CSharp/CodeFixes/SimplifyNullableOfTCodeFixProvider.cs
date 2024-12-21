@@ -19,7 +19,7 @@ public sealed class SimplifyNullableOfTCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.SimplifyNullableOfT); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNullableOfT); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,7 +34,7 @@ public sealed class SimplifyNullableOfTCodeFixProvider : BaseCodeFixProvider
         CodeAction codeAction = CodeAction.Create(
             $"Simplify name '{type}'",
             ct => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, ct),
-            GetEquivalenceKey(DiagnosticIds.SimplifyNullableOfT));
+            GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNullableOfT));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

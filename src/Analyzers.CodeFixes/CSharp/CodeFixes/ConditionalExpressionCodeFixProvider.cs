@@ -28,10 +28,10 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression,
-                DiagnosticIds.SimplifyConditionalExpression,
-                DiagnosticIds.UseConditionalAccessInsteadOfConditionalExpression,
-                DiagnosticIds.AvoidNestedConditionalOperators);
+                DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
+                DiagnosticIdentifiers.SimplifyConditionalExpression,
+                DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression,
+                DiagnosticIdentifiers.AvoidNestedConditionalOperators);
         }
     }
 
@@ -48,7 +48,7 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.UseCoalesceExpressionInsteadOfConditionalExpression:
+                case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use coalesce expression",
@@ -64,7 +64,7 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.SimplifyConditionalExpression:
+                case DiagnosticIdentifiers.SimplifyConditionalExpression:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Simplify conditional expression",
@@ -74,7 +74,7 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.UseConditionalAccessInsteadOfConditionalExpression:
+                case DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Use conditional access",
@@ -90,7 +90,7 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.AvoidNestedConditionalOperators:
+                case DiagnosticIdentifiers.AvoidNestedConditionalOperators:
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

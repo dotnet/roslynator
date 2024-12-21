@@ -18,7 +18,7 @@ public sealed class MarkTypeWithDebuggerDisplayAttributeCodeFixProvider : BaseCo
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.MarkTypeWithDebuggerDisplayAttribute); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

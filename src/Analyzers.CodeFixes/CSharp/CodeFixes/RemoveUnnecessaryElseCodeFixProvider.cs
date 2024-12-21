@@ -22,7 +22,7 @@ public sealed class RemoveUnnecessaryElseCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveUnnecessaryElse); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryElse); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -36,7 +36,7 @@ public sealed class RemoveUnnecessaryElseCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveUnnecessaryElse:
+                case DiagnosticIdentifiers.RemoveUnnecessaryElse:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove 'else'",

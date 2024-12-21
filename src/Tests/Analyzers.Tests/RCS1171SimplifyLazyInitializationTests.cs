@@ -12,7 +12,7 @@ public class RCS1171SimplifyLazyInitializationTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyLazyInitialization;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_IfWithBraces()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_IfWithBraces_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_IfWithoutBraces()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -115,7 +115,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_NullOnLeftSide()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -150,7 +150,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_QualifiedWithThis()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -185,7 +185,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_QualifiedWithThis_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -220,7 +220,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_MemberInitialization()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -257,7 +257,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_MemberInitialization_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -294,7 +294,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -333,7 +333,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Indexer()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -374,7 +374,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -409,7 +409,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -444,7 +444,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -479,7 +479,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value_QualifiedWithThis()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -514,7 +514,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value_QualifiedWithThis_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -549,7 +549,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value_MemberInitialization()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -586,7 +586,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Value_MemberInitialization_UseCoalesceAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -623,7 +623,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_HasValue()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -658,7 +658,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task Test_Nullable_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -697,7 +697,7 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task TestNoDiagnostic_OverrideEqualsOperator()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -725,7 +725,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task TestNoDiagnostic_OverrideBaseEqualsOperator()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -753,7 +753,7 @@ class C : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task TestNoDiagnostic_IfElse()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -779,7 +779,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.SimplifyLazyInitialization)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
     public async Task TestNoDiagnostic_Property_IfElse()
     {
         await VerifyNoDiagnosticAsync(@"

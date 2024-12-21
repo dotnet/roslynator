@@ -27,7 +27,7 @@ public sealed class UseCoalesceExpressionCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseCoalesceExpression); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseCoalesceExpression); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

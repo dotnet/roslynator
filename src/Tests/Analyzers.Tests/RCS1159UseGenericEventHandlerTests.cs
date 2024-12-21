@@ -12,7 +12,7 @@ public class RCS1159UseGenericEventHandlerTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseGenericEventHandler;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task Test_EventField()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -44,7 +44,7 @@ delegate void FooEventHandler(object sender, FooEventArgs args);
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task Test_Event()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ delegate void FooEventHandler(object sender, FooEventArgs args);
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -116,7 +116,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task Test_InterfaceImplementation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ delegate void FooEventHandler(object sender, FooEventArgs args);
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -187,7 +187,7 @@ class BaseClass2 : INotifyPropertyChangedEx
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task TestNoDiagnostic_NonVoidDelegate()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -209,7 +209,7 @@ class FooEventArgs
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task TestNoDiagnostic_EventArgsIsRefStruct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -226,7 +226,7 @@ public interface IEventTest
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseGenericEventHandler)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
     public async Task TestNoDiagnostic_Wpf_RoutedEventHandler()
     {
         await VerifyNoDiagnosticAsync(@"

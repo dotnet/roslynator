@@ -12,7 +12,7 @@ public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagno
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullForgivingOperator;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Property_DefaultLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -52,7 +52,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Property_DefaultExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Field()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -92,7 +92,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_LocalVariable()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -118,7 +118,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Argument()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task TestNoDiagnostic_Argument()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -166,7 +166,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UnnecessaryNullForgivingOperator)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task TestNoDiagnostic_MaybeNullWhenAttribute()
     {
         await VerifyNoDiagnosticAsync(@"

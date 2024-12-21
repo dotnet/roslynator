@@ -12,7 +12,7 @@ public class RCS0051AddOrRemoveNewLineBeforeWhileInDoStatementTests : AbstractCS
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task Test_AddNewLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -45,7 +45,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task Test_AddNewLine_WithoutTrivia()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -78,7 +78,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task Test_RemoveNewLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -111,7 +111,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task Test_RemoveNewLine_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -145,7 +145,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task TestNoDiagnostic_AddNewLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -165,7 +165,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, true));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task TestNoDiagnostic_AddNewLine_EmbeddedStatement()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task TestNoDiagnostic_RemoveNewLine()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -202,7 +202,7 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.NewLineBeforeWhileInDoStatement, false));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AddOrRemoveNewLineBeforeWhileInDoStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement)]
     public async Task TestNoDiagnostic_RemoveNewLine_EmbeddedStatement()
     {
         await VerifyNoDiagnosticAsync(@"

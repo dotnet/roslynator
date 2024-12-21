@@ -12,7 +12,7 @@ public class RCS1157CompositeEnumValueContainsUndefinedFlagTests : AbstractCShar
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CompositeEnumValueContainsUndefinedFlag;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.CompositeEnumValueContainsUndefinedFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -49,7 +49,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.CompositeEnumValueContainsUndefinedFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -69,7 +69,7 @@ enum Foo
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.CompositeEnumValueContainsUndefinedFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
     public async Task TestNoDiagnostic_NegativeValue()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -83,7 +83,7 @@ public enum E
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.CompositeEnumValueContainsUndefinedFlag)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
     public async Task TestNoDiagnostic_MaxValue()
     {
         await VerifyNoDiagnosticAsync(@"

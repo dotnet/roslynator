@@ -25,7 +25,7 @@ public sealed class UseCompoundAssignmentCodeFixProvider : BaseCodeFixProvider
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.UseCompoundAssignment); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseCompoundAssignment); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -19,7 +19,7 @@ public sealed class AccessorListCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.PutAutoAccessorsOnSingleLine); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,7 +34,7 @@ public sealed class AccessorListCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIds.PutAutoAccessorsOnSingleLine:
+            case DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine:
             {
                 CodeAction codeAction = CodeAction.Create(
                     (accessorList.Accessors.Count == 1) ? "Put accessor on a single line" : "Put accessors on a single line",

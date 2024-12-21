@@ -12,7 +12,7 @@ public class RCS1229UseAsyncAwaitTests : AbstractCSharpDiagnosticVerifier<UseAsy
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAsyncAwait;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_Method_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_Method_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -88,7 +88,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_Method_MultipleReturnStatements()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_LocalFunction()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -192,7 +192,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_SimpleLambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -236,7 +236,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_ParenthesizedLambda()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -280,7 +280,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_AnonymousMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -324,7 +324,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_UsingLocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -358,7 +358,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_UsingLocalDeclaration2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -404,7 +404,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_TryCatch()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -452,7 +452,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task Test_DuckTyped_TaskType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -556,7 +556,7 @@ public struct Awaiter<T> : INotifyCompletion
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_UsingLocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -581,7 +581,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskCompletedTask()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -600,7 +600,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskFromCanceled()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -619,7 +619,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskFromException()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -638,7 +638,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromResult()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -657,7 +657,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromCanceled()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -676,7 +676,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromException()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -695,7 +695,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_IAsyncEnumerable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -722,7 +722,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_DuckTyped_NotTaskType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -776,7 +776,7 @@ public struct Awaiter<T> : INotifyCompletion
 }
 ");
     }
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.UseAsyncAwait)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_NonAwaitable_TaskType()
     {
         await VerifyNoDiagnosticAsync(@"

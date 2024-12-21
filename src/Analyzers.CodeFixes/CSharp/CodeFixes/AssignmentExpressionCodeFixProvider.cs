@@ -27,8 +27,8 @@ public sealed class AssignmentExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.UseUnaryOperatorInsteadOfAssignment,
-                DiagnosticIds.RemoveRedundantDelegateCreation);
+                DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment,
+                DiagnosticIdentifiers.RemoveRedundantDelegateCreation);
         }
     }
 
@@ -45,7 +45,7 @@ public sealed class AssignmentExpressionCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.UseUnaryOperatorInsteadOfAssignment:
+                case DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment:
                 {
                     string operatorText = UseUnaryOperatorInsteadOfAssignmentAnalyzer.GetOperatorText(assignment);
 
@@ -57,7 +57,7 @@ public sealed class AssignmentExpressionCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIds.RemoveRedundantDelegateCreation:
+                case DiagnosticIdentifiers.RemoveRedundantDelegateCreation:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove redundant delegate creation",

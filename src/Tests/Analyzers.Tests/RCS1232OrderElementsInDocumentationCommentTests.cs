@@ -12,7 +12,7 @@ public class RCS1232OrderElementsInDocumentationCommentTests : AbstractCSharpDia
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderElementsInDocumentationComment;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -40,7 +40,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -68,7 +68,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters3()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -96,7 +96,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters4()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -122,7 +122,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_TypeParameters()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -150,7 +150,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task TestNoDiagnostic_Parameters()
     {
         await VerifyNoDiagnosticAsync("""
@@ -167,7 +167,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.OrderElementsInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task TestNoDiagnostic_TypeParameters()
     {
         await VerifyNoDiagnosticAsync("""

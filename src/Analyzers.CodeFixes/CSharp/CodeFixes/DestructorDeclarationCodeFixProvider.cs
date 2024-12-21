@@ -17,7 +17,7 @@ public sealed class DestructorDeclarationCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.RemoveEmptyDestructor); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyDestructor); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ public sealed class DestructorDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.RemoveEmptyDestructor:
+                case DiagnosticIdentifiers.RemoveEmptyDestructor:
                 {
                     CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
                         context.Document,

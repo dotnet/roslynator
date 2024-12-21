@@ -12,7 +12,7 @@ public class RCS1066RemoveEmptyFinallyClauseTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyFinallyClause;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyFinallyClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
     public async Task Test_TryCatchFinally()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyFinallyClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
     public async Task Test_TryFinally()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -83,7 +83,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveEmptyFinallyClause)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
     public async Task TestNoDiagnostic_NonEmptyFinally()
     {
         await VerifyNoDiagnosticAsync(@"

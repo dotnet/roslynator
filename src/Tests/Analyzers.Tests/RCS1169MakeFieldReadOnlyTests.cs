@@ -13,7 +13,7 @@ public class RCS1169MakeFieldReadOnlyTests : AbstractCSharpDiagnosticVerifier<Ma
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeFieldReadOnly;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task Test_InstanceField()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task Test_InstanceField_Int32()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -67,7 +67,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task Test_InstanceField_Enum()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -97,7 +97,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task Test_InstanceField_ReadOnlyStruct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -131,7 +131,7 @@ readonly struct B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task Test_StaticField()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -157,7 +157,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_Assigned()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -173,7 +173,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -188,7 +188,7 @@ struct B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_Tuple()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -205,7 +205,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_AssignedInConstructor_LocalFunction()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -224,7 +224,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_AssignedInConstructor_SimpleLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -249,7 +249,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_AssignedInConstructor_ParenthesizedLambda()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -274,7 +274,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_AssignedInConstructor_AnonymousMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -299,7 +299,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_StaticFieldAssignedInInstanceConstructor()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -315,7 +315,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_Generic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -335,7 +335,7 @@ class C<T> : B
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_ReturnRef()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -351,7 +351,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_SuppressNullableWarning()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -365,7 +365,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_RefInRef()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -378,7 +378,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.MakeFieldReadOnly)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_UnitySerializeAttribute()
     {
         await VerifyNoDiagnosticAsync(@"

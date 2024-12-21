@@ -13,7 +13,7 @@ public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpDiagnosticVerifi
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
 
     // https://github.com/dotnet/roslyn/pull/35006
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidBoxingOfValueType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_StringConcatenation()
     {
         await VerifyNoDiagnosticAsync("""
@@ -29,7 +29,7 @@ class C
     }
 
     // https://github.com/dotnet/roslyn/pull/35006
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidBoxingOfValueType)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""

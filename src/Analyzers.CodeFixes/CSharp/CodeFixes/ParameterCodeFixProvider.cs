@@ -20,9 +20,9 @@ public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier,
-                DiagnosticIds.MakeParameterRefReadOnly,
-                DiagnosticIds.DoNotPassNonReadOnlyStructByReadOnlyReference);
+                DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier,
+                DiagnosticIdentifiers.MakeParameterRefReadOnly,
+                DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference);
         }
     }
 
@@ -37,7 +37,7 @@ public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIds.OverridingMemberShouldNotChangeParamsModifier:
+                case DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier:
                 {
                     if (parameter.IsParams())
                     {
@@ -50,8 +50,8 @@ public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
 
                     break;
                 }
-                case DiagnosticIds.MakeParameterRefReadOnly:
-                case DiagnosticIds.DoNotPassNonReadOnlyStructByReadOnlyReference:
+                case DiagnosticIdentifiers.MakeParameterRefReadOnly:
+                case DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference:
                 {
                     if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
                     {

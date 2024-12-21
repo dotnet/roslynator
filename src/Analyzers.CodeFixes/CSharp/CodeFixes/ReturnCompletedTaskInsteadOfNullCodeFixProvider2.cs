@@ -20,7 +20,7 @@ public class ReturnCompletedTaskInsteadOfNullCodeFixProvider2 : BaseCodeFixProvi
 {
     public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.ReturnCompletedTaskInsteadOfNull); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull); }
     }
 
     public override FixAllProvider GetFixAllProvider() => null;

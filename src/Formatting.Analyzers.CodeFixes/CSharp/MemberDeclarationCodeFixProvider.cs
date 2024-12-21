@@ -22,8 +22,8 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIds.FormatTypeDeclarationBraces,
-                DiagnosticIds.PutConstructorInitializerOnItsOwnLine);
+                DiagnosticIdentifiers.FormatTypeDeclarationBraces,
+                DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine);
         }
     }
 
@@ -31,7 +31,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        if (diagnostic.Id == DiagnosticIds.PutConstructorInitializerOnItsOwnLine)
+        if (diagnostic.Id == DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)
         {
             await CodeActionFactory.RegisterCodeActionForNewLineAsync(
                 context,
@@ -47,7 +47,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
         Document document = context.Document;
 
-        if (diagnostic.Id == DiagnosticIds.FormatTypeDeclarationBraces)
+        if (diagnostic.Id == DiagnosticIdentifiers.FormatTypeDeclarationBraces)
         {
             CodeAction codeAction = CodeAction.Create(
                 "Format braces on multiple lines",

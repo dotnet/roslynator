@@ -12,7 +12,7 @@ public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVeri
 {
     public override DiagnosticDescriptor Descriptor { get; } = CommonDiagnosticRules.AnalyzerOptionIsObsolete;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task Test()
     {
         await VerifyDiagnosticAsync(@"
@@ -26,7 +26,7 @@ class C
             .AddConfigOption(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction.Key, "true"));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.RemoveBracesFromIfElse)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task Test2()
     {
         await VerifyDiagnosticAsync(@"

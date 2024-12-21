@@ -18,7 +18,7 @@ public sealed class DoStatementCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIds.AvoidUsageOfDoStatementToCreateInfiniteLoop); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -37,7 +37,7 @@ public sealed class DoStatementCodeFixProvider : BaseCodeFixProvider
                     doStatement,
                     ct);
             },
-            GetEquivalenceKey(DiagnosticIds.AvoidUsageOfDoStatementToCreateInfiniteLoop));
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop));
 
         context.RegisterCodeFix(codeAction, context.Diagnostics);
     }

@@ -12,7 +12,7 @@ public class RCS1110DeclareTypeInsideNamespaceTests : AbstractCSharpDiagnosticVe
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareTypeInsideNamespace;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.DeclareTypeInsideNamespace)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareTypeInsideNamespace)]
     public async Task TestNoDiagnostics()
     {
         await VerifyNoDiagnosticAsync(@"

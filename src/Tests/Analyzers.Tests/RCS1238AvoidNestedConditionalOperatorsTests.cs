@@ -12,7 +12,7 @@ public class RCS1238AvoidNestedConditionalOperatorsTests : AbstractCSharpDiagnos
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNestedConditionalOperators;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_LocalDeclaration()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -49,7 +49,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_LocalDeclaration2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -83,7 +83,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_LocalDeclaration3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -124,7 +124,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_SimpleAssignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -162,7 +162,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_SimpleAssignment2()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_SimpleAssignment3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -239,7 +239,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_ReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -279,7 +279,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_ReturnStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -316,7 +316,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_ReturnStatement3()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -356,7 +356,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_YieldReturnStatement()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -400,7 +400,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_YieldReturnStatement2()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -441,7 +441,7 @@ class C
 """);
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIds.AvoidNestedConditionalOperators)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
     public async Task Test_YieldReturnStatement3()
     {
         await VerifyDiagnosticAndFixAsync(@"
