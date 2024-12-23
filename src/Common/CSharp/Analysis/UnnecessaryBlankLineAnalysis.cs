@@ -587,7 +587,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
         ReportDiagnostic(context, span.Value);
     }
 
-    private TextSpan? GetEmptyLineSpan(
+    private static TextSpan? GetEmptyLineSpan(
         SyntaxTriviaList triviaList,
         bool isEnd)
     {
@@ -625,7 +625,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
         return null;
     }
 
-    private bool IsStandardTriviaBetweenLines(SyntaxTriviaList trailingTrivia, SyntaxTriviaList leadingTrivia)
+    private static bool IsStandardTriviaBetweenLines(SyntaxTriviaList trailingTrivia, SyntaxTriviaList leadingTrivia)
     {
         if (leadingTrivia.Any()
             && leadingTrivia.All(f => f.IsWhitespaceTrivia()))
