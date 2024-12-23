@@ -23,7 +23,7 @@ public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
         {
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.RemoveTrailingWhitespace,
-                DiagnosticIdentifiers.RemoveUnnecessaryBlankLine);
+                DiagnosticIdentifiers.Obsolete_RemoveUnnecessaryBlankLine);
         }
     }
 
@@ -54,7 +54,7 @@ public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-                case DiagnosticIdentifiers.RemoveUnnecessaryBlankLine:
+                case DiagnosticIdentifiers.Obsolete_RemoveUnnecessaryBlankLine:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove blank line",

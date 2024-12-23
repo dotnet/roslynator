@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Move `DiagnosticRules` and `DiagnosticIdentifiers` to `Roslynator.Common` ([PR](https://github.com/dotnet/roslynator/pull/1597))
+- Move analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) to Formatting.Analyzers as [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) ([PR](https://github.com/dotnet/roslynator/pull/1600))
+  - Old analyzer still works but is marked as obsolete.
 
 ## [4.12.10] - 2024-12-17
 
