@@ -158,7 +158,7 @@ public static class MarkdownGenerator
 
         static IEnumerable<MElement> CreateSamples(AnalyzerMetadata analyzer)
         {
-            IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
+            List<SampleMetadata> samples = analyzer.Samples;
             LegacyAnalyzerOptionKind kind = analyzer.Kind;
 
             if (samples.Count > 0)

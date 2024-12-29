@@ -150,7 +150,7 @@ internal static class DelegateFactory
 
         if (method.IsStatic)
         {
-            return (TDelegate)method.CreateDelegate(typeof(TDelegate));
+            return method.CreateDelegate<TDelegate>();
         }
         else
         {
