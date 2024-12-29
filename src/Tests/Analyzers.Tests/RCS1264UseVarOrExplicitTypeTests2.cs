@@ -163,6 +163,36 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
+    public async Task Test_NotObviousExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        [|var|] x1 = string.Empty;
+        [|var|] x2 = Task.FromResult(string.Empty);
+    }
+}
+", @"
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        string x1 = string.Empty;
+        Task<string> x2 = Task.FromResult(string.Empty);
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
