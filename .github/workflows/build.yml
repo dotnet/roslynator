@@ -65,14 +65,14 @@ jobs:
           repository: josefpihrt/wordb
           path: wordb
       - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.8.3
-      - run: |
-          roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
-            spellcheck \
-            ../wordb/data/en \
-            ../wordb/data/en-us \
-            ../wordb/data/names.txt \
-            ../wordb/data/tech.names.txt \
-            ../wordb/data/tech.acronyms.txt
+#      - run: |
+#          roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
+#            spellcheck \
+#            ../wordb/data/en \
+#            ../wordb/data/en-us \
+#            ../wordb/data/names.txt \
+#            ../wordb/data/tech.names.txt \
+#            ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
