@@ -13,6 +13,7 @@ env:
   WarningsNotAsErrors: 1573,1591,NU5128
   Deterministic: true
   RunCodeAnalysis: false
+  Net9Version: 9.0.101
 
 jobs:
   pre_build:
@@ -28,6 +29,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.Net9Version }}
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
       - name: Resolve version
         id: version
@@ -263,7 +267,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.101'
+          dotnet-version: ${{ env.Net9Version }}
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet pack --no-build
