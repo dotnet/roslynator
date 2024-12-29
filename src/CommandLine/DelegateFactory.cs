@@ -150,7 +150,11 @@ internal static class DelegateFactory
 
         if (method.IsStatic)
         {
+#if NETFRAMEWORK
+            return (TDelegate)method.CreateDelegate(typeof(TDelegate));
+#else
             return method.CreateDelegate<TDelegate>();
+#endif
         }
         else
         {
