@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [CLI] Add support for .NET 9 ([PR](https://github.com/dotnet/roslynator/pull/1605))
+
 ### Fixed
 
 - Fix refactoring 'Change accessibility' ([RR0186](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0186)) ([PR](https://github.com/dotnet/roslynator/pull/1599))
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1604))
 
 ### Changed
 

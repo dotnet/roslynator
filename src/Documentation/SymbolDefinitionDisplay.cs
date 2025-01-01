@@ -955,7 +955,7 @@ internal static class SymbolDefinitionDisplay
 
     private static int FindParameterListStart(
         ISymbol symbol,
-        IList<SymbolDisplayPart> parts)
+        ImmutableArray<SymbolDisplayPart>.Builder parts)
     {
         int parenthesesDepth = 0;
         int bracesDepth = 0;

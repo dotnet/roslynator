@@ -48,7 +48,7 @@ public sealed class UseVarOrExplicitTypeAnalyzer : BaseDiagnosticAnalyzer
         }
         else if (style == TypeStyle.Explicit)
         {
-            if (CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(variableDeclaration, context.SemanticModel, TypeAppearance.Obvious, context.CancellationToken))
+            if (CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(variableDeclaration, context.SemanticModel, context.CancellationToken))
                 ReportImplicitToExplicit(context, variableDeclaration.Type);
         }
         else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
