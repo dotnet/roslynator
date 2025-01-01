@@ -109,7 +109,7 @@ internal static class SortMemberDeclarationsRefactoring
         return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
     }
 
-    private static SyntaxKind GetSingleKindOrDefault(IReadOnlyList<MemberDeclarationSyntax> members)
+    private static SyntaxKind GetSingleKindOrDefault(MemberDeclarationListSelection members)
     {
         SyntaxKind kind = members[0].Kind();
 
