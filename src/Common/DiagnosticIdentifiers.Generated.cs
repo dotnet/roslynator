@@ -61,6 +61,7 @@ namespace Roslynator
         public const string PlaceNewLineAfterOrBeforeNullConditionalOperator = "RCS0059";
         public const string BlankLineAfterFileScopedNamespaceDeclaration = "RCS0060";
         public const string BlankLineBetweenSwitchSections = "RCS0061";
+        public const string RemoveUnnecessaryBlankLine = "RCS0063";
         public const string AddBracesWhenExpressionSpansOverMultipleLines = "RCS1001";
         public const string RemoveBraces = "RCS1002";
         public const string AddBracesToIfElseWhenExpressionSpansOverMultipleLines = "RCS1003";
@@ -85,7 +86,7 @@ namespace Roslynator
         public const string RemoveRedundantBooleanLiteral = "RCS1033";
         public const string RemoveRedundantSealedModifier = "RCS1034";
         public const string RemoveRedundantCommaInInitializer = "RCS1035";
-        public const string RemoveUnnecessaryBlankLine = "RCS1036";
+        public const string Obsolete_RemoveUnnecessaryBlankLine = "RCS1036";
         public const string RemoveTrailingWhitespace = "RCS1037";
         public const string RemoveEmptyStatement = "RCS1038";
         public const string RemoveArgumentListFromAttribute = "RCS1039";

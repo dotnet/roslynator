@@ -1630,6 +1630,43 @@ public class C
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS0063</Id>
+    <Identifier>RemoveUnnecessaryBlankLine</Identifier>
+    <Title>Remove unnecessary blank line</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo
+{
+
+    private string _f;
+
+
+    public bool Bar()
+    {
+
+        return false;
+
+    }
+
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    private string _f;
+
+    public bool Bar()
+    {
+        return false;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="blank_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS1001</Id>
     <Identifier>AddBracesWhenExpressionSpansOverMultipleLines</Identifier>
     <Title>Add braces (when expression spans over multiple lines)</Title>
@@ -2470,8 +2507,10 @@ if (f)
   </Analyzer>
   <Analyzer>
     <Id>RCS1036</Id>
-    <Identifier>RemoveUnnecessaryBlankLine</Identifier>
+    <Identifier>Obsolete_RemoveUnnecessaryBlankLine</Identifier>
     <Title>Remove unnecessary blank line</Title>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS0063 instead</ObsoleteMessage>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
