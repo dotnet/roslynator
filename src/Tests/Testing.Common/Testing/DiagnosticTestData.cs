@@ -60,7 +60,8 @@ public sealed class DiagnosticTestData
         string? diagnosticMessage = null,
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
-        bool alwaysVerifyAdditionalLocations = false)
+        bool alwaysVerifyAdditionalLocations = false,
+        IEnumerable<DiagnosticDescriptor>? additionalDiagnostics = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -70,6 +71,7 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+        AdditionalDiagnostics = additionalDiagnostics?.ToImmutableArray() ?? ImmutableArray<DiagnosticDescriptor>.Empty;
         Descriptor = null!;
 
         if (Spans.Length > 1
@@ -134,6 +136,11 @@ public sealed class DiagnosticTestData
     /// Gets code action's equivalence key.
     /// </summary>
     public string? EquivalenceKey { get; }
+
+    /// <summary>
+    /// Gets additional diagnostics which must be enabled for a test.
+    /// </summary>
+    public ImmutableArray<DiagnosticDescriptor> AdditionalDiagnostics { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Source}";

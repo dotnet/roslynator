@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.Testing;
@@ -21,12 +22,14 @@ public sealed class RefactoringTestData
         string source,
         IEnumerable<TextSpan> spans,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        IEnumerable<DiagnosticDescriptor>? additionalDiagnostics = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+        AdditionalDiagnostics = additionalDiagnostics?.ToImmutableArray() ?? ImmutableArray<DiagnosticDescriptor>.Empty;
     }
 
     /// <summary>
@@ -48,6 +51,11 @@ public sealed class RefactoringTestData
     /// Gets code action's equivalence key.
     /// </summary>
     public string? EquivalenceKey { get; }
+
+    /// <summary>
+    /// Gets additional diagnostics which must be enabled for a test.
+    /// </summary>
+    public ImmutableArray<DiagnosticDescriptor> AdditionalDiagnostics { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;

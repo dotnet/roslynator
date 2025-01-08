@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
@@ -31,6 +32,33 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+    }
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Constructor_BreakBeforeArrow()
+    {
+        await VerifyRefactoringAsync(@"
+class C
+{
+    public C()
+    [|{
+[||]       M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C()
+        => M();
+
+    void M() { }
+}
+",
+        equivalenceKey: EquivalenceKey.Create(RefactoringId),
+        options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_Before),
+        additionalDiagnostics: new DiagnosticDescriptor[] { DiagnosticRules.PutExpressionBodyOnItsOwnLine });
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]

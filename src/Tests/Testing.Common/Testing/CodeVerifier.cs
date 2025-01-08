@@ -297,6 +297,17 @@ public abstract class CodeVerifier
     internal static (Document document, ImmutableArray<ExpectedDocument> expectedDocuments)
         CreateDocument(Solution solution, string source, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
     {
+        ImmutableArray<DiagnosticDescriptor> descriptors = ImmutableArray<DiagnosticDescriptor>.Empty;
+        if (descriptor is not null)
+        {
+            descriptors = descriptors.Add(descriptor);
+        }
+        return CreateDocument(solution, source, additionalFiles, options, descriptors);
+    }
+
+    internal static (Document document, ImmutableArray<ExpectedDocument> expectedDocuments)
+        CreateDocument(Solution solution, string source, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, ImmutableArray<DiagnosticDescriptor> descriptors)
+    {
         const string DefaultProjectName = "TestProject";
 
         ProjectId projectId = ProjectId.CreateNewId();
@@ -341,9 +352,13 @@ public abstract class CodeVerifier
             project = configFile.Project;
         }
 
-        if (descriptor is not null)
+        if (!descriptors.IsEmpty)
         {
-            CompilationOptions newCompilationOptions = project.CompilationOptions!.EnsureDiagnosticEnabled(descriptor);
+            CompilationOptions newCompilationOptions = project.CompilationOptions!;
+            foreach (DiagnosticDescriptor descriptor in descriptors)
+            {
+                newCompilationOptions = newCompilationOptions.EnsureDiagnosticEnabled(descriptor);
+            }
 
             project = project.WithCompilationOptions(newCompilationOptions);
         }

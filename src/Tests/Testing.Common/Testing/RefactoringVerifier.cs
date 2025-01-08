@@ -33,6 +33,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
         IEnumerable<string>? additionalFiles = null,
         string? equivalenceKey = null,
         TestOptions? options = null,
+        IEnumerable<DiagnosticDescriptor>? additionalDiagnostics = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);
@@ -43,7 +44,8 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
             code.Value,
             code.Spans.OrderByDescending(f => f.Start).ToImmutableArray(),
             AdditionalFile.CreateRange(additionalFiles),
-            equivalenceKey: equivalenceKey);
+            equivalenceKey: equivalenceKey,
+            additionalDiagnostics: additionalDiagnostics);
 
         await VerifyRefactoringAsync(
             data,
@@ -106,7 +108,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
+                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.AdditionalDiagnostics);
 
                 SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
@@ -223,7 +225,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.AdditionalDiagnostics);
 
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
