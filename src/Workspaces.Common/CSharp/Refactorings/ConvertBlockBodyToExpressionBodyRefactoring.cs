@@ -166,9 +166,9 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     if (CanRefactor(member))
                     {
                         AnalyzerConfigOptions configOptions = document.GetConfigOptions(selectedMembers.Parent.SyntaxTree);
-                        bool wrapLineBeforeArrowToken = DiagnosticRules.PutExpressionBodyOnItsOwnLine.IsEffective(member.SyntaxTree, document.Project.CompilationOptions);
+                        NewLinePosition newLinePosition = GetNewLinePosition(document, member, configOptions, cancellationToken);
 
-                        var newMember = (MemberDeclarationSyntax)Refactor(member, configOptions, wrapLineBeforeArrowToken);
+                        var newMember = (MemberDeclarationSyntax)Refactor(member, configOptions, newLinePosition);
 
                         return newMember
                             .WithTrailingTrivia(member.GetTrailingTrivia())
@@ -181,20 +181,43 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         return document.ReplaceMembersAsync(SyntaxInfo.MemberDeclarationListInfo(selectedMembers.Parent), newMembers, cancellationToken);
     }
 
-    public static Task<Document> RefactorAsync(
+    public static async Task<Document> RefactorAsync(
         Document document,
         SyntaxNode node,
         CancellationToken cancellationToken = default)
     {
         AnalyzerConfigOptions configOptions = document.GetConfigOptions(node.SyntaxTree);
-        bool wrapLineBeforeArrowToken = DiagnosticRules.PutExpressionBodyOnItsOwnLine.IsEffective(node.SyntaxTree, document.Project.CompilationOptions, cancellationToken);
+        NewLinePosition newLinePosition = GetNewLinePosition(document, node, configOptions, cancellationToken);
 
-        SyntaxNode newNode = Refactor(node, configOptions, wrapLineBeforeArrowToken).WithFormatterAnnotation();
+        SyntaxNode newNode = Refactor(node, configOptions, newLinePosition).WithFormatterAnnotation();
 
-        return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+        if (newLinePosition == NewLinePosition.After)
+        {
+            var arrowToken = CSharpUtility.GetExpressionBody(newNode).ArrowToken;
+            var annotation = new SyntaxAnnotation();
+            newNode = newNode.ReplaceToken(arrowToken, arrowToken.WithAdditionalAnnotations(annotation));
+            document = await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            arrowToken = root.GetAnnotatedTokens(annotation).Single();
+            var textChange = new TextChange(TextSpan.FromBounds(arrowToken.GetPreviousToken().Span.End, arrowToken.SpanStart), " ");
+            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+        }
+
+        return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
     }
 
-    private static SyntaxNode Refactor(SyntaxNode node, AnalyzerConfigOptions configOptions, bool wrapLineBeforeArrowToken)
+    private static NewLinePosition GetNewLinePosition(Document document, SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
+    {
+        if (DiagnosticRules.PutExpressionBodyOnItsOwnLine.IsEffective(node.SyntaxTree, document.Project.CompilationOptions, cancellationToken)
+            && ConvertExpressionBodyAnalysis.BreakExpressionOnNewLine(node.Kind()))
+        {
+            return configOptions.GetArrowTokenNewLinePosition();
+        }
+
+        return NewLinePosition.None;
+    }
+
+    private static SyntaxNode Refactor(SyntaxNode node, AnalyzerConfigOptions configOptions, NewLinePosition newLinePosition)
     {
         switch (node.Kind())
         {
@@ -204,7 +227,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(methodDeclaration.Body);
 
                 return methodDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
                     .WithBody(null);
             }
@@ -214,7 +237,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(constructorDeclaration.Body);
 
                 return constructorDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
                     .WithBody(null);
             }
@@ -224,7 +247,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(destructorDeclaration.Body);
 
                 return destructorDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
                     .WithBody(null);
             }
@@ -234,7 +257,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(localFunction.Body);
 
                 return localFunction
-                    .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
                     .WithBody(null);
             }
@@ -244,7 +267,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                 return operatorDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
                     .WithBody(null);
             }
@@ -254,7 +277,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                 return operatorDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
                     .WithBody(null);
             }
@@ -264,7 +287,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
 
                 return propertyDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                     .WithAccessorList(null);
             }
@@ -274,7 +297,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
 
                 return indexerDeclaration
-                    .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                     .WithAccessorList(null);
             }
@@ -288,7 +311,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(accessor);
 
                 return accessor
-                    .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions, wrapLineBeforeArrowToken))
+                    .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions, newLinePosition))
                     .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                     .WithBody(null);
             }
@@ -304,7 +327,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         BlockExpressionAnalysis analysis,
         SyntaxNode declaration,
         AnalyzerConfigOptions configOptions,
-        bool wrapLineBeforeArrowToken)
+        NewLinePosition newLinePosition)
     {
         SyntaxToken arrowToken = Token(SyntaxKind.EqualsGreaterThanToken);
 
@@ -335,42 +358,21 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
             }
         }
 
-        expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);
-
-        if (wrapLineBeforeArrowToken)
-        {
-            NewLinePosition newLinePosition = GetArrowNewLinePosition(declaration.Kind(), configOptions);
-            return CreateArrayExpression(arrowToken, expression, newLinePosition);
-        }
-        else
-        {
-            return ArrowExpressionClause(arrowToken, expression);
-        }
-    }
-
-    private static NewLinePosition GetArrowNewLinePosition(SyntaxKind syntaxKind, AnalyzerConfigOptions configOptions)
-    {
-        if (ConvertExpressionBodyAnalysis.BreakExpressionOnNewLine(syntaxKind))
-        {
-            return configOptions.GetArrowTokenNewLinePosition();
-        }
-        else
-        {
-            return NewLinePosition.None;
-        }
-    }
-
-    private static ArrowExpressionClauseSyntax CreateArrayExpression(SyntaxToken arrowToken, ExpressionSyntax expression, NewLinePosition newLinePosition)
-    {
         switch (newLinePosition)
         {
             case NewLinePosition.After:
                 arrowToken = arrowToken.AppendToTrailingTrivia(CSharpFactory.NewLine());
+                expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);
                 break;
             case NewLinePosition.Before:
-                arrowToken = arrowToken.PrependToLeadingTrivia(CSharpFactory.NewLine());
+                SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration, configOptions, CancellationToken.None);
+                arrowToken = arrowToken.WithLeadingTrivia(trivia);
+                break;
+            default:
+                expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);
                 break;
         }
+
         return ArrowExpressionClause(arrowToken, expression);
     }
 

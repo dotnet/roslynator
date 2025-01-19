@@ -62,8 +62,34 @@ class C
     void M() { }
 }
 ",
-        options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_Before),
-        additionalDiagnostics: new DiagnosticDescriptor[] { DiagnosticRules.PutExpressionBodyOnItsOwnLine });
+        options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+            .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_Before));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Constructor_BreakAfterArrow()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public C()
+    [|{
+        M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C() =>
+        M();
+
+    void M() { }
+}
+",
+            options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+                .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_After));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
