@@ -295,7 +295,7 @@ public abstract class CodeVerifier
     }
 
     internal static (Document document, ImmutableArray<ExpectedDocument> expectedDocuments)
-        CreateDocument(Solution solution, string source, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
+        CreateDocument(Solution solution, string source, string? path, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
     {
         const string DefaultProjectName = "TestProject";
 
@@ -349,9 +349,9 @@ public abstract class CodeVerifier
         }
 
         Document document = project.AddDocument(
-            options.DocumentName,
+            Path.GetFileName(path) ?? options.DocumentName,
             SourceText.From(source),
-            filePath: Path.Combine(directoryPath, options.DocumentName));
+            filePath: Path.Combine(directoryPath, path ?? options.DocumentName));
 
         ImmutableArray<ExpectedDocument>.Builder? expectedDocuments = null;
 
@@ -362,12 +362,12 @@ public abstract class CodeVerifier
 
             for (int i = 0; i < additionalFiles.Length; i++)
             {
-                string documentName = AppendNumberToFileName(options.DocumentName, i + 2);
+                string documentName = Path.GetFileName(additionalFiles[i].Path) ?? AppendNumberToFileName(options.DocumentName, i + 2);
 
                 Document additionalDocument = project.AddDocument(
                     documentName,
                     SourceText.From(additionalFiles[i].Source),
-                    filePath: Path.Combine(directoryPath, documentName));
+                    filePath: Path.Combine(directoryPath, additionalFiles[i].Path ?? documentName));
 
                 string? expectedSource = additionalFiles[i].ExpectedSource;
 

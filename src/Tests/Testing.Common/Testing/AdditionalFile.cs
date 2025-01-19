@@ -17,10 +17,11 @@ public readonly struct AdditionalFile
     /// <summary>
     /// Initializes a new instance of <see cref="AdditionalFile"/>
     /// </summary>
-    public AdditionalFile(string source, string? expectedSource = null)
+    public AdditionalFile(string source, string? expectedSource = null, string? path = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         ExpectedSource = expectedSource;
+        Path = path;
     }
 
     /// <summary>
@@ -32,6 +33,11 @@ public readonly struct AdditionalFile
     /// Gets expected source code.
     /// </summary>
     public string? ExpectedSource { get; }
+
+    /// <summary>
+    /// Gets the relative path a source file.
+    /// </summary>
+    public string? Path { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;

@@ -106,7 +106,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
+                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
 
                 SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
@@ -223,7 +223,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
 
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 

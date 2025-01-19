@@ -29,7 +29,8 @@ public sealed class DiagnosticTestData
         string? diagnosticMessage = null,
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
-        bool alwaysVerifyAdditionalLocations = false)
+        bool alwaysVerifyAdditionalLocations = false,
+        string? path = null)
     {
         Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
         Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -40,6 +41,7 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+        Path = path;
 
         if (Spans.Length > 1
             && !AdditionalSpans.IsEmpty)
@@ -60,7 +62,8 @@ public sealed class DiagnosticTestData
         string? diagnosticMessage = null,
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
-        bool alwaysVerifyAdditionalLocations = false)
+        bool alwaysVerifyAdditionalLocations = false,
+        string? path = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -70,6 +73,7 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+        Path = path;
         Descriptor = null!;
 
         if (Spans.Length > 1
@@ -89,7 +93,8 @@ public sealed class DiagnosticTestData
             diagnosticMessage: other.DiagnosticMessage,
             formatProvider: other.FormatProvider,
             equivalenceKey: other.EquivalenceKey,
-            alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations)
+            alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations,
+            path: other.Path)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -142,6 +147,11 @@ public sealed class DiagnosticTestData
     /// True if additional locations should be always verified.
     /// </summary>
     public bool AlwaysVerifyAdditionalLocations { get; }
+
+    /// <summary>
+    /// Gets source file path.
+    /// </summary>
+    public string? Path { get; }
 
     internal ImmutableArray<Diagnostic> GetDiagnostics(DiagnosticDescriptor descriptor, SyntaxTree tree)
     {
