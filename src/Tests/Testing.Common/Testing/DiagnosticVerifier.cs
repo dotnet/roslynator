@@ -327,9 +327,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         if (file.ExpectedSource is null)
             throw new ArgumentException("Expected source is required.", nameof(file));
 
-        TestCode code = TestCode.Parse(file.Source);
-
-        ExpectedTestState expected = ExpectedTestState.Parse(file.ExpectedSource);
+        var code = TestCode.Parse(file.Source);
+        var expected = ExpectedTestState.Parse(file.ExpectedSource);
 
         var data = new DiagnosticTestData(
             code.Value,

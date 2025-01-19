@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.Testing;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
@@ -12,14 +11,6 @@ namespace Roslynator.CSharp.Analysis.Tests;
 public class RCS1004RemoveBracesFromIfElseTests : AbstractCSharpDiagnosticVerifier<RemoveBracesFromIfElseAnalyzer, RemoveBracesFromIfElseCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBracesFromIfElse;
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-    public async Task Testt()
-    {
-        await VerifyDiagnosticAsync(
-            new TestFile("namespace N;", path: "Features/Feature.cs"),
-            [ new AdditionalFile("namespace M;", path: "Features/Feature2.cs"), new AdditionalFile("namespace O;", path: "Features/Feature3.cs") ]);
-    }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
     public async Task Test()
