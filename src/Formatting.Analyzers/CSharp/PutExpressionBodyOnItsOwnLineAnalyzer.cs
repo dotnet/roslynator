@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.Formatting.CSharp;
@@ -37,17 +38,9 @@ public sealed class PutExpressionBodyOnItsOwnLineAnalyzer : BaseDiagnosticAnalyz
     {
         var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
 
-        switch (arrowExpressionClause.Parent.Kind())
+        if (ConvertExpressionBodyAnalysis.AllowPutExpressionBodyOnItsOwnLine(arrowExpressionClause.Parent.Kind()))
         {
-            case SyntaxKind.MethodDeclaration:
-            case SyntaxKind.ConstructorDeclaration:
-            case SyntaxKind.DestructorDeclaration:
-            case SyntaxKind.PropertyDeclaration:
-            case SyntaxKind.IndexerDeclaration:
-            case SyntaxKind.OperatorDeclaration:
-            case SyntaxKind.ConversionOperatorDeclaration:
-                AnalyzeArrowExpressionClause(arrowExpressionClause.ArrowToken, context);
-                break;
+            AnalyzeArrowExpressionClause(arrowExpressionClause.ArrowToken, context);
         }
     }
 
