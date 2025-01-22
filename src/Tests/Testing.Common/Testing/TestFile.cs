@@ -9,6 +9,8 @@ public class TestFile
     {
         Source = source;
         ExpectedSource = expectedSource;
+
+        FilePathVerifier.VerifyFilePath(path);
         Path = path;
     }
 

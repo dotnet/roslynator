@@ -21,6 +21,8 @@ public readonly struct AdditionalFile
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         ExpectedSource = expectedSource;
+
+        FilePathVerifier.VerifyFilePath(path);
         Path = path;
     }
 
