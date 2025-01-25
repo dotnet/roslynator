@@ -23,10 +23,10 @@ internal static class FilePathVerifier
         if (path[path.Length - 1] == Path.DirectorySeparatorChar
             || path[path.Length - 1] == Path.AltDirectorySeparatorChar)
         {
-            throw new ArgumentException("File path cannot end with directory separator", nameof(path));
+            throw new ArgumentException("File path cannot end with a directory separator", nameof(path));
         }
 
-        var dirSeparatorIndex = FileSystemHelpers.LastIndexOfDirectorySeparator(path);
+        int dirSeparatorIndex = FileSystemHelpers.LastIndexOfDirectorySeparator(path);
         if (dirSeparatorIndex >= 0)
         {
             for (int i = dirSeparatorIndex + 1; i < path.Length; i++)
