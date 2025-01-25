@@ -21,12 +21,14 @@ public sealed class RefactoringTestData
         string source,
         IEnumerable<TextSpan> spans,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        string? path = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+        Path = path;
     }
 
     /// <summary>
@@ -49,6 +51,11 @@ public sealed class RefactoringTestData
     /// </summary>
     public string? EquivalenceKey { get; }
 
+    /// <summary>
+    /// Gets source file path.
+    /// </summary>
+    public string? Path { get; }
+
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;
 
@@ -57,7 +64,8 @@ public sealed class RefactoringTestData
             source: other.Source,
             spans: other.Spans,
             additionalFiles: other.AdditionalFiles,
-            equivalenceKey: other.EquivalenceKey)
+            equivalenceKey: other.EquivalenceKey,
+            path: other.Path)
     {
     }
 
@@ -69,12 +77,14 @@ public sealed class RefactoringTestData
         string source,
         IEnumerable<TextSpan> spans,
         IEnumerable<AdditionalFile> additionalFiles,
-        string equivalenceKey)
+        string equivalenceKey,
+        string path)
     {
         return new(
             source: source,
             spans: spans,
             additionalFiles: additionalFiles,
-            equivalenceKey: equivalenceKey);
+            equivalenceKey: equivalenceKey,
+            path: path);
     }
 }

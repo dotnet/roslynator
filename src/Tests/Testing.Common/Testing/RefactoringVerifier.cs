@@ -26,7 +26,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
-    /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="file">Source file where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyRefactoringAsync(
         string source,
         string expectedSource,
@@ -44,6 +44,40 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
             code.Spans.OrderByDescending(f => f.Start).ToImmutableArray(),
             AdditionalFile.CreateRange(additionalFiles),
             equivalenceKey: equivalenceKey);
+
+        await VerifyRefactoringAsync(
+            data,
+            expected,
+            options,
+            cancellationToken: cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
+    /// </summary>
+    /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    public async Task VerifyRefactoringAsync(
+        TestFile file,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (file is null)
+            throw new ArgumentNullException(nameof(file));
+
+        if (file.ExpectedSource is null)
+            throw new ArgumentException("Expected source is required.", nameof(file));
+
+        var code = TestCode.Parse(file.Source);
+        var expected = ExpectedTestState.Parse(file.ExpectedSource);
+
+        var data = new RefactoringTestData(
+            code.Value,
+            code.Spans.OrderByDescending(f => f.Start).ToImmutableArray(),
+            additionalFiles,
+            equivalenceKey: equivalenceKey,
+            path: file.Path);
 
         await VerifyRefactoringAsync(
             data,
@@ -106,7 +140,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
+                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
 
                 SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
@@ -204,6 +238,35 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will not be applied using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
+    /// <param name="file">Source file where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    public async Task VerifyNoRefactoringAsync(
+        TestFile file,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (file is null)
+            throw new ArgumentNullException(nameof(file));
+
+        var code = TestCode.Parse(file.Source);
+
+        var data = new RefactoringTestData(
+            code.Value,
+            code.Spans,
+            additionalFiles: additionalFiles,
+            equivalenceKey: equivalenceKey,
+            path: file.Path);
+
+        await VerifyNoRefactoringAsync(
+            data,
+            options,
+            cancellationToken: cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that refactoring will not be applied using specified <typeparamref name="TRefactoringProvider"/>.
+    /// </summary>
     public async Task VerifyNoRefactoringAsync(
         RefactoringTestData data,
         TestOptions? options = null,
@@ -223,7 +286,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
 
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 

@@ -81,6 +81,38 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce compiler diagnostic.
     /// </summary>
+    /// <param name="file">Source file where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    public async Task VerifyFixAsync(
+        TestFile file,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (file is null)
+            throw new ArgumentNullException(nameof(file));
+
+        if (file.ExpectedSource is null)
+            throw new ArgumentException("Expected source is required.", nameof(file));
+
+        var expected = ExpectedTestState.Parse(file.ExpectedSource);
+
+        var data = new CompilerDiagnosticFixTestData(
+            file.Source,
+            additionalFiles,
+            equivalenceKey: equivalenceKey,
+            path: file.Path);
+
+        await VerifyFixAsync(
+            data,
+            expected,
+            options,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that specified source will produce compiler diagnostic.
+    /// </summary>
     public async Task VerifyFixAsync(
         CompilerDiagnosticFixTestData data,
         ExpectedTestState expected,
@@ -103,7 +135,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
 
             Project project = document.Project;
 
@@ -255,6 +287,31 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// Verifies that specified source will not produce compiler diagnostic.
     /// </summary>
     public async Task VerifyNoFixAsync(
+        TestFile file,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (file is null)
+            throw new ArgumentNullException(nameof(file));
+
+        var data = new CompilerDiagnosticFixTestData(
+            file.Source,
+            additionalFiles: additionalFiles,
+            equivalenceKey: equivalenceKey,
+            path: file.Path);
+
+        await VerifyNoFixAsync(
+            data,
+            options,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that specified source will not produce compiler diagnostic.
+    /// </summary>
+    public async Task VerifyNoFixAsync(
         CompilerDiagnosticFixTestData data,
         TestOptions? options = null,
         CancellationToken cancellationToken = default)
@@ -271,7 +328,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: null, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
 
             Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 

@@ -21,12 +21,14 @@ public sealed class CompilerDiagnosticFixTestData
         string diagnosticId,
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        string? path = null)
     {
         DiagnosticId = diagnosticId ?? throw new ArgumentNullException(nameof(diagnosticId));
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+        Path = path;
     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -36,11 +38,13 @@ public sealed class CompilerDiagnosticFixTestData
     public CompilerDiagnosticFixTestData(
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        string? path = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+        Path = path;
         DiagnosticId = null!;
     }
 
@@ -49,7 +53,8 @@ public sealed class CompilerDiagnosticFixTestData
             diagnosticId: other.DiagnosticId,
             source: other.Source,
             additionalFiles: other.AdditionalFiles,
-            equivalenceKey: other.EquivalenceKey)
+            equivalenceKey: other.EquivalenceKey,
+            path: other.Path)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -75,6 +80,11 @@ public sealed class CompilerDiagnosticFixTestData
     /// </summary>
     public string? EquivalenceKey { get; }
 
+    /// <summary>
+    /// Gets source file path.
+    /// </summary>
+    public string? Path { get; }
+
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Source}";
 
@@ -86,12 +96,14 @@ public sealed class CompilerDiagnosticFixTestData
         string diagnosticId,
         string source,
         IEnumerable<AdditionalFile> additionalFiles,
-        string equivalenceKey)
+        string equivalenceKey,
+        string path)
     {
         return new(
             diagnosticId: diagnosticId,
             source: source,
             additionalFiles: additionalFiles,
-            equivalenceKey: equivalenceKey);
+            equivalenceKey: equivalenceKey,
+            path: path);
     }
 }

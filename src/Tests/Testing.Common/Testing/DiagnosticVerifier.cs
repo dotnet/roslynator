@@ -54,7 +54,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic(s).
     /// </summary>
-    /// <param name="file">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="file">Source file where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyDiagnosticAsync(
         TestFile file,
         IEnumerable<AdditionalFile>? additionalFiles = null,
@@ -313,7 +313,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will be fixed.
     /// </summary>
-    /// <param name="file">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="file">Source file where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyDiagnosticAndFixAsync(
         TestFile file,
         IEnumerable<AdditionalFile>? additionalFiles = null,
@@ -402,7 +402,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will not be fixed.
     /// </summary>
-    /// <param name="file">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="file">Source file where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyDiagnosticAndNoFixAsync(
         TestFile file,
         IEnumerable<AdditionalFile>? additionalFiles = null,
