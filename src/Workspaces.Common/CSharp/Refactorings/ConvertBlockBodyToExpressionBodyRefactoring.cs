@@ -193,7 +193,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
         if (newLinePosition == NewLinePosition.After)
         {
-            var arrowToken = CSharpUtility.GetExpressionBody(newNode).ArrowToken;
+            ArrowExpressionClauseSyntax arrowToken = CSharpUtility.GetExpressionBody(newNode).ArrowToken;
             var annotation = new SyntaxAnnotation();
             newNode = newNode.ReplaceToken(arrowToken, arrowToken.WithAdditionalAnnotations(annotation));
             document = await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
