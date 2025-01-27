@@ -26,7 +26,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
-    /// <param name="file">Source file where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyRefactoringAsync(
         string source,
         string expectedSource,
@@ -55,7 +55,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
-    /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="file">Source file where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
     public async Task VerifyRefactoringAsync(
         TestFile file,
         IEnumerable<AdditionalFile>? additionalFiles = null,
