@@ -30,7 +30,8 @@ public sealed class DiagnosticTestData
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
         bool alwaysVerifyAdditionalLocations = false,
-        string? path = null)
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
         Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -41,7 +42,12 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
-        Path = path;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
 
         if (Spans.Length > 1
             && !AdditionalSpans.IsEmpty)
@@ -63,7 +69,8 @@ public sealed class DiagnosticTestData
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
         bool alwaysVerifyAdditionalLocations = false,
-        string? path = null)
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -73,7 +80,13 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
-        Path = path;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
+
         Descriptor = null!;
 
         if (Spans.Length > 1
@@ -94,7 +107,8 @@ public sealed class DiagnosticTestData
             formatProvider: other.FormatProvider,
             equivalenceKey: other.EquivalenceKey,
             alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations,
-            path: other.Path)
+            directoryPath: other.DirectoryPath,
+            fileName: other.FileName)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -149,9 +163,14 @@ public sealed class DiagnosticTestData
     public bool AlwaysVerifyAdditionalLocations { get; }
 
     /// <summary>
-    /// Gets source file path.
+    /// Gets the relative directory path.
     /// </summary>
-    public string? Path { get; }
+    public string? DirectoryPath { get; }
+
+    /// <summary>
+    /// Gets the file name.
+    /// </summary>
+    public string? FileName { get; }
 
     internal ImmutableArray<Diagnostic> GetDiagnostics(DiagnosticDescriptor descriptor, SyntaxTree tree)
     {

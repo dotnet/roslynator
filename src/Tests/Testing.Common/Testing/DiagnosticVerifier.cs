@@ -71,7 +71,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
             code.Spans,
             code.AdditionalSpans,
             additionalFiles: additionalFiles,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyDiagnosticAsync(
             data,
@@ -120,7 +121,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.Path, data.AdditionalFiles, options, Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.DirectoryPath, data.FileName, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
@@ -232,7 +233,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
             code.Spans,
             code.AdditionalSpans,
             additionalFiles: additionalFiles,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyNoDiagnosticAsync(
             data,
@@ -259,7 +261,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.Path, data.AdditionalFiles, options, Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.DirectoryPath, data.FileName, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
@@ -460,7 +462,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.Path, data.AdditionalFiles, options, Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.DirectoryPath, data.FileName, data.AdditionalFiles, options, Descriptor);
 
             Project project = document.Project;
 
@@ -624,7 +626,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.Path, data.AdditionalFiles, options, Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.DirectoryPath, data.FileName, data.AdditionalFiles, options, Descriptor);
 
             Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 

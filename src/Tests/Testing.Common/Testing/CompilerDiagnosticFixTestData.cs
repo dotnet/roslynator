@@ -22,13 +22,19 @@ public sealed class CompilerDiagnosticFixTestData
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
         string? equivalenceKey = null,
-        string? path = null)
+        string? directoryPath = null,
+        string? fileName = null)
     {
         DiagnosticId = diagnosticId ?? throw new ArgumentNullException(nameof(diagnosticId));
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
-        Path = path;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -39,12 +45,19 @@ public sealed class CompilerDiagnosticFixTestData
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
         string? equivalenceKey = null,
-        string? path = null)
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
-        Path = path;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
+
         DiagnosticId = null!;
     }
 
@@ -54,7 +67,8 @@ public sealed class CompilerDiagnosticFixTestData
             source: other.Source,
             additionalFiles: other.AdditionalFiles,
             equivalenceKey: other.EquivalenceKey,
-            path: other.Path)
+            directoryPath: other.DirectoryPath,
+            fileName: other.FileName)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -81,9 +95,14 @@ public sealed class CompilerDiagnosticFixTestData
     public string? EquivalenceKey { get; }
 
     /// <summary>
-    /// Gets source file path.
+    /// Gets the relative directory path.
     /// </summary>
-    public string? Path { get; }
+    public string? DirectoryPath { get; }
+
+    /// <summary>
+    /// Gets the file name.
+    /// </summary>
+    public string? FileName { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Source}";
@@ -97,13 +116,15 @@ public sealed class CompilerDiagnosticFixTestData
         string source,
         IEnumerable<AdditionalFile> additionalFiles,
         string equivalenceKey,
-        string path)
+        string directoryPath,
+        string fileName)
     {
         return new(
             diagnosticId: diagnosticId,
             source: source,
             additionalFiles: additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: path);
+            directoryPath: directoryPath,
+            fileName: fileName);
     }
 }

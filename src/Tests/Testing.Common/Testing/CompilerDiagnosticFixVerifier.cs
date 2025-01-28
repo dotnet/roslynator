@@ -101,7 +101,8 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
             file.Source,
             additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyFixAsync(
             data,
@@ -135,7 +136,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, directoryPath: data.DirectoryPath, fileName: data.FileName, data.AdditionalFiles, options);
 
             Project project = document.Project;
 
@@ -300,7 +301,8 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
             file.Source,
             additionalFiles: additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyNoFixAsync(
             data,
@@ -328,7 +330,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, directoryPath: data.DirectoryPath, fileName: data.FileName, data.AdditionalFiles, options);
 
             Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 

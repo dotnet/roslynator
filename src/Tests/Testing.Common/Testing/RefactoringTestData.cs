@@ -22,13 +22,19 @@ public sealed class RefactoringTestData
         IEnumerable<TextSpan> spans,
         IEnumerable<AdditionalFile>? additionalFiles = null,
         string? equivalenceKey = null,
-        string? path = null)
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
-        Path = path;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
     }
 
     /// <summary>
@@ -52,9 +58,14 @@ public sealed class RefactoringTestData
     public string? EquivalenceKey { get; }
 
     /// <summary>
-    /// Gets source file path.
+    /// Gets the relative directory path.
     /// </summary>
-    public string? Path { get; }
+    public string? DirectoryPath { get; }
+
+    /// <summary>
+    /// Gets the file name.
+    /// </summary>
+    public string? FileName { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;
@@ -65,7 +76,8 @@ public sealed class RefactoringTestData
             spans: other.Spans,
             additionalFiles: other.AdditionalFiles,
             equivalenceKey: other.EquivalenceKey,
-            path: other.Path)
+            directoryPath: other.DirectoryPath,
+            fileName: other.FileName)
     {
     }
 
@@ -78,13 +90,15 @@ public sealed class RefactoringTestData
         IEnumerable<TextSpan> spans,
         IEnumerable<AdditionalFile> additionalFiles,
         string equivalenceKey,
-        string path)
+        string directoryPath,
+        string fileName)
     {
         return new(
             source: source,
             spans: spans,
             additionalFiles: additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: path);
+            directoryPath: directoryPath,
+            fileName: fileName);
     }
 }

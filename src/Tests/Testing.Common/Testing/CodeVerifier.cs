@@ -295,7 +295,7 @@ public abstract class CodeVerifier
     }
 
     internal static (Document document, ImmutableArray<ExpectedDocument> expectedDocuments)
-        CreateDocument(Solution solution, string source, string? path, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
+        CreateDocument(Solution solution, string source, string? directoryPath, string? fileName, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
     {
         const string DefaultProjectName = "TestProject";
 
@@ -315,7 +315,7 @@ public abstract class CodeVerifier
             .AddProject(projectInfo)
             .GetProject(projectId)!;
 
-        string directoryPath = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        string baseDirectoryPath = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             ? "z:"
             : "/";
 
@@ -336,7 +336,7 @@ public abstract class CodeVerifier
             TextDocument configFile = project.AddAnalyzerConfigDocument(
                 ".editorconfig",
                 SourceText.From(StringBuilderCache.GetStringAndFree(sb)),
-                filePath: Path.Combine(directoryPath, ".editorconfig"));
+                filePath: Path.Combine(baseDirectoryPath, ".editorconfig"));
 
             project = configFile.Project;
         }
@@ -348,10 +348,12 @@ public abstract class CodeVerifier
             project = project.WithCompilationOptions(newCompilationOptions);
         }
 
+        string documentName = fileName ?? options.DocumentName;
+
         Document document = project.AddDocument(
-            Path.GetFileName(path) ?? options.DocumentName,
+            documentName,
             SourceText.From(source),
-            filePath: Path.Combine(directoryPath, path ?? options.DocumentName));
+            filePath: Path.Combine(baseDirectoryPath, (directoryPath is not null) ? Path.Combine(directoryPath, documentName) : documentName));
 
         ImmutableArray<ExpectedDocument>.Builder? expectedDocuments = null;
 
@@ -362,12 +364,12 @@ public abstract class CodeVerifier
 
             for (int i = 0; i < additionalFiles.Length; i++)
             {
-                string documentName = Path.GetFileName(additionalFiles[i].Path) ?? AppendNumberToFileName(options.DocumentName, i + 2);
+                string additionalDocumentName = additionalFiles[i].Name ?? AppendNumberToFileName(options.DocumentName, i + 2);
 
                 Document additionalDocument = project.AddDocument(
-                    documentName,
+                    additionalDocumentName,
                     SourceText.From(additionalFiles[i].Source),
-                    filePath: Path.Combine(directoryPath, additionalFiles[i].Path ?? documentName));
+                    filePath: Path.Combine(baseDirectoryPath, (directoryPath is not null) ? Path.Combine(directoryPath, additionalDocumentName) : additionalDocumentName));
 
                 string? expectedSource = additionalFiles[i].ExpectedSource;
 

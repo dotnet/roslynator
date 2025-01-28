@@ -77,7 +77,8 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
             code.Spans.OrderByDescending(f => f.Start).ToImmutableArray(),
             additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyRefactoringAsync(
             data,
@@ -140,7 +141,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
+                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, directoryPath: data.DirectoryPath, fileName: data.FileName, data.AdditionalFiles, options);
 
                 SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
@@ -256,7 +257,8 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
             code.Spans,
             additionalFiles: additionalFiles,
             equivalenceKey: equivalenceKey,
-            path: file.Path);
+            directoryPath: file.DirectoryPath,
+            fileName: file.Name);
 
         await VerifyNoRefactoringAsync(
             data,
@@ -286,7 +288,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, path: data.Path, data.AdditionalFiles, options);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, directoryPath: data.DirectoryPath, fileName: data.FileName, data.AdditionalFiles, options);
 
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
