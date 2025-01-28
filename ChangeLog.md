@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [CLI] Add support for .NET 9 ([PR](https://github.com/dotnet/roslynator/pull/1605))
 - Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
+  - It's possible to specify a directory path and/or a file name.
 
 ### Fixed
 
