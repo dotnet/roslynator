@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Bump `Microsoft.Build.Locator` to 1.7.8 ([PR](https://github.com/dotnet/roslynator/pull/1622))
+
 ## [4.12.11] - 2025-01-28
 
 ### Added
