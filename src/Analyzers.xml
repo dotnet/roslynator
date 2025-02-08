@@ -1630,6 +1630,60 @@ public class C
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS0062</Id>
+    <Identifier>PutExpressionBodyOnItsOwnLine</Identifier>
+    <Title>Put expression body on its own line</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object Foo() => null;]]></Before>
+        <After><![CDATA[object Foo()
+    => null;]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="arrow_token_new_line" IsRequired="false" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS0063</Id>
+    <Identifier>RemoveUnnecessaryBlankLine</Identifier>
+    <Title>Remove unnecessary blank line</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo
+{
+
+    private string _f;
+
+
+    public bool Bar()
+    {
+
+        return false;
+
+    }
+
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    private string _f;
+
+    public bool Bar()
+    {
+        return false;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="blank_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS1001</Id>
     <Identifier>AddBracesWhenExpressionSpansOverMultipleLines</Identifier>
     <Title>Add braces (when expression spans over multiple lines)</Title>
@@ -1978,6 +2032,7 @@ foreach (var item in items)
       <Option Key="body_style" IsRequired="true" />
       <Option Key="use_block_body_when_declaration_spans_over_multiple_lines" IsRequired="true" />
       <Option Key="use_block_body_when_expression_spans_over_multiple_lines" IsRequired="true" />
+      <Option Key="arrow_token_new_line" IsRequired="false" />
     </ConfigOptions>
     <Options>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">
@@ -2470,8 +2525,10 @@ if (f)
   </Analyzer>
   <Analyzer>
     <Id>RCS1036</Id>
-    <Identifier>RemoveUnnecessaryBlankLine</Identifier>
+    <Identifier>Obsolete_RemoveUnnecessaryBlankLine</Identifier>
     <Title>Remove unnecessary blank line</Title>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS0063 instead</ObsoleteMessage>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>

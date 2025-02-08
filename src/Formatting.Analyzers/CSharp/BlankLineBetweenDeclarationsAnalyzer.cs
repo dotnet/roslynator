@@ -48,7 +48,12 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             SyntaxKind.InterfaceDeclaration);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
-        context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeNamespaceDeclaration(f),
+#if ROSLYN_4_0
+            SyntaxKind.FileScopedNamespaceDeclaration,
+#endif
+            SyntaxKind.NamespaceDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
     }
 
@@ -61,8 +66,11 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
 
     private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
     {
+#if ROSLYN_4_0
+        var namespaceDeclaration = (BaseNamespaceDeclarationSyntax)context.Node;
+#else
         var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
-
+#endif
         Analyze(context, namespaceDeclaration.Members);
     }
 

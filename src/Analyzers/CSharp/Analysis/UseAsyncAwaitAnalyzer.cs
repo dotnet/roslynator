@@ -276,7 +276,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
                 return string.Equals(simpleMemberAccess.Name.Identifier.ValueText, "CompletedTask", StringComparison.Ordinal)
                     && SemanticModel.GetSymbol(expression, CancellationToken) is IPropertySymbol propertySymbol
-                    && IsTaskOrTaskOrT(propertySymbol.ContainingType);
+                    && IsTaskOrTaskOfT(propertySymbol.ContainingType);
             }
             else
             {
@@ -293,7 +293,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
                             if (SemanticModel.GetSymbol(expression, CancellationToken) is IMethodSymbol methodSymbol
                                 && (methodSymbol.Arity == 0 || methodSymbol.Arity == 1)
                                 && methodSymbol.Parameters.Length == 1
-                                && IsTaskOrTaskOrT(methodSymbol.ContainingType))
+                                && IsTaskOrTaskOfT(methodSymbol.ContainingType))
                             {
                                 return true;
                             }
@@ -307,10 +307,10 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
             return false;
         }
 
-        private static bool IsTaskOrTaskOrT(INamedTypeSymbol typeSymbol)
+        private static bool IsTaskOrTaskOfT(INamedTypeSymbol typeSymbol)
         {
-            return typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
-                || typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+            return typeSymbol.ContainingNamespace.HasMetadataName(MetadataNames.System_Threading_Tasks)
+                && typeSymbol.MetadataName is "Task" or "Task`1" or "ValueTask" or "ValueTask`1";
         }
 
         public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
