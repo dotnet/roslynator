@@ -48,7 +48,8 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             SyntaxKind.InterfaceDeclaration);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
-        context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f),
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeNamespaceDeclaration(f),
 #if ROSLYN_4_0
             SyntaxKind.FileScopedNamespaceDeclaration,
 #endif
