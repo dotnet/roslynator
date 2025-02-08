@@ -1,15 +1,13 @@
-﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp;
 
-namespace Roslynator.CSharp.Analysis;
+namespace Roslynator.Formatting.CSharp;
 
-[DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
-public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,8 +19,7 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.RemoveTrailingWhitespace,
-                    DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine);
+                    DiagnosticRules.RemoveUnnecessaryBlankLine);
             }
 
             return _supportedDiagnostics;
@@ -33,7 +30,9 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxTreeAction(f => AnalyzeTrailingTrivia(f));
+        context.RegisterSyntaxTreeAction(c => AnalyzeTrailingTrivia(c));
+
+        UnnecessaryBlankLineAnalysis.Instance.Initialize(context);
     }
 
     private static void AnalyzeTrailingTrivia(SyntaxTreeAnalysisContext context)
@@ -83,43 +82,22 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine,
+                        DiagnosticRules.RemoveUnnecessaryBlankLine,
                         Location.Create(context.Tree, emptyLines));
                 }
 
                 emptyLines = default;
-
-                int end = textLine.End - 1;
-
-                if (char.IsWhiteSpace(sourceText[end]))
-                {
-                    int start = end;
-
-                    while (start > textLine.Span.Start && char.IsWhiteSpace(sourceText[start - 1]))
-                        start--;
-
-                    TextSpan whitespace = TextSpan.FromBounds(start, end + 1);
-
-                    if (root.FindTrivia(start).IsWhitespaceTrivia()
-                        || root.FindToken(start, findInsideTrivia: true).IsKind(SyntaxKind.XmlTextLiteralToken))
-                    {
-                        if (previousLineIsEmpty && start == textLine.Start)
-                        {
-                            whitespace = TextSpan.FromBounds(
-                                sourceText.Lines[i - 1].End,
-                                whitespace.End);
-                        }
-
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.RemoveTrailingWhitespace,
-                            Location.Create(context.Tree, whitespace));
-                    }
-                }
             }
 
             previousLineIsEmpty = lineIsEmpty;
             i++;
         }
+    }
+
+    private class UnnecessaryBlankLineAnalysis : Roslynator.CSharp.Analysis.UnnecessaryBlankLineAnalysis
+    {
+        public static UnnecessaryBlankLineAnalysis Instance { get; } = new();
+
+        protected override DiagnosticDescriptor Descriptor => DiagnosticRules.RemoveUnnecessaryBlankLine;
     }
 }
