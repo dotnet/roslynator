@@ -811,4 +811,24 @@ class NonAwaitableTaskType { }
 class NonAwaitableTaskType<T> { }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task TestNoDiagnostic_ValueTask()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+class C
+{
+    ValueTask M()
+    {
+        using var memoryStream = new MemoryStream();
+
+        return ValueTask.CompletedTask;
+    }
+}
+");
+    }
 }

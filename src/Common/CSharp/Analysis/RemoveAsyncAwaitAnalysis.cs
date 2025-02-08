@@ -372,7 +372,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 
         foreach (AwaitExpressionSyntax awaitExpression in awaitExpressions)
         {
-            if (!VerifyAwaitType(awaitExpression, typeArgument, semanticModel, cancellationToken))
+            if (!VerifyAwaitType(awaitExpression, returnType, typeArgument, semanticModel, cancellationToken))
                 return false;
         }
 
@@ -400,10 +400,15 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         if (typeArgument is null)
             return false;
 
-        return VerifyAwaitType(awaitExpression, typeArgument, semanticModel, cancellationToken);
+        return VerifyAwaitType(awaitExpression, returnType, typeArgument, semanticModel, cancellationToken);
     }
 
-    private static bool VerifyAwaitType(AwaitExpressionSyntax awaitExpression, ITypeSymbol typeArgument, SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool VerifyAwaitType(
+        AwaitExpressionSyntax awaitExpression,
+        ITypeSymbol returnType,
+        ITypeSymbol typeArgument,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
         if (!SymbolEqualityComparer.Default.Equals(typeArgument, semanticModel.GetTypeSymbol(awaitExpression, cancellationToken)))
             return false;
@@ -415,15 +420,13 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         if (expressionTypeSymbol is null)
             return false;
 
-        if (expressionTypeSymbol.OriginalDefinition.IsAwaitable(semanticModel, expression.SpanStart))
+        if (SymbolEqualityComparer.Default.Equals(returnType, expressionTypeSymbol))
             return true;
 
         SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
 
-        return invocationInfo.Success
-            && invocationInfo.Arguments.Count == 1
-            && invocationInfo.NameText == "ConfigureAwait"
-            && expressionTypeSymbol.OriginalDefinition.IsAwaitable(semanticModel, expression.SpanStart);
+        return invocationInfo is { Success: true, Arguments.Count: 1, NameText: "ConfigureAwait" }
+            && SymbolEqualityComparer.Default.Equals(returnType, semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken));
     }
 
     private static IMethodSymbol GetMethodSymbol(
