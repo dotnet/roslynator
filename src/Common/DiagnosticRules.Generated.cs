@@ -657,6 +657,18 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine, 
             customTags:         []);
 
+        /// <summary>RCS0063</summary>
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBlankLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
+            title:              "Remove unnecessary blank line", 
+            messageFormat:      "Remove unnecessary blank line", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
+            customTags:         []);
+
         /// <summary>RCS1001</summary>
         public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
@@ -962,15 +974,15 @@ namespace Roslynator
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1036</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBlankLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
-            title:              "Remove unnecessary blank line", 
-            messageFormat:      "Remove unnecessary blank line", 
+        public static readonly DiagnosticDescriptor Obsolete_RemoveUnnecessaryBlankLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.Obsolete_RemoveUnnecessaryBlankLine, 
+            title:              "[deprecated] Remove unnecessary blank line", 
+            messageFormat:      "([deprecated] Use RCS0063 instead) Remove unnecessary blank line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
+            helpLinkUri:        DiagnosticIdentifiers.Obsolete_RemoveUnnecessaryBlankLine, 
             customTags:         []);
 
         /// <summary>RCS1037</summary>
