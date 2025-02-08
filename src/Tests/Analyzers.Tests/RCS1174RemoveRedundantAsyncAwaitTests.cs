@@ -1068,4 +1068,36 @@ class C
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Task_Vs_ValueTask()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+class C
+{
+    private async Task<bool> IsNotEmptyAsync(string text)
+    {
+        await Task.Delay(1);
+        return !string.IsNullOrEmpty(text);
+    }
+
+    private void Execute()
+    {
+        IAsyncEnumerable<string> texts = null!;
+        var notEmptyTexts = texts.WhereAwait(async t => await this.IsNotEmptyAsync(t));
+        Console.WriteLine(string.Join(", ", notEmptyTexts.ToEnumerable()));
+    }
+}
+
+public static class Extensions
+{
+    public static IAsyncEnumerable<TSource> WhereAwait<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate) => default;
+    public static IEnumerable<TSource> ToEnumerable<TSource>(this IAsyncEnumerable<TSource> source) => default;
+}
+""");
+    }
 }
