@@ -251,4 +251,23 @@ namespace N
     }
 }");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_IfDirectiveInsideRegion()
+    {
+        await VerifyNoDiagnosticAsync("""
+namespace N
+{
+#region Some region
+
+#if DEBUG
+// Some code
+#else
+// Some code
+#endif
+
+#endregion Some region
+}
+""");
+    }
 }
