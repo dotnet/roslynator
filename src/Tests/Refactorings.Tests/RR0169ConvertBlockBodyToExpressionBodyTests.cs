@@ -18,7 +18,7 @@ class C
 {
     public C()
     [|{
-[||]       M();
+[||]        M();
     }|]
 
     void M() { }
@@ -31,6 +31,60 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+    }
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Constructor_BreakBeforeArrow()
+    {
+        await VerifyRefactoringAsync(@"
+class C
+{
+    public C()
+    [|{
+[||]        M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C()
+        => M();
+
+    void M() { }
+}
+",
+        equivalenceKey: EquivalenceKey.Create(RefactoringId),
+        options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+            .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_Before));
+    }
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Constructor_BreakAfterArrow()
+    {
+        await VerifyRefactoringAsync(@"
+class C
+{
+    public C()
+    [|{
+[||]        M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C() =>
+        M();
+
+    void M() { }
+}
+",
+        equivalenceKey: EquivalenceKey.Create(RefactoringId),
+        options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+            .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_After));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]

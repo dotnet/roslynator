@@ -42,7 +42,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Applicable to: rcs1014
 
 #roslynator_arrow_token_new_line = after|before
-# Applicable to: rcs0032
+# Applicable to: rcs0032, rcs0062, rcs1016
 
 #roslynator_binary_operator_new_line = after|before
 # Applicable to: rcs0027
@@ -51,7 +51,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Applicable to: rcs0060
 
 #roslynator_blank_line_between_closing_brace_and_switch_section = true|false
-# Applicable to: rcs0014, rcs1036
+# Applicable to: rcs0014, rcs0063, rcs1036
 
 #roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: rcs0011
@@ -309,6 +309,14 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs0061.severity = none
 # Options: roslynator_blank_line_between_switch_sections
 
+# Put expression body on its own line
+#dotnet_diagnostic.rcs0062.severity = none
+# Options: roslynator_arrow_token_new_line
+
+# Remove unnecessary blank line
+#dotnet_diagnostic.rcs0063.severity = none
+# Options: roslynator_blank_line_between_closing_brace_and_switch_section
+
 # Add braces (when expression spans over multiple lines)
 #dotnet_diagnostic.rcs1001.severity = suggestion
 
@@ -342,7 +350,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use block body or expression body
 #dotnet_diagnostic.rcs1016.severity = none
-# Options: roslynator_body_style, roslynator_use_block_body_when_declaration_spans_over_multiple_lines, roslynator_use_block_body_when_expression_spans_over_multiple_lines
+# Options: roslynator_arrow_token_new_line, roslynator_body_style, roslynator_use_block_body_when_declaration_spans_over_multiple_lines, roslynator_use_block_body_when_expression_spans_over_multiple_lines
 
 # Add/remove accessibility modifiers
 #dotnet_diagnostic.rcs1018.severity = none
@@ -368,10 +376,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove redundant 'sealed' modifier
 #dotnet_diagnostic.rcs1034.severity = silent
-
-# Remove unnecessary blank line
-#dotnet_diagnostic.rcs1036.severity = suggestion
-# Options: roslynator_blank_line_between_closing_brace_and_switch_section
 
 # Remove trailing white-space
 #dotnet_diagnostic.rcs1037.severity = suggestion

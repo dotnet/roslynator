@@ -12,6 +12,11 @@ public class RCS1016UseExpressionBodyTests : AbstractCSharpDiagnosticVerifier<Us
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
 
+    public override CSharpTestOptions Options
+    {
+        get { return base.Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression); }
+    }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
     public async Task Test_Constructor()
     {
@@ -32,7 +37,59 @@ class C
 
     void M() { }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Constructor_BreakBeforeArrow()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public C()
+    [|{
+        M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C()
+        => M();
+
+    void M() { }
+}
+",
+        options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+            .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_Before));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Constructor_BreakAfterArrow()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public C()
+    [|{
+        M();
+    }|]
+
+    void M() { }
+}
+", @"
+class C
+{
+    public C() =>
+        M();
+
+    void M() { }
+}
+",
+            options: Options.EnableDiagnostic(DiagnosticRules.PutExpressionBodyOnItsOwnLine)
+                .AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, ConfigOptionValues.ArrowTokenNewLine_After));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -55,7 +112,7 @@ class C
 
     void M() { }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -74,7 +131,7 @@ class C
 {
     string M() => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -97,7 +154,7 @@ class C
         x,
         y);
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -122,7 +179,7 @@ class C
             y,
                 z);
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -141,7 +198,7 @@ class C
 {
     void M() => M();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -166,7 +223,7 @@ class C
         string LF() => null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -199,7 +256,7 @@ class C
             y);
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -224,7 +281,7 @@ class C
         void LF() => M();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -243,7 +300,7 @@ class C
 {
     string P => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -273,7 +330,7 @@ class C
 
     string M(string x, string y) => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -314,7 +371,7 @@ class C
 
     string M(string x, string y) => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -355,7 +412,7 @@ class C
 
     string M(string x, string y) => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression).AddAllowedCompilerDiagnosticId("CS0518"));
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -374,7 +431,7 @@ class C
 {
     string this[int index] => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -402,7 +459,7 @@ class C
         set => _f = value;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -421,7 +478,7 @@ class C
 {
     public static C operator !(C value) => value;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -440,7 +497,7 @@ class C
 {
     public static explicit operator C(string value) => new C();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -463,7 +520,7 @@ class C
 
     void M() { }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -482,7 +539,7 @@ class C
 {
     ~C() => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -501,7 +558,7 @@ class C
 {
     string M() => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -520,7 +577,7 @@ class C
 {
     void M() => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -545,7 +602,7 @@ class C
         string LF() => throw new System.NotImplementedException();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -570,7 +627,7 @@ class C
         void LF() => throw new System.NotImplementedException();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -589,7 +646,7 @@ class C
 {
     string P => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -617,7 +674,7 @@ class C
         set => throw new System.NotImplementedException();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -636,7 +693,7 @@ class C
 {
     string this[int index] => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -664,7 +721,7 @@ class C
         set => throw new System.NotImplementedException();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -683,7 +740,7 @@ class C
 {
     public static C operator !(C value) => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -702,7 +759,7 @@ class C
 {
     public static explicit operator C(string value) => throw new System.NotImplementedException();
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -717,7 +774,7 @@ class C
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -731,7 +788,7 @@ class C
         void LF() { }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -744,7 +801,7 @@ class C
     {
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -759,7 +816,7 @@ class C
         M();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -794,7 +851,7 @@ class C
 
     string M() => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -830,7 +887,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -852,7 +909,7 @@ class C
 
     string M() => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
@@ -901,7 +958,7 @@ class C
 
     string _f;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
+", options: Options);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
