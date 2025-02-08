@@ -669,7 +669,7 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
             customTags:         []);
 
-          /// <summary>RCS1001</summary>
+        /// <summary>RCS1001</summary>
         public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
             title:              "Add braces (when expression spans over multiple lines)", 
