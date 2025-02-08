@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1618))
+
 ### Added
 
 - Add analyzer "Put expression body on its own line" [RCS0062](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0062) ([PR](https://github.com/dotnet/roslynator/pull/1593) by @cbersch)
