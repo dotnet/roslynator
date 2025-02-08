@@ -163,6 +163,35 @@ enum E
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_FileScopedNamespace()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+namespace N;
+
+class Foo
+{
+  void M() { }
+}[|
+|]enum Bar
+{
+  A = 0
+}
+""", """
+namespace N;
+
+class Foo
+{
+  void M() { }
+}
+
+enum Bar
+{
+  A = 0
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
     public async Task TestNoDiagnostic_MemberDeclaration_SingleLine()
     {
         await VerifyNoDiagnosticAsync(@"
