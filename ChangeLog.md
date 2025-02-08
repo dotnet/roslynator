@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1618))
 - Fix analyzer [RCS1174](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1174) ([PR](https://github.com/dotnet/roslynator/pull/1619))
 
 ### Added
