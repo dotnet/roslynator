@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Old analyzer still works but is marked as obsolete.
 - Bump Roslyn to 4.12.0 ([PR](https://github.com/dotnet/roslynator/pull/1623))
     - Applies to CLI and testing library.
+- Bump `Microsoft.Build.Locator` to 1.7.8 ([PR](https://github.com/dotnet/roslynator/pull/1622))
 
 ## [4.12.11] - 2025-01-28
 
