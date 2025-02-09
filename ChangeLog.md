@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Put expression body on its own line" [RCS0062](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0062) ([PR](https://github.com/dotnet/roslynator/pull/1593) by @cbersch)
   - Affects analyzer [RCS1016](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1016)
   - Affects refacoring [RR0169](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0169)
+- Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
+    - It's possible to specify a directory path and/or a file name.
 
 ### Changed
 
@@ -32,8 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [CLI] Add support for .NET 9 ([PR](https://github.com/dotnet/roslynator/pull/1605))
-- Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
-  - It's possible to specify a directory path and/or a file name.
 
 ### Fixed
 
