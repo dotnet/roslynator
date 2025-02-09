@@ -593,6 +593,8 @@ public static class SyntaxKindTests
                 case SyntaxKind.AllowsKeyword:
                 case SyntaxKind.RazorContentToken:
                 case SyntaxKind.RefStructConstraint:
+                // new in 4.12.0
+                case SyntaxKind.FieldExpression:
                 {
                     break;
                 }
