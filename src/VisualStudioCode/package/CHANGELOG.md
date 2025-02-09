@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.13.0] - 2025-02-09
+
+### Fixed
+
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1618))
+- Fix analyzer [RCS1174](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1174) ([PR](https://github.com/dotnet/roslynator/pull/1619))
+- Fix analyzer [RCS0010](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0010) ([PR](https://github.com/dotnet/roslynator/pull/1620))
+- Fix analyzer [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([PR](https://github.com/dotnet/roslynator/pull/1621))
+
+### Added
+
+- Add analyzer "Put expression body on its own line" [RCS0062](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0062) ([PR](https://github.com/dotnet/roslynator/pull/1593) by @cbersch)
+    - Affects analyzer [RCS1016](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1016)
+    - Affects refactoring [RR0169](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0169)
+
+### Changed
+
+- Move analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) to Formatting.Analyzers as [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) ([PR](https://github.com/dotnet/roslynator/pull/1600))
+    - Old analyzer still works but is marked as obsolete.
+- Bump Roslyn to 4.12.0 ([PR](https://github.com/dotnet/roslynator/pull/1623))
+    - Applies to CLI and testing library.
+- Bump `Microsoft.Build.Locator` to 1.7.8 ([PR](https://github.com/dotnet/roslynator/pull/1622))
+
 ## [4.12.11] - 2025-01-28
 
 ### Added
