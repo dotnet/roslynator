@@ -89,7 +89,7 @@
     "@types/vscode": "^1.42.0",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.5",
-    "mocha": "^10.1.0",
+    "mocha": "^10.8.2",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4",
     "vscode-test": "^1.2.2"
