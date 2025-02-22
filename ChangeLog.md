@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.13.1] - 2025-02-22
+
 ### Added
 
 - Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
