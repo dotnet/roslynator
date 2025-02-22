@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
+    - It's possible to specify a directory path and/or a file name.
+
 ## [4.13.0] - 2025-02-09
 
 ### Fixed
