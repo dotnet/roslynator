@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
-    - It's possible to specify a directory path and/or a file name.
+  - It's possible to specify a directory path and/or a file name of a test file.
+  - Applies to testing library (Roslynator.Testing.*).
 
 ## [4.13.0] - 2025-02-09
 
