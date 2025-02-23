@@ -21,12 +21,20 @@ public sealed class CompilerDiagnosticFixTestData
         string diagnosticId,
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        string? directoryPath = null,
+        string? fileName = null)
     {
         DiagnosticId = diagnosticId ?? throw new ArgumentNullException(nameof(diagnosticId));
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -36,11 +44,20 @@ public sealed class CompilerDiagnosticFixTestData
     public CompilerDiagnosticFixTestData(
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,
-        string? equivalenceKey = null)
+        string? equivalenceKey = null,
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
+
         DiagnosticId = null!;
     }
 
@@ -49,7 +66,9 @@ public sealed class CompilerDiagnosticFixTestData
             diagnosticId: other.DiagnosticId,
             source: other.Source,
             additionalFiles: other.AdditionalFiles,
-            equivalenceKey: other.EquivalenceKey)
+            equivalenceKey: other.EquivalenceKey,
+            directoryPath: other.DirectoryPath,
+            fileName: other.FileName)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -75,6 +94,16 @@ public sealed class CompilerDiagnosticFixTestData
     /// </summary>
     public string? EquivalenceKey { get; }
 
+    /// <summary>
+    /// Gets the relative directory path.
+    /// </summary>
+    public string? DirectoryPath { get; }
+
+    /// <summary>
+    /// Gets the file name.
+    /// </summary>
+    public string? FileName { get; }
+
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Source}";
 
@@ -86,12 +115,16 @@ public sealed class CompilerDiagnosticFixTestData
         string diagnosticId,
         string source,
         IEnumerable<AdditionalFile> additionalFiles,
-        string equivalenceKey)
+        string equivalenceKey,
+        string directoryPath,
+        string fileName)
     {
         return new(
             diagnosticId: diagnosticId,
             source: source,
             additionalFiles: additionalFiles,
-            equivalenceKey: equivalenceKey);
+            equivalenceKey: equivalenceKey,
+            directoryPath: directoryPath,
+            fileName: fileName);
     }
 }

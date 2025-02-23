@@ -5,143 +5,143 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis
 {
-    public static partial class DiagnosticRules
+    public static partial class CodeAnalysisDiagnosticRules
     {
         /// <summary>RCS9001</summary>
         public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UsePatternMatching, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UsePatternMatching, 
             title:              "Use pattern matching", 
             messageFormat:      "Use pattern matching", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePatternMatching, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UsePatternMatching, 
+            customTags:         []);
 
         /// <summary>RCS9002</summary>
         public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
             title:              "Use property SyntaxNode.SpanStart", 
             messageFormat:      "Use property SyntaxNode.SpanStart", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
+            customTags:         []);
 
         /// <summary>RCS9003</summary>
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UnnecessaryConditionalAccess, 
             title:              "Unnecessary conditional access", 
             messageFormat:      "Unnecessary conditional access", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UnnecessaryConditionalAccess, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccessFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnnecessaryConditionalAccess);
 
         /// <summary>RCS9004</summary>
         public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
             title:              "Call 'Any' instead of accessing 'Count'", 
             messageFormat:      "Call 'Any' instead of accessing 'Count'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
+            customTags:         []);
 
         /// <summary>RCS9005</summary>
         public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnnecessaryNullCheck, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck, 
             title:              "Unnecessary null check", 
             messageFormat:      "Unnecessary null check", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullCheck, 
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS9006</summary>
         public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseElementAccess, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UseElementAccess, 
             title:              "Use element access", 
             messageFormat:      "Use element access", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseElementAccess, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UseElementAccess, 
+            customTags:         []);
 
         /// <summary>RCS9007</summary>
         public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseReturnValue, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UseReturnValue, 
             title:              "Use return value", 
             messageFormat:      "Use return value", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseReturnValue, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UseReturnValue, 
+            customTags:         []);
 
         /// <summary>RCS9008</summary>
         public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
             title:              "Call 'Last' instead of using []", 
             messageFormat:      "Call 'Last' instead of using []", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
+            customTags:         []);
 
         /// <summary>RCS9009</summary>
         public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UnknownLanguageName, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.UnknownLanguageName, 
             title:              "Unknown language name", 
             messageFormat:      "Unknown language name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnknownLanguageName, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UnknownLanguageName, 
+            customTags:         []);
 
         /// <summary>RCS9010</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
             title:              "Specify ExportCodeRefactoringProviderAttribute.Name", 
             messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
+            customTags:         []);
 
         /// <summary>RCS9011</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
+            id:                 CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
             title:              "Specify ExportCodeFixProviderAttribute.Name", 
             messageFormat:      "Specify ExportCodeFixProviderAttribute.Name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
-            customTags:         Array.Empty<string>());
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
+            customTags:         []);
 
     }
 }

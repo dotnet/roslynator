@@ -24,8 +24,8 @@ public sealed class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyze
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.UnnecessaryConditionalAccess,
-                    DiagnosticRules.UnnecessaryConditionalAccessFadeOut);
+                    CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccess,
+                    CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccessFadeOut);
             }
 
             return _supportedDiagnostics;
@@ -114,7 +114,7 @@ public sealed class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyze
         if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
             return;
 
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccessFadeOut, binaryExpression.Right);
+        DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
+        DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UnnecessaryConditionalAccessFadeOut, binaryExpression.Right);
     }
 }

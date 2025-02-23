@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
+    - It's possible to specify a directory path and/or a file name.
+
+## [4.13.0] - 2025-02-09
+
+### Fixed
+
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1618))
+- Fix analyzer [RCS1174](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1174) ([PR](https://github.com/dotnet/roslynator/pull/1619))
+- Fix analyzer [RCS0010](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0010) ([PR](https://github.com/dotnet/roslynator/pull/1620))
+- Fix analyzer [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([PR](https://github.com/dotnet/roslynator/pull/1621))
+
+### Added
+
+- Add analyzer "Put expression body on its own line" [RCS0062](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0062) ([PR](https://github.com/dotnet/roslynator/pull/1593) by @cbersch)
+  - Affects analyzer [RCS1016](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1016)
+  - Affects refactoring [RR0169](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0169)
+
+### Changed
+
+- Move analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) to Formatting.Analyzers as [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) ([PR](https://github.com/dotnet/roslynator/pull/1600))
+  - Old analyzer still works but is marked as obsolete.
+- Bump Roslyn to 4.12.0 ([PR](https://github.com/dotnet/roslynator/pull/1623))
+    - Applies to CLI and testing library.
+- Bump `Microsoft.Build.Locator` to 1.7.8 ([PR](https://github.com/dotnet/roslynator/pull/1622))
+
+## [4.12.11] - 2025-01-28
+
+### Added
+
+- [CLI] Add support for .NET 9 ([PR](https://github.com/dotnet/roslynator/pull/1605))
+
+### Fixed
+
+- Fix refactoring 'Change accessibility' ([RR0186](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0186)) ([PR](https://github.com/dotnet/roslynator/pull/1599))
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1604))
+
+### Changed
+
+- Move `DiagnosticRules` and `DiagnosticIdentifiers` to `Roslynator.Common` ([PR](https://github.com/dotnet/roslynator/pull/1597))
+
+## [4.12.10] - 2024-12-17
+
 ### Fixed
 
 - Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1586))
@@ -16,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update whitespace formatting rules ([PR](https://github.com/dotnet/roslynator/pull/1576))
+- Ensure that diagnostics are not reported with zero length ([PR](https://github.com/dotnet/roslynator/pull/1590))
 
 ## [4.12.9] - 2024-10-25
 

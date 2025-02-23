@@ -18,8 +18,8 @@ public class RCS0012AddBlankLineBetweenSingleLineDeclarationsTests : AbstractCSh
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P1 { get; set; }[||]
-    string P2 { get; set; }
+    string P1 { get; set; }[|
+|]    string P2 { get; set; }
 }
 ", @"
 class C
@@ -37,8 +37,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
-    A = 0,[||]
-    B = 1
+    A = 0,[|
+|]    B = 1
 }
 ", @"
 enum E

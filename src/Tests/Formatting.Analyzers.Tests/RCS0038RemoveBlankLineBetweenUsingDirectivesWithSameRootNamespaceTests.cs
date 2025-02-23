@@ -17,10 +17,10 @@ public class RCS0038RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespaceTe
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-[||]
-using System.Linq;
-[||]
-using System.Threading;
+[|
+|]using System.Linq;
+[|
+|]using System.Threading;
 
 class C
 {
@@ -41,8 +41,8 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-[||]    
-
+    [|
+|]
 using System.Linq;
 
 class C

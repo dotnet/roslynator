@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Roslynator.CSharp;
 
 namespace Roslynator.Documentation;
 

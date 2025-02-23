@@ -29,7 +29,9 @@ public sealed class DiagnosticTestData
         string? diagnosticMessage = null,
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
-        bool alwaysVerifyAdditionalLocations = false)
+        bool alwaysVerifyAdditionalLocations = false,
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
         Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -40,6 +42,12 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
 
         if (Spans.Length > 1
             && !AdditionalSpans.IsEmpty)
@@ -60,7 +68,9 @@ public sealed class DiagnosticTestData
         string? diagnosticMessage = null,
         IFormatProvider? formatProvider = null,
         string? equivalenceKey = null,
-        bool alwaysVerifyAdditionalLocations = false)
+        bool alwaysVerifyAdditionalLocations = false,
+        string? directoryPath = null,
+        string? fileName = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -70,6 +80,13 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+
+        FileSystemVerifier.VerifyDirectoryPath(directoryPath);
+        DirectoryPath = directoryPath;
+
+        FileSystemVerifier.VerifyFileName(fileName);
+        FileName = fileName;
+
         Descriptor = null!;
 
         if (Spans.Length > 1
@@ -89,7 +106,9 @@ public sealed class DiagnosticTestData
             diagnosticMessage: other.DiagnosticMessage,
             formatProvider: other.FormatProvider,
             equivalenceKey: other.EquivalenceKey,
-            alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations)
+            alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations,
+            directoryPath: other.DirectoryPath,
+            fileName: other.FileName)
     {
     }
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -142,6 +161,16 @@ public sealed class DiagnosticTestData
     /// True if additional locations should be always verified.
     /// </summary>
     public bool AlwaysVerifyAdditionalLocations { get; }
+
+    /// <summary>
+    /// Gets the relative directory path.
+    /// </summary>
+    public string? DirectoryPath { get; }
+
+    /// <summary>
+    /// Gets the file name.
+    /// </summary>
+    public string? FileName { get; }
 
     internal ImmutableArray<Diagnostic> GetDiagnostics(DiagnosticDescriptor descriptor, SyntaxTree tree)
     {

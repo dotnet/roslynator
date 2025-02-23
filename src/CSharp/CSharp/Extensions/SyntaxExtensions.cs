@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -16,7 +15,6 @@ using Roslynator.CSharp.SyntaxRewriters;
 using Roslynator.CSharp.SyntaxWalkers;
 using Roslynator.Documentation;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp;
 

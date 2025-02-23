@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -49,9 +50,50 @@ internal readonly struct TriviaBlock
 
     public Location GetLocation()
     {
+        TextSpan span;
+        if (Kind == TriviaBlockKind.BlankLine)
+        {
+            TriviaBlockReader reader = CreateReader();
+            reader.ReadWhile(trivia => !trivia.IsEndOfLineTrivia());
+            reader.ReadWhile(trivia => !trivia.IsEndOfLineTrivia());
+            span = reader.Current.Span;
+        }
+        else
+        {
+            SyntaxTriviaList triviaList = (!First.IsKind(SyntaxKind.None))
+                ? First.GetTrailingTrivia()
+                : Second.GetLeadingTrivia();
+
+            span = triviaList.LastOrDefault(f => f.IsEndOfLineTrivia()).Span;
+
+            if (span.Length == 0)
+            {
+                SyntaxTrivia trivia = triviaList.LastOrDefault();
+
+                if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                    span = trivia.Span;
+            }
+
+            if (span.Length == 0)
+            {
+                if (Second.Span.Length > 0)
+                {
+                    span = new TextSpan(Second.SpanStart, 1);
+                }
+                else if (First.Span.Length > 0)
+                {
+                    span = new TextSpan(First.Span.End - 1, 1);
+                }
+                else
+                {
+                    span = new TextSpan(Position, 0);
+                }
+            }
+        }
+
         return Location.Create(
             (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree,
-            new TextSpan(Position, 0));
+            span);
     }
 
     public TriviaBlockReader CreateReader()
@@ -125,7 +167,7 @@ internal readonly struct TriviaBlock
 
         while (true)
         {
-            SyntaxTrivia trivia = reader.ReadLine();
+            SyntaxTrivia trivia = reader.ReadWhile(trivia => trivia.IsWhitespaceTrivia());
 
             if (trivia.IsDirective)
                 return default;
@@ -169,7 +211,7 @@ internal readonly struct TriviaBlock
                 }
                 case SyntaxKind.SingleLineCommentTrivia:
                 {
-                    if (!reader.Read(SyntaxKind.EndOfLineTrivia))
+                    if (!reader.TryRead(SyntaxKind.EndOfLineTrivia))
                         return default;
 
                     if (first.IsKind(SyntaxKind.None))

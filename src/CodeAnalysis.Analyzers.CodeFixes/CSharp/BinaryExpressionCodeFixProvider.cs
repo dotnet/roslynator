@@ -25,8 +25,8 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount,
-                DiagnosticIdentifiers.UnnecessaryNullCheck);
+                CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount,
+                CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck);
         }
     }
 
@@ -42,7 +42,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount:
+            case CodeAnalysisDiagnosticIdentifiers.CallAnyInsteadOfAccessingCount:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Call 'Any' instead of accessing 'Count'",
@@ -52,7 +52,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
                 break;
             }
-            case DiagnosticIdentifiers.UnnecessaryNullCheck:
+            case CodeAnalysisDiagnosticIdentifiers.UnnecessaryNullCheck:
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Remove unnecessary null check",

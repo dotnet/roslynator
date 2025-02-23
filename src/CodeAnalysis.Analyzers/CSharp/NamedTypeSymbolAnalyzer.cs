@@ -22,9 +22,9 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.UnknownLanguageName,
-                    DiagnosticRules.SpecifyExportCodeFixProviderAttributeName,
-                    DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
+                    CodeAnalysisDiagnosticRules.UnknownLanguageName,
+                    CodeAnalysisDiagnosticRules.SpecifyExportCodeFixProviderAttributeName,
+                    CodeAnalysisDiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
             }
 
             return _supportedDiagnostics;
@@ -94,7 +94,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
         if (attribute is null)
             return;
 
-        if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
+        if (CodeAnalysisDiagnosticRules.UnknownLanguageName.IsEffective(context))
             AnalyzeLanguageName(context, attribute);
     }
 
@@ -105,13 +105,13 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
         if (attribute is null)
             return;
 
-        if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
+        if (CodeAnalysisDiagnosticRules.UnknownLanguageName.IsEffective(context))
             AnalyzeLanguageName(context, attribute);
 
-        if (DiagnosticRules.SpecifyExportCodeFixProviderAttributeName.IsEffective(context)
+        if (CodeAnalysisDiagnosticRules.SpecifyExportCodeFixProviderAttributeName.IsEffective(context)
             && !ContainsNamedArgument(attribute, "Name"))
         {
-            ReportDiagnostic(context, attribute, DiagnosticRules.SpecifyExportCodeFixProviderAttributeName);
+            ReportDiagnostic(context, attribute, CodeAnalysisDiagnosticRules.SpecifyExportCodeFixProviderAttributeName);
         }
     }
 
@@ -122,13 +122,13 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
         if (attribute is null)
             return;
 
-        if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
+        if (CodeAnalysisDiagnosticRules.UnknownLanguageName.IsEffective(context))
             AnalyzeLanguageName(context, attribute);
 
-        if (DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName.IsEffective(context)
+        if (CodeAnalysisDiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName.IsEffective(context)
             && !ContainsNamedArgument(attribute, "Name"))
         {
-            ReportDiagnostic(context, attribute, DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
+            ReportDiagnostic(context, attribute, CodeAnalysisDiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
         }
     }
 
@@ -196,7 +196,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
         {
             if (argumentIndex == i)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnknownLanguageName, arguments[i].Expression);
+                DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UnknownLanguageName, arguments[i].Expression);
                 break;
             }
         }

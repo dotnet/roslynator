@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using Microsoft.CodeAnalysis;
 
 #pragma warning disable RS2008 // Enable analyzer release tracking
@@ -18,7 +17,7 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: true,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 
     public static readonly DiagnosticDescriptor AnalyzerOptionIsObsolete = DiagnosticDescriptorFactory.Create(
         id: CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete,
@@ -29,7 +28,7 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: false,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 
     public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = DiagnosticDescriptorFactory.Create(
         id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
@@ -40,5 +39,5 @@ internal static class CommonDiagnosticRules
         isEnabledByDefault: false,
         description: null,
         helpLinkUri: null,
-        customTags: Array.Empty<string>());
+        customTags: []);
 }

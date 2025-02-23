@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp;
-using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp;
 
@@ -25,7 +24,8 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
                 DiagnosticIdentifiers.PutAttributeListOnItsOwnLine,
-                DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
+                DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine);
         }
     }
 
@@ -59,6 +59,11 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
             case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
             {
                 await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                break;
+            }
+            case DiagnosticIdentifiers.PutExpressionBodyOnItsOwnLine:
+            {
+                await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, increaseIndentation: true).ConfigureAwait(false);
                 break;
             }
         }

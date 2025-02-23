@@ -2,17 +2,16 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
 public class RCS9010SpecifyExportCodeRefactoringProviderAttributeNameTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, AttributeCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName;
+    public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName)]
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"

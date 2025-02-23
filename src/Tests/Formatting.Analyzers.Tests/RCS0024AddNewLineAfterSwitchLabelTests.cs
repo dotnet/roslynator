@@ -24,7 +24,7 @@ class C
 
         switch (s)
         {
-            case "":[||] break;
+            case "":[| |]break;
         }
     }
 }
@@ -58,7 +58,7 @@ class C
         switch (s)
         {
             case "a":
-            case "b":[||] break;
+            case "b":[| |]break;
         }
     }
 }

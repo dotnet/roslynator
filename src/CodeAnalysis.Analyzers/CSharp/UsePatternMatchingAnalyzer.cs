@@ -30,7 +30,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UsePatternMatching);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, CodeAnalysisDiagnosticRules.UsePatternMatching);
 
             return _supportedDiagnostics;
         }
@@ -187,7 +187,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             return;
         }
 
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatching, switchStatement.SwitchKeyword);
+        DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UsePatternMatching, switchStatement.SwitchKeyword);
 
         string GetName()
         {
@@ -320,7 +320,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             if (!CSharpFactory.AreEquivalent(isKindExpression.Expression, castExpression.Expression))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatching, ifStatement.IfKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, CodeAnalysisDiagnosticRules.UsePatternMatching, ifStatement.IfKeyword);
         }
     }
 

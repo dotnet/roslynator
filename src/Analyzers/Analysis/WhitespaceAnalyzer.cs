@@ -22,7 +22,7 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
                     DiagnosticRules.RemoveTrailingWhitespace,
-                    DiagnosticRules.RemoveUnnecessaryBlankLine);
+                    DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine);
             }
 
             return _supportedDiagnostics;
@@ -83,7 +83,7 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.RemoveUnnecessaryBlankLine,
+                        DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine,
                         Location.Create(context.Tree, emptyLines));
                 }
 

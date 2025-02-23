@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -39,9 +40,17 @@ internal static class AccessModifierRefactoring
 
             if (syntaxReferences.Length > 1)
             {
-                ImmutableArray<MemberDeclarationSyntax> memberDeclarations = ImmutableArray.CreateRange(
-                    syntaxReferences,
-                    f => (MemberDeclarationSyntax)f.GetSyntax(context.CancellationToken));
+                ImmutableArray<MemberDeclarationSyntax>.Builder memberDeclarations = ImmutableArray.CreateBuilder<MemberDeclarationSyntax>();
+
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                {
+                    SyntaxNode declaration = await syntaxReference.GetSyntaxAsync(context.CancellationToken).ConfigureAwait(false);
+
+                    if (node.RawKind != declaration.RawKind)
+                        return;
+
+                    memberDeclarations.Add((MemberDeclarationSyntax)declaration);
+                }
 
                 ImmutableArray<CodeAction>.Builder typeDeclarationActions = ImmutableArray.CreateBuilder<CodeAction>();
 
@@ -52,7 +61,7 @@ internal static class AccessModifierRefactoring
                     {
                         typeDeclarationActions.Add(CodeActionFactory.Create(
                             SyntaxFacts.GetText(accessibility),
-                            ct => RefactorAsync(context.Solution, memberDeclarations, accessibility, ct),
+                            ct => RefactorAsync(context.Solution, memberDeclarations.ToImmutable(), accessibility, ct),
                             RefactoringDescriptors.ChangeAccessibility,
                             accessibility.ToString()));
                     }

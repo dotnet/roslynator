@@ -4,9 +4,9 @@
 
 using System;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis
 {
-    public static partial class DiagnosticIdentifiers
+    public static partial class CodeAnalysisDiagnosticIdentifiers
     {
         public const string UsePatternMatching = "RCS9001";
         public const string UsePropertySyntaxNodeSpanStart = "RCS9002";

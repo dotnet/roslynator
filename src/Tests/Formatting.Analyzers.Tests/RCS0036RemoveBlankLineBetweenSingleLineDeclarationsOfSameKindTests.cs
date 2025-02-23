@@ -19,8 +19,8 @@ public class RCS0036RemoveBlankLineBetweenSingleLineDeclarationsOfSameKindTests 
 class C
 {
     string P1 { get; set; }
-[||]
-    string P2 { get; set; }
+[|
+|]    string P2 { get; set; }
 }
 ", @"
 class C
@@ -40,8 +40,8 @@ using System;
 class C
 {
     public event EventHandler E1;
-[||]    
-    
+    [|
+|]    
     public event EventHandler E2;
 }
 ", @"

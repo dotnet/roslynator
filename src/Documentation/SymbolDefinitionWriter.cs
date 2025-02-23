@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Roslynator.CSharp;
 using Roslynator.FindSymbols;
 
 namespace Roslynator.Documentation;

@@ -31,9 +31,9 @@
   
   <PropertyGroup>
     <Version Condition="'$(Version)' == ''">1.0.0</Version>
-    <RoslynatorCliRoslynVersion>4.11.0</RoslynatorCliRoslynVersion>
-    <RoslynatorTestingRoslynVersion>4.11.0</RoslynatorTestingRoslynVersion>
-    <RoslynatorAnalyzersPackageReferenceVersion>4.12.7</RoslynatorAnalyzersPackageReferenceVersion>
+    <RoslynatorCliRoslynVersion>4.12.0</RoslynatorCliRoslynVersion>
+    <RoslynatorTestingRoslynVersion>4.12.0</RoslynatorTestingRoslynVersion>
+    <RoslynatorAnalyzersPackageReferenceVersion>4.12.11</RoslynatorAnalyzersPackageReferenceVersion>
     <RoslynatorCliPackageVersion>$(RoslynatorCliVersion)</RoslynatorCliPackageVersion>
     <RoslynatorPackageVersion>$(Version)</RoslynatorPackageVersion>
     <RoslynatorVersion>$(RoslynatorPackageVersion)</RoslynatorVersion>
@@ -43,7 +43,7 @@
     <RoslynatorCorePackageVersion>$(RoslynatorPackageVersion)</RoslynatorCorePackageVersion>
     <RoslynatorAnalyzersPackageVersion>$(RoslynatorPackageVersion)</RoslynatorAnalyzersPackageVersion>
     <RoslynatorTestingPackageVersion>$(RoslynatorPackageVersion)</RoslynatorTestingPackageVersion>
-    <RoslynatorMicrosoftBuildLocatorVersion>1.6.1</RoslynatorMicrosoftBuildLocatorVersion>
+    <RoslynatorMicrosoftBuildLocatorVersion>1.7.8</RoslynatorMicrosoftBuildLocatorVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCommandLine)' == true">

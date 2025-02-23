@@ -38,62 +38,60 @@ internal static class Program
         ImmutableArray<AnalyzerOptionMetadata> options = metadata.ConfigOptions;
 
         WriteCompilationUnit(
-            @"Refactorings\CSharp\RefactoringDescriptors.Generated.cs",
+            "Refactorings/CSharp/RefactoringDescriptors.Generated.cs",
             RefactoringDescriptorsGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer: comparer));
 
         WriteCompilationUnit(
-            @"Refactorings\CSharp\RefactoringIdentifiers.Generated.cs",
+            "Refactorings/CSharp/RefactoringIdentifiers.Generated.cs",
             RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: false, comparer: comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio\RefactoringsOptionsPage.Generated.cs",
+            "VisualStudio/RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
-        WriteDiagnostics(@"Analyzers\CSharp", metadata.CommonAnalyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
+        WriteDiagnostics("Common", metadata.CommonAnalyzers.Concat(metadata.FormattingAnalyzers), @namespace: "Roslynator", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "DiagnosticRules", identifiersClassName: "DiagnosticIdentifiers");
 
-        WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", metadata.CodeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
-
-        WriteDiagnostics(@"Formatting.Analyzers\CSharp", metadata.FormattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
+        WriteDiagnostics("Common/CodeAnalysis", metadata.CodeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis", categoryName: nameof(DiagnosticCategories.Roslynator), descriptorsClassName: "CodeAnalysisDiagnosticRules", identifiersClassName: "CodeAnalysisDiagnosticIdentifiers");
 
         WriteCompilationUnit(
-            @"CodeFixes\CSharp\CompilerDiagnosticRules.Generated.cs",
+            "CodeFixes/CSharp/CompilerDiagnosticRules.Generated.cs",
             CompilerDiagnosticRulesGenerator.Generate(compilerDiagnostics, comparer: comparer, @namespace: "Roslynator.CSharp"),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
-            @"CodeFixes\CSharp\CodeFixDescriptors.Generated.cs",
+            "CodeFixes/CSharp/CodeFixDescriptors.Generated.cs",
             CodeFixDescriptorsGenerator.Generate(codeFixes.Where(f => !f.IsObsolete), comparer: comparer, @namespace: "Roslynator.CSharp"),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
-            @"CodeFixes\CSharp\CodeFixIdentifiers.Generated.cs",
+            "CodeFixes/CSharp/CodeFixIdentifiers.Generated.cs",
             CodeFixIdentifiersGenerator.Generate(codeFixes, comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio\CodeFixesOptionsPage.Generated.cs",
+            "VisualStudio/CodeFixesOptionsPage.Generated.cs",
             CodeFixesOptionsPageGenerator.Generate());
 
         WriteCompilationUnit(
-            @"CSharp\CSharp\CompilerDiagnosticIdentifiers.Generated.cs",
+            "CSharp/CSharp/CompilerDiagnosticIdentifiers.Generated.cs",
             CompilerDiagnosticIdentifiersGenerator.Generate(compilerDiagnostics, comparer));
 
         WriteCompilationUnit(
-            @"Common\ConfigOptions.Generated.cs",
+            "Common/ConfigOptions.Generated.cs",
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptions(options, metadata.Analyzers),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
-            @"Common\ConfigOptionKeys.Generated.cs",
+            "Common/ConfigOptionKeys.Generated.cs",
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionKeys(options),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
-            @"Common\ConfigOptionValues.Generated.cs",
+            "Common/ConfigOptionValues.Generated.cs",
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionValues(options),
             normalizeWhitespace: false);
 
         File.WriteAllText(
-            Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
+            Path.Combine(rootPath, "VisualStudioCode/package/src/configurationFiles.generated.ts"),
             @"export const configurationFileContent = {
 	roslynatorconfig: `"
                 + EditorConfigCodeAnalysisConfig.FileDefaultContent
@@ -115,8 +113,8 @@ internal static class Program
             IEnumerable<AnalyzerMetadata> analyzers,
             string @namespace,
             string categoryName,
-            string descriptorsClassName = "DiagnosticRules",
-            string identifiersClassName = "DiagnosticIdentifiers")
+            string descriptorsClassName,
+            string identifiersClassName)
         {
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{descriptorsClassName}.Generated.cs"),
