@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.CSharp;
@@ -78,10 +79,6 @@ internal static class Program
             "Common/ConfigOptions.Generated.cs",
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptions(options, metadata.Analyzers),
             normalizeWhitespace: false);
-
-        WriteCompilationUnit(
-            "Common/LegacyConfigOptions.Generated.cs",
-            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateLegacyConfigOptions(metadata.Analyzers));
 
         WriteCompilationUnit(
             "Common/ConfigOptionKeys.Generated.cs",

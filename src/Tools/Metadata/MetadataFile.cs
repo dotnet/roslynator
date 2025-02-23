@@ -42,7 +42,6 @@ public static class MetadataFile
             string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
             IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", id) });
             IEnumerable<LinkMetadata> links = LoadLinks(element);
-            IEnumerable<LegacyAnalyzerOptionMetadata> options = LoadOptions(element, id);
             IEnumerable<AnalyzerConfigOption> configOptions = LoadConfigOptions(element);
             string[] tags = (element.Element("Tags")?.Value ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             AnalyzerStatus status = ParseStatus(element);
@@ -73,8 +72,6 @@ public static class MetadataFile
             analyzer.ConfigOptions.AddRange(configOptions ?? Enumerable.Empty<AnalyzerConfigOption>());
             analyzer.Samples.AddRange(samples ?? Enumerable.Empty<SampleMetadata>());
             analyzer.Links.AddRange(links ?? Enumerable.Empty<LinkMetadata>());
-            analyzer.LegacyOptions.AddRange(options ?? Enumerable.Empty<LegacyAnalyzerOptionMetadata>());
-            analyzer.LegacyOptionAnalyzers.AddRange(analyzer.LegacyOptions.Select(f => f.CreateAnalyzerMetadata(analyzer)));
 
             yield return analyzer;
         }
@@ -161,68 +158,12 @@ public static class MetadataFile
             .Select(f => new LinkMetadata() { Url = f.Element("Url").Value, Text = f.Element("Text")?.Value, Title = f.Element("Title")?.Value });
     }
 
-    private static IEnumerable<LegacyAnalyzerOptionMetadata> LoadOptions(XElement element, string parentId)
-    {
-        return element
-            .Element("Options")?
-            .Elements("Option")
-            .Select(f => LoadOption(f, parentId));
-    }
-
     private static IEnumerable<AnalyzerConfigOption> LoadConfigOptions(XElement element)
     {
         return element
             .Element("ConfigOptions")?
             .Elements("Option")
             .Select(f => new AnalyzerConfigOption("roslynator_" + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
-    }
-
-    private static LegacyAnalyzerOptionMetadata LoadOption(XElement element, string parentId)
-    {
-        string title = element.Element("Title").Value;
-
-        string identifier = element.Attribute("Identifier").Value;
-        string id = element.Element("Id")?.Value;
-        string optionKey = element.Element("OptionKey").Value;
-        string optionValue = element.Element("OptionValue")?.Value;
-        var kind = (LegacyAnalyzerOptionKind)Enum.Parse(typeof(LegacyAnalyzerOptionKind), element.Element("Kind").Value);
-        bool isEnabledByDefault = element.ElementValueAsBooleanOrDefault("IsEnabledByDefault");
-        bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
-        string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
-        string summary = element.Element("Summary")?.Value.NormalizeNewLine();
-        IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", parentId) });
-        bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
-        string[] tags = (element.Element("Tags")?.Value ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-        AnalyzerStatus status = ParseStatus(element);
-
-        string newOptionKey = element.Element("NewOptionKey")?.Value;
-
-        if (newOptionKey?.StartsWith("roslynator_") == false)
-            newOptionKey = "roslynator_" + newOptionKey;
-
-        var analyzerOption = new LegacyAnalyzerOptionMetadata()
-        {
-            Identifier = identifier,
-            Id = id,
-            ParentId = parentId,
-            OptionKey = optionKey,
-            OptionValue = optionValue,
-            NewOptionKey = newOptionKey,
-            Kind = kind,
-            Title = title,
-            IsEnabledByDefault = isEnabledByDefault,
-            SupportsFadeOut = supportsFadeOut,
-            MinLanguageVersion = minLanguageVersion,
-            Summary = summary,
-            Status = status,
-        };
-
-        if (samples is not null)
-            analyzerOption.Samples.AddRange(samples);
-
-        analyzerOption.Tags.AddRange(tags);
-
-        return analyzerOption;
     }
 
     public static IEnumerable<CodeFixMetadata> ReadCodeFixes(string filePath)
