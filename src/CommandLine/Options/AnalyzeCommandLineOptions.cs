@@ -20,9 +20,14 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
     [Option(
         shortName: OptionShortNames.Output,
         longName: "output",
-        HelpText = "Defines path to file that will store reported diagnostics in XML format.",
+        HelpText = "Defines path to file that will store reported diagnostics. The format of the file is determined by the --output-format option, with the default being xml.",
         MetaValue = "<FILE_PATH>")]
     public string Output { get; set; }
+
+    [Option(
+        longName: "output-format",
+        HelpText = "Defines file format of the report written to file. If not specified, xml will be used.")]
+    public string OutputFormat { get; set; }
 
     [Option(
         longName: "report-not-configurable",

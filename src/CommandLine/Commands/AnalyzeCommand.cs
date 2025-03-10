@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Roslynator.CommandLine.Json;
 using Roslynator.CommandLine.Xml;
 using Roslynator.Diagnostics;
 using static Roslynator.Logger;
@@ -96,8 +97,15 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             && analysisResults.Any(f => f.Diagnostics.Any() || f.CompilerDiagnostics.Any()))
         {
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
-
-            DiagnosticXmlSerializer.Serialize(analysisResults, Options.Output, culture);
+            if (Options.OutputFormat == "gitlab")
+            {
+                DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
+            }
+            else
+            {
+                // Default output format is xml
+                DiagnosticXmlSerializer.Serialize(analysisResults, Options.Output, culture);
+            }
         }
     }
 
