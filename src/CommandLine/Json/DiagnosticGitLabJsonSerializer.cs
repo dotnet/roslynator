@@ -7,8 +7,8 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Roslynator.Diagnostics;
 using Roslynator.CommandLine.GitLab;
+using Roslynator.Diagnostics;
 
 namespace Roslynator.CommandLine.Json;
 
