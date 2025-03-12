@@ -1,7 +1,6 @@
-namespace Roslynator.CommandLine.GitLab
+namespace Roslynator.CommandLine.GitLab;
+
+internal sealed class GitLabLocationLines
 {
-    internal sealed class GitLabLocationLines
-    {
-        public int Begin { get; set; }
-    }
+    public int Begin { get; set; }
 }

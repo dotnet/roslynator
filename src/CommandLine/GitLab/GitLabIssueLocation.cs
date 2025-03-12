@@ -1,8 +1,7 @@
-namespace Roslynator.CommandLine.GitLab
+namespace Roslynator.CommandLine.GitLab;
+
+internal sealed class GitLabIssueLocation
 {
-    internal sealed class GitLabIssueLocation
-    {
-        public string Path { get; set; }
-        public GitLabLocationLines Lines { get; set; }
-    }
+    public string Path { get; set; }
+    public GitLabLocationLines Lines { get; set; }
 }
