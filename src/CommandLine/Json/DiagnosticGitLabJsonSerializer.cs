@@ -69,7 +69,7 @@ internal static class DiagnosticGitLabJsonSerializer
             });
         }
 
-        string gitlabreport = JsonConvert.SerializeObject(
+        string report = JsonConvert.SerializeObject(
             reportItems,
             new JsonSerializerSettings()
             {
@@ -81,6 +81,6 @@ internal static class DiagnosticGitLabJsonSerializer
                 },
             });
 
-        File.WriteAllText(filePath, gitlabreport, Encoding.UTF8);
+        File.WriteAllText(filePath, report, Encoding.UTF8);
     }
 }
