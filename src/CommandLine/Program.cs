@@ -869,8 +869,8 @@ internal static class Program
         string directoryPath = Environment.CurrentDirectory;
 
         if (!TryFindFile(
-                Directory.EnumerateFiles(directoryPath, "*.sln", SearchOption.TopDirectoryOnly)
-                    .Concat(Directory.EnumerateFiles(directoryPath, "*.slnx", SearchOption.TopDirectoryOnly)),
+            Directory.EnumerateFiles(directoryPath, "*.sln", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.EnumerateFiles(directoryPath, "*.slnx", SearchOption.TopDirectoryOnly)),
             out string solutionPath))
         {
             WriteLine($"Multiple MSBuild solution files found in '{directoryPath}'", Verbosity.Quiet);
