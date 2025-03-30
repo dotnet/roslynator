@@ -10,6 +10,10 @@ indent_style = space
 [*.{cs,csx}]
 indent_size = 4
 
+[Analyzers.xml]
+indent_size = 2
+trim_trailing_whitespace = false
+
 # https://learn.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/csharp-formatting-options
 
 # New-line options
