@@ -124,6 +124,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Default: 4
 # Applicable to: rcs0056
 
+#roslynator_target_braces_style = both|closing|none|opening
+# Default: none
+
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1260
 
