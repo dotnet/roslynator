@@ -7820,6 +7820,42 @@ string s = """
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1269</Id>
+    <Identifier>FixBracketFormattingOfList</Identifier>
+    <Title>Fix bracket formatting of a list</Title>
+    <MessageFormat>Fix bracket formatting of {0}</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>
+      This analyzer:
+        * adds new line after an opening bracket of method definition or call
+        * adds new line before a closing bracket of method definition or call
+        * aligns the closing bracket with the block containing its opening bracket
+      The analyzer works only for multi-line declarations.
+    </Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void M(object x,
+        object y)
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object x,
+    object y
+)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[Method(xParameter,
+    yParameter);]]></Before>
+        <After><![CDATA[Method(xParameter,
+            yParameter
+        );]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>
