@@ -7826,6 +7826,9 @@ string s = """
     <MessageFormat>Fix bracket formatting of {0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="target_braces_style" />
+    </ConfigOptions>
     <Summary>
       This analyzer:
         * adds new line after an opening bracket of method definition or call
