@@ -97,7 +97,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             && analysisResults.Any(f => f.Diagnostics.Any() || f.CompilerDiagnostics.Any()))
         {
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
-            if (Options.OutputFormat == "gitlab")
+            if (!string.IsNullOrWhiteSpace(Options.OutputFormat) && Options.OutputFormat.Equals("gitlab", StringComparison.CurrentCultureIgnoreCase))
             {
                 DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
             }

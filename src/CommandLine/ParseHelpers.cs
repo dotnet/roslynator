@@ -349,4 +349,27 @@ internal static class ParseHelpers
             return false;
         }
     }
+
+    public static bool TryParseOutputFormat(string value, string defaultValue)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            // Default to XML if no value is provided
+            return true;
+        }
+
+        bool valid = value.Trim().ToLowerInvariant() switch
+        {
+            "gitlab" => true,
+            "xml" => true,
+            _ => false
+        };
+
+        if (!valid)
+        {
+            WriteLine($"Unknown output format '{value}'.", Verbosity.Quiet);
+        }
+
+        return valid;
+    }
 }

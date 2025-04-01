@@ -38,4 +38,9 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
         longName: "report-suppressed-diagnostics",
         HelpText = "Indicates whether suppressed diagnostics should be reported.")]
     public bool ReportSuppressedDiagnostics { get; set; }
+
+    internal bool TryParseOutputFormat(string defaultValue)
+    {
+        return ParseHelpers.TryParseOutputFormat(OutputFormat, defaultValue);
+    }
 }

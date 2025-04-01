@@ -338,6 +338,9 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
+        if (!options.TryParseOutputFormat("xml"))
+            return ExitCodes.Error;
+
         var command = new AnalyzeCommand(options, severityLevel, projectFilter, CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
