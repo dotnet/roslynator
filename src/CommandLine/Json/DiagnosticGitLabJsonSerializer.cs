@@ -38,18 +38,12 @@ internal static class DiagnosticGitLabJsonSerializer
             }
 
             var severity = "minor";
-            switch (diagnostic.Severity)
+            severity = diagnostic.Severity switch
             {
-                case DiagnosticSeverity.Warning:
-                    severity = "major";
-                    break;
-                case DiagnosticSeverity.Error:
-                    severity = "critical";
-                    break;
-                default:
-                    severity = "minor";
-                    break;
-            }
+                DiagnosticSeverity.Warning => "major",
+                DiagnosticSeverity.Error => "critical",
+                _ => "minor",
+            };
 
             string issueFingerPrint = $"{diagnostic.Descriptor.Id}-{diagnostic.Severity}-{location?.Path}-{location?.Lines.Begin}";
             byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(issueFingerPrint));
@@ -65,7 +59,7 @@ internal static class DiagnosticGitLabJsonSerializer
                 Description = diagnostic.Descriptor.Title.ToString(formatProvider),
                 Severity = severity,
                 Location = location,
-                Categories = new string[] { diagnostic.Descriptor.Category },
+                Categories = [diagnostic.Descriptor.Category],
             });
         }
 
