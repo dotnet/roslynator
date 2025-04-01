@@ -26,7 +26,7 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
 
     [Option(
         longName: "output-format",
-        HelpText = "Defines file format of the report written to file. If not specified, xml will be used.")]
+        HelpText = "Defines file format of the report written to file. Supported options are: xml and gitlab, with xml the default if not provided.")]
     public string OutputFormat { get; set; }
 
     [Option(
