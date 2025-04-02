@@ -14,6 +14,16 @@ namespace Roslynator.CommandLine.Json;
 
 internal static class DiagnosticGitLabJsonSerializer
 {
+    private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
+    {
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        NullValueHandling = NullValueHandling.Ignore,
+        ContractResolver = new DefaultContractResolver()
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        },
+    };
+
     public static void Serialize(
         IEnumerable<ProjectAnalysisResult> results,
         string filePath,
@@ -63,17 +73,7 @@ internal static class DiagnosticGitLabJsonSerializer
             });
         }
 
-        string report = JsonConvert.SerializeObject(
-            reportItems,
-            new JsonSerializerSettings()
-            {
-                Formatting = Newtonsoft.Json.Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new DefaultContractResolver()
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                },
-            });
+        string report = JsonConvert.SerializeObject(reportItems, _jsonSerializerSettings);
 
         File.WriteAllText(filePath, report, Encoding.UTF8);
     }
