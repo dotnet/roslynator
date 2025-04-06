@@ -656,10 +656,11 @@ internal static class CodeStyleExtensions
         return context.GetConfigOptions().GetNullConditionalOperatorNewLinePosition(defaultValue);
     }
 
-    public static TargetBracesStyle GetTargetBracesStyle(this SyntaxNodeAnalysisContext context)
-    {
-        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+    public static TargetBracesStyle GetTargetBracesStyle(this SyntaxNodeAnalysisContext context) =>
+        context.GetConfigOptions().GetTargetBracesStyle();
 
+    public static TargetBracesStyle GetTargetBracesStyle(this AnalyzerConfigOptions configOptions)
+    {
         if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TargetBracesStyle, out string rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.TargetBracesStyle_Both, StringComparison.OrdinalIgnoreCase))

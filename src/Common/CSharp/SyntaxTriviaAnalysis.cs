@@ -118,8 +118,18 @@ internal static class SyntaxTriviaAnalysis
             return CSharpFactory.EmptyWhitespace();
 
         TextSpan span = nodeOrToken.Span;
+        FileLinePositionSpan linePositionSpan = tree.GetLineSpan(span, cancellationToken);
 
-        int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
+        SourceText sourceText = tree.GetText(cancellationToken);
+        int lineStartPosition = sourceText.Lines.GetPosition(new LinePosition(linePositionSpan.StartLinePosition.Line, 0));
+
+        // Span starts at the beginning of the line = no indentation
+        if (span.Start == lineStartPosition)
+        {
+            return CSharpFactory.EmptyWhitespace();
+        }
+
+        int lineStartIndex = span.Start - linePositionSpan.StartLinePosition.Character;
 
         SyntaxTriviaList leading = nodeOrToken.GetLeadingTrivia();
 
@@ -205,6 +215,7 @@ internal static class SyntaxTriviaAnalysis
                 || node is AccessorDeclarationSyntax;
         }
     }
+
 
     public static string GetIncreasedIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {

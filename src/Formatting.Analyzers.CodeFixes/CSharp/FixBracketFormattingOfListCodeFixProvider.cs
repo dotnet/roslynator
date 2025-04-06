@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp;
 
@@ -14,10 +20,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp;
 [Shared]
 public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvider
 {
-    private const string Title = "Fix formatting";
+    private const string Title = "Fix bracket formatting";
 
     public override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfList);
+        ImmutableArray.Create(DiagnosticIdentifiers.FixBracketFormattingOfList);
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
@@ -39,7 +45,6 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         case SyntaxKind.AttributeArgumentList:
                         case SyntaxKind.TypeArgumentList:
                         case SyntaxKind.AttributeList:
-                        case SyntaxKind.BaseList:
                         case SyntaxKind.TupleType:
                         case SyntaxKind.TupleExpression:
                         case SyntaxKind.ArrayInitializerExpression:
@@ -71,7 +76,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, parameterList, ListFixMode.Fix, ct),
+                        ct => Fix(parameterList, parameterList.OpenParenToken, parameterList.CloseParenToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -79,7 +84,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, bracketedParameterList, ListFixMode.Fix, ct),
+                        ct => Fix(bracketedParameterList, bracketedParameterList.OpenBracketToken, bracketedParameterList.CloseBracketToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -87,7 +92,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, typeParameterList, ListFixMode.Fix, ct),
+                        ct => Fix(typeParameterList, typeParameterList.LessThanToken, typeParameterList.GreaterThanToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -95,7 +100,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, argumentList, ListFixMode.Fix, ct),
+                        ct => Fix(argumentList, argumentList.OpenParenToken, argumentList.CloseParenToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -103,7 +108,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, bracketedArgumentList, ListFixMode.Fix, ct),
+                        ct => Fix(bracketedArgumentList, bracketedArgumentList.OpenBracketToken, bracketedArgumentList.CloseBracketToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -111,7 +116,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, attributeArgumentList, ListFixMode.Fix, ct),
+                        ct => Fix(attributeArgumentList, attributeArgumentList.OpenParenToken, attributeArgumentList.CloseParenToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -119,7 +124,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, typeArgumentList, ListFixMode.Fix, ct),
+                        ct => Fix(typeArgumentList, typeArgumentList.LessThanToken, typeArgumentList.GreaterThanToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -127,15 +132,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, attributeList, ListFixMode.Fix, ct),
-                        GetEquivalenceKey(diagnostic)
-                    );
-                }
-                case BaseListSyntax baseList:
-                {
-                    return CodeAction.Create(
-                        Title,
-                        ct => CodeFixHelpers.FixListAsync(document, baseList, ListFixMode.Fix, ct),
+                        ct => Fix(attributeList, attributeList.OpenBracketToken, attributeList.CloseBracketToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -143,7 +140,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, tupleType, ListFixMode.Fix, ct),
+                        ct => Fix(tupleType, tupleType.OpenParenToken, tupleType.CloseParenToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -151,7 +148,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, tupleExpression, ListFixMode.Fix, ct),
+                        ct => Fix(tupleExpression, tupleExpression.OpenParenToken, tupleExpression.CloseParenToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -159,7 +156,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 {
                     return CodeAction.Create(
                         Title,
-                        ct => CodeFixHelpers.FixListAsync(document, initializerExpression, ListFixMode.Fix, ct),
+                        ct => Fix(initializerExpression, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken, ct),
                         GetEquivalenceKey(diagnostic)
                     );
                 }
@@ -168,6 +165,87 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                     throw new InvalidOperationException();
                 }
             }
+        }
+
+        async Task<Document> Fix(
+            SyntaxNode listNode,
+            SyntaxToken openNodeOrToken,
+            SyntaxToken closeNodeOrToken,
+            CancellationToken cancellationToken
+        )
+        {
+            AnalyzerConfigOptions configOptions = document.GetConfigOptions(listNode.SyntaxTree);
+            TargetBracesStyle bracesStyle = configOptions.GetTargetBracesStyle();
+
+            if (bracesStyle == TargetBracesStyle.None)
+            {
+                return document;
+            }
+
+            string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
+
+            List<TextChange> textChanges = new ();
+
+            if (bracesStyle.HasFlag(TargetBracesStyle.Opening))
+            {
+                SyntaxToken nextToken = openNodeOrToken.GetNextToken();
+
+                int bracketLine = openNodeOrToken.GetSpanStartLine();
+                int nextTokenLine = nextToken.GetSpanStartLine();
+
+                if (bracketLine == nextTokenLine)
+                {
+                    string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(listNode, configOptions, cancellationToken);
+
+                    textChanges.Add(
+                        new TextChange(
+                            TextSpan.FromBounds(openNodeOrToken.Span.End, nextToken.SpanStart),
+                            endOfLine + indentation
+                        )
+                    );
+                }
+            }
+
+            if (bracesStyle.HasFlag(TargetBracesStyle.Closing))
+            {
+                SyntaxToken previousToken = closeNodeOrToken.GetPreviousToken();
+
+                int bracketLine = closeNodeOrToken.GetSpanStartLine();
+                int previousTokenLine = previousToken.GetSpanStartLine();
+
+                if (bracketLine == previousTokenLine)
+                {
+                    string indentation = SyntaxTriviaAnalysis.DetermineIndentation(listNode, cancellationToken).ToString();
+
+                    textChanges.Add(
+                        new TextChange(
+                            closeNodeOrToken.Span,
+                            endOfLine + indentation + closeNodeOrToken
+                        )
+                    );
+                }
+                else
+                {
+                    SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode);
+                    SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(closeNodeOrToken);
+                    if (listNodeIndent.Span.Length != bracketIndent.Span.Length)
+                    {
+                        TextSpan span =
+                            bracketIndent.Span.Length == 0 // there is no indentation
+                                ? new TextSpan(closeNodeOrToken.Span.Start, 0)
+                                : bracketIndent.Span;
+
+                        textChanges.Add(
+                            new TextChange(
+                                span,
+                                listNodeIndent.ToString()
+                            )
+                        );
+                    }
+                }
+            }
+
+            return await document.WithTextChangesAsync(textChanges, cancellationToken);
         }
     }
 }

@@ -18,58 +18,12 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
     public async Task Test_Singleline_AlignedToParenthesis()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M(
-           object x, object y[|)|] 
-    {
-    }
-}
-", @"
-class C
-{
-    void M(
-           object x, object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Singleline_NoIndentation()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M[|(
-object x, object y)|] 
-    {
-    }
-}
-", @"
-class C
-{
-    void M(
-        object x, object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Singleline_EmptyLine()
-    {
         await VerifyDiagnosticAndFixAsync(
             """
             class C
             {
                 void M[|(
-            object x, object y) |]
+                       object x, object y)|] 
                 {
                 }
             }
@@ -78,7 +32,33 @@ class C
             class C
             {
                 void M(
-                    object x, object y
+                       object x, object y
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Singleline_Unindentated()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+            object x, object y)|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+            object x, object y
                 ) 
                 {
                 }
@@ -90,624 +70,443 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
     public async Task Test_Singleline_Comment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M[|( // x
-    object x, object y) |]
-    {
-    }
-}
-", @"
-class C
-{
-    void M( // x
-        object x, object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Singleline_EmptyLine_Comment()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M[|(
-// x
-object x, object y) |]
-    {
-    }
-}
-", @"
-class C
-{
-    void M(
-// x
-        object x, object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_AlignedToParenthesis()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M()
-    {
-    }
-
-    [Obsolete]
-    void M2(
-            [|object x,
-            object y) |]
-    {
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M()
-    {
-    }
-
-    [Obsolete]
-    void M2(
-        object x,
-        object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_AlignedToParenthesis_WhitespaceAfterParenthesis()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M( [|object x,
-           object y|]) 
-    {
-    }
-}
-", @"
-class C
-{
-    void M( object x,
-           object y
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_FirstParameterNotWrapped()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-namespace N
-{
-    class C
-    {
-        void M([|object x,
-            object y) |]
-        {
-        }
-    }
-}
-", @"
-namespace N
-{
-    class C
-    {
-        void M(object x,
-            object y
-        ) 
-        {
-        }
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_TwoParametersOnSameLine()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M(
-        [|object x,
-        object y,object z) |]
-    {
-    }
-}
-", @"
-class C
-{
-    void M(
-        object x,
-        object y,object z
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_TwoParametersOnSameLine2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M(
-        [|object x,
-        object y, object z,
-        object p4) |]
-    {
-    }
-}
-", @"
-class C
-{
-    void M(
-        object x,
-        object y, object z,
-        object p4
-    ) 
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_Comment()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M( // x
- // x
-    [|object x, // xx
-    object y)|]
-    {
-    }
-}
-", @"
-class C
-{
-    void M( // x
- // x
-    object x, // xx
-    object y
-    )
-    {
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_OpeMultilineLambdaParameter()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(Func<string, string> x)
-    {
-        M([|f =>
-{
-    return null;
-});|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(Func<string, string> x)
-    {
-        M(
-            f =>
-{
-    return null;
-}
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_FirstParameterIsMultilineLambda()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, object y)
-    {
-        M([|f =>
-{
-    return null;
-},
-y);|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, object y)
-    {
-        M(
-            f =>
-{
-    return null;
-},
-y
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_FirstParameterIsMultilineLambda2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, object y)
-    {
-        M([|f =>
-            {
-                return null;
-            },
-y);|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, object y)
-    {
-        M(
-            f =>
-            {
-                return null;
-            },
-y
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_SecondParameterIsMultilineLambdaWithExpressionBody()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M([|x, f => f
-            .ToString()
-            .ToString());|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M(
-            x, f => f
-            .ToString()
-            .ToString()
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_SecondParameterIsMultilineLambdaWithBlockBody()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M([|x, f =>
-        {
-            return f
-                .ToString()
-                .ToString();
-        });|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M(
-            x, f =>
-        {
-            return f
-                .ToString()
-                .ToString();
-        }
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_SecondParameterIsMultilineLambdaWithBlockBody2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M([|x, f => {
-            return f
-                .ToString()
-                .ToString();
-        });|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(object x, Func<string, string> y)
-    {
-        M(
-            x, f => {
-            return f
-                .ToString()
-                .ToString();
-        }
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_MultilineLambda()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, string y)
-    {
-        M([|f =>
-        {
-            string s = null;
-
-            //x
-            return null;
-        }, y);|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(Func<string, string> x, string y)
-    {
-        M(
-            f =>
-        {
-            string s = null;
-
-            //x
-            return null;
-        }, y
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_MultilineLambda2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System;
-
-class C
-{
-    void M(Func<string, string> x)
-    {
-        M([|f =>
-            {
-                return null;
-            });|]
-    }
-}
-", @"
-using System;
-
-class C
-{
-    void M(Func<string, string> x)
-    {
-        M(
-            f =>
-            {
-                return null;
-            }
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_IndentationsDiffer()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M(object x, string y)
-    {
-        M([|x, y.ToString()
-            .ToString());|]
-    }
-}
-", @"
-class C
-{
-    void M(object x, string y)
-    {
-        M(
-            x, y.ToString()
-            .ToString()
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_IndentationsDiffer_Tab()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-	void M(object x, string y)
-	{
-		M([|x, y.ToString()
-			.ToString());|]
-	}
-}
-", @"
-class C
-{
-	void M(object x, string y)
-	{
-		M(
-			x, y.ToString()
-			.ToString()
-		);
-	}
-}
-", options: Options.SetConfigOption("indent_style", "tab"));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_SecondParameterIsAlreadyIndented()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Linq;
-using System.Collections.Generic;
-
-class C
-{
-    void M(string x, IEnumerable<string> y)
-    {
-        M([|x,
-            Enumerable.Empty<string>()
-                .OrderBy(f => f)
-                .Select(f => f)|]
-        );
-    }
-}
-", @"
-using System.Linq;
-using System.Collections.Generic;
-
-class C
-{
-    void M(string x, IEnumerable<string> y)
-    {
-        M(
-            x,
-            Enumerable.Empty<string>()
-                .OrderBy(f => f)
-                .Select(f => f)
-        );
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_ConditionalExpression()
-    {
         await VerifyDiagnosticAndFixAsync(
             """
             class C
             {
-                void M(string x, string y)
+                void M[|( // x
+                object x, object y)|] 
                 {
-                    M([|x, (y != null)
-                        ? y
-                        : "");|]
                 }
             }
             """,
             """
             class C
             {
-                void M(string x, string y)
+                void M( // x
+                object x, object y
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Singleline_EmptyLine_Comment()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+            // x
+            object x, object y)|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+            // x
+            object x, object y
+                ) 
+                {
+                }
+            }
+            """);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_AlignedToParenthesis()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            using System;
+
+            class C
+            {
+                void M()
+                {
+                }
+            
+                [Obsolete]
+                void M2[|(
+                        object x,
+                        object y)|] 
+                {
+                }
+            }
+            """,
+            """
+            using System;
+
+            class C
+            {
+                void M()
+                {
+                }
+            
+                [Obsolete]
+                void M2(
+                        object x,
+                        object y
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_AlignedToParenthesis_WhitespaceAfterParenthesis()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|( object x,
+                       object y)|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                       object y
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_FirstParameterNotWrapped()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            namespace N
+            {
+                class C
+                {
+                    void M[|(object x,
+                        object y)|] 
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            namespace N
+            {
+                class C
+                {
+                    void M(
+                        object x,
+                        object y
+                    ) 
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_TwoParametersOnSameLine()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+                    object x,
+                    object y,object z)|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                    object y,object z
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_ClosingBracket_Indent_Required()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+                    object x,
+                    object y, object z,
+                    object p4
+                    )|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                    object y, object z,
+                    object p4
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_ClosingBracket_Indent_Required2()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+                    object x,
+                    object y, object z,
+                    object p4
+              )|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                    object y, object z,
+                    object p4
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_ClosingBracket_Indent_Required3()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+                    object x,
+                    object y, object z,
+                    object p4
+            )|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                    object y, object z,
+                    object p4
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_ClosingBracket_Indent_Required_with_prio_comment()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|(
+                    object x,
+                    object y, object z,
+                    object p4
+                    // comment
+                    )|] 
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M(
+                    object x,
+                    object y, object z,
+                    object p4
+                    // comment
+                ) 
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_Comment()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M[|( // x
+             // x
+                object x, // xx
+                object y)|]
+                {
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M( // x
+             // x
+                object x, // xx
+                object y
+                )
+                {
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_FirstParameterIsMultilineLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            using System;
+
+            class C
+            {
+                void M(Func<string, string> x, object y)
+                {
+                    M[|(f =>
+            {
+                return null;
+            },
+            y)|];
+                }
+            }
+            """,
+            """
+            using System;
+
+            class C
+            {
+                void M(Func<string, string> x, object y)
                 {
                     M(
-                        x, (y != null)
-                        ? y
-                        : ""
+                        f =>
+            {
+                return null;
+            },
+            y
                     );
                 }
             }
             """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_SecondParameterIsMultilineLambdaWithExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            using System;
+
+            class C
+            {
+                void M(object x, Func<string, string> y)
+                {
+                    M[|(x, f => f
+                        .ToString()
+                        .ToString())|];
+                }
+            }
+            """,
+            """
+            using System;
+
+            class C
+            {
+                void M(object x, Func<string, string> y)
+                {
+                    M(
+                        x, f => f
+                        .ToString()
+                        .ToString()
+                    );
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
+    public async Task Test_Multiline_IndentationsDiffer_Tab()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+            	void M(object x, string y)
+            	{
+            		M[|(x, y.ToString()
+            			.ToString())|];
+            	}
+            }
+            """,
+            """
+            class C
+            {
+            	void M(object x, string y)
+            	{
+            		M(
+            			x, y.ToString()
+            			.ToString()
+            		);
+            	}
+            }
+            """,
+            options: Options.SetConfigOption("indent_style", "tab")
         );
     }
 
@@ -720,9 +519,9 @@ class C
             {
                 void M(string x)
                 {
-                    M([|(x != null)
+                    M[|((x != null)
                 ? x
-                : "");|]
+                : "")|];
                 }
             }
             """,
@@ -751,9 +550,9 @@ class C
             {
                 void M(string x)
                 {
-                    M([|M2(
-                            [|x,
-                            x)|]);|]
+                    M[|(M2[|(
+                            x,
+                            x)|])|];
                 }
             
                 string M2(string x, string y) => null;
@@ -787,9 +586,9 @@ class C
             {
                 void M(string x)
                 {
-                    M([|(x != null)
+                    M[|((x != null)
             ? x
-            : "");|]
+            : "")|];
                 }
             }
             """,
@@ -816,7 +615,7 @@ class C
             """
             class C : B
             {
-                public C(string x, string y) : base([|x, (y != null)
+                public C(string x, string y) : base[|(x, (y != null)
                     ? y
                     : "")|]
                 {
@@ -860,7 +659,7 @@ class C
             class C : B
             {
                 public C(string x, string y)
-                    : base([|x, (y != null)
+                    : base[|(x, (y != null)
                         ? y
                         : "")|]
                 {
@@ -906,11 +705,11 @@ class C
             {
                 void M(string x, string y)
                 {
-                    M([|x, @"
+                    M[|(x, @"
             a
             b
             c
-            ");|]
+            ")|];
                 }
             }
             """,
@@ -941,9 +740,9 @@ class C
 
             class C
             {
-                [Flags, Obsolete(
+                [|[Flags, Obsolete[|(
                     "",
-                    true)]|]
+                    true)|]]|]
                 enum E
                 {
                 }
@@ -954,10 +753,12 @@ class C
 
             class C
             {
-                [Flags, Obsolete(
+                [
+                    Flags, Obsolete(
                     "",
                     true
-                )]
+                    )
+                ]
                 enum E
                 {
                 }
@@ -974,9 +775,9 @@ class C
 
             class C
             {
-                [[|Flags, Obsolete(
+                [|[Flags, Obsolete(
             "",
-            true)]|]
+            true)|]]|]
                 enum E
                 {
                 }
@@ -987,10 +788,12 @@ class C
 
             class C
             {
-                [Flags, Obsolete(
+                [
+                    Flags, Obsolete(
             "",
             true
-                )]
+                    )
+                ]
                 enum E
                 {
                 }
@@ -1006,7 +809,7 @@ class C
             """
             class C
             {
-                void M([|string x, string y
+                void M[|(string x, string y
                     = default(string), string z = default)|]
                 {
                 }
@@ -1033,11 +836,11 @@ class C
             """
             class C
             {
-                private ([|string x, string y,
-                    string z|]) M()
+                private [|(string x, string y,
+                    string z)|] M()
                 {
-                    return ([|null, null,
-                        null|]);
+                    return [|(null, null,
+                        null)|];
                 }
             }
 
@@ -1067,8 +870,8 @@ class C
             """
             class C
             {
-                void M([|(string x, string y,
-                    string z) p)|]
+                void M[|([|(string x, string y,
+                    string z)|] p)|]
                 {
                 }
             }
@@ -1079,7 +882,7 @@ class C
                 void M(
                     (
                         string x, string y,
-                        string z
+                    string z
                     ) p
                 )
                 {
@@ -1098,7 +901,7 @@ class C
             {
                 void M()
                 {
-                    ([|string x,
+                    [|(string x,
                         string y, string z)|] = default((string, string, string));
                 }
             }
@@ -1127,9 +930,9 @@ class C
             {
                 void M()
                 {
-                    var x = new string[] { [|"", default, new string(
+                    var x = new string[] [|{ "", default, new string[|(
                         ' ',
-                        1) };|]
+                        1)|] }|];
                 }
             }
             """,
@@ -1141,7 +944,8 @@ class C
                     var x = new string[] { 
                         "", default, new string(
                         ' ',
-                        1) 
+                        1
+                        )
                     };
                 }
             }
@@ -1161,14 +965,14 @@ class C
             {
                 void M()
                 {
-                    var x = new List<string>([|new string[]
+                    var x = new List<string>[|(new string[]
                         {
                             "",
                             "",
             #if FOO
                             "",
             #endif
-                        }|]);
+                        })|];
                 }
             }
             """,
@@ -1207,9 +1011,9 @@ class C
             {
                 void M()
                 {
-                    string s = string.Concat([|Enumerable.Empty<string>().Select([|f => {
+                    string s = string.Concat[|(Enumerable.Empty<string>().Select[|(f => {
                         return f;
-                    })|]);|]
+                    })|])|];
                 }
             }
             """,
@@ -1229,7 +1033,6 @@ class C
                     );
                 }
             }
-
             """
         );
     }
@@ -1459,3 +1262,9 @@ class C
         );
     }
 }
+
+// Wrapped parentness in method or tuple definition
+// (int a,
+//     int b) Method
+//     (int a,
+//         int b)

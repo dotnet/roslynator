@@ -30,6 +30,8 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
+        // Add if statement
+
         context.RegisterSyntaxNodeAction(f => AnalyzeParameterList(f), SyntaxKind.ParameterList);
         context.RegisterSyntaxNodeAction(f => AnalyzeBracketedParameterList(f), SyntaxKind.BracketedParameterList);
         context.RegisterSyntaxNodeAction(f => AnalyzeTypeParameterList(f), SyntaxKind.TypeParameterList);
@@ -40,7 +42,6 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(f => AnalyzeTypeArgumentList(f), SyntaxKind.TypeArgumentList);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeAttributeList(f), SyntaxKind.AttributeList);
-        context.RegisterSyntaxNodeAction(f => AnalyzeBaseList(f), SyntaxKind.BaseList);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleType(f), SyntaxKind.TupleType);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleExpression(f), SyntaxKind.TupleExpression);
 
@@ -57,96 +58,90 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
     {
         var parameterList = (ParameterListSyntax)context.Node;
 
-        Analyze(context, parameterList.OpenParenToken, parameterList.Parameters);
+        Analyze(context, parameterList.OpenParenToken, parameterList.CloseParenToken, parameterList.Parameters);
     }
 
     private static void AnalyzeBracketedParameterList(SyntaxNodeAnalysisContext context)
     {
         var parameterList = (BracketedParameterListSyntax)context.Node;
 
-        Analyze(context, parameterList.OpenBracketToken, parameterList.Parameters);
+        Analyze(context, parameterList.OpenBracketToken, parameterList.CloseBracketToken, parameterList.Parameters);
     }
 
     private static void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
     {
         var parameterList = (TypeParameterListSyntax)context.Node;
 
-        Analyze(context, parameterList.LessThanToken, parameterList.Parameters);
+        Analyze(context, parameterList.LessThanToken, parameterList.GreaterThanToken, parameterList.Parameters);
     }
 
     private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context)
     {
         var argumentList = (ArgumentListSyntax)context.Node;
 
-        Analyze(context, argumentList.OpenParenToken, argumentList.Arguments);
+        Analyze(context, argumentList.OpenParenToken, argumentList.CloseParenToken, argumentList.Arguments);
     }
 
     private static void AnalyzeBracketedArgumentList(SyntaxNodeAnalysisContext context)
     {
         var argumentList = (BracketedArgumentListSyntax)context.Node;
 
-        Analyze(context, argumentList.OpenBracketToken, argumentList.Arguments);
+        Analyze(context, argumentList.OpenBracketToken, argumentList.CloseBracketToken, argumentList.Arguments);
     }
 
     private static void AnalyzeAttributeArgumentList(SyntaxNodeAnalysisContext context)
     {
         var argumentList = (AttributeArgumentListSyntax)context.Node;
 
-        Analyze(context, argumentList.OpenParenToken, argumentList.Arguments);
+        Analyze(context, argumentList.OpenParenToken, argumentList.CloseParenToken, argumentList.Arguments);
     }
 
     private static void AnalyzeTypeArgumentList(SyntaxNodeAnalysisContext context)
     {
         var argumentList = (TypeArgumentListSyntax)context.Node;
 
-        Analyze(context, argumentList.LessThanToken, argumentList.Arguments);
+        Analyze(context, argumentList.LessThanToken, argumentList.GreaterThanToken, argumentList.Arguments);
     }
 
     private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
     {
         var attributeList = (AttributeListSyntax)context.Node;
 
-        Analyze(context, attributeList.OpenBracketToken, attributeList.Attributes);
-    }
-
-    private static void AnalyzeBaseList(SyntaxNodeAnalysisContext context)
-    {
-        var baseList = (BaseListSyntax)context.Node;
-
-        Analyze(context, baseList.ColonToken, baseList.Types);
+        Analyze(context, attributeList.OpenBracketToken, attributeList.CloseBracketToken, attributeList.Attributes);
     }
 
     private static void AnalyzeTupleType(SyntaxNodeAnalysisContext context)
     {
         var tupleType = (TupleTypeSyntax)context.Node;
 
-        Analyze(context, tupleType.OpenParenToken, tupleType.Elements);
+        Analyze(context, tupleType.OpenParenToken, tupleType.CloseParenToken, tupleType.Elements);
     }
 
     private static void AnalyzeTupleExpression(SyntaxNodeAnalysisContext context)
     {
         var tupleExpression = (TupleExpressionSyntax)context.Node;
 
-        Analyze(context, tupleExpression.OpenParenToken, tupleExpression.Arguments);
+        Analyze(context, tupleExpression.OpenParenToken, tupleExpression.CloseParenToken, tupleExpression.Arguments);
     }
 
     private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
     {
         var initializerExpression = (InitializerExpressionSyntax)context.Node;
 
-        Analyze(context, initializerExpression.OpenBraceToken, initializerExpression.Expressions);
+        Analyze(context, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken, initializerExpression.Expressions);
     }
 
     private static void Analyze<TNode>(
         SyntaxNodeAnalysisContext context,
-        SyntaxNodeOrToken openNodeOrToken,
+        SyntaxToken openNodeOrToken,
+        SyntaxToken closeNodeOrToken,
         SeparatedSyntaxList<TNode> nodes
     )
         where TNode : SyntaxNode
     {
-        TargetBracesStyle style = context.GetTargetBracesStyle();
+        TargetBracesStyle bracesStyle = context.GetTargetBracesStyle();
 
-        if (style == TargetBracesStyle.None)
+        if (bracesStyle == TargetBracesStyle.None)
         {
             return;
         }
@@ -156,346 +151,90 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         if (first is null)
             return;
 
-        TextSpan span = nodes.GetSpan(includeExteriorTrivia: false);
+        SyntaxNode listNode = context.Node;
+        TextSpan listSpan = listNode.GetSpan(includeExteriorTrivia: false);
 
-        if (span.IsSingleLine(first.SyntaxTree))
+        if (listSpan.IsSingleLine(listNode.SyntaxTree))
         {
-            if (!TriviaBlock.FromTrailing(openNodeOrToken).IsWrapped)
-                return;
-
-            int indentationLength = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions()).IncreasedIndentationLength;
-
-            if (indentationLength == 0)
-                return;
-
-            if (ShouldFixIndentation(first.GetLeadingTrivia(), indentationLength))
-                ReportDiagnostic();
-        }
-        else
-        {
-            TextLineCollection lines = null;
-            IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions());
-            int indentationLength = indentationAnalysis.IncreasedIndentationLength;
-
-            if (indentationLength == 0)
-                return;
-
-            for (int i = nodes.Count - 1; i >= 0; i--)
-            {
-                context.CancellationToken.ThrowIfCancellationRequested();
-
-                SyntaxNodeOrToken nodeOrToken = (i == 0)
-                    ? openNodeOrToken
-                    : nodes.GetSeparator(i - 1);
-
-                if (TriviaBlock.FromTrailing(nodeOrToken).IsWrapped)
-                {
-                    if (AnalyzeBlock(nodes, indentationAnalysis, SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken))
-                        return;
-
-                    if (ShouldFixIndentation(nodes[i].GetLeadingTrivia(), indentationLength))
-                    {
-                        ReportDiagnostic();
-                        return;
-                    }
-                }
-                else
-                {
-                    if (nodes.Count > 1
-                        && ShouldWrapAndIndent(context.Node, i))
-                    {
-                        ReportDiagnostic();
-                        return;
-                    }
-
-                    if (AnalyzeBlock(nodes, indentationAnalysis, SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken))
-                        return;
-
-                    lines ??= first.SyntaxTree.GetText().Lines;
-
-                    int lineIndex = lines.IndexOf(span.Start);
-                    if (lineIndex < lines.Count - 1)
-                    {
-                        int lineStartIndex = lines[lineIndex + 1].Start;
-
-                        if (first.Span.Contains(lineStartIndex))
-                        {
-                            SyntaxToken token = first.FindToken(lineStartIndex);
-
-                            if (!token.IsKind(SyntaxKind.None))
-                            {
-                                SyntaxTriviaList leading = token.LeadingTrivia;
-
-                                if (leading.Any())
-                                {
-                                    if (leading.FullSpan.Contains(lineStartIndex))
-                                    {
-                                        SyntaxTrivia trivia = leading.Last();
-
-                                        if (trivia.IsWhitespaceTrivia()
-                                            && trivia.SpanStart == lineStartIndex
-                                            && trivia.Span.Length != indentationLength)
-                                        {
-                                            ReportDiagnostic();
-                                            return;
-                                        }
-                                    }
-                                }
-                                else if (lineStartIndex == token.SpanStart)
-                                {
-                                    ReportDiagnostic();
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            return;
         }
 
-        void ReportDiagnostic()
+        TNode last = nodes.Last();
+
+        if (
+            ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first)
+            || ShouldFixClosingBracket(bracesStyle, listNode, closeNodeOrToken, last)
+        )
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.FixBracketFormattingOfList,
-                Location.Create(first.SyntaxTree, nodes.Span),
-                GetTitle()
+                Location.Create(listNode.SyntaxTree, listSpan),
+                GetTitle(listNode)
             );
         }
+    }
 
-        static bool ShouldFixIndentation(SyntaxTriviaList leading, int indentationLength)
+    private static string GetTitle(SyntaxNode listNode) =>
+        listNode.Kind() switch
         {
-            SyntaxTriviaList.Reversed.Enumerator en = leading.Reverse().GetEnumerator();
+            SyntaxKind.ParameterList
+            or SyntaxKind.BracketedParameterList
+            or SyntaxKind.TypeParameterList
+                => "parameters",
 
-            if (!en.MoveNext())
-                return true;
+            SyntaxKind.ArgumentList
+            or SyntaxKind.BracketedArgumentList
+            or SyntaxKind.AttributeArgumentList
+            or SyntaxKind.TypeArgumentList
+                => "arguments",
 
-            switch (en.Current.Kind())
-            {
-                case SyntaxKind.WhitespaceTrivia:
-                {
-                    if (en.Current.Span.Length != indentationLength)
-                    {
-                        if (!en.MoveNext()
-                            || en.Current.IsEndOfLineTrivia())
-                        {
-                            return true;
-                        }
-                    }
+            SyntaxKind.AttributeList => "attributes",
 
-                    break;
-                }
-                case SyntaxKind.EndOfLineTrivia:
-                {
-                    return true;
-                }
-            }
+            SyntaxKind.TupleType or SyntaxKind.TupleExpression => "a tuple",
 
+            SyntaxKind.ArrayInitializerExpression
+            or SyntaxKind.CollectionInitializerExpression
+            or SyntaxKind.ComplexElementInitializerExpression
+            or SyntaxKind.ObjectInitializerExpression
+                => "an initializer",
+
+            _ => throw new InvalidOperationException()
+        };
+
+    private static bool ShouldFixOpeningBracket(
+        TargetBracesStyle bracesStyle,
+        SyntaxToken leftBracket,
+        SyntaxNode first
+    )
+    {
+        if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
+        {
             return false;
         }
 
-        string GetTitle()
+        return leftBracket.GetSpanStartLine() == first.GetSpanStartLine();
+    }
+
+    private static bool ShouldFixClosingBracket(
+        TargetBracesStyle bracesStyle,
+        SyntaxNode listNode,
+        SyntaxToken rightBracket,
+        SyntaxNode last
+    )
+    {
+        if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
         {
-            switch (context.Node.Kind())
-            {
-                case SyntaxKind.ParameterList:
-                case SyntaxKind.BracketedParameterList:
-                case SyntaxKind.TypeParameterList:
-                    return "parameters";
-                case SyntaxKind.ArgumentList:
-                case SyntaxKind.BracketedArgumentList:
-                case SyntaxKind.AttributeArgumentList:
-                case SyntaxKind.TypeArgumentList:
-                    return "arguments";
-                case SyntaxKind.AttributeList:
-                    return "attributes";
-                case SyntaxKind.BaseList:
-                    return "base types";
-                case SyntaxKind.TupleType:
-                case SyntaxKind.TupleExpression:
-                    return "a tuple";
-                case SyntaxKind.ArrayInitializerExpression:
-                case SyntaxKind.CollectionInitializerExpression:
-                case SyntaxKind.ComplexElementInitializerExpression:
-                case SyntaxKind.ObjectInitializerExpression:
-                    return "an initializer";
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-
-        bool AnalyzeBlock(
-            SeparatedSyntaxList<TNode> nodes,
-            IndentationAnalysis indentationAnalysis,
-            SyntaxKind kind1,
-            SyntaxKind kind2)
-        {
-            if (nodes.Count == 1
-                && nodes[0].IsKind(SyntaxKind.Argument))
-            {
-                BracesBlock block = GetBracesBlock(nodes[0]);
-
-                if (block.Token.IsKind(kind1, kind2))
-                {
-                    SyntaxToken token = block.Token;
-                    SyntaxTriviaList leading = token.LeadingTrivia;
-
-                    if (leading.Any())
-                    {
-                        SyntaxTrivia trivia = leading.Last();
-
-                        if (trivia.IsWhitespaceTrivia()
-                            && trivia.SpanStart == block.LineStartIndex
-                            && trivia.Span.Length != indentationAnalysis.IndentationLength)
-                        {
-                            ReportDiagnostic();
-                        }
-                    }
-                    else if (block.LineStartIndex == token.SpanStart)
-                    {
-                        ReportDiagnostic();
-                    }
-                    return true;
-                }
-            }
-
             return false;
         }
-    }
 
-    internal static BracesBlock GetBracesBlock(SyntaxNode node)
-    {
-        TextLineCollection lines = node.SyntaxTree.GetText().Lines;
-        TextLine line = lines.GetLineFromPosition(node.SpanStart);
-
-        int startIndex = line.End;
-
-        if (!node.FullSpan.Contains(startIndex))
-            return default;
-
-        SyntaxToken openToken = node.FindToken(startIndex);
-        SyntaxNode block = null;
-        var isOpenBraceAtEndOfLine = false;
-
-        if (AnalyzeToken(openToken, isOpen: true))
+        if (rightBracket.GetSpanEndLine() == last.GetSpanEndLine())
         {
-            SyntaxTriviaList trailing = openToken.TrailingTrivia;
-
-            if (trailing.Any()
-                && trailing.Span.Contains(startIndex))
-            {
-                block = openToken.Parent;
-                isOpenBraceAtEndOfLine = true;
-            }
+            return true;
         }
 
-        if (block is null)
-        {
-            startIndex = line.EndIncludingLineBreak;
-            openToken = node.FindToken(startIndex);
-
-            if (AnalyzeToken(openToken, isOpen: true))
-            {
-                SyntaxTriviaList leading = openToken.LeadingTrivia;
-
-                if ((leading.Any() && leading.Span.Contains(startIndex))
-                    || (!leading.Any() && openToken.SpanStart == startIndex))
-                {
-                    block = openToken.Parent;
-                }
-            }
-        }
-
-        if (block is not null)
-        {
-            int endIndex = lines.GetLineFromPosition(node.Span.End).Start;
-            SyntaxToken closeToken = node.FindToken(endIndex);
-
-            if (AnalyzeToken(closeToken, isOpen: false)
-                && object.ReferenceEquals(block, closeToken.Parent))
-            {
-                SyntaxTriviaList leading = closeToken.LeadingTrivia;
-
-                if ((leading.Any() && leading.Span.Contains(endIndex))
-                    || (!leading.Any() && closeToken.SpanStart == endIndex))
-                {
-                    return new BracesBlock(
-                        (isOpenBraceAtEndOfLine) ? closeToken : openToken,
-                        (isOpenBraceAtEndOfLine) ? endIndex : startIndex);
-                }
-            }
-        }
-
-        return default;
-
-        static bool AnalyzeToken(SyntaxToken token, bool isOpen)
-        {
-            if (token.IsKind((isOpen) ? SyntaxKind.OpenBraceToken : SyntaxKind.CloseBraceToken))
-            {
-                if (token.IsParentKind(SyntaxKind.Block)
-                    && (CSharpFacts.IsAnonymousFunctionExpression(token.Parent.Parent.Kind())))
-                {
-                    return true;
-                }
-
-                if (token.IsParentKind(SyntaxKind.SwitchExpression))
-                    return true;
-
-                if (token.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && token.Parent.Parent.IsKind(
-                        SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.AnonymousObjectCreationExpression,
-                        SyntaxKind.ImplicitObjectCreationExpression))
-                {
-                    return true;
-                }
-
-                if (token.IsParentKind(SyntaxKind.ArrayInitializerExpression)
-                    && token.Parent.Parent.IsKind(
-                        SyntaxKind.ArrayCreationExpression,
-                        SyntaxKind.ImplicitArrayCreationExpression))
-                {
-                    return true;
-                }
-            }
-#if ROSLYN_4_7
-            return token.IsKind((isOpen) ? SyntaxKind.OpenBracketToken : SyntaxKind.CloseBracketToken)
-                   && token.IsParentKind(SyntaxKind.CollectionExpression);
-#else
-            return false;
-#endif
-        }
-    }
-
-    internal static bool ShouldWrapAndIndent(SyntaxNode node, int index)
-    {
-        if (index == 0)
-        {
-            if (node.IsKind(SyntaxKind.AttributeList))
-            {
-                return false;
-            }
-            else if (node.IsKind(SyntaxKind.TupleExpression)
-                     && node.Parent is AssignmentExpressionSyntax assignmentExpression
-                     && object.ReferenceEquals(node, assignmentExpression.Left))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    internal readonly struct BracesBlock
-    {
-        public BracesBlock(SyntaxToken token, int lineStartIndex)
-        {
-            Token = token;
-            LineStartIndex = lineStartIndex;
-        }
-
-        public SyntaxToken Token { get; }
-
-        public int LineStartIndex { get; }
+        SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode);
+        SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(rightBracket);
+        return listNodeIndent.Span.Length != bracketIndent.Span.Length;
     }
 }
