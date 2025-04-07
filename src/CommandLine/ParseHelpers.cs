@@ -350,7 +350,7 @@ internal static class ParseHelpers
         }
     }
 
-    public static bool TryParseOutputFormat(string value, string defaultValue)
+    public static bool TryParseOutputFormat(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
