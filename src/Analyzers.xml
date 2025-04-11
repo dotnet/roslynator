@@ -7831,8 +7831,8 @@ string s = """
     </ConfigOptions>
     <Summary>
       This analyzer:
-        * adds new line after an opening bracket of method definition or call
-        * adds new line before a closing bracket of method definition or call
+        * adds new line after an opening bracket of argument/parameter lists and similar lists
+        * adds new line before a closing bracket of argument/parameter lists and similar lists
         * aligns the closing bracket with the block containing its opening bracket
       The analyzer works only for multi-line declarations.
     </Summary>
@@ -7852,9 +7852,10 @@ string s = """
       <Sample>
         <Before><![CDATA[Method(xParameter,
     yParameter);]]></Before>
-        <After><![CDATA[Method(xParameter,
-            yParameter
-        );]]></After>
+        <After><![CDATA[Method(
+    xParameter,
+    yParameter
+);]]></After>
       </Sample>
     </Samples>
   </Analyzer>
