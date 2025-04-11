@@ -30,8 +30,6 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        // Add if statement
-
         context.RegisterSyntaxNodeAction(f => AnalyzeParameterList(f), SyntaxKind.ParameterList);
         context.RegisterSyntaxNodeAction(f => AnalyzeBracketedParameterList(f), SyntaxKind.BracketedParameterList);
         context.RegisterSyntaxNodeAction(f => AnalyzeTypeParameterList(f), SyntaxKind.TypeParameterList);

@@ -1324,9 +1324,3 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
         );
     }
 }
-
-// Wrapped parentness in method or tuple definition
-// (int a,
-//     int b) Method
-//     (int a,
-//         int b)
