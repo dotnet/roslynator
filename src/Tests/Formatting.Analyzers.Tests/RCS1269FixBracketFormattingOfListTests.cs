@@ -775,7 +775,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
 
             class C
             {
-                [|[Flags, Obsolete(
+                [|[Flags, Obsolete[|(
             "",
             true)|]]|]
                 enum E
@@ -837,13 +837,13 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
             class C
             {
                 private [|(string x, string y,
-                    string z)|] M()
+                    string z)|] M[|([|(string a,
+                        string b)|] p)|]
                 {
                     return [|(null, null,
                         null)|];
                 }
             }
-
             """,
             """
             class C
@@ -851,7 +851,12 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
                 private (
                     string x, string y,
                     string z
-                ) M()
+                ) M(
+                    (
+                        string a,
+                        string b
+                    ) p
+                )
                 {
                     return (
                         null, null,
@@ -941,11 +946,11 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
             {
                 void M()
                 {
-                    var x = new string[] { 
+                    var x = new string[] {
                         "", default, new string(
                         ' ',
                         1
-                        )
+                        ) 
                     };
                 }
             }
@@ -1040,18 +1045,19 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
     public async Task TestNoDiagnostic_Singleline()
     {
-        await VerifyNoDiagnosticAsync(@"
-class C
-{
-    void M(object x, object y, object z) 
-    {
-    }
+        await VerifyNoDiagnosticAsync(
+            """
+            class C
+            {
+                void M(object x, object y, object z) 
+                {
+                }
 
-    void M2(object x, object y, object z) 
-    {
-    }
-}
-");
+                void M2(object x, object y, object z) 
+                {
+                }
+            }
+            """);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
@@ -1086,10 +1092,10 @@ class C
             }
 
             var items = Enumerable.Range(0, 10)
-                .Select([|f =>
+                .Select[|(f =>
                 {
                     return f;
-                }|])
+                })|]
                 .Select(f => f);
             """,
             """
@@ -1108,7 +1114,8 @@ class C
                 }
                 )
                 .Select(f => f);
-            """
+            """,
+            options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication))
         );
     }
 
@@ -1117,12 +1124,12 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(
             """
-            Foo.Method(
-                [|foo: new Foo[]
+            Foo.Method[|(
+                foo: new Foo[]
                 {
-                    new Foo(
-                        [|"")|]
-                }|]);
+                    new Foo[|(
+                        "")|]
+                })|];
             """,
             """
             Foo.Method(
@@ -1134,12 +1141,32 @@ class C
                 }
             );
             """,
+            additionalFiles:
+                new (string source, string expectedSource)[]
+                {
+                    (
+                        source:
+                            """
+                            public class Foo
+                            {
+                                public Foo(string v1)
+                                {
+                                }
+                            
+                                internal static void Method(Foo[] foo)
+                                {
+                                }
+                            }
+                            """,
+                        expectedSource: null
+                    )
+                },
             options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication))
         );
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task TestNoDiagnostic_Multiline_ObjectInitializer()
+    public async Task Test_Multiline_ObjectInitializer()
     {
         await VerifyDiagnosticAndFixAsync(
             """
@@ -1153,10 +1180,10 @@ class C
 
                 C M()
                 {
-                    return new C([|new C
+                    return new C[|(new C
                     {
                         P = ""
-                    });|]
+                    })|];
                 }
             }
             """,
@@ -1184,9 +1211,41 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task TestNoDiagnostic_Multiline_CollectionExpression()
+    public async Task Test_Multiline_CollectionExpression()
     {
-        await VerifyNoDiagnosticAsync(
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                public C P { get; set; }
+
+                public string M1(string[] values)
+                {
+                    string x =
+                        P
+                            .M1[|([|[null,
+                                // x
+                                null,
+                            ]|])|]
+                            .ToString();
+
+                    return x;
+                }
+
+                public string M2(string value, string[] values)
+                {
+                    string x =
+                        P
+                            .M2[|(
+                                "", [|[ null,
+                                    // y
+                                    null,]|])|]
+                                .ToString();
+
+                    return x;
+                }
+            }
+            """,
             """
             class C
             {
@@ -1197,10 +1256,12 @@ class C
                     string x =
                         P
                             .M1(
-                            [
+                                [
+                                    null,
                                 // x
                                 null,
-                            ])
+                                ]
+                            )
                             .ToString();
 
                     return x;
@@ -1211,11 +1272,12 @@ class C
                     string x =
                         P
                             .M2(
-                                "",
-                                [
-                                    // x
+                                "", [
                                     null,
-                                ])
+                                    // y
+                                    null,
+                                ]
+                            )
                                 .ToString();
 
                     return x;
@@ -1235,12 +1297,12 @@ class C
             class C
             {
                 string M(string value) =>
-                    M([|value switch
+                    M[|(value switch
                     {
                         "a" => "a",
                         "b" => "b",
                         _ => throw new Exception()
-                    });|]
+                    })|];
             }
             """,
             """

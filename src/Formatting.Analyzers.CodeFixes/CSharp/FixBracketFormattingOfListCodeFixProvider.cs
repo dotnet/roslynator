@@ -49,6 +49,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         case SyntaxKind.TupleExpression:
                         case SyntaxKind.ArrayInitializerExpression:
                         case SyntaxKind.CollectionInitializerExpression:
+                        case SyntaxKind.CollectionExpression:
                         case SyntaxKind.ComplexElementInitializerExpression:
                         case SyntaxKind.ObjectInitializerExpression:
                             return true;
@@ -160,6 +161,14 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         GetEquivalenceKey(diagnostic)
                     );
                 }
+                case CollectionExpressionSyntax collectionExpression:
+                {
+                    return CodeAction.Create(
+                        Title,
+                        ct => Fix(collectionExpression, collectionExpression.OpenBracketToken, collectionExpression.CloseBracketToken, ct),
+                        GetEquivalenceKey(diagnostic)
+                    );
+                }
                 default:
                 {
                     throw new InvalidOperationException();
@@ -211,7 +220,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 SyntaxToken previousToken = closeNodeOrToken.GetPreviousToken();
 
                 int bracketLine = closeNodeOrToken.GetSpanStartLine();
-                int previousTokenLine = previousToken.GetSpanStartLine();
+                int previousTokenLine = previousToken.GetSpanEndLine();
 
                 if (bracketLine == previousTokenLine)
                 {

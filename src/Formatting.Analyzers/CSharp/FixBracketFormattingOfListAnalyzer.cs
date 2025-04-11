@@ -44,6 +44,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(f => AnalyzeAttributeList(f), SyntaxKind.AttributeList);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleType(f), SyntaxKind.TupleType);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleExpression(f), SyntaxKind.TupleExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzeCollectionExpression(f), SyntaxKind.CollectionExpression);
 
         context.RegisterSyntaxNodeAction(
             f => AnalyzeInitializerExpression(f),
@@ -131,6 +132,13 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         Analyze(context, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken, initializerExpression.Expressions);
     }
 
+    private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
+    {
+        var collectionExpression = (CollectionExpressionSyntax)context.Node;
+
+        Analyze(context, collectionExpression.OpenBracketToken, collectionExpression.CloseBracketToken, collectionExpression.Elements);
+    }
+
     private static void Analyze<TNode>(
         SyntaxNodeAnalysisContext context,
         SyntaxToken openNodeOrToken,
@@ -192,6 +200,8 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             SyntaxKind.AttributeList => "attributes",
 
             SyntaxKind.TupleType or SyntaxKind.TupleExpression => "a tuple",
+
+            SyntaxKind.CollectionExpression => "a collection expression",
 
             SyntaxKind.ArrayInitializerExpression
             or SyntaxKind.CollectionInitializerExpression
