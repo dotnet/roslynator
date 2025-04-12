@@ -110,7 +110,10 @@ internal static class SyntaxTriviaAnalysis
         return IndentationAnalysis.Create(node, configOptions, cancellationToken);
     }
 
-    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default)
+    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default) =>
+        DetermineIndentation(nodeOrToken, true, cancellationToken);
+
+    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, bool searchInAccessors, CancellationToken cancellationToken = default)
     {
         SyntaxTree tree = nodeOrToken.SyntaxTree;
 
@@ -118,18 +121,8 @@ internal static class SyntaxTriviaAnalysis
             return CSharpFactory.EmptyWhitespace();
 
         TextSpan span = nodeOrToken.Span;
-        FileLinePositionSpan linePositionSpan = tree.GetLineSpan(span, cancellationToken);
 
-        SourceText sourceText = tree.GetText(cancellationToken);
-        int lineStartPosition = sourceText.Lines.GetPosition(new LinePosition(linePositionSpan.StartLinePosition.Line, 0));
-
-        // Span starts at the beginning of the line = no indentation
-        if (span.Start == lineStartPosition)
-        {
-            return CSharpFactory.EmptyWhitespace();
-        }
-
-        int lineStartIndex = span.Start - linePositionSpan.StartLinePosition.Character;
+        int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
 
         SyntaxTriviaList leading = nodeOrToken.GetLeadingTrivia();
 
@@ -181,7 +174,7 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        if (!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
+        if (searchInAccessors &&!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
         {
             node = node.Parent;
 

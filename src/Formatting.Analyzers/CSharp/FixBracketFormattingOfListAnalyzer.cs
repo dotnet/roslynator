@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -152,6 +153,8 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             return;
         }
 
+        CancellationToken cancellationToken = context.CancellationToken;
+
         TNode first = nodes.FirstOrDefault();
 
         if (first is null)
@@ -168,8 +171,8 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         TNode last = nodes.Last();
 
         if (
-            ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first)
-            || ShouldFixClosingBracket(bracesStyle, listNode, closeNodeOrToken, last)
+            ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first, cancellationToken)
+            || ShouldFixClosingBracket(bracesStyle, listNode, closeNodeOrToken, last, cancellationToken)
         )
         {
             DiagnosticHelpers.ReportDiagnostic(
@@ -213,7 +216,8 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
     private static bool ShouldFixOpeningBracket(
         TargetBracesStyle bracesStyle,
         SyntaxToken leftBracket,
-        SyntaxNode first
+        SyntaxNode first,
+        CancellationToken cancellationToken
     )
     {
         if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
@@ -221,14 +225,15 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             return false;
         }
 
-        return leftBracket.GetSpanStartLine() == first.GetSpanStartLine();
+        return leftBracket.GetSpanStartLine(cancellationToken) == first.GetSpanStartLine(cancellationToken);
     }
 
     private static bool ShouldFixClosingBracket(
         TargetBracesStyle bracesStyle,
         SyntaxNode listNode,
         SyntaxToken rightBracket,
-        SyntaxNode last
+        SyntaxNode last,
+        CancellationToken cancellationToken
     )
     {
         if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
@@ -236,13 +241,13 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             return false;
         }
 
-        if (rightBracket.GetSpanEndLine() == last.GetSpanEndLine())
+        if (rightBracket.GetSpanEndLine(cancellationToken) == last.GetSpanEndLine(cancellationToken))
         {
             return true;
         }
 
-        SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode);
-        SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(rightBracket);
+        SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode, searchInAccessors: false, cancellationToken);
+        SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(rightBracket, searchInAccessors: false, cancellationToken);
         return listNodeIndent.Span.Length != bracketIndent.Span.Length;
     }
 }

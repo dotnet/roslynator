@@ -199,8 +199,8 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
             {
                 SyntaxToken nextToken = openNodeOrToken.GetNextToken();
 
-                int bracketLine = openNodeOrToken.GetSpanStartLine();
-                int nextTokenLine = nextToken.GetSpanStartLine();
+                int bracketLine = openNodeOrToken.GetSpanStartLine(cancellationToken);
+                int nextTokenLine = nextToken.GetSpanStartLine(cancellationToken);
 
                 if (bracketLine == nextTokenLine)
                 {
@@ -219,12 +219,12 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
             {
                 SyntaxToken previousToken = closeNodeOrToken.GetPreviousToken();
 
-                int bracketLine = closeNodeOrToken.GetSpanStartLine();
-                int previousTokenLine = previousToken.GetSpanEndLine();
+                int bracketLine = closeNodeOrToken.GetSpanStartLine(cancellationToken);
+                int previousTokenLine = previousToken.GetSpanEndLine(cancellationToken);
 
                 if (bracketLine == previousTokenLine)
                 {
-                    string indentation = SyntaxTriviaAnalysis.DetermineIndentation(listNode, cancellationToken).ToString();
+                    string indentation = SyntaxTriviaAnalysis.DetermineIndentation(listNode, searchInAccessors: false, cancellationToken).ToString();
 
                     textChanges.Add(
                         new TextChange(
@@ -235,8 +235,8 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 }
                 else
                 {
-                    SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode);
-                    SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(closeNodeOrToken);
+                    SyntaxTrivia listNodeIndent = SyntaxTriviaAnalysis.DetermineIndentation(listNode, searchInAccessors: false, cancellationToken);
+                    SyntaxTrivia bracketIndent = SyntaxTriviaAnalysis.DetermineIndentation(closeNodeOrToken, searchInAccessors: false, cancellationToken);
                     if (listNodeIndent.Span.Length != bracketIndent.Span.Length)
                     {
                         TextSpan span =
