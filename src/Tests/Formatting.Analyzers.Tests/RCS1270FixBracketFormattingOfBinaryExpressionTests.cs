@@ -9,7 +9,7 @@ using Xunit;
 namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS1270FixBracketFormattingOfBinaryExpressionTests 
-    : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer, BinaryExpressionCodeFixProvider>
+    : AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, BinaryExpressionCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfBinaryExpression;
 
