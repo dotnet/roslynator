@@ -69,7 +69,7 @@ internal static class DiagnosticGitLabJsonSerializer
                 Description = diagnostic.Descriptor.Title.ToString(formatProvider),
                 Severity = severity,
                 Location = location,
-                Categories = [diagnostic.Descriptor.Category],
+                Categories = new string[] { diagnostic.Descriptor.Category },
             });
         }
 
