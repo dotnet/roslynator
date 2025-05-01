@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [4.14.0] - 2025-04-07
+### Added
 
 - [CLI] Add support for GitLab analyzer reports ([PR](https://github.com/dotnet/roslynator/pull/1633))
 
