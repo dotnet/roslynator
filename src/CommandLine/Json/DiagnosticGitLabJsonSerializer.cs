@@ -56,7 +56,14 @@ internal static class DiagnosticGitLabJsonSerializer
             };
 
             string issueFingerPrint = $"{diagnostic.Descriptor.Id}-{diagnostic.Severity}-{location?.Path}-{location?.Lines.Begin}";
-            byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(issueFingerPrint));
+            byte[] source = Encoding.UTF8.GetBytes(issueFingerPrint);
+            byte[] hashBytes;
+#if NETFRAMEWORK
+            using (var sha256 = SHA256.Create())
+                hashBytes = sha256.ComputeHash(source);
+#else
+            hashBytes = SHA256.HashData(source);
+#endif
             issueFingerPrint = BitConverter.ToString(hashBytes)
                 .Replace("-", "")
                 .ToLowerInvariant();
