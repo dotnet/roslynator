@@ -6489,24 +6489,6 @@ else
     </Samples>
   </Analyzer>
   <Analyzer>
-    <Id>RCS1219</Id>
-    <Identifier>CallSkipAndAnyInsteadOfCount</Identifier>
-    <Status>Disabled</Status>
-    <Title>Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'</Title>
-    <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Samples>
-      <Sample>
-        <Before><![CDATA[if (enumerable.Count() > x)
-{
-}]]></Before>
-        <After><![CDATA[if (enumerable.Skip(x).Any())
-{
-}]]></After>
-      </Sample>
-    </Samples>
-  </Analyzer>
-  <Analyzer>
     <Id>RCS1220</Id>
     <Identifier>UsePatternMatchingInsteadOfIsAndCast</Identifier>
     <Title>Use pattern matching instead of combination of 'is' operator and cast operator</Title>
