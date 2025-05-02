@@ -36,8 +36,8 @@ public sealed class DocumentationModel
         Assemblies = ImmutableArray.CreateRange(assemblies);
         Filter = filter;
 
-        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>(SymbolEqualityComparer.Default);
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>(SymbolEqualityComparer.Default);
 
         if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
@@ -52,8 +52,8 @@ public sealed class DocumentationModel
         Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
         Filter = filter;
 
-        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>(SymbolEqualityComparer.Default);
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>(SymbolEqualityComparer.Default);
 
         if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
@@ -155,7 +155,7 @@ public sealed class DocumentationModel
 
     public IEnumerable<INamedTypeSymbol> GetExtendedExternalTypes()
     {
-        return Iterator().Distinct();
+        return Iterator().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 
         IEnumerable<INamedTypeSymbol> Iterator()
         {
@@ -433,7 +433,15 @@ public sealed class DocumentationModel
             return Compilations[0];
 
         if (_compilationMap is null)
-            Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
+            Interlocked.CompareExchange(
+                ref _compilationMap,
+                Compilations.ToImmutableDictionary<Compilation, IAssemblySymbol, Compilation>(
+                    f => f.Assembly,
+                    f => f,
+                    SymbolEqualityComparer.Default
+                ),
+                null
+            );
 
         return _compilationMap[assembly];
     }

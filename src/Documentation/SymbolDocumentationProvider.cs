@@ -32,8 +32,8 @@ public sealed class SymbolDocumentationProvider
         Compilations = compilations.ToImmutableArray();
         Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
 
-        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>(SymbolEqualityComparer.Default);
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>(SymbolEqualityComparer.Default);
 
         if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
@@ -196,7 +196,15 @@ public sealed class SymbolDocumentationProvider
     private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
     {
         if (_assemblyToReferenceMap is null)
-            Interlocked.CompareExchange(ref _assemblyToReferenceMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f.GetMetadataReference(f.Assembly)), null);
+            Interlocked.CompareExchange(
+                ref _assemblyToReferenceMap,
+                Compilations.ToImmutableDictionary<Compilation, IAssemblySymbol, MetadataReference>(
+                    f => f.Assembly,
+                    f => f.GetMetadataReference(f.Assembly),
+                    keyComparer: SymbolEqualityComparer.Default
+                ),
+                null
+            );
 
         if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))
             return metadataReference;
