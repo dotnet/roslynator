@@ -195,6 +195,160 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_5()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if [|(F()
+                        || F()
+                        || F())|]
+                    {
+                    }
+                }
+
+                bool F() => true;
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (
+                        F()
+                        && F()
+                        && F()
+                    )
+                    {
+                    }
+                }
+
+                bool F() => true;
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_6()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    while [|(x
+                        || y
+                        || z)|]
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    while (
+                        x
+                        && y
+                        && z
+                    )
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_7()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    do {}
+                    while [|(x
+                        || y
+                        || z)|];
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    do {}
+                    while (
+                        x
+                        || y
+                        || z
+                    );
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task NoDiagnostic_inside_for()
+    {
+        await VerifyNoDiagnosticAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    for (int i = 0; 
+                        x || y || z; i++)
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(
@@ -234,6 +388,129 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                     bool z = false;
 
                     if (x && y && z)
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Test_Expression_in_unnecessary_parentheses()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if [|([|(x
+                        || y)|])|]
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (
+                        (
+                            x
+                            || y
+                        )
+                    )
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Test_Expression_in_unnecessary_parentheses2()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if [|(
+                        (x || y))|]
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (
+                        (x || y)
+                    )
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Test_Expression_in_unnecessary_parentheses3()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if [|(
+                        (((x || y))))|]
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (
+                        (((x || y)))
+                    )
                     {
                     }
                 }
