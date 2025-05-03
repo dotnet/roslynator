@@ -96,12 +96,14 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
             return;
         }
 
+        var anyFirstDescendant = parent.DescendantNodesAndTokens();
+
         if (
             ShouldFixOpeningBracket(bracesStyle, openBracket.Value, left, cancellationToken)
             || ShouldFixClosingBracket(bracesStyle, parent, closeBracket.Value, right, cancellationToken)
         )
         {
-            DiagnosticHelpers.ReportDiagnosticIfEffective(
+            DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.FixBracketFormattingOfBinaryExpression,
                 Location.Create(
@@ -120,7 +122,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
     )
     {
         SyntaxNode? parent = syntaxNode.FirstAncestor<SyntaxNode>();
-        while (parent != null)
+        //while (parent != null)
         {
             parent = parent.FirstAncestor<SyntaxNode>();
             switch (parent)
