@@ -158,7 +158,9 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         TNode first = nodes.FirstOrDefault();
 
         if (first is null)
+        {
             return;
+        }
 
         SyntaxNode listNode = context.Node;
         TextSpan listSpan = listNode.GetSpan(includeExteriorTrivia: false);

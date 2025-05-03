@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests;
 
-public class RCS1270FixBracketFormattingOfBinaryExpressionTests 
+public class RCS1270FixBracketFormattingOfBinaryExpressionTests
     : AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, BinaryExpressionCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfBinaryExpression;
@@ -22,7 +22,7 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
         await VerifyDiagnosticAndFixAsync(
             """
             class C
-            {
+            { 
                 void M()
                 {
                     bool x = false;
@@ -90,6 +90,55 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                     bool z = false;
 
                     if (
+                        x
+                        && y
+                        && z
+                    )
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_3()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (x && y)
+                    {
+                    }
+                    else if [|(x
+                        && y
+                        && z)|]
+                    {
+                    }
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (x && y)
+                    {
+                    }
+                    else if (
                         x
                         && y
                         && z
@@ -216,7 +265,7 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                     bool w = false;
                     bool v = false;
 
-                    bool result = (x
+                    bool result = [|(x
                         && [|(y
                             || w)|]
                         && (z || v))|];
@@ -242,6 +291,55 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                         )
                         && (z || v)
                     );
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_not_if_case2()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+                    bool w = false;
+                    bool v = false;
+
+                    bool result = 
+                        [|(x
+                            && [|(y
+                                || w)|]
+                            && (z || v))|];
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+                    bool w = false;
+                    bool v = false;
+
+                    bool result = 
+                        (
+                            x
+                            && (
+                                y
+                                || w
+                            )
+                            && (z || v)
+                        );
                 }
             }
             """

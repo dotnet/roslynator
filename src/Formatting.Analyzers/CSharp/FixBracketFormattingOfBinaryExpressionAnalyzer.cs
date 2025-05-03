@@ -1,8 +1,13 @@
-﻿using System.Collections.Immutable;
+﻿#nullable enable
+
+using System;
+using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
@@ -57,29 +62,127 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
 
     private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
     {
-        var binaryExpression = (BinaryExpressionSyntax)context.Node;
+        TargetBracesStyle bracesStyle = context.GetTargetBracesStyle();
+
+        if (bracesStyle == TargetBracesStyle.None)
+        {
+            return;
+        }
+
+        CancellationToken cancellationToken = context.CancellationToken;
+
+        BinaryExpressionSyntax binaryExpression = (BinaryExpressionSyntax)context.Node;
 
         ExpressionSyntax left = binaryExpression.Left;
 
         if (left.IsMissing)
+        {
             return;
+        }
 
         ExpressionSyntax right = binaryExpression.Right;
 
         if (right.IsMissing)
-            return;
-
-        NewLinePosition newLinePosition = context.GetBinaryExpressionNewLinePosition();
-
-        TriviaBlock block = TriviaBlock.FromSurrounding(binaryExpression.OperatorToken, right, newLinePosition);
-
-        if (block.Success)
         {
-            DiagnosticHelpers.ReportDiagnostic(
+            return;
+        }
+
+        SyntaxToken? openBracket;
+        SyntaxToken? closeBracket;
+        SyntaxNode? parent = FindBrackets(right, out openBracket, out closeBracket);
+
+        if (parent == null || parent.IsSingleLine() || openBracket is null || closeBracket is null)
+        {
+            return;
+        }
+
+        if (
+            ShouldFixOpeningBracket(bracesStyle, openBracket.Value, left, cancellationToken)
+            || ShouldFixClosingBracket(bracesStyle, parent, closeBracket.Value, right, cancellationToken)
+        )
+        {
+            DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,
                 DiagnosticRules.FixBracketFormattingOfBinaryExpression,
-                block.GetLocation(),
-                (block.First.IsToken) ? "before" : "after");
+                Location.Create(
+                    parent.SyntaxTree,
+                    TextSpan.FromBounds(openBracket.Value.SpanStart, closeBracket.Value.Span.End)
+                ),
+                GetTitle(parent)
+            );
         }
+    }
+
+    private static SyntaxNode? FindBrackets(
+        SyntaxNode syntaxNode,
+        out SyntaxToken? openBracket,
+        out SyntaxToken? closeBracket
+    )
+    {
+        SyntaxNode? parent = syntaxNode.FirstAncestor<SyntaxNode>();
+        while (parent != null)
+        {
+            parent = parent.FirstAncestor<SyntaxNode>();
+            switch (parent)
+            {
+                case IfStatementSyntax ifStatement:
+                    openBracket = ifStatement.OpenParenToken;
+                    closeBracket = ifStatement.CloseParenToken;
+                    return parent;
+            }
+        }
+
+        openBracket = null;
+        closeBracket = null;
+        return null;
+    }
+
+    private static string GetTitle(SyntaxNode listNode) =>
+        listNode.Kind() switch
+        {
+            SyntaxKind.IfStatement
+                => "an 'if' statement",
+
+            _ => throw new InvalidOperationException()
+        };
+
+    private static bool ShouldFixOpeningBracket(
+        TargetBracesStyle bracesStyle,
+        SyntaxToken leftBracket,
+        SyntaxNode first,
+        CancellationToken cancellationToken
+    )
+    {
+        if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
+        {
+            return false;
+        }
+
+        return leftBracket.GetSpanStartLine(cancellationToken) == first.GetSpanStartLine(cancellationToken);
+    }
+
+    private static bool ShouldFixClosingBracket(
+        TargetBracesStyle bracesStyle,
+        SyntaxNode listNode,
+        SyntaxToken rightBracket,
+        SyntaxNode last,
+        CancellationToken cancellationToken
+    )
+    {
+        if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
+        {
+            return false;
+        }
+
+        if (rightBracket.GetSpanEndLine(cancellationToken) == last.GetSpanEndLine(cancellationToken))
+        {
+            return true;
+        }
+
+        SyntaxTrivia listNodeIndent =
+            SyntaxTriviaAnalysis.DetermineIndentation(listNode, searchInAccessors: false, cancellationToken);
+        SyntaxTrivia bracketIndent =
+            SyntaxTriviaAnalysis.DetermineIndentation(rightBracket, searchInAccessors: false, cancellationToken);
+        return listNodeIndent.Span.Length != bracketIndent.Span.Length;
     }
 }
