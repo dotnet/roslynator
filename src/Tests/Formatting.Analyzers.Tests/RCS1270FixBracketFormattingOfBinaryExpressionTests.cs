@@ -689,4 +689,63 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
             """
         );
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Inserts_new_line_Before_and_After_binary_expression_for_ternary_operator()
+    {
+        await VerifyDiagnosticAndFixAsync(
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+                    bool w = false;
+                    bool v = false;
+
+                    bool result = 
+                        [|(x
+                            && [|(y
+                                || w)|])|]
+                        ? [|(z 
+                            || v)|]
+                        : [|(x 
+                            && y)|];
+                }
+            }
+            """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+                    bool w = false;
+                    bool v = false;
+
+                    bool result = 
+                        (
+                            x
+                            && (
+                                y
+                                || w
+                            )
+                        )
+                        ? (
+                            z 
+                            || v
+                        )
+                        : (
+                            x 
+                            && y
+                        );
+                }
+            }
+            """
+        );
+    }
 }
