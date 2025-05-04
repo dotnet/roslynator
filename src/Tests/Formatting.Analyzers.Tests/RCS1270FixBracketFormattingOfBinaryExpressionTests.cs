@@ -9,7 +9,7 @@ using Xunit;
 namespace Roslynator.Formatting.CSharp.Tests;
 
 public class RCS1270FixBracketFormattingOfBinaryExpressionTests
-    : AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, BinaryExpressionCodeFixProvider>
+    : AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, FixBracketFormattingOfBinaryExpressionFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfBinaryExpression;
 
@@ -22,7 +22,7 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
         await VerifyDiagnosticAndFixAsync(
             """
             class C
-            { 
+            {
                 void M()
                 {
                     bool x = false;
@@ -183,8 +183,8 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
 
                     if (
                         x
-                        && y
-                        && z
+                        || y
+                        || z
                     )
                     {
                     }
@@ -228,8 +228,8 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
 
                     if (
                         F()
-                        && F()
-                        && F()
+                        || F()
+                        || F()
                     )
                     {
                     }
@@ -273,8 +273,8 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
 
                     while (
                         x
-                        && y
-                        && z
+                        || y
+                        || z
                     )
                     {
                     }
@@ -410,7 +410,7 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                     bool z = false;
 
                     if [|([|(x
-                        || y)|])|]
+                            || y)|])|]
                     {
                     }
                 }
@@ -499,6 +499,30 @@ public class RCS1270FixBracketFormattingOfBinaryExpressionTests
                 }
             }
             """,
+            """
+            class C
+            {
+                void M()
+                {
+                    bool x = false;
+                    bool y = false;
+                    bool z = false;
+
+                    if (
+                        (((x || y)))
+                    )
+                    {
+                    }
+                }
+            }
+            """
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
+    public async Task Test_NoDiagnostic_in_case_of_unnecessary_parentheses()
+    {
+        await VerifyNoDiagnosticAsync(
             """
             class C
             {
