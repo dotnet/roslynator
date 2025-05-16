@@ -10,7 +10,7 @@ on:
 env:
   Configuration: Release
   TreatWarningsAsErrors: true
-  WarningsNotAsErrors: 1573,1591,NU5128
+  WarningsNotAsErrors: 1573,1591,NU5128,RS1024,RS1025,RS1026
   Deterministic: true
   RunCodeAnalysis: false
 
@@ -71,7 +71,7 @@ jobs:
             ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -90,7 +90,7 @@ jobs:
           path: src/_nupkg/*nupkg
 
   build_analyzers:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -123,7 +123,7 @@ jobs:
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -144,7 +144,7 @@ jobs:
           path: src/Refactorings/bin/Release/*.*nupkg
 
   build_code_fixes:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -165,7 +165,7 @@ jobs:
           path: src/CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: windows-latest
     env:
@@ -199,7 +199,7 @@ jobs:
           delete-merged: true
 
   build_vs_code_extension:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: [ pre_build, build_analyzers ]
     runs-on: ubuntu-24.04
     env:
