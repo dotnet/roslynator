@@ -197,7 +197,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
 
             List<TextChange> textChanges = new();
 
-            if (bracesStyle.HasFlag(TargetBracesStyle.Opening))
+            if ((bracesStyle & TargetBracesStyle.Opening) != 0)
             {
                 SyntaxToken nextToken = openNodeOrToken.GetNextToken();
 
@@ -217,7 +217,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 }
             }
 
-            if (bracesStyle.HasFlag(TargetBracesStyle.Closing))
+            if ((bracesStyle & TargetBracesStyle.Closing) != 0)
             {
                 SyntaxToken previousToken = closeNodeOrToken.GetPreviousToken();
 
