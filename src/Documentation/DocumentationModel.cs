@@ -433,6 +433,7 @@ public sealed class DocumentationModel
             return Compilations[0];
 
         if (_compilationMap is null)
+        {
             Interlocked.CompareExchange(
                 ref _compilationMap,
                 Compilations.ToImmutableDictionary<Compilation, IAssemblySymbol, Compilation>(
@@ -442,6 +443,7 @@ public sealed class DocumentationModel
                 ),
                 null
             );
+        }
 
         return _compilationMap[assembly];
     }

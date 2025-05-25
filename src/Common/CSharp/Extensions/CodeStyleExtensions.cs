@@ -656,8 +656,8 @@ internal static class CodeStyleExtensions
         return context.GetConfigOptions().GetNullConditionalOperatorNewLinePosition(defaultValue);
     }
 
-    public static TargetBracesStyle GetTargetBracesStyle(this SyntaxNodeAnalysisContext context) =>
-        context.GetConfigOptions().GetTargetBracesStyle();
+    public static TargetBracesStyle GetTargetBracesStyle(this SyntaxNodeAnalysisContext context)
+        => context.GetConfigOptions().GetTargetBracesStyle();
 
     public static TargetBracesStyle GetTargetBracesStyle(this AnalyzerConfigOptions configOptions)
     {

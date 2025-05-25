@@ -13,9 +13,8 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfList;
 
-    public override CSharpTestOptions Options =>
-        base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
-
+    public override CSharpTestOptions Options
+        => base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
     public async Task Test_Singleline_AlignedToParenthesis()
@@ -1161,7 +1160,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
                             }
                             """,
                         expectedSource: null
-                    )
+                    ),
                 },
             options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication))
         );

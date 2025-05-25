@@ -172,8 +172,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
         TNode last = nodes.Last();
 
-        if (
-            ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first, cancellationToken)
+        if (ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first, cancellationToken)
             || ShouldFixClosingBracket(bracesStyle, listNode, closeNodeOrToken, last, cancellationToken)
         )
         {
@@ -186,18 +185,19 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private static string GetTitle(SyntaxNode listNode) =>
-        listNode.Kind() switch
+    private static string GetTitle(SyntaxNode listNode)
+    {
+        return listNode.Kind() switch
         {
             SyntaxKind.ParameterList
-            or SyntaxKind.BracketedParameterList
-            or SyntaxKind.TypeParameterList
+                or SyntaxKind.BracketedParameterList
+                or SyntaxKind.TypeParameterList
                 => "parameters",
 
             SyntaxKind.ArgumentList
-            or SyntaxKind.BracketedArgumentList
-            or SyntaxKind.AttributeArgumentList
-            or SyntaxKind.TypeArgumentList
+                or SyntaxKind.BracketedArgumentList
+                or SyntaxKind.AttributeArgumentList
+                or SyntaxKind.TypeArgumentList
                 => "arguments",
 
             SyntaxKind.AttributeList => "attributes",
@@ -207,13 +207,14 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             SyntaxKind.CollectionExpression => "a collection expression",
 
             SyntaxKind.ArrayInitializerExpression
-            or SyntaxKind.CollectionInitializerExpression
-            or SyntaxKind.ComplexElementInitializerExpression
-            or SyntaxKind.ObjectInitializerExpression
+                or SyntaxKind.CollectionInitializerExpression
+                or SyntaxKind.ComplexElementInitializerExpression
+                or SyntaxKind.ObjectInitializerExpression
                 => "an initializer",
 
             _ => throw new InvalidOperationException()
         };
+    }
 
     private static bool ShouldFixOpeningBracket(
         TargetBracesStyle bracesStyle,

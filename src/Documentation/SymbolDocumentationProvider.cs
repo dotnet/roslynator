@@ -196,6 +196,7 @@ public sealed class SymbolDocumentationProvider
     private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
     {
         if (_assemblyToReferenceMap is null)
+        {
             Interlocked.CompareExchange(
                 ref _assemblyToReferenceMap,
                 Compilations.ToImmutableDictionary<Compilation, IAssemblySymbol, MetadataReference>(
@@ -205,6 +206,7 @@ public sealed class SymbolDocumentationProvider
                 ),
                 null
             );
+        }
 
         if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))
             return metadataReference;

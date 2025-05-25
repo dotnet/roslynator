@@ -24,14 +24,15 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
 {
     private const string Title = "Fix bracket formatting";
 
-    public override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create(DiagnosticIdentifiers.FixBracketFormattingOfList);
+    public override ImmutableArray<string> FixableDiagnosticIds
+        => ImmutableArray.Create(DiagnosticIdentifiers.FixBracketFormattingOfList);
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        if (!TryFindFirstAncestorOrSelf(
+        if (
+            !TryFindFirstAncestorOrSelf(
                 root,
                 context.Span,
                 out SyntaxNode node,
@@ -195,7 +196,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
 
             string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
 
-            List<TextChange> textChanges = new();
+            List<TextChange> textChanges = [];
 
             if ((bracesStyle & TargetBracesStyle.Opening) != 0)
             {
@@ -242,7 +243,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                     if (listNodeIndent.Span.Length != bracketIndent.Span.Length)
                     {
                         TextSpan span =
-                            bracketIndent.Span.Length == 0 // there is no indentation
+                            (bracketIndent.Span.Length == 0) // there is no indentation
                                 ? new TextSpan(closeNodeOrToken.Span.Start, 0)
                                 : bracketIndent.Span;
 
@@ -256,7 +257,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                 }
             }
 
-            return await document.WithTextChangesAsync(textChanges, cancellationToken);
+            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
         }
     }
 }
