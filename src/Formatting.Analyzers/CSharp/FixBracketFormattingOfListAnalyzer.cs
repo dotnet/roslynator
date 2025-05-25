@@ -222,7 +222,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
+        if ((bracesStyle & TargetBracesStyle.Opening) == 0)
         {
             return false;
         }
@@ -238,7 +238,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
+        if ((bracesStyle & TargetBracesStyle.Closing) == 0)
         {
             return false;
         }
