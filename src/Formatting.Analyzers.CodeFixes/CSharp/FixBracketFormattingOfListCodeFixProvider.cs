@@ -195,7 +195,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
 
             string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
 
-            List<TextChange> textChanges = new ();
+            List<TextChange> textChanges = new();
 
             if (bracesStyle.HasFlag(TargetBracesStyle.Opening))
             {

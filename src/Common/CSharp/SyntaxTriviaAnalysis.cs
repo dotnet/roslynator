@@ -174,7 +174,7 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        if (searchInAccessors &&!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
+        if (searchInAccessors && !IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
         {
             node = node.Parent;
 
