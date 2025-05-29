@@ -43,7 +43,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Singleline_Unindentated()
+    public async Task Test_Singleline_Unindented()
     {
         await VerifyDiagnosticAndFixAsync(
             """
@@ -345,7 +345,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_ClosingBracket_Indent_Required_with_prio_comment()
+    public async Task Test_Multiline_ClosingBracket_Indent_Required_with_comment()
     {
         await VerifyDiagnosticAndFixAsync(
             """
