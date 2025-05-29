@@ -52,7 +52,9 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         case SyntaxKind.TupleExpression:
                         case SyntaxKind.ArrayInitializerExpression:
                         case SyntaxKind.CollectionInitializerExpression:
+#if ROSLYN_4_7
                         case SyntaxKind.CollectionExpression:
+#endif
                         case SyntaxKind.ComplexElementInitializerExpression:
                         case SyntaxKind.ObjectInitializerExpression:
                             return true;
