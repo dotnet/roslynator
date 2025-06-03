@@ -166,6 +166,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         GetEquivalenceKey(diagnostic)
                     );
                 }
+#if ROSLYN_4_7
                 case CollectionExpressionSyntax collectionExpression:
                 {
                     return CodeAction.Create(
@@ -174,6 +175,7 @@ public sealed class FixBracketFormattingOfListCodeFixProvider : BaseCodeFixProvi
                         GetEquivalenceKey(diagnostic)
                     );
                 }
+#endif
                 default:
                 {
                     throw new InvalidOperationException();

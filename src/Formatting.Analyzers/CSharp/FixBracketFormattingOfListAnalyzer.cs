@@ -135,12 +135,14 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         Analyze(context, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken, initializerExpression.Expressions);
     }
 
+#if ROSLYN_4_7
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         var collectionExpression = (CollectionExpressionSyntax)context.Node;
 
         Analyze(context, collectionExpression.OpenBracketToken, collectionExpression.CloseBracketToken, collectionExpression.Elements);
     }
+#endif
 
     private static void Analyze<TNode>(
         SyntaxNodeAnalysisContext context,
