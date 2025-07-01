@@ -28,6 +28,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: | 
+            8.0.x
+            9.0.x
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
       - name: Resolve version
         id: version
