@@ -1,6 +1,6 @@
 #dotnet tool install -g roslynator.dotnet.cli
 
-dotnet build "$PSScriptRoot/../src/CommandLine" -c Debug -v minimal /m
+dotnet build "$PSScriptRoot/../src/CommandLine.sln" -c Debug -v minimal /m
 
 roslynator list-symbols "$PSScriptRoot/../src/CommandLine/CommandLine.csproj" `
  --depth type `

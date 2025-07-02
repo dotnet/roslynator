@@ -1,6 +1,6 @@
 #dotnet tool install -g roslynator.dotnet.cli
 
-roslynator list-symbols generate_ref_docs.slx `
+roslynator list-symbols generate_ref_docs.sln `
  --properties Configuration=Release `
  --visibility public `
  --depth member `
