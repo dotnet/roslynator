@@ -64,11 +64,11 @@ internal static class DiagnosticGitLabJsonSerializer
 #else
             hashBytes = SHA256.HashData(source);
 #endif
-#pragma warning disable CA1872 // Avoid calling dot notation on the result of a dereferenced pointer
+#pragma warning disable CA1872 // Use Convert.ToHexString instead of BitConverter.ToString
             issueFingerPrint = BitConverter.ToString(hashBytes)
                 .Replace("-", "")
                 .ToLowerInvariant();
-#pragma warning restore CA1872 // Avoid calling dot notation on the result of a dereferenced pointer
+#pragma warning restore CA1872
 
             reportItems.Add(new GitLabIssue()
             {
