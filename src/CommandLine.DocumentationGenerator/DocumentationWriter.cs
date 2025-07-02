@@ -46,7 +46,7 @@ Allowed\ value(\ is|s\ are)\
             }
             else
             {
-            _writer.WriteString(description);
+                _writer.WriteString(description);
             }
         }
 

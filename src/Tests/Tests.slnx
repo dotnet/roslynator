@@ -1,0 +1,41 @@
+<Solution>
+  <Folder Name="/Projects/">
+    <Project Path="../Analyzers.CodeFixes/Analyzers.CodeFixes.csproj" />
+    <Project Path="../Analyzers/Analyzers.csproj" />
+    <Project Path="../CodeAnalysis.Analyzers.CodeFixes/CodeAnalysis.Analyzers.CodeFixes.csproj" />
+    <Project Path="../CodeAnalysis.Analyzers/CodeAnalysis.Analyzers.csproj" />
+    <Project Path="../CodeFixes/CodeFixes.csproj" />
+    <Project Path="../Common/Common.csproj" />
+    <Project Path="../Core/Core.csproj" />
+    <Project Path="../CSharp.Workspaces/CSharp.Workspaces.csproj" />
+    <Project Path="../CSharp/CSharp.csproj" />
+    <Project Path="../Formatting.Analyzers.CodeFixes/Formatting.Analyzers.CodeFixes.csproj" />
+    <Project Path="../Formatting.Analyzers/Formatting.Analyzers.csproj" />
+    <Project Path="../Refactorings/Refactorings.csproj" />
+    <Project Path="../Workspaces.Common/Workspaces.Common.csproj" />
+    <Project Path="../Workspaces.Core/Workspaces.Core.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../global.ruleset" />
+  </Folder>
+  <Project Path="Analyzers.Tests/Analyzers.Tests.csproj" />
+  <Project Path="CodeAnalysis.Analyzers.Tests/CodeAnalysis.Analyzers.Tests.csproj" />
+  <Project Path="CodeFixes.Tests/CodeFixes.Tests.csproj" />
+  <Project Path="Core.Tests/Core.Tests.csproj" />
+  <Project Path="CSharp.Tests/CSharp.Tests.csproj" />
+  <Project Path="CSharp.Workspaces.Tests/CSharp.Workspaces.Tests.csproj" />
+  <Project Path="Formatting.Analyzers.Tests/Formatting.Analyzers.Tests.csproj" />
+  <Project Path="Refactorings.Tests/Refactorings.Tests.csproj" />
+  <Project Path="TestConsole/TestConsole.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="Testing.Common/Testing.Common.csproj" />
+  <Project Path="Testing.CSharp.MSTest/Testing.CSharp.MSTest.csproj" />
+  <Project Path="Testing.CSharp.Xunit/Testing.CSharp.Xunit.csproj" />
+  <Project Path="Testing.CSharp/Testing.CSharp.csproj" />
+  <Project Path="Testing.VisualBasic/Testing.VisualBasic.csproj" />
+  <Project Path="TestLibrary/TestLibrary.csproj">
+    <Build Project="false" />
+  </Project>
+  <Project Path="Tests.Common/Tests.Common.csproj" />
+</Solution>
