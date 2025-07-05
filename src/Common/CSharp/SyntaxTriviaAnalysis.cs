@@ -110,8 +110,8 @@ internal static class SyntaxTriviaAnalysis
         return IndentationAnalysis.Create(node, configOptions, cancellationToken);
     }
 
-    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default) =>
-        DetermineIndentation(nodeOrToken, true, cancellationToken);
+    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default)
+        => DetermineIndentation(nodeOrToken, true, cancellationToken);
 
     public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, bool searchInAccessors, CancellationToken cancellationToken = default)
     {
@@ -174,7 +174,7 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        if (searchInAccessors &&!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
+        if (searchInAccessors && !IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
         {
             node = node.Parent;
 
@@ -208,7 +208,6 @@ internal static class SyntaxTriviaAnalysis
                 || node is AccessorDeclarationSyntax;
         }
     }
-
 
     public static string GetIncreasedIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {

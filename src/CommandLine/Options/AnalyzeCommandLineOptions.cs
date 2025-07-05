@@ -20,9 +20,14 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
     [Option(
         shortName: OptionShortNames.Output,
         longName: "output",
-        HelpText = "Defines path to file that will store reported diagnostics in XML format.",
+        HelpText = "Defines path to file that will store reported diagnostics. The format of the file is determined by the --output-format option, with the default being xml.",
         MetaValue = "<FILE_PATH>")]
     public string Output { get; set; }
+
+    [Option(
+        longName: "output-format",
+        HelpText = "Defines the file format of the report written to file. Supported options are: gitlab and xml, with xml the default if no option is provided.")]
+    public string OutputFormat { get; set; }
 
     [Option(
         longName: "report-not-configurable",
@@ -33,4 +38,9 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
         longName: "report-suppressed-diagnostics",
         HelpText = "Indicates whether suppressed diagnostics should be reported.")]
     public bool ReportSuppressedDiagnostics { get; set; }
+
+    internal bool ValidateOutputFormat()
+    {
+        return ParseHelpers.TryParseOutputFormat(OutputFormat);
+    }
 }

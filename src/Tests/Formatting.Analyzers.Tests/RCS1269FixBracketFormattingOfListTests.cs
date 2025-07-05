@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
@@ -11,9 +13,8 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfList;
 
-    public override CSharpTestOptions Options =>
-        base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
-
+    public override CSharpTestOptions Options
+        => base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
     public async Task Test_Singleline_AlignedToParenthesis()
@@ -42,7 +43,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Singleline_Unindentated()
+    public async Task Test_Singleline_Unindented()
     {
         await VerifyDiagnosticAndFixAsync(
             """
@@ -344,7 +345,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfList)]
-    public async Task Test_Multiline_ClosingBracket_Indent_Required_with_prio_comment()
+    public async Task Test_Multiline_ClosingBracket_Indent_Required_with_comment()
     {
         await VerifyDiagnosticAndFixAsync(
             """
@@ -1159,7 +1160,7 @@ public sealed class RCS1269FixBracketFormattingOfListTests :
                             }
                             """,
                         expectedSource: null
-                    )
+                    ),
                 },
             options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication))
         );

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -43,7 +45,9 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(f => AnalyzeAttributeList(f), SyntaxKind.AttributeList);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleType(f), SyntaxKind.TupleType);
         context.RegisterSyntaxNodeAction(f => AnalyzeTupleExpression(f), SyntaxKind.TupleExpression);
+#if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(f => AnalyzeCollectionExpression(f), SyntaxKind.CollectionExpression);
+#endif
 
         context.RegisterSyntaxNodeAction(
             f => AnalyzeInitializerExpression(f),
@@ -131,12 +135,14 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         Analyze(context, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken, initializerExpression.Expressions);
     }
 
+#if ROSLYN_4_7
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         var collectionExpression = (CollectionExpressionSyntax)context.Node;
 
         Analyze(context, collectionExpression.OpenBracketToken, collectionExpression.CloseBracketToken, collectionExpression.Elements);
     }
+#endif
 
     private static void Analyze<TNode>(
         SyntaxNodeAnalysisContext context,
@@ -172,8 +178,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
         TNode last = nodes.Last();
 
-        if (
-            ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first, cancellationToken)
+        if (ShouldFixOpeningBracket(bracesStyle, openNodeOrToken, first, cancellationToken)
             || ShouldFixClosingBracket(bracesStyle, listNode, closeNodeOrToken, last, cancellationToken)
         )
         {
@@ -186,34 +191,36 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private static string GetTitle(SyntaxNode listNode) =>
-        listNode.Kind() switch
+    private static string GetTitle(SyntaxNode listNode)
+    {
+        return listNode.Kind() switch
         {
             SyntaxKind.ParameterList
-            or SyntaxKind.BracketedParameterList
-            or SyntaxKind.TypeParameterList
+                or SyntaxKind.BracketedParameterList
+                or SyntaxKind.TypeParameterList
                 => "parameters",
 
             SyntaxKind.ArgumentList
-            or SyntaxKind.BracketedArgumentList
-            or SyntaxKind.AttributeArgumentList
-            or SyntaxKind.TypeArgumentList
+                or SyntaxKind.BracketedArgumentList
+                or SyntaxKind.AttributeArgumentList
+                or SyntaxKind.TypeArgumentList
                 => "arguments",
 
             SyntaxKind.AttributeList => "attributes",
 
             SyntaxKind.TupleType or SyntaxKind.TupleExpression => "a tuple",
-
+#if ROSLYN_4_7
             SyntaxKind.CollectionExpression => "a collection expression",
-
+#endif
             SyntaxKind.ArrayInitializerExpression
-            or SyntaxKind.CollectionInitializerExpression
-            or SyntaxKind.ComplexElementInitializerExpression
-            or SyntaxKind.ObjectInitializerExpression
+                or SyntaxKind.CollectionInitializerExpression
+                or SyntaxKind.ComplexElementInitializerExpression
+                or SyntaxKind.ObjectInitializerExpression
                 => "an initializer",
 
             _ => throw new InvalidOperationException()
         };
+    }
 
     private static bool ShouldFixOpeningBracket(
         TargetBracesStyle bracesStyle,
@@ -222,7 +229,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
+        if ((bracesStyle & TargetBracesStyle.Opening) == 0)
         {
             return false;
         }
@@ -238,7 +245,7 @@ public sealed class FixBracketFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
+        if ((bracesStyle & TargetBracesStyle.Closing) == 0)
         {
             return false;
         }
