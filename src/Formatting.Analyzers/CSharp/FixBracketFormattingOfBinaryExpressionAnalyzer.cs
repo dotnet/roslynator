@@ -74,7 +74,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
 
         CancellationToken cancellationToken = context.CancellationToken;
 
-        BinaryExpressionSyntax binaryExpression = (BinaryExpressionSyntax)context.Node;
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
         ExpressionSyntax left = binaryExpression.Left;
 
@@ -105,8 +105,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
                 continue;
             }
 
-            if (
-                ShouldFixOpeningBracket(bracesStyle, openBracket, firstToken, cancellationToken)
+            if (ShouldFixOpeningBracket(bracesStyle, openBracket, firstToken, cancellationToken)
                 || ShouldFixClosingBracket(bracesStyle, parent, closeBracket, lastToken, cancellationToken)
             )
             {
@@ -146,9 +145,9 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
 
         SyntaxNode? parent = syntaxNode;
         int depth = 0;
-        while (parent != null)
+        while (parent is not null)
         {
-            bool stop = false;
+            var stop = false;
 
             switch (parent)
             {
@@ -159,7 +158,6 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
                         parenthesizedExpressionSyntax.CloseParenToken
                     );
                     break;
-
                 case IfStatementSyntax ifStatement:
                     yield return (
                         parent,
@@ -169,7 +167,6 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
                     // If-statement is considered as a final node.
                     stop = true;
                     break;
-
                 case WhileStatementSyntax whileStatement:
                     yield return (
                         parent,
@@ -179,7 +176,6 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
                     // While-statement is considered as a final node.
                     stop = true;
                     break;
-
                 case DoStatementSyntax doWhileStatement:
                     yield return (
                         parent,
@@ -189,7 +185,6 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
                     // Do-while-statement is considered as a final node.
                     stop = true;
                     break;
-
                 default:
                     if (depth > 0)
                     {
@@ -209,8 +204,9 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
         }
     }
 
-    private static string GetTitle(SyntaxNode node) =>
-        node.Kind() switch
+    private static string GetTitle(SyntaxNode node)
+    {
+        return node.Kind() switch
         {
             SyntaxKind.IfStatement
                 => "an 'if' statement",
@@ -226,6 +222,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
 
             _ => throw new InvalidOperationException()
         };
+    }
 
     private static bool ShouldFixOpeningBracket(
         TargetBracesStyle bracesStyle,
@@ -234,7 +231,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Opening))
+        if ((bracesStyle & TargetBracesStyle.Opening) == 0)
         {
             return false;
         }
@@ -250,7 +247,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionAnalyzer : BaseDiagnos
         CancellationToken cancellationToken
     )
     {
-        if (!bracesStyle.HasFlag(TargetBracesStyle.Closing))
+        if ((bracesStyle & TargetBracesStyle.Closing) == 0)
         {
             return false;
         }

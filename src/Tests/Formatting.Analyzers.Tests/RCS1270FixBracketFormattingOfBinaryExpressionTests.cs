@@ -8,13 +8,13 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests;
 
-public class RCS1270FixBracketFormattingOfBinaryExpressionTests
-    : AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, FixBracketFormattingOfBinaryExpressionFixProvider>
+public class RCS1270FixBracketFormattingOfBinaryExpressionTests :
+    AbstractCSharpDiagnosticVerifier<FixBracketFormattingOfBinaryExpressionAnalyzer, FixBracketFormattingOfBinaryExpressionFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixBracketFormattingOfBinaryExpression;
 
-    public override CSharpTestOptions Options =>
-        base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
+    public override CSharpTestOptions Options
+        => base.Options.AddConfigOption(ConfigOptionKeys.TargetBracesStyle, "both");
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression)]
     public async Task Inserts_new_line_Before_and_After_binary_expression()

@@ -24,8 +24,8 @@ public sealed class FixBracketFormattingOfBinaryExpressionFixProvider : BaseCode
 {
     private const string Title = "Fix bracket formatting";
 
-    public override ImmutableArray<string> FixableDiagnosticIds =>
-        ImmutableArray.Create(DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression);
+    public override ImmutableArray<string> FixableDiagnosticIds
+        => ImmutableArray.Create(DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression);
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
@@ -121,9 +121,9 @@ public sealed class FixBracketFormattingOfBinaryExpressionFixProvider : BaseCode
 
             string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
 
-            List<TextChange> textChanges = new ();
+            List<TextChange> textChanges = [];
 
-            if (bracesStyle.HasFlag(TargetBracesStyle.Opening))
+            if ((bracesStyle & TargetBracesStyle.Opening) != 0)
             {
                 SyntaxToken nextToken = openNodeOrToken.GetNextToken();
 
@@ -143,7 +143,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionFixProvider : BaseCode
                 }
             }
 
-            if (bracesStyle.HasFlag(TargetBracesStyle.Closing))
+            if ((bracesStyle & TargetBracesStyle.Closing) != 0)
             {
                 SyntaxToken previousToken = closeNodeOrToken.GetPreviousToken();
 
@@ -168,7 +168,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionFixProvider : BaseCode
                     if (listNodeIndent.Span.Length != bracketIndent.Span.Length)
                     {
                         TextSpan span =
-                            bracketIndent.Span.Length == 0 // there is no indentation
+                            (bracketIndent.Span.Length == 0) // there is no indentation
                                 ? new TextSpan(closeNodeOrToken.Span.Start, 0)
                                 : bracketIndent.Span;
 
@@ -182,7 +182,7 @@ public sealed class FixBracketFormattingOfBinaryExpressionFixProvider : BaseCode
                 }
             }
 
-            return await document.WithTextChangesAsync(textChanges, cancellationToken);
+            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
         }
     }
 }
