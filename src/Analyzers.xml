@@ -2530,7 +2530,7 @@ if (f)
     <Status>Obsolete</Status>
     <ObsoleteMessage>Use RCS0063 instead</ObsoleteMessage>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo
