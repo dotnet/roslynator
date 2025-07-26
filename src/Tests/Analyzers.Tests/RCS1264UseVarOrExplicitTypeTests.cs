@@ -39,6 +39,28 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
+    public async Task Test_ObjectCreationExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        [|string[]|] arr = new string[1];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var arr = new string[1];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -177,16 +199,26 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
-    public async Task TestNoDiagnostic_ParseMethod()
+    public async Task TestDiagnostic_ParseMethod()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
 {
     void M()
     {
-        TimeSpan timeSpan = TimeSpan.Parse(null);
+        [|TimeSpan|] timeSpan = TimeSpan.Parse(null);
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var timeSpan = TimeSpan.Parse(null);
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
