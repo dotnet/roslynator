@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Disable analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) by default ([PR](https://github.com/dotnet/roslynator/pull/1671))
   - Use analyzer [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) instead 
 
+### Removed
+
+- Remove legacy config options ([PR](https://github.com/dotnet/roslynator/pull/1304))
+
 ## [4.13.1] - 2025-02-23
 
 ### Added
