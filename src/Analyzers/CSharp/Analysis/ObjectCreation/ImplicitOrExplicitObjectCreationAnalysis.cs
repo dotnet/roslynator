@@ -59,7 +59,10 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
         var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)context.Node;
 
         return implicitObjectCreation.ArgumentList?.Arguments.Any() != true
-            && implicitObjectCreation.Initializer?.Expressions.Any(f => f.IsKind(SyntaxKind.SimpleAssignmentExpression)) != true
+            && implicitObjectCreation.Initializer?.Expressions
+                .Any(f => f.IsKind(
+                    SyntaxKind.SimpleAssignmentExpression,
+                    SyntaxKind.ComplexElementInitializerExpression)) != true
             && UseCollectionExpression(ref context);
     }
 
