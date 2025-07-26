@@ -36,7 +36,8 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression,
                 SyntaxKind.EnumDeclaration,
-                SyntaxKind.AnonymousObjectCreationExpression)))
+                SyntaxKind.AnonymousObjectCreationExpression,
+                SyntaxKind.CollectionExpression)))
         {
             return;
         }
@@ -64,6 +65,31 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 CodeAction codeAction = CodeAction.Create(
                     "Add comma",
                     ct => AddTrailingComma(document, expressions.Last(), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
+        if (node is CollectionExpressionSyntax collectionExpression)
+        {
+            SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
+
+            int count = elements.Count;
+
+            if (count == elements.SeparatorCount)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove comma",
+                    ct => RemoveTrailingComma(document, elements.GetSeparator(count - 1), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add comma",
+                    ct => AddTrailingComma(document, elements.Last(), ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
