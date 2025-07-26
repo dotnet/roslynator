@@ -32,7 +32,9 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
 
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
+#if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(f => AnalyzeCollectionExpression(f), SyntaxKind.CollectionExpression);
+#endif
 
         context.RegisterSyntaxNodeAction(
             f => AnalyzeInitializerExpression(f),
@@ -170,6 +172,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
+#if ROSLYN_4_7
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         TrailingCommaStyle style = context.GetTrailingCommaStyle();
@@ -212,6 +215,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
             }
         }
     }
+#endif
 
     private static void ReportAdd(SyntaxNodeAnalysisContext context, SyntaxNode lastNode)
     {
