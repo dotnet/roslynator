@@ -331,6 +331,28 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_CollectionExpression_Include()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        int[] x = [1, 2, 3[||]];
+    }
+}
+""", """
+     class C
+     {
+         void M()
+         {
+             int[] x = [1, 2, 3,];
+         }
+     }
+     """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_CollectionExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -372,5 +394,129 @@ class C
          }
      }
      """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SwitchExpression_Include()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"[||]
+        };
+    }
+}
+""", """
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar",
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SwitchExpression_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"[|,|]
+        };
+    }
+}
+""", """
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_PatternMatching_Include()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    public int P1 { get; set; }
+    public int P2 { get; set; }
+
+    void M(C p)
+    {
+        if (p is { P1: 1, P2: 2[||] })
+        {
+        }
+    }
+}
+""", """
+class C
+{
+    public int P1 { get; set; }
+    public int P2 { get; set; }
+
+    void M(C p)
+    {
+        if (p is { P1: 1, P2: 2, })
+        {
+        }
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_PatternMatching_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    public int P1 { get; set; }
+    public int P2 { get; set; }
+
+    void M(C p)
+    {
+        if (p is { P1: 1, P2: 2[|,|] })
+        {
+        }
+    }
+}
+""", """
+     class C
+     {
+         public int P1 { get; set; }
+         public int P2 { get; set; }
+     
+         void M(C p)
+         {
+             if (p is { P1: 1, P2: 2 })
+             {
+             }
+         }
+     }
+     """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 }
