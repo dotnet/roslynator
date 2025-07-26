@@ -331,6 +331,28 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_CollectionExpression_Include()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        int[] x = [1, 2, 3[||]];
+    }
+}
+""", """
+     class C
+     {
+         void M()
+         {
+             int[] x = [1, 2, 3,];
+         }
+     }
+     """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_CollectionExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -372,5 +394,65 @@ class C
          }
      }
      """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SwitchExpression_Include()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"[||]
+        };
+    }
+}
+""", """
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar",
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SwitchExpression_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"[|,|]
+        };
+    }
+}
+""", """
+class C
+{
+    void M(int p)
+    {
+        var x = p switch
+        {
+            1 => "foo",
+            _ => "bar"
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 }

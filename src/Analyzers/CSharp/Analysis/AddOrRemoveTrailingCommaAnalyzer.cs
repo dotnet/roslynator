@@ -32,6 +32,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
 
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzeSwitchExpression(f), SyntaxKind.SwitchExpression);
 #if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(f => AnalyzeCollectionExpression(f), SyntaxKind.CollectionExpression);
 #endif
@@ -168,6 +169,49 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 && !initializers.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, initializers.Last());
+            }
+        }
+    }
+
+    private static void AnalyzeSwitchExpression(SyntaxNodeAnalysisContext context)
+    {
+        TrailingCommaStyle style = context.GetTrailingCommaStyle();
+
+        if (style == TrailingCommaStyle.None)
+            return;
+
+        var objectCreation = (SwitchExpressionSyntax)context.Node;
+
+        SeparatedSyntaxList<SwitchExpressionArmSyntax> arms = objectCreation.Arms;
+
+        if (!arms.Any())
+            return;
+
+        int count = arms.Count;
+        int separatorCount = arms.SeparatorCount;
+
+        if (count == separatorCount)
+        {
+            if (style == TrailingCommaStyle.Omit)
+            {
+                ReportRemove(context, arms.GetSeparator(count - 1));
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                     && arms.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportRemove(context, arms.GetSeparator(count - 1));
+            }
+        }
+        else if (separatorCount == count - 1)
+        {
+            if (style == TrailingCommaStyle.Include)
+            {
+                ReportAdd(context, arms.Last());
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                     && !arms.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportAdd(context, arms.Last());
             }
         }
     }

@@ -31,15 +31,24 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
             root,
             context.Span,
             out SyntaxNode node,
-            predicate: f => f.IsKind(
-                SyntaxKind.ArrayInitializerExpression,
-                SyntaxKind.ObjectInitializerExpression,
-                SyntaxKind.CollectionInitializerExpression,
-                SyntaxKind.EnumDeclaration,
+            predicate: f =>
+            {
+                switch (f.Kind())
+                {
+                    case SyntaxKind.ArrayInitializerExpression:
+                    case SyntaxKind.ObjectInitializerExpression:
+                    case SyntaxKind.CollectionInitializerExpression:
+                    case SyntaxKind.EnumDeclaration:
+                    case SyntaxKind.AnonymousObjectCreationExpression:
+                    case SyntaxKind.SwitchExpression:
 #if ROSLYN_4_7
-                SyntaxKind.CollectionExpression,
+                    case SyntaxKind.CollectionExpression:
 #endif
-                SyntaxKind.AnonymousObjectCreationExpression)))
+                        return true;
+                    default:
+                        return false;
+                }
+            }))
         {
             return;
         }
@@ -72,8 +81,33 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+        else if (node is SwitchExpressionSyntax switchExpression)
+        {
+            SeparatedSyntaxList<SwitchExpressionArmSyntax> arms = switchExpression.Arms;
+
+            int count = arms.Count;
+
+            if (count == arms.SeparatorCount)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove comma",
+                    ct => RemoveTrailingComma(document, arms.GetSeparator(count - 1), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add comma",
+                    ct => AddTrailingComma(document, arms.Last(), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
 #if ROSLYN_4_7
-        if (node is CollectionExpressionSyntax collectionExpression)
+        else if (node is CollectionExpressionSyntax collectionExpression)
         {
             SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
 
