@@ -33,6 +33,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
         context.RegisterSyntaxNodeAction(f => AnalyzeSwitchExpression(f), SyntaxKind.SwitchExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzePropertyPatternClause(f), SyntaxKind.PropertyPatternClause);
 #if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(f => AnalyzeCollectionExpression(f), SyntaxKind.CollectionExpression);
 #endif
@@ -212,6 +213,49 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                      && !arms.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, arms.Last());
+            }
+        }
+    }
+
+    private static void AnalyzePropertyPatternClause(SyntaxNodeAnalysisContext context)
+    {
+        TrailingCommaStyle style = context.GetTrailingCommaStyle();
+
+        if (style == TrailingCommaStyle.None)
+            return;
+
+        var objectCreation = (PropertyPatternClauseSyntax)context.Node;
+
+        SeparatedSyntaxList<SubpatternSyntax> subpatterns = objectCreation.Subpatterns;
+
+        if (!subpatterns.Any())
+            return;
+
+        int count = subpatterns.Count;
+        int separatorCount = subpatterns.SeparatorCount;
+
+        if (count == separatorCount)
+        {
+            if (style == TrailingCommaStyle.Omit)
+            {
+                ReportRemove(context, subpatterns.GetSeparator(count - 1));
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                     && subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportRemove(context, subpatterns.GetSeparator(count - 1));
+            }
+        }
+        else if (separatorCount == count - 1)
+        {
+            if (style == TrailingCommaStyle.Include)
+            {
+                ReportAdd(context, subpatterns.Last());
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                     && !subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportAdd(context, subpatterns.Last());
             }
         }
     }

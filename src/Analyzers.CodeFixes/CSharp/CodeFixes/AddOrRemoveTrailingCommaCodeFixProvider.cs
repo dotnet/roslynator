@@ -41,6 +41,7 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                     case SyntaxKind.EnumDeclaration:
                     case SyntaxKind.AnonymousObjectCreationExpression:
                     case SyntaxKind.SwitchExpression:
+                    case SyntaxKind.PropertyPatternClause:
 #if ROSLYN_4_7
                     case SyntaxKind.CollectionExpression:
 #endif
@@ -101,6 +102,31 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 CodeAction codeAction = CodeAction.Create(
                     "Add comma",
                     ct => AddTrailingComma(document, arms.Last(), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
+        else if (node is PropertyPatternClauseSyntax propertyPatternClause)
+        {
+            SeparatedSyntaxList<SubpatternSyntax> subpatterns = propertyPatternClause.Subpatterns;
+
+            int count = subpatterns.Count;
+
+            if (count == subpatterns.SeparatorCount)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove comma",
+                    ct => RemoveTrailingComma(document, subpatterns.GetSeparator(count - 1), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add comma",
+                    ct => AddTrailingComma(document, subpatterns.Last(), ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
