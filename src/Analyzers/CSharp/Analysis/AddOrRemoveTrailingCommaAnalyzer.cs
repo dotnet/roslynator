@@ -198,7 +198,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportRemove(context, arms.GetSeparator(count - 1));
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && arms.IsSingleLine(cancellationToken: context.CancellationToken))
+                && arms.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportRemove(context, arms.GetSeparator(count - 1));
             }
@@ -210,7 +210,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportAdd(context, arms.Last());
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && !arms.IsSingleLine(cancellationToken: context.CancellationToken))
+                && !arms.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, arms.Last());
             }
@@ -241,7 +241,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportRemove(context, subpatterns.GetSeparator(count - 1));
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
+                && subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportRemove(context, subpatterns.GetSeparator(count - 1));
             }
@@ -253,7 +253,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportAdd(context, subpatterns.Last());
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && !subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
+                && !subpatterns.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, subpatterns.Last());
             }
