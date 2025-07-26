@@ -250,11 +250,13 @@ internal static class CSharpTypeAnalysis
                 return IsTypeObvious(expression, typeSymbol, includeNullability: true, semanticModel, cancellationToken);
             case TypeAppearance.NotObvious:
                 return !IsTypeObvious(expression, typeSymbol, includeNullability: true, semanticModel, cancellationToken);
+            case TypeAppearance.None:
+                return GetEqualityComparer(includeNullability: true).Equals(
+                    typeSymbol,
+                    semanticModel.GetTypeSymbol(expression, cancellationToken));
+            default:
+                throw new InvalidOperationException($"Unknow enum value '{typeAppearance}'");
         }
-
-        Debug.Assert(typeAppearance == TypeAppearance.None, typeAppearance.ToString());
-
-        return true;
     }
 
     public static bool IsTypeObvious(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)

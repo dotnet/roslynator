@@ -831,4 +831,32 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task TestNoDiagnostic_Unsafe()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
+internal abstract unsafe class UnsafeStream() : Stream
+{
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var tcs = new TaskCompletionSource<int>();
+
+            return new ValueTask<int>(tcs.Task);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+}
+", options: Options.WithAllowUnsafe(true));
+    }
 }
