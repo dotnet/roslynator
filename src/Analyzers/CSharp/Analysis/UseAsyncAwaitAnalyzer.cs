@@ -162,7 +162,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
             walker.VisitBlock(body);
 
-            return walker.ReturnStatement is not null;
+            return walker.ReturnStatement is not null
+                && !CSharpUtility.IsInUnsafeContext(body);
         }
         finally
         {

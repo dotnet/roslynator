@@ -59,7 +59,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (!unsafeStatement.Block.Statements.Any())
             return;
 
-        if (!AncestorContainsUnsafeModifier(unsafeStatement.Parent))
+        if (!CSharpUtility.IsInUnsafeContext(unsafeStatement.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
@@ -166,39 +166,9 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (index == -1)
             return;
 
-        if (!AncestorContainsUnsafeModifier(node.Parent))
+        if (!CSharpUtility.IsInUnsafeContext(node.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
-    }
-
-    private static bool AncestorContainsUnsafeModifier(SyntaxNode node)
-    {
-        while (node is not null)
-        {
-            switch (node)
-            {
-                case UnsafeStatementSyntax:
-                    return true;
-                case MemberDeclarationSyntax memberDeclarationSyntax:
-                {
-                    if (memberDeclarationSyntax.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-
-                    break;
-                }
-                case LocalFunctionStatementSyntax localFunctionStatement:
-                {
-                    if (localFunctionStatement.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-
-                    break;
-                }
-            }
-
-            node = node.Parent;
-        }
-
-        return false;
     }
 }
