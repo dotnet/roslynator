@@ -843,7 +843,6 @@ using System.Threading.Tasks;
 
 internal abstract unsafe class UnsafeStream() : Stream
 {
-
     public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
     {
         try
