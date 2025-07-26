@@ -10,7 +10,7 @@ namespace Roslynator.CSharp;
 
 internal static class CSharpUtility
 {
-    public static bool IsInUnsafeContext(SyntaxNode node)
+    public static bool IsInUnsafeContext(SyntaxNode? node)
     {
         while (node is not null)
         {
