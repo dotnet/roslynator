@@ -329,4 +329,48 @@ class C
 }
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_CollectionExpression_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        int[] x = [1, 2, 3[|,|]];
+    }
+}
+""", """
+class C
+{
+    void M()
+    {
+        int[] x = [1, 2, 3];
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_CollectionExpression_OmitWhenSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        int[] x = [1, 2, 3[|,|]];
+    }
+}
+""", """
+     class C
+     {
+         void M()
+         {
+             int[] x = [1, 2, 3];
+         }
+     }
+     """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
 }

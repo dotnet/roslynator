@@ -36,6 +36,9 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression,
                 SyntaxKind.EnumDeclaration,
+#if ROSLYN_4_7
+                SyntaxKind.CollectionExpression,
+#endif
                 SyntaxKind.AnonymousObjectCreationExpression)))
         {
             return;
@@ -69,6 +72,33 @@ public sealed class AddOrRemoveTrailingCommaCodeFixProvider : BaseCodeFixProvide
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+#if ROSLYN_4_7
+        if (node is CollectionExpressionSyntax collectionExpression)
+        {
+            SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
+
+            int count = elements.Count;
+
+            if (count == elements.SeparatorCount)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove comma",
+                    ct => RemoveTrailingComma(document, elements.GetSeparator(count - 1), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add comma",
+                    ct => AddTrailingComma(document, elements.Last(), ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
+#endif
         else if (node is AnonymousObjectCreationExpressionSyntax objectCreation)
         {
             SeparatedSyntaxList<AnonymousObjectMemberDeclaratorSyntax> initializers = objectCreation.Initializers;
