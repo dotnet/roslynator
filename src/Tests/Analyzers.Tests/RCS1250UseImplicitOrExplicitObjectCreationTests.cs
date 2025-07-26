@@ -1903,4 +1903,31 @@ class C
 """, options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_ComplexElementInitializer()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Collections;
+using System.Collections.Generic;
+class C : IEnumerable<KeyValuePair<int, int>>
+{
+    public IEnumerator<KeyValuePair<int, int>> GetEnumerator() => throw new System.NotImplementedException();
+
+    IEnumerator IEnumerable.GetEnumerator() => throw new System.NotImplementedException();
+
+    public void Add(int arg1, int arg2)
+    {
+    }
+
+    static C M()
+    {
+        C c = new() { { 1, 2 } };
+        return c;
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
 }

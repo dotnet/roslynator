@@ -9,8 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [CLI] Add support for GitLab analyzer reports ([PR](https://github.com/dotnet/roslynator/pull/1633))
+
+### Fixed
+
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1666))
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1667))
+- Fix analyzer [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([PR](https://github.com/dotnet/roslynator/pull/1652) by @aihnatiuk)
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) ([PR](https://github.com/dotnet/roslynator/pull/1668))
+- Fix analyzer [RCS1105](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1105) ([PR](https://github.com/dotnet/roslynator/pull/1669))
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) ([PR](https://github.com/dotnet/roslynator/pull/1672))
+
+### Changed
+
+- Disable analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) by default ([PR](https://github.com/dotnet/roslynator/pull/1671))
+  - Use analyzer [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) instead 
+
+## [4.13.1] - 2025-02-23
+
+### Added
+
 - Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
-    - It's possible to specify a directory path and/or a file name.
+  - It's possible to specify a directory path and/or a file name of a test file.
+  - Applies to testing library (Roslynator.Testing.*).
 
 ## [4.13.0] - 2025-02-09
 
