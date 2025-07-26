@@ -329,7 +329,8 @@ class C
 }
 """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_CollectionExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -372,5 +373,4 @@ class C
      }
      """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
-
 }

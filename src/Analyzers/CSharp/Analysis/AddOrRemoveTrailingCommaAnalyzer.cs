@@ -194,7 +194,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportRemove(context, elements.GetSeparator(count - 1));
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && elements.IsSingleLine(cancellationToken: context.CancellationToken))
+                && elements.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportRemove(context, elements.GetSeparator(count - 1));
             }
@@ -206,7 +206,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportAdd(context, elements.Last());
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                     && !elements.IsSingleLine(cancellationToken: context.CancellationToken))
+                && !elements.IsSingleLine(cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, elements.Last());
             }
