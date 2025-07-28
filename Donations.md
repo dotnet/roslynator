@@ -8,6 +8,7 @@
 | $1000.00 USD | Microsoft | -
 | $13.00 USD / month | @IanKemp | starting July 2021
 | $5.00 USD / month | @Genbox | starting October 2024
+| $5.00 USD / month | Timo Nürnberg | starting March 2025
 
 ### Donations
 

@@ -43,6 +43,7 @@ Special thanks to:
   - Microsoft for donating $1000.00 USD.
   - @IanKemp for donating $13.00 USD / month starting July 2021.
   - @Genbox for donating $5.00 USD / month starting October 2024.
+  - Timo Nürnberg for donating $5.00 USD / month starting March 2025.
 
 ## .NET Foundation
 
