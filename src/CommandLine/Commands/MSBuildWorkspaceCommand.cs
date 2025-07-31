@@ -414,7 +414,8 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         string extension = Path.GetExtension(path);
 
         return string.Equals(extension, ".sln", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(extension, ".slnf", StringComparison.OrdinalIgnoreCase);
+            || string.Equals(extension, ".slnf", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(extension, ".slnx", StringComparison.OrdinalIgnoreCase);
     }
 
     protected class ConsoleProgressReporter : IProgress<ProjectLoadProgress>
