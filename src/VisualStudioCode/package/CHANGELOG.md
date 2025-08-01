@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Analyzer and fixer for bracket formatting  [RCS1269](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1269) ([PR](https://github.com/dotnet/roslynator/pull/1643))
+
 ## [4.13.1] - 2025-02-23
 
 ### Added

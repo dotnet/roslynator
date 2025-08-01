@@ -237,6 +237,15 @@
       <Value>when_type_is_obvious</Value>
     </Values>
   </Option>
+  <Option Id="TargetBracesStyle">
+    <Description>Define which braces should be used as a target of the code fix</Description>
+    <Values>
+      <Value IsDefault="true">none</Value>
+      <Value>opening</Value>
+      <Value>closing</Value>
+      <Value>both</Value>
+    </Values>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>
