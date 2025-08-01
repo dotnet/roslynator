@@ -3323,5 +3323,29 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.SimplifyNumericComparison, 
             customTags:         []);
 
+        /// <summary>RCS1269</summary>
+        public static readonly DiagnosticDescriptor FixBracketFormattingOfList = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FixBracketFormattingOfList, 
+            title:              "Fix bracket formatting of a list", 
+            messageFormat:      "Fix bracket formatting of {0}", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FixBracketFormattingOfList, 
+            customTags:         []);
+
+        /// <summary>RCS1270</summary>
+        public static readonly DiagnosticDescriptor FixBracketFormattingOfBinaryExpression = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression, 
+            title:              "Fix bracket formatting of a binary expression", 
+            messageFormat:      "Fix bracket formatting of {0}", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FixBracketFormattingOfBinaryExpression, 
+            customTags:         []);
+
     }
 }

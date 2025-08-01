@@ -111,6 +111,9 @@ internal static class SyntaxTriviaAnalysis
     }
 
     public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default)
+        => DetermineIndentation(nodeOrToken, true, cancellationToken);
+
+    public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, bool searchInAccessors, CancellationToken cancellationToken = default)
     {
         SyntaxTree tree = nodeOrToken.SyntaxTree;
 
@@ -171,7 +174,7 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        if (!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
+        if (searchInAccessors && !IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
         {
             node = node.Parent;
 
