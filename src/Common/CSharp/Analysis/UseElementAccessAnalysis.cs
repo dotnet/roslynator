@@ -21,7 +21,8 @@ internal static class UseElementAccessAnalysis
         if (invocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
+        ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken);
+        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -31,7 +32,7 @@ internal static class UseElementAccessAnalysis
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        if (!HasAccessibleIndexer(typeSymbol, semanticModel, invocationExpression.SpanStart))
+        if (!HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationExpression.SpanStart))
             return false;
 
         ElementAccessExpressionSyntax elementAccess = SyntaxFactory.ElementAccessExpression(
@@ -53,7 +54,8 @@ internal static class UseElementAccessAnalysis
         if (invocationInfo.InvocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
+        ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken);
+        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -63,7 +65,7 @@ internal static class UseElementAccessAnalysis
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        return HasAccessibleIndexer(typeSymbol, semanticModel, invocationInfo.InvocationExpression.SpanStart);
+        return HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
     }
 
     public static bool IsFixableLast(
@@ -80,7 +82,8 @@ internal static class UseElementAccessAnalysis
         if (semanticModel.Compilation.GetTypeByMetadataName("System.Index")?.DeclaredAccessibility != Accessibility.Public)
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
+        ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken);
+        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -90,7 +93,7 @@ internal static class UseElementAccessAnalysis
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        return HasAccessibleIndexer(typeSymbol, semanticModel, invocationInfo.InvocationExpression.SpanStart);
+        return HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
     }
 
     private static bool CheckInfiniteRecursion(

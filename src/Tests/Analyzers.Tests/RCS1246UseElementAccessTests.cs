@@ -315,4 +315,24 @@ class C : IReadOnlyList<int>
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOf_OrderedDictionary()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        OrderedDictionary<string, string> dic = new OrderedDictionary<string, string>();
+
+        KeyValuePair<string, string> first = dic.First();
+        KeyValuePair<string, string> last = dic.Last();
+        KeyValuePair<string, string> elementAt = dic.ElementAt(1);
+     }
 }
+");
+    }}
