@@ -42,12 +42,6 @@ public class AnalyzerMetadata
 
     public List<LinkMetadata> Links { get; } = [];
 
-    public List<LegacyAnalyzerOptionMetadata> LegacyOptions { get; } = [];
-
-    public List<AnalyzerMetadata> LegacyOptionAnalyzers { get; } = [];
-
-    public LegacyAnalyzerOptionKind Kind { get; init; }
-
     public AnalyzerMetadata Parent { get; init; }
 
     public AnalyzerStatus Status { get; init; }

@@ -158,18 +158,13 @@ public static class MarkdownGenerator
 
         static IEnumerable<MElement> CreateSamples(AnalyzerMetadata analyzer)
         {
-            List<SampleMetadata> samples = analyzer.Samples;
-            LegacyAnalyzerOptionKind kind = analyzer.Kind;
+            IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
 
             if (samples.Count > 0)
             {
                 yield return Heading2("Examples");
 
-                string beforeHeading = (kind == LegacyAnalyzerOptionKind.Disable)
-                    ? "code"
-                    : "diagnostic";
-
-                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, beforeHeading, "fix"))
+                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, "diagnostic", "fix"))
                     yield return item;
             }
         }
