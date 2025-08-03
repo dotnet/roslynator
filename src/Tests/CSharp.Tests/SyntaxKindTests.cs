@@ -15,7 +15,7 @@ public static class SyntaxKindTests
     {
         List<SyntaxKind> unknownKinds = null;
 
-        foreach (SyntaxKind value in Enum.GetValues(typeof(SyntaxKind)))
+        foreach (SyntaxKind value in Enum.GetValues<SyntaxKind>())
         {
             switch (value)
             {

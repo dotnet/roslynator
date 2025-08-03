@@ -93,6 +93,7 @@ internal static class SymbolUtility
 
     public static bool HasAccessibleIndexer(
         ITypeSymbol typeSymbol,
+        ITypeSymbol returnType,
         SemanticModel semanticModel,
         int position)
     {
@@ -135,8 +136,12 @@ internal static class SymbolUtility
 
             foreach (ISymbol symbol in typeSymbol.GetMembers("this[]"))
             {
-                if (semanticModel.IsAccessible(position, symbol))
+                if (semanticModel.IsAccessible(position, symbol)
+                    && symbol is IPropertySymbol indexerSymbol
+                    && SymbolEqualityComparer.IncludeNullability.Equals(indexerSymbol.Type, returnType))
+                {
                     return true;
+                }
             }
         }
 
