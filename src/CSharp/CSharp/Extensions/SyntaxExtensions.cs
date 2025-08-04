@@ -2918,6 +2918,15 @@ public static class SyntaxExtensions
                 case SyntaxKind.GroupClause:
                 case SyntaxKind.SelectClause:
                 {
+                    if (semanticModel
+                        .GetTypeInfo(current, cancellationToken)
+                        .ConvertedType?
+                        .OriginalDefinition
+                        .HasMetadataName(MetadataNames.System_Linq_IQueryable_T) == true)
+                    {
+                        return true;
+                    }
+
                     SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(current, cancellationToken);
 
                     if (IsMethodThatAcceptsExpressionAsFirstParameter(symbolInfo))
