@@ -183,13 +183,11 @@ internal static class OptimizeMethodCallAnalysis
             return;
 
         if (!parameters[1].IsParameterArrayOf(SpecialType.System_String, SpecialType.System_Object)
-            && !parameters[1].Type.OriginalDefinition.IsIEnumerableOfT())
+            && !parameters[1].Type.OriginalDefinition.IsIEnumerableOfT()
+            && !parameters[1].Type.OriginalDefinition.HasMetadataName(MetadataNames.System_ReadOnlySpan_T))
         {
             return;
         }
-
-        if (firstArgument.Expression is null)
-            return;
 
         if (!CSharpUtility.IsEmptyStringExpression(firstArgument.Expression, semanticModel, cancellationToken))
             return;
