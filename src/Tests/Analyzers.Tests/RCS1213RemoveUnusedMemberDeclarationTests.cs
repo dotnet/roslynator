@@ -119,7 +119,7 @@ class C
 {
     #region R
     
-    #endregion R
+#endregion R
 }
 ");
     }
