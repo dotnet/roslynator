@@ -215,15 +215,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
     public async Task TestNoDiagnostic_ExpressionTree2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        var _ = from x in new[] { ""a"" }.AsQueryable()
-                join yy in new[] { ""b"" }.AsQueryable()
+        var _ = from x in new[] { "a" }.AsQueryable()
+                join yy in new[] { "b" }.AsQueryable()
                 on x equals yy into y
                 from yy in y.DefaultIfEmpty()
                 select new
@@ -232,6 +232,6 @@ class C
                 };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching));
     }
 }
