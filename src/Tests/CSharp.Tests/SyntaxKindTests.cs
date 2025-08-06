@@ -595,6 +595,10 @@ public static class SyntaxKindTests
                 case SyntaxKind.RefStructConstraint:
                 // new in 4.12.0
                 case SyntaxKind.FieldExpression:
+                // new in 4.14.0
+                case SyntaxKind.ExtensionKeyword:
+                case SyntaxKind.ExtensionDeclaration:
+                case SyntaxKind.IgnoredDirectiveTrivia:
                 {
                     break;
                 }
