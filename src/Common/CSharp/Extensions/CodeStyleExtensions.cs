@@ -102,9 +102,6 @@ internal static class CodeStyleExtensions
         if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.NewLineBeforeWhileInDoStatement, out bool addNewLine))
             return (addNewLine) ? NewLineStyle.Add : NewLineStyle.Remove;
 
-        if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, out bool removeLine))
-            return (removeLine) ? NewLineStyle.Remove : NewLineStyle.Add;
-
         return NewLineStyle.None;
     }
 
@@ -112,9 +109,6 @@ internal static class CodeStyleExtensions
     {
         if (TryGetNewLinePosition(configOptions, ConfigOptions.BinaryOperatorNewLine, out NewLinePosition newLinePosition))
             return newLinePosition;
-
-        if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
-            return NewLinePosition.After;
 
         return NewLinePosition.None;
     }
@@ -124,9 +118,6 @@ internal static class CodeStyleExtensions
         if (TryGetNewLinePosition(configOptions, ConfigOptions.ConditionalOperatorNewLine, out NewLinePosition newLinePosition))
             return newLinePosition;
 
-        if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
-            return NewLinePosition.After;
-
         return NewLinePosition.None;
     }
 
@@ -135,9 +126,6 @@ internal static class CodeStyleExtensions
         if (TryGetNewLinePosition(configOptions, ConfigOptions.ArrowTokenNewLine, out NewLinePosition newLinePosition))
             return newLinePosition;
 
-        if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
-            return NewLinePosition.After;
-
         return NewLinePosition.None;
     }
 
@@ -145,9 +133,6 @@ internal static class CodeStyleExtensions
     {
         if (TryGetNewLinePosition(configOptions, ConfigOptions.EqualsTokenNewLine, out NewLinePosition newLinePosition))
             return newLinePosition;
-
-        if (configOptions.IsEnabled(LegacyConfigOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt))
-            return NewLinePosition.After;
 
         return NewLinePosition.None;
     }
@@ -174,9 +159,6 @@ internal static class CodeStyleExtensions
                 return UsingDirectiveBlankLineStyle.SeparateGroups;
             }
         }
-
-        if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))
-            return (removeLine) ? UsingDirectiveBlankLineStyle.Never : UsingDirectiveBlankLineStyle.SeparateGroups;
 
         return UsingDirectiveBlankLineStyle.None;
     }
@@ -226,9 +208,6 @@ internal static class CodeStyleExtensions
         if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.BlankLineBetweenSingleLineAccessors, out bool addLine))
             return (addLine) ? BlankLineStyle.Add : BlankLineStyle.Remove;
 
-        if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, out bool removeLine))
-            return (removeLine) ? BlankLineStyle.Remove : BlankLineStyle.Add;
-
         return BlankLineStyle.None;
     }
 
@@ -247,9 +226,6 @@ internal static class CodeStyleExtensions
                 return false;
             }
         }
-
-        if (configOptions.IsEnabled(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction))
-            return true;
 
         return null;
     }
@@ -270,9 +246,6 @@ internal static class CodeStyleExtensions
             }
         }
 
-        if (configOptions.IsEnabled(LegacyConfigOptions.ConvertBitwiseOperationToHasFlagCall))
-            return EnumFlagOperationStyle.HasFlagMethod;
-
         return EnumFlagOperationStyle.None;
     }
 
@@ -284,9 +257,6 @@ internal static class CodeStyleExtensions
         {
             return (value) ? ConfigureAwaitStyle.Include : ConfigureAwaitStyle.Omit;
         }
-
-        if (configOptions.IsEnabled(LegacyConfigOptions.RemoveCallToConfigureAwait))
-            return ConfigureAwaitStyle.Omit;
 
         return ConfigureAwaitStyle.None;
     }
@@ -304,9 +274,6 @@ internal static class CodeStyleExtensions
                 return EmptyStringStyle.Literal;
         }
 
-        if (configOptions.IsEnabled(LegacyConfigOptions.UseStringEmptyInsteadOfEmptyStringLiteral))
-            return EmptyStringStyle.Field;
-
         return EmptyStringStyle.None;
     }
 
@@ -322,9 +289,6 @@ internal static class CodeStyleExtensions
             if (string.Equals(rawValue, ConfigOptionValues.NullCheckStyle_PatternMatching, StringComparison.OrdinalIgnoreCase))
                 return NullCheckStyle.PatternMatching;
         }
-
-        if (configOptions.IsEnabled(LegacyConfigOptions.UseComparisonInsteadPatternMatchingToCheckForNull))
-            return NullCheckStyle.EqualityOperator;
 
         return NullCheckStyle.None;
     }
@@ -349,9 +313,6 @@ internal static class CodeStyleExtensions
             }
         }
 
-        if (configOptions.IsEnabled(LegacyConfigOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken))
-            return ConditionalExpressionParenthesesStyle.OmitWhenConditionIsSingleToken;
-
         return ConditionalExpressionParenthesesStyle.None;
     }
 
@@ -371,9 +332,6 @@ internal static class CodeStyleExtensions
             }
         }
 
-        if (context.IsEnabled(LegacyConfigOptions.RemoveParenthesesWhenCreatingNewObject))
-            return ObjectCreationParenthesesStyle.Omit;
-
         return ObjectCreationParenthesesStyle.None;
     }
 
@@ -392,9 +350,6 @@ internal static class CodeStyleExtensions
                 return AccessibilityModifierStyle.Implicit;
             }
         }
-
-        if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveAccessibilityModifiers, out bool useImplicit))
-            return (useImplicit) ? AccessibilityModifierStyle.Implicit : AccessibilityModifierStyle.Explicit;
 
         return AccessibilityModifierStyle.None;
     }
@@ -498,12 +453,6 @@ internal static class CodeStyleExtensions
             }
         }
 
-        if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious))
-            return TypeStyle.ImplicitWhenTypeIsObvious;
-
-        if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArray))
-            return TypeStyle.Implicit;
-
         return TypeStyle.None;
     }
 
@@ -582,9 +531,6 @@ internal static class CodeStyleExtensions
             return value;
         }
 
-        if (context.TryGetOptionAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, out value))
-            return !value;
-
         return null;
     }
 
@@ -607,9 +553,6 @@ internal static class CodeStyleExtensions
         if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out value))
             return value;
 #pragma warning restore CS0618 // Type or member is obsolete
-
-        if (context.TryGetOptionAsBool(LegacyConfigOptions.SuppressUnityScriptMethods, out value))
-            return value;
 
         return null;
     }

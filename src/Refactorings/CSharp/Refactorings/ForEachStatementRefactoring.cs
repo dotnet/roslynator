@@ -32,8 +32,9 @@ internal static class ForEachStatementRefactoring
             semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, context.CancellationToken);
+            ITypeSymbol elementTypeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Type, context.CancellationToken);
 
-            if (SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, forEachStatement.SpanStart))
+            if (SymbolUtility.HasAccessibleIndexer(typeSymbol, elementTypeSymbol, semanticModel, forEachStatement.SpanStart))
             {
                 if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor))
                 {
