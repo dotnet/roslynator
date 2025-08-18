@@ -59,7 +59,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.PutFullAccessorOnItsOwnLine,
-                            accessor);
+                            Location.Create(accessor.SyntaxTree, accessor.Span));
                     }
 
                     token = accessor.Body?.CloseBraceToken ?? accessor.SemicolonToken;

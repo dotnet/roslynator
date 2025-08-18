@@ -20,7 +20,7 @@ class C
 {
     private string _p;
 
-    public string P { [||]get { return _p; } set { _p = value; } }
+    public string P { [|get { return _p; }|] [|set { _p = value; }|] }
 }
 ", @"
 class C
@@ -46,7 +46,7 @@ class C
 
     public string P
     {
-        get { return _p; } [||]set { _p = value; }
+        get { return _p; } [|set { _p = value; }|]
     }
 }
 ", @"
@@ -71,7 +71,7 @@ class C
 {
     private string _p;
 
-    public string P { [||]get => _p; set => _p = value; }
+    public string P { [|get => _p;|] [|set => _p = value;|] }
 }
 ", @"
 class C
@@ -97,7 +97,7 @@ class C
 
     public string P
     {
-        get => _p; [||]set => _p = value;
+        get => _p; [|set => _p = value;|]
     }
 }
 ", @"
@@ -122,7 +122,7 @@ class C
 {
     private string _p;
 
-    public string P { [||]get { return _p; } }
+    public string P { [|get { return _p; }|] }
 }
 ", @"
 class C
@@ -145,7 +145,7 @@ class C
 {
     private string _p;
 
-    public string P { [||]get => _p; }
+    public string P { [|get => _p;|] }
 }
 ", @"
 class C
