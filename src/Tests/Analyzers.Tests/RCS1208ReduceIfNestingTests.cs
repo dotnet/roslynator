@@ -15,32 +15,15 @@ public class RCS1208ReduceIfNestingTests : AbstractCSharpDiagnosticVerifier<Redu
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsConstructor()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     C(bool p)
     {
-        [|if|] (p)
+        if (p)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    C(bool p)
-    {
-        if (!p)
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -53,7 +36,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_IsWhenIsNotIsInvalid()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class X
 {
 }
@@ -64,33 +47,10 @@ class C
 
     C(object o)
     {
-        [|if|] (o is X)
+        if (o is X)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class X
-{
-}
-
-class C
-{
-    public X X { get; set; }
-
-    C(object o)
-    {
-        if (o is not global::X)
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -191,37 +151,17 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsLambda()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool p)
     {
         var f = () => 
             {
-                [|if|] (p)
+                if (p)
                 {
                     M2();
                 }
-            };
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(bool p)
-    {
-        var f = () =>
-            {
-                if (!p)
-                {
-                    return;
-                }
-
-                M2();
             };
     }
 
@@ -235,38 +175,17 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsLocalFunction()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool p)
     {
         void M3()
         {
-            [|if|] (p)
+            if (p)
             {
                 M2();
             }
-        }
-        M3();
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(bool p)
-    {
-        void M3()
-        {
-            if (!p)
-            {
-                return;
-            }
-
-            M2();
         }
         M3();
     }
@@ -281,32 +200,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsMethod()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool p)
     {
-        [|if|] (p)
+        if (p)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(bool p)
-    {
-        if (!p)
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -346,32 +248,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToFalse()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool? p)
     {
-        [|if|] (p??false)
+        if (p??false)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(bool? p)
-    {
-        if (p != true)
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -384,32 +269,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToTrue()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool? p)
     {
-        [|if|] (p??true)
+        if (p??true)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(bool? p)
-    {
-        if (p == false)
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -422,33 +290,16 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToUnknown()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool b { get; set; }
     void M(bool? p)
     {
-        [|if|] (p??b)
+        if (p??b)
         {
             M2();
         }
-    }
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    bool b { get; set; }
-    void M(bool? p)
-    {
-        if (!(p ?? b))
-        {
-            return;
-        }
-
-        M2();
     }
     void M2()
     {
@@ -668,34 +519,17 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
-    public async Task Test_WhenIsExpressionCsharp8()
+    public async Task Test_WhenIsExpressionCSharp8()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(object o)
     {
-        [|if|] (o is string)
+        if (o is string)
         {
             M2();
         }
-    }
-
-    void M2()
-    {
-    }
-}
-", @"
-class C
-{
-    void M(object o)
-    {
-        if (!(o is string))
-        {
-            return;
-        }
-
-        M2();
     }
 
     void M2()
@@ -708,12 +542,12 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenIsExpression()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(object o)
     {
-        [|if|] (o is string)
+        if (o is string)
         {
             M2();
         }
@@ -723,23 +557,23 @@ class C
     {
     }
 }
-", @"
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
 class C
 {
-    void M(object o)
+    private void Foo(string bar, int baz)
     {
-        if (o is not string)
+        if (bar == "bar" && baz == 123)
         {
-            return;
+            var foo = "baz";
         }
-
-        M2();
-    }
-
-    void M2()
-    {
     }
 }
-");
+""");
     }
 }
