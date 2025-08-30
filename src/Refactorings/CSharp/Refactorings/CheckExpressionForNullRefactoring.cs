@@ -253,7 +253,17 @@ internal static class CheckExpressionForNullRefactoring
             }
         }
 
-        return await document.InsertNodeAfterAsync(statement, CreateNullCheck(expression), cancellationToken).ConfigureAwait(false);
+        SyntaxNode nodeInList = statement;
+        IfStatementSyntax nullCheck = CreateNullCheck(expression);
+        SyntaxNode newNode = nullCheck;
+
+        if (nodeInList.Parent is GlobalStatementSyntax globalStatement)
+        {
+            newNode = globalStatement.WithStatement(nullCheck);
+            nodeInList = globalStatement;
+        }
+
+        return await document.InsertNodeAfterAsync(nodeInList, newNode, cancellationToken).ConfigureAwait(false);
     }
 
     private static Task<Document> RefactorAsync(
