@@ -32,6 +32,31 @@ class FooAttribute : Attribute
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    public async Task Test_WithComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+/// <summary>
+/// x
+/// <summary>
+class [|FooAttribute|] : Attribute
+{
+}
+", @"
+using System;
+
+/// <summary>
+/// x
+/// <summary>
+[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+class FooAttribute : Attribute
+{
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
     public async Task TestNoDiagnostic_AttributeUsageAttributeAlreadyExistsOrIsInherited()
     {
         await VerifyNoDiagnosticAsync(@"

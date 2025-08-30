@@ -128,7 +128,17 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
                     NameEquals(IdentifierName("AllowMultiple")),
                     FalseLiteralExpression())));
 
-        ClassDeclarationSyntax newNode = classDeclaration.AddAttributeLists(AttributeList(attribute));
+        ClassDeclarationSyntax newClassDeclaration = classDeclaration;
+        AttributeListSyntax attributeList = AttributeList(attribute);
+        SyntaxTrivia comment = classDeclaration.GetDocumentationCommentTrivia();
+
+        if (!comment.IsKind(SyntaxKind.None))
+        {
+            attributeList = attributeList.WithLeadingTrivia(classDeclaration.GetLeadingTrivia());
+            newClassDeclaration = newClassDeclaration.WithoutLeadingTrivia();
+        }
+
+        ClassDeclarationSyntax newNode = newClassDeclaration.AddAttributeLists(attributeList);
 
         return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
     }
