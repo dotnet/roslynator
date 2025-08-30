@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1676))
 - Fix analyzer [RCS1248](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1248) ([PR](https://github.com/dotnet/roslynator/pull/1677))
+- Fix refactoring [Check expression for null](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0024) ([PR](https://github.com/dotnet/roslynator/pull/1682))
 
 ## [4.14.0] - 2025-07-26
 
