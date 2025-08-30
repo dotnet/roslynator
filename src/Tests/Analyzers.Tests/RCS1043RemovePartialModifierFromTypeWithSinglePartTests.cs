@@ -245,4 +245,18 @@ namespace System.Windows
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    public async Task TestNoDiagnostic_GeneratedRegexAttribute()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System.Text.RegularExpressions;
+
+partial class C
+{
+    [GeneratedRegex("^[a-z]{2}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
+    private static partial Regex Pattern();
+}
+""", options: Options.AddAllowedCompilerDiagnosticId("CS8795"));
+    }
 }
