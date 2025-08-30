@@ -59,6 +59,12 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
         if (_metadataNames.Any(c => symbol.InheritsFrom(c)))
             return;
 
+        foreach (ISymbol member in symbol.GetMembers())
+        {
+            if (member.HasAttribute(MetadataNames.System_Text_RegularExpressions_GeneratedRegexAttribute))
+                return;
+        }
+
         foreach (MemberDeclarationSyntax member in typeDeclaration.Members)
         {
             if (member is MethodDeclarationSyntax methodDeclaration
