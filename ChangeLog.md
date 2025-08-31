@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1684))
 - Fix refactoring [Check expression for null](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0024) ([PR](https://github.com/dotnet/roslynator/pull/1682))
 
+### Changed
+
+- Change behavior of analyzer [RCS1206](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1206) by default ([PR](https://github.com/dotnet/roslynator/pull/1685))
+  - The condition for option `omit_when_single_line` is that the braces/brackets are on the same line, not just the expression in the braces/brackets
+
 ## [4.14.0] - 2025-07-26
 
 ### Added
