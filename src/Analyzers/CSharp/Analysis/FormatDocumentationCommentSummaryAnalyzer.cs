@@ -92,6 +92,20 @@ public sealed class FormatDocumentationCommentSummaryAnalyzer : BaseDiagnosticAn
                     if (endTag?.IsMissing == false
                         && startTag.GetSpanEndLine() < endTag.GetSpanStartLine())
                     {
+                        foreach (XmlNodeSyntax node in summaryElement.Content)
+                        {
+                            if (node is XmlElementSyntax xmlElement)
+                            {
+                                switch (xmlElement.GetTag())
+                                {
+                                    case XmlTag.Code:
+                                    case XmlTag.List:
+                                    case XmlTag.Para:
+                                        return;
+                                }
+                            }
+                        }
+
                         Match match = SingleLineSummaryRegex.Match(
                             summaryElement.ToString(),
                             startTag.Span.End - summaryElement.SpanStart,
