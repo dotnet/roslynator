@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add option `roslynator_nul_conditional_operator.avoid_negative_boolean_comparison` ([PR](https://github.com/dotnet/roslynator/pull/1688))
+  - Do not suggest to use null-conditional operator when result would be `... != true/false`
+  - Applicable for [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146)
 - [CLI] Add support for GitLab analyzer reports ([PR](https://github.com/dotnet/roslynator/pull/1633))
 
 ### Fixed
