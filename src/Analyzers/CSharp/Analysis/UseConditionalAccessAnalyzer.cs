@@ -126,10 +126,8 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
         if (left is null)
             return;
 
-        bool avoidNegativeBooleanComparison = context.GetAvoidNegativeBooleanComparison();
-
-        if (avoidNegativeBooleanComparison
-            && ShouldBeNegativeBooleanComparison(binaryExpression, right))
+        if (context.GetConfigOptions().AvoidNegativeBooleanComparison()
+            && WillBeConvertedToNegativeBooleanComparison(binaryExpression, right))
         {
             return;
         }
@@ -465,7 +463,7 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private static bool ShouldBeNegativeBooleanComparison(ExpressionSyntax binaryExpression, ExpressionSyntax rightExpression)
+    private static bool WillBeConvertedToNegativeBooleanComparison(ExpressionSyntax binaryExpression, ExpressionSyntax rightExpression)
     {
         switch (rightExpression.Kind())
         {

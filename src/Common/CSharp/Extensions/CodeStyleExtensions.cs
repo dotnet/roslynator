@@ -211,12 +211,6 @@ internal static class CodeStyleExtensions
         return BlankLineStyle.None;
     }
 
-    public static bool GetAvoidNegativeBooleanComparison(this SyntaxNodeAnalysisContext context)
-    {
-        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
-
-        return ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.NullConditionalOperator_AvoidNegativeBooleanComparison, out bool value) && value;
-    }
     public static bool? PreferAnonymousFunctionOrMethodGroup(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
@@ -626,5 +620,10 @@ internal static class CodeStyleExtensions
 
         newLinePosition = NewLinePosition.None;
         return false;
+    }
+
+    public static bool AvoidNegativeBooleanComparison(this AnalyzerConfigOptions configOptions)
+    {
+        return ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.NullConditionalOperator_AvoidNegativeBooleanComparison, out bool value) && value;
     }
 }
