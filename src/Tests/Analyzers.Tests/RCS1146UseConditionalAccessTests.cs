@@ -983,4 +983,39 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task Test_AvoidNegativeBooleanComparison()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class Foo
+{
+    void M1()
+    {
+        Foo x = null;
+
+        if ([|x == null || x.Equals(x)|]) { }
+
+        if ([|x == default(Foo) || x.Equals(x)|]) { }
+
+        if ([|x == default || x.Equals(x)|]) { }
+
+        if ([|x == null || (x.Equals(x)|])) { }
+
+        if ([|x == null || !x.Equals(x)|]) { }
+
+        if ([|x == null || (!x.Equals(x)|])) { }
+    }
+
+    void M2()
+    {
+        Foo? x = null;
+
+        if ([|x == null || x.Value.Equals(x)|]) { }
+
+        if ([|x == null || !x.Value.Equals(x)|]) { }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
+    }
 }

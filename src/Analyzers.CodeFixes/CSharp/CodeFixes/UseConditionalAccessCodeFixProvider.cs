@@ -79,11 +79,11 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        SyntaxKind kind = binaryExpression.Kind();
+        SyntaxKind binaryExpressionKind = binaryExpression.Kind();
 
-        (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, kind, semanticModel, cancellationToken);
+        (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, binaryExpressionKind, semanticModel, cancellationToken);
 
-        NullCheckStyles allowedStyles = (kind == SyntaxKind.LogicalAndExpression)
+        NullCheckStyles allowedStyles = (binaryExpressionKind == SyntaxKind.LogicalAndExpression)
             ? (NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull)
             : (NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
@@ -134,12 +134,12 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
             }
             case SyntaxKind.LogicalNotExpression:
             {
-                builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == false" : " != true");
+                builder.Append((binaryExpressionKind == SyntaxKind.LogicalAndExpression) ? " == false" : " != true");
                 break;
             }
             default:
             {
-                builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == true" : " != false");
+                builder.Append((binaryExpressionKind == SyntaxKind.LogicalAndExpression) ? " == true" : " != false");
                 break;
             }
         }
