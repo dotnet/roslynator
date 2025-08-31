@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1248](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1248) ([PR](https://github.com/dotnet/roslynator/pull/1677))
 - Fix analyzer [RCS1203](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1203) ([PR](https://github.com/dotnet/roslynator/pull/1683))
 - Fix analyzer [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1684))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1686))
+  - Add unity method `OnRectTransformDimensionsChange` 
+- Fix analyzer [RCS1253](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1253) ([PR](https://github.com/dotnet/roslynator/pull/1687))
 - Fix refactoring [Check expression for null](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0024) ([PR](https://github.com/dotnet/roslynator/pull/1682))
 
 ### Changed

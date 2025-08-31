@@ -73,6 +73,7 @@ internal static class UnityScriptMethods
             "OnPostRender",
             "OnPreCull",
             "OnPreRender",
+            "OnRectTransformDimensionsChange",
             "OnRenderImage",
             "OnRenderObject",
             "OnSerializeNetworkView",
