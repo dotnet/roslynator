@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Change behavior of analyzer [RCS1206](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1206) by default ([PR](https://github.com/dotnet/roslynator/pull/1685))
+- Change behavior of analyzer [RCS1206](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1206) ([PR](https://github.com/dotnet/roslynator/pull/1685))
   - The condition for option `omit_when_single_line` will be that the braces/brackets are on the same line, not just the expression in the braces/brackets
 
 ## [4.14.0] - 2025-07-26
