@@ -112,8 +112,8 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_null_conditional_operator_new_line = after|before
 # Applicable to: rcs0059
 
-#roslynator_null_conditional_operator.avoid_negative_boolean_comparison = 
-# Default: true
+#roslynator_null_conditional_operator.avoid_negative_boolean_comparison = true|false
+# Default: false
 # Applicable to: rcs1146
 
 #roslynator_object_creation_parentheses_style = include|omit

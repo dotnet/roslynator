@@ -209,7 +209,7 @@ class Foo
             && f) { }
     }
 }
-""");
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -235,7 +235,7 @@ class Foo
         if (x?.Equals(x) == false) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -319,7 +319,7 @@ class Foo
         if (dic?[0].Equals("x") == false) { }
     }
 }
-""");
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -363,7 +363,7 @@ class Foo
     Foo M2() => null;
     Foo M3() => null;
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -429,7 +429,7 @@ struct Foo
         if (x?.ToString()?.ToString() != null) { }
     }
 }
-""");
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -488,7 +488,7 @@ struct Foo
         if (x?.ToString()?.ToString()?.ToString() != null) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -527,7 +527,7 @@ class Foo
         if (x != null && (x.P != null) is object _) { }
     }
 }
-""");
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -994,26 +994,29 @@ class Foo
     {
         Foo x = null;
 
-        if ([|x == null || x.Equals(x)|]) { }
+        if (x == null || x.Equals(x)) { }
 
-        if ([|x == default(Foo) || x.Equals(x)|]) { }
+        if (x == default(Foo) || x.Equals(x)) { }
 
-        if ([|x == default || x.Equals(x)|]) { }
+        if (x == default || x.Equals(x)) { }
 
-        if ([|x == null || (x.Equals(x)|])) { }
+        if (x == null || (x.Equals(x))) { }
 
-        if ([|x == null || !x.Equals(x)|]) { }
+        if (x == null || !x.Equals(x)) { }
 
-        if ([|x == null || (!x.Equals(x)|])) { }
+        if (x == null || (!x.Equals(x))) { }
     }
+}
 
-    void M2()
+struct Foo2
+{
+    void M()
     {
-        Foo? x = null;
+        Foo2? x = null;
 
-        if ([|x == null || x.Value.Equals(x)|]) { }
+        if (x == null || x.Value.Equals(x)) { }
 
-        if ([|x == null || !x.Value.Equals(x)|]) { }
+        if (x == null || !x.Value.Equals(x)) { }
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));

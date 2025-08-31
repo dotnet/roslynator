@@ -161,8 +161,8 @@ namespace Roslynator
 
         public static readonly ConfigOptionDescriptor NullConditionalOperator_AvoidNegativeBooleanComparison = new(
             key:                     ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, 
-            defaultValue:            "true", 
-            defaultValuePlaceholder: "", 
+            defaultValue:            "false", 
+            defaultValuePlaceholder: "true|false", 
             description:             "Do not suggest to use null-conditional operator when result would be `... != true/false`");
 
         public static readonly ConfigOptionDescriptor NullConditionalOperatorNewLine = new(
