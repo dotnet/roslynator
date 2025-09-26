@@ -308,26 +308,40 @@ jobs:
     needs: [ build_core_and_testing, build_analyzers, build_refactorings, build_code_fixes ]
     runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
           pattern: nuget_*
           path: nuget
           merge-multiple: true
-      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+      - run: dotnet nuget push "*.nupkg" -k ${{ steps.nuget-login.outputs.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
         working-directory: nuget
 
   publish_cli_nuget_packages:
     needs: [ build_core_cli, build_framework_cli ]
     runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
           pattern: nuget_*
           path: nuget
           merge-multiple: true
-      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+      - run: dotnet nuget push "*.nupkg" -k ${{ steps.nuget-login.outputs.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
         working-directory: nuget
 
   publish_vs_code_extension:
