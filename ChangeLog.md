@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.14.1] - 2025-10-05
+
 ### Added
 
 - [CLI] Add support for `slnx` files ([PR](https://github.com/dotnet/roslynator/pull/1662) by @darthtrevino)

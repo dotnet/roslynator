@@ -7,13 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [4.13.1] - 2025-02-23
+## [4.14.1] - 2025-10-05
 
 ### Added
 
-- Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
-  - It's possible to specify a directory path and/or a file name of a test file.
-  - Applies to testing library (Roslynator.Testing.*).
+- [CLI] Add support for `slnx` files ([PR](https://github.com/dotnet/roslynator/pull/1662) by @darthtrevino)
+    - Bump Roslyn to 4.14.0
+    - Drop support for .NET 7 SDK
+
+### Fixed
+
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1676))
+- Fix analyzer [RCS1248](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1248) ([PR](https://github.com/dotnet/roslynator/pull/1677))
+- Fix analyzer [RCS1203](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1203) ([PR](https://github.com/dotnet/roslynator/pull/1683))
+- Fix analyzer [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1684))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1686))
+    - Add unity method `OnRectTransformDimensionsChange`
+- Fix analyzer [RCS1253](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1253) ([PR](https://github.com/dotnet/roslynator/pull/1687))
+- Fix refactoring [Check expression for null](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0024) ([PR](https://github.com/dotnet/roslynator/pull/1682))
+
+### Changed
+
+- Change behavior of analyzer [RCS1206](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1206) ([PR](https://github.com/dotnet/roslynator/pull/1685))
+    - The condition for option `omit_when_single_line` will be that the braces/brackets are on the same line, not just the expression in the braces/brackets
 
 ## [4.14.0] - 2025-07-26
 
