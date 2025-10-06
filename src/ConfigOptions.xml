@@ -237,6 +237,12 @@
       <Value>when_type_is_obvious</Value>
     </Values>
   </Option>
+    <Option Id="NullConditionalOperator_AvoidNegativeBooleanComparison">
+        <Key>null_conditional_operator.avoid_negative_boolean_comparison</Key>
+        <DefaultValue>false</DefaultValue>
+        <ValuePlaceholder>true|false</ValuePlaceholder>
+        <Description>Do not suggest to use null-conditional operator when result would be `... != true/false`</Description>
+    </Option>
   <!--
   <Option Id="">
     <Key></Key>

@@ -4484,6 +4484,9 @@ string s2 = s as string;]]></Before>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>6.0</MinLanguageVersion>
+    <ConfigOptions>
+      <Option Key="null_conditional_operator.avoid_negative_boolean_comparison" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[if (s != null && s.StartsWith("a"))

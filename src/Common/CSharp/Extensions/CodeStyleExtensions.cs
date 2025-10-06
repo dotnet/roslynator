@@ -621,4 +621,9 @@ internal static class CodeStyleExtensions
         newLinePosition = NewLinePosition.None;
         return false;
     }
+
+    public static bool AvoidNegativeBooleanComparison(this AnalyzerConfigOptions configOptions)
+    {
+        return ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.NullConditionalOperator_AvoidNegativeBooleanComparison, out bool value) && value;
+    }
 }

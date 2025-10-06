@@ -126,6 +126,12 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
         if (left is null)
             return;
 
+        if (context.GetConfigOptions().AvoidNegativeBooleanComparison()
+            && WillBeConvertedToNegativeBooleanComparison(binaryExpression, right))
+        {
+            return;
+        }
+
         ISymbol operatorSymbol = context.SemanticModel.GetSymbol(binaryExpression, context.CancellationToken);
 
         if (operatorSymbol?.Name == WellKnownMemberNames.BitwiseOrOperatorName)
@@ -454,6 +460,34 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                 return ((BinaryExpressionSyntax)parent).Left == node;
 
             return true;
+        }
+    }
+
+    private static bool WillBeConvertedToNegativeBooleanComparison(ExpressionSyntax binaryExpression, ExpressionSyntax rightExpression)
+    {
+        switch (rightExpression.Kind())
+        {
+            case SyntaxKind.LogicalOrExpression:
+            case SyntaxKind.LogicalAndExpression:
+            case SyntaxKind.BitwiseOrExpression:
+            case SyntaxKind.BitwiseAndExpression:
+            case SyntaxKind.ExclusiveOrExpression:
+            case SyntaxKind.EqualsExpression:
+            case SyntaxKind.NotEqualsExpression:
+            case SyntaxKind.LessThanExpression:
+            case SyntaxKind.LessThanOrEqualExpression:
+            case SyntaxKind.GreaterThanExpression:
+            case SyntaxKind.GreaterThanOrEqualExpression:
+            case SyntaxKind.IsExpression:
+            case SyntaxKind.AsExpression:
+            case SyntaxKind.IsPatternExpression:
+            {
+                return false;
+            }
+            default:
+            {
+                return binaryExpression.IsKind(SyntaxKind.LogicalOrExpression);
+            }
         }
     }
 }

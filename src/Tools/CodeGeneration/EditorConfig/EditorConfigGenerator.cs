@@ -79,7 +79,7 @@ public static class EditorConfigGenerator
                 w.WriteAnalyzer(
                     analyzer.Id.ToLowerInvariant(),
                     (analyzer.IsEnabledByDefault)
-                        ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
+                        ? Enum.Parse<DiagnosticSeverity>(analyzer.DefaultSeverity).ToReportDiagnostic()
                         : ReportDiagnostic.Suppress);
 
                 if (analyzer.ConfigOptions.Count > 0)
