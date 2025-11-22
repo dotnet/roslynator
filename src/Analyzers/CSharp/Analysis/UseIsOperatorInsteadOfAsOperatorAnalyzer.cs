@@ -58,6 +58,15 @@ public sealed class UseIsOperatorInsteadOfAsOperatorAnalyzer : BaseDiagnosticAna
         if (!nullCheck.Success)
             return;
 
+        if ((nullCheck.Style & NullCheckStyles.ComparisonToNull) != NullCheckStyles.None
+            && context.SemanticModel
+                .GetMethodSymbol(nullCheck.NullCheckExpression)?
+                .ContainingType?
+                .SpecialType != SpecialType.System_Object)
+        {
+            return;
+        }
+
         AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(nullCheck.Expression);
 
         if (!asExpressionInfo.Success)
