@@ -159,6 +159,12 @@ namespace Roslynator
             defaultValuePlaceholder: "equality_operator|pattern_matching", 
             description:             "Use equality operator or pattern matching as a null check");
 
+        public static readonly ConfigOptionDescriptor NullConditionalOperator_AvoidNegativeBooleanComparison = new(
+            key:                     ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, 
+            defaultValue:            "false", 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Do not suggest to use null-conditional operator when result would be `... != true/false`");
+
         public static readonly ConfigOptionDescriptor NullConditionalOperatorNewLine = new(
             key:                     ConfigOptionKeys.NullConditionalOperatorNewLine, 
             defaultValue:            null, 
