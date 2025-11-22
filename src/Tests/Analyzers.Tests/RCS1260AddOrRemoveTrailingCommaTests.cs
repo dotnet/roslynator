@@ -109,6 +109,56 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_ArrayInitializer_OmitWhenSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        var arr = new[]
+        {
+            ""[||]
+        };
+    }
+}
+""", """
+class C
+{
+    void M()
+    {
+        var arr = new[]
+        {
+            "",
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_ArrayInitializer_OmitWhenSingleLine2()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        var arr = new[] { ""[|,|] };
+    }
+}
+""", """
+class C
+{
+    void M()
+    {
+        var arr = new[] { "" };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_ArrayInitializer_Omit()
     {
         await VerifyDiagnosticAndFixAsync("""
