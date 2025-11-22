@@ -35,4 +35,26 @@ class MyClass
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator)]
+    public async Task TestNoDiagnostic_OverloadedEqualityOperator()
+    {
+        await VerifyNoDiagnosticAsync(@"
+internal class C
+{
+    public static implicit operator C(int i) => new C();
+    public static bool operator ==(C left, C right) => default;
+    public static bool operator !=(C left, C right) => default;
+    public override bool Equals(object obj) => default;
+    public override int GetHashCode() => default;
+
+    void M(object x)
+    {
+        if (x as C != null)
+        {
+        }
+    }
+}
+");
+    }
 }

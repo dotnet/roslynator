@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1172](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1172) ([PR](https://github.com/dotnet/roslynator/pull/1710))
+- [CLI] Fix `loc` command ([PR](https://github.com/dotnet/roslynator/pull/1711))
+
 ## [4.14.1] - 2025-10-05
 
 ### Added
