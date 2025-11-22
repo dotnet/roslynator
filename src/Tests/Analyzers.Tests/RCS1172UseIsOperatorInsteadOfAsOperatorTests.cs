@@ -4,7 +4,7 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests.Roslynator.CSharp.Analysis.Tests;
+namespace Roslynator.CSharp.Analysis.Tests;
 
 public class RCS1172UseIsOperatorInsteadOfAsOperatorTests : AbstractCSharpDiagnosticVerifier<UseIsOperatorInsteadOfAsOperatorAnalyzer, UseIsOperatorInsteadOfAsOperatorCodeFixProvider>
 {
