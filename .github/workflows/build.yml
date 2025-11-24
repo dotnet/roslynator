@@ -32,7 +32,7 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-            9.0.30x
+            9.0.3xx
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
       - name: Resolve version
         id: version
@@ -90,7 +90,7 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-            9.0.30x
+            9.0.3xx
       - run: dotnet restore Roslynator.CoreAndTesting.slnf
       - run: dotnet build Roslynator.CoreAndTesting.slnf --no-restore
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
@@ -273,7 +273,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.30x
+          dotnet-version: 9.0.3xx
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet pack --no-build
