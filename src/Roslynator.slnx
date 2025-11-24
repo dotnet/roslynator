@@ -1,0 +1,72 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="../.github/workflows/build.yml" />
+    <File Path="../ChangeLog.md" />
+    <File Path="../README.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="spellcheck" />
+    <File Path="VisualStudioCode/package/CHANGELOG.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Metadata/">
+    <File Path="Analyzers.xml" />
+    <File Path="CodeFixes.xml" />
+    <File Path="ConfigOptions.xml" />
+    <File Path="Diagnostics.xml" />
+    <File Path="Refactorings.xml" />
+    <File Path="Template.Analyzers.xml" />
+    <File Path="Template.Refactorings.xml" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Analyzers.Tests/Analyzers.Tests.csproj" />
+    <Project Path="Tests/CodeAnalysis.Analyzers.Tests/CodeAnalysis.Analyzers.Tests.csproj" />
+    <Project Path="Tests/CodeFixes.Tests/CodeFixes.Tests.csproj" />
+    <Project Path="Tests/Core.Tests/Core.Tests.csproj" />
+    <Project Path="Tests/CSharp.Tests/CSharp.Tests.csproj" />
+    <Project Path="Tests/CSharp.Workspaces.Tests/CSharp.Workspaces.Tests.csproj" />
+    <Project Path="Tests/Formatting.Analyzers.Tests/Formatting.Analyzers.Tests.csproj" />
+    <Project Path="Tests/Refactorings.Tests/Refactorings.Tests.csproj" />
+    <Project Path="Tests/TestConsole/TestConsole.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Tests/Testing.Common/Testing.Common.csproj" />
+    <Project Path="Tests/Testing.CSharp.MSTest/Testing.CSharp.MSTest.csproj" />
+    <Project Path="Tests/Testing.CSharp.Xunit/Testing.CSharp.Xunit.csproj" />
+    <Project Path="Tests/Testing.CSharp/Testing.CSharp.csproj" />
+    <Project Path="Tests/Testing.VisualBasic/Testing.VisualBasic.csproj" />
+    <Project Path="Tests/TestLibrary/TestLibrary.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
+    <Project Path="Tests/Tests.Common/Tests.Common.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="Tools/CodeGeneration/CodeGeneration.csproj" />
+    <Project Path="Tools/CodeGenerator/CodeGenerator.csproj" />
+    <Project Path="Tools/ConfigurationFileGenerator/ConfigurationFileGenerator.csproj" />
+    <Project Path="Tools/Metadata/Metadata.csproj" />
+    <Project Path="Tools/MetadataGenerator/MetadataGenerator.csproj" />
+    <Project Path="Tools/Utilities/Utilities.csproj" />
+  </Folder>
+  <Project Path="Analyzers.CodeFixes/Analyzers.CodeFixes.csproj" />
+  <Project Path="Analyzers/Analyzers.csproj" />
+  <Project Path="CodeAnalysis.Analyzers.CodeFixes/CodeAnalysis.Analyzers.CodeFixes.csproj" />
+  <Project Path="CodeAnalysis.Analyzers/CodeAnalysis.Analyzers.csproj" />
+  <Project Path="CodeFixes/CodeFixes.csproj" />
+  <Project Path="CommandLine/CommandLine.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="Common/Common.csproj" />
+  <Project Path="Core/Core.csproj" />
+  <Project Path="CSharp.Workspaces/CSharp.Workspaces.csproj" />
+  <Project Path="CSharp/CSharp.csproj" />
+  <Project Path="Documentation/Documentation.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="Formatting.Analyzers.CodeFixes/Formatting.Analyzers.CodeFixes.csproj" />
+  <Project Path="Formatting.Analyzers/Formatting.Analyzers.csproj" />
+  <Project Path="Refactorings/Refactorings.csproj" />
+  <Project Path="VisualBasic.Workspaces/VisualBasic.Workspaces.csproj" />
+  <Project Path="VisualBasic/VisualBasic.csproj" />
+  <Project Path="Workspaces.Common/Workspaces.Common.csproj" />
+  <Project Path="Workspaces.Core/Workspaces.Core.csproj" />
+</Solution>
