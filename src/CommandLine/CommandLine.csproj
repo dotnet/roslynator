@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' != true AND '$(RoslynatorCommandLine)' != true">
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0;net10.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
