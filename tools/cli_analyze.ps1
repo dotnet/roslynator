@@ -1,8 +1,8 @@
 #dotnet tool install -g roslynator.dotnet.cli
 
-dotnet build "$PSScriptRoot/../src/CommandLine.sln" /p:Configuration=Debug /v:m /m
+dotnet build "$PSScriptRoot/../src/CommandLine.slnx" /p:Configuration=Debug /v:m /m
 
-roslynator analyze "$PSScriptRoot/../src/Roslynator.sln" `
+roslynator analyze "$PSScriptRoot/../src/Roslynator.slnx" `
     --analyzer-assemblies `
     "$PSScriptRoot/../src/Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.CSharp.Analyzers.dll" `
     "$PSScriptRoot/../src/CodeAnalysis.Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.CodeAnalysis.Analyzers.dll" `

@@ -1,4 +1,4 @@
-dotnet build "$PSScriptRoot/../src/Roslynator.sln" -c Release `
+dotnet build "$PSScriptRoot/../src/Roslynator.slnx" -c Release `
  /p:ReportAnalyzer=True `
  /fl `
  /flp:Verbosity=diagnostic `
