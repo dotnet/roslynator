@@ -65,7 +65,7 @@ jobs:
         with:
           repository: josefpihrt/wordb
           path: wordb
-      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.8.3
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.11.0
       - run: |
           roslynator spellcheck Roslynator.slnx --dry-run --scope all --words \
             spellcheck \
