@@ -108,6 +108,11 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
             return;
         }
 
+#if ROSLYN_4_4
+        if (fieldSymbol.RefKind is RefKind.Ref or RefKind.RefReadOnly)
+            return;
+#endif
+
         if (!CheckPreprocessorDirectives(property))
             return;
 
