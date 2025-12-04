@@ -981,4 +981,30 @@ class Repro(ReadOnlySequence<byte> data)
     }
 }");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    public async Task TestNoDiagnostic_BackingFieldRef()
+    {
+        await VerifyNoDiagnosticAsync(
+            @"
+public ref struct Example(ref int value1, ref int value2)
+{
+    private ref int _value1 = ref value1;
+    private readonly ref int _value2 = ref value2;
+
+    public int Value1
+    {
+        get => _value1;
+        set => _value1 = value;
+    }
+
+    public int Value2
+    {
+        get => _value2;
+        set => _value2 = value;
+    }
+}
+"
+        );
+    }
 }
