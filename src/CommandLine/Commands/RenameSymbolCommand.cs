@@ -86,9 +86,9 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         {
             var options = new SymbolRenamerOptions()
             {
-                SkipTypes = (ScopeFilter & RenameScopeFilter.Type) != 0,
-                SkipMembers = (ScopeFilter & RenameScopeFilter.Member) != 0,
-                SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
+                SkipTypes = (ScopeFilter & RenameScopeFilter.Type) == 0,
+                SkipMembers = (ScopeFilter & RenameScopeFilter.Member) == 0,
+                SkipLocals = (ScopeFilter & RenameScopeFilter.Local) == 0,
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 DryRun = Options.DryRun,
                 FileSystemMatcher = FileSystemFilter?.Matcher,
