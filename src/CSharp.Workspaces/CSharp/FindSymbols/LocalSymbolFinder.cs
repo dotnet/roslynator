@@ -106,7 +106,7 @@ internal static class LocalSymbolFinder
             case SyntaxKind.CompilationUnit:
             {
                 var declaration = (CompilationUnitSyntax)node;
-                foreach (var globalStatement in declaration.Members.OfType<GlobalStatementSyntax>())
+                foreach (GlobalStatementSyntax globalStatement in declaration.Members.OfType<GlobalStatementSyntax>())
                 {
                     walker.Visit(globalStatement);
                 }
