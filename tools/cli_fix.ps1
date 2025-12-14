@@ -3,9 +3,9 @@
 
 $visualStudioPath = Get-VSSetupInstance -All | Select-VSSetupInstance -Require 'Microsoft.VisualStudio.Workload.ManagedDesktop' -Latest | Select-Object -ExpandProperty "InstallationPath"
 
-dotnet build "$PSScriptRoot/../src/CommandLine.sln" /p:Configuration=Debug /v:m /m
+dotnet build "$PSScriptRoot/../src/CommandLine.slnx" /p:Configuration=Debug /v:m /m
 
-roslynator fix "$PSScriptRoot/../src/Roslynator.sln" `
+roslynator fix "$PSScriptRoot/../src/Roslynator.slnx" `
     --analyzer-assemblies `
     "$PSScriptRoot/../src/Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.CSharp.Analyzers.dll" `
     "$PSScriptRoot/../src/Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.CSharp.Analyzers.CodeFixes.dll" `
