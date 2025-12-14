@@ -93,7 +93,7 @@ internal static class SymbolListHelpers
                     results.Add(symbol);
 
                 results.AddRange(methodSymbol.TypeParameters);
-                results.AddRange(methodSymbol.Parameters.Where(ms => !ms.IsImplicitlyDeclared));
+                results.AddRange(methodSymbol.Parameters.Where(p => !p.IsImplicitlyDeclared));
             }
             else
             {
