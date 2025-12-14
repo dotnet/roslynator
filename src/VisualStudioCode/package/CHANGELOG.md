@@ -20,7 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1172](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1172) ([PR](https://github.com/dotnet/roslynator/pull/1710))
 - [CLI] Fix `loc` command ([PR](https://github.com/dotnet/roslynator/pull/1711))
 - Exclude ref-field backed properties from [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([PR](https://github.com/dotnet/roslynator/pull/1718) by @ovska)
+- [CLI] Fix `rename-symbol` scope option not being applied correctly ([PR](https://github.com/dotnet/roslynator/pull/1720) by @andrtmschkw)
 - [CLI] Fix `rename-symbol` support for top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1721) by @andrtmschkw)
+
+### Changed
+
+- Migrate to  .NET 10 (including command-line tool) ([PR](https://github.com/dotnet/roslynator/pull/1727))
 
 ## [4.14.1] - 2025-10-05
 
