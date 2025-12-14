@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1172](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1172) ([PR](https://github.com/dotnet/roslynator/pull/1710))
 - [CLI] Fix `loc` command ([PR](https://github.com/dotnet/roslynator/pull/1711))
 - Exclude ref-field backed properties from [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([PR](https://github.com/dotnet/roslynator/pull/1718) by @ovska)
-- [CLI] Fix `rename-symbol` support for top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1721))
+- [CLI] Fix `rename-symbol` support for top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1721) by @andrtmschkw)
 
 ## [4.14.1] - 2025-10-05
 
