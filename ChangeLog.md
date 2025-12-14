@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Exclude ref-field backed properties from [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([PR](https://github.com/dotnet/roslynator/pull/1718) by @ovska)
 - [CLI] Fix `rename-symbol` support for top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1721))
 
+### Changed
+
+- Migrate to  .NET 10 (including command-line tool) ([PR](https://github.com/dotnet/roslynator/pull/1727))
+
 ## [4.14.1] - 2025-10-05
 
 ### Added

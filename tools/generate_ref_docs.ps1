@@ -4,7 +4,7 @@ dotnet build generate_ref_docs.sln --no-restore -c Release -v minimal /m
 dotnet restore "$PSScriptRoot/../src/CommandLine.sln" -v minimal /m
 dotnet build "$PSScriptRoot/../src/CommandLine.sln" --no-restore -c Release -v minimal /m
 
-& "$PSScriptRoot/../src/CommandLine/bin/Release/net9.0/Roslynator" generate-doc generate_ref_docs.sln `
+& "$PSScriptRoot/../src/CommandLine/bin/Release/net10.0/Roslynator" generate-doc generate_ref_docs.sln `
  --properties Configuration=Release `
  -o "build/ref" `
  --host docusaurus `
