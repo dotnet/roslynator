@@ -3,7 +3,7 @@ dotnet build "$PSScriptRoot/../src/Tools/ConfigurationFileGenerator/Configuratio
 
 if(!$?) { Read-Host; Exit }
 
-dotnet "$PSScriptRoot/../src/Tools/ConfigurationFileGenerator/bin/Release/net9.0/Roslynator.ConfigurationFileGenerator.dll" `
+dotnet "$PSScriptRoot/../src/Tools/ConfigurationFileGenerator/bin/Release/net10.0/Roslynator.ConfigurationFileGenerator.dll" `
  "../src" `
  "$PSScriptRoot/../src/Tools/ConfigurationFileGenerator/configuration.md" `
  "build/configuration.md" 
