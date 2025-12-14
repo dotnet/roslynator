@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -100,6 +101,15 @@ internal static class LocalSymbolFinder
                 var declaration = (ConversionOperatorDeclarationSyntax)node;
 
                 walker.Visit(declaration.BodyOrExpressionBody());
+                break;
+            }
+            case SyntaxKind.CompilationUnit:
+            {
+                var declaration = (CompilationUnitSyntax)node;
+                foreach (GlobalStatementSyntax globalStatement in declaration.Members.OfType<GlobalStatementSyntax>())
+                {
+                    walker.Visit(globalStatement);
+                }
                 break;
             }
             case SyntaxKind.Parameter:
