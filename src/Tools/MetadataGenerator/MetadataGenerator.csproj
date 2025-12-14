@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability -->
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rxg9-xrhp-64gj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorRoslynVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="$(RoslynatorRoslynVersion)" />
     <PackageReference Include="Microsoft.Build.Locator" Version="$(RoslynatorMicrosoftBuildLocatorVersion)" />
