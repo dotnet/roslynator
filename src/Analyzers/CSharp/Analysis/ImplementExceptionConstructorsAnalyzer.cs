@@ -67,6 +67,9 @@ public sealed class ImplementExceptionConstructorsAnalyzer : BaseDiagnosticAnaly
 
         var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
 
+        if (classDeclaration.ParameterList is not null)
+            return;
+
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ImplementExceptionConstructors, classDeclaration.Identifier);
     }
 
