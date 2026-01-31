@@ -77,13 +77,13 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary>
-/// a<code>b</code>c
+/// a<c>b</c>c
 /// </summary>|]
 class C
 {
 }
 ", @"
-/// <summary>a<code>b</code>c</summary>
+/// <summary>a<c>b</c>c</summary>
 class C
 {
 }
@@ -175,6 +175,19 @@ class C
 /// <summary>
 /// x
 /// x
+/// </summary>
+class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task TestNoDiagnostic_ParaElement_ToSingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// <para>x</para>
 /// </summary>
 class C
 {

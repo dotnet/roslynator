@@ -980,7 +980,7 @@ namespace Roslynator
             messageFormat:      "([deprecated] Use RCS0063 instead) Remove unnecessary blank line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.Obsolete_RemoveUnnecessaryBlankLine, 
             customTags:         []);

@@ -11,13 +11,81 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Analyzer and fixer for bracket formatting  [RCS1269](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1269) ([PR](https://github.com/dotnet/roslynator/pull/1643))
 
+## [4.15.0] - 2025-12-14
+
+### Added
+
+- Add option `roslynator_null_conditional_operator.avoid_negative_boolean_comparison` ([PR](https://github.com/dotnet/roslynator/pull/1688))
+  - Do not suggest to use null-conditional operator when result would be `... != true/false`
+  - Applicable for [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146)
+
+### Fixed
+
+- Fix analyzer [RCS1172](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1172) ([PR](https://github.com/dotnet/roslynator/pull/1710))
+- [CLI] Fix `loc` command ([PR](https://github.com/dotnet/roslynator/pull/1711))
+- Exclude ref-field backed properties from [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([PR](https://github.com/dotnet/roslynator/pull/1718) by @ovska)
+- [CLI] Fix `rename-symbol` scope option not being applied correctly ([PR](https://github.com/dotnet/roslynator/pull/1720) by @andrtmschkw)
+- [CLI] Fix `rename-symbol` support for top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1721) by @andrtmschkw)
+
+### Changed
+
+- Migrate to  .NET 10 (including command-line tool) ([PR](https://github.com/dotnet/roslynator/pull/1727))
+
+## [4.14.1] - 2025-10-05
+
+### Added
+
+- [CLI] Add support for `slnx` files ([PR](https://github.com/dotnet/roslynator/pull/1662) by @darthtrevino)
+    - Bump Roslyn to 4.14.0
+    - Drop support for .NET 7 SDK
+
+### Fixed
+
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1676))
+- Fix analyzer [RCS1248](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1248) ([PR](https://github.com/dotnet/roslynator/pull/1677))
+- Fix analyzer [RCS1203](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1203) ([PR](https://github.com/dotnet/roslynator/pull/1683))
+- Fix analyzer [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1684))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1686))
+    - Add unity method `OnRectTransformDimensionsChange`
+- Fix analyzer [RCS1253](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1253) ([PR](https://github.com/dotnet/roslynator/pull/1687))
+- Fix refactoring [Check expression for null](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0024) ([PR](https://github.com/dotnet/roslynator/pull/1682))
+
+### Changed
+
+- Change behavior of analyzer [RCS1206](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1206) ([PR](https://github.com/dotnet/roslynator/pull/1685))
+    - The condition for option `omit_when_single_line` will be that the braces/brackets are on the same line, not just the expression in the braces/brackets
+
+## [4.14.0] - 2025-07-26
+
+### Added
+
+- [CLI] Add support for GitLab analyzer reports ([PR](https://github.com/dotnet/roslynator/pull/1633))
+
+### Fixed
+
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1666))
+- Fix analyzer [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229) ([PR](https://github.com/dotnet/roslynator/pull/1667))
+- Fix analyzer [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([PR](https://github.com/dotnet/roslynator/pull/1652) by @aihnatiuk)
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) ([PR](https://github.com/dotnet/roslynator/pull/1668))
+- Fix analyzer [RCS1105](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1105) ([PR](https://github.com/dotnet/roslynator/pull/1669))
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) ([PR](https://github.com/dotnet/roslynator/pull/1672))
+
+### Changed
+
+- Disable analyzer [RCS1036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1036) by default ([PR](https://github.com/dotnet/roslynator/pull/1671))
+    - Use analyzer [RCS0063](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0063) instead
+
+### Removed
+
+- Remove legacy config options ([PR](https://github.com/dotnet/roslynator/pull/1304))
+
 ## [4.13.1] - 2025-02-23
 
 ### Added
 
 - Support custom path of a test file ([PR](https://github.com/dotnet/roslynator/pull/1609))
-  - It's possible to specify a directory path and/or a file name of a test file.
-  - Applies to testing library (Roslynator.Testing.*).
+    - It's possible to specify a directory path and/or a file name of a test file.
+    - Applies to testing library (Roslynator.Testing.*).
 
 ## [4.13.0] - 2025-02-09
 

@@ -70,7 +70,7 @@ internal abstract class CSharpLinesWalker : CSharpSyntaxWalker
                         int lineCount = Lines.GetLineCount(trivia.Span);
 
                         if (lineCount == 1
-                            || line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(Lines.GetLineFromPosition(span.End).End, span.End)))
+                            || line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(span.End, Lines.GetLineFromPosition(span.End).End)))
                         {
                             CommentLineCount += lineCount;
                         }

@@ -53,6 +53,14 @@ public sealed class UnnecessaryInterpolationAnalyzer : BaseDiagnosticAnalyzer
         if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
             return;
 
+#if ROSLYN_4_2
+        if (interpolatedString.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken, SyntaxKind.InterpolatedMultiLineRawStringStartToken)
+            && stringLiteralInfo.ContainsEscapeSequence)
+        {
+            return;
+        }
+#endif
+
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolation, interpolation);
     }
 }
