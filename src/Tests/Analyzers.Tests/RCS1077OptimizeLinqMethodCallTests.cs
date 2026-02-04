@@ -1639,5 +1639,105 @@ class C
 ");
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_PreservesCommentInRemovedSegment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
 
+class SpecialistBio
+{
+    public int ProfileId { get; }
+}
+
+class SpecialistBioUpdatedEvent
+{
+    public SpecialistBioUpdatedEvent(int profileId) { }
+}
+
+class C
+{
+    void M(List<SpecialistBio> normalizedSpecialistBios)
+    {
+        var events = normalizedSpecialistBios
+            .[|Select(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))
+            /* comment in removed segment */.ToList()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class SpecialistBio
+{
+    public int ProfileId { get; }
+}
+
+class SpecialistBioUpdatedEvent
+{
+    public SpecialistBioUpdatedEvent(int profileId) { }
+}
+
+class C
+{
+    void M(List<SpecialistBio> normalizedSpecialistBios)
+    {
+        var events = normalizedSpecialistBios
+            .ConvertAll(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))/* comment in removed segment */;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_PreservesTrailingCommentAfterStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class SpecialistBio
+{
+    public int ProfileId { get; }
+}
+
+class SpecialistBioUpdatedEvent
+{
+    public SpecialistBioUpdatedEvent(int profileId) { }
+}
+
+class C
+{
+    void M(List<SpecialistBio> normalizedSpecialistBios)
+    {
+        var events = normalizedSpecialistBios
+            .[|Select(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))
+            .ToList()|]; // trailing comment
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class SpecialistBio
+{
+    public int ProfileId { get; }
+}
+
+class SpecialistBioUpdatedEvent
+{
+    public SpecialistBioUpdatedEvent(int profileId) { }
+}
+
+class C
+{
+    void M(List<SpecialistBio> normalizedSpecialistBios)
+    {
+        var events = normalizedSpecialistBios
+            .ConvertAll(sb => new SpecialistBioUpdatedEvent(sb.ProfileId)); // trailing comment
+    }
+}
+");
+    }
 }
