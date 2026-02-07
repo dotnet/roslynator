@@ -40,4 +40,14 @@ class C : Exception
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementExceptionConstructors)]
+    public async Task Test_PrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class MyException (string message) : Exception(message);
+");
+    }
 }
