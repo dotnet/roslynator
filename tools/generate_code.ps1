@@ -3,4 +3,4 @@ dotnet build "$PSScriptRoot/../src/Tools/Tools.slnx" --no-restore /p:Configurati
 
 if(!$?) { Read-Host; Exit }
 
-dotnet "$PSScriptRoot/../src/Tools/CodeGenerator/bin/Release/net9.0/Roslynator.CodeGenerator.dll" "../src"
+dotnet "$PSScriptRoot/../src/Tools/CodeGenerator/bin/Release/net10.0/Roslynator.CodeGenerator.dll" "../src"
