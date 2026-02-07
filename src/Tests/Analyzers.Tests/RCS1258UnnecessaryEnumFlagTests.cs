@@ -79,4 +79,28 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryEnumFlag)]
+    public async Task TestNoDiagnostic_PartiallySame()
+    {
+        await VerifyNoDiagnosticAsync(
+            @"
+[System.Flags]
+enum FooBar
+{
+    Shared = 1,
+    Foo = Shared | 2,
+    Bar = Shared | 4,
+}
+
+class C
+{
+    public static bool M(FooBar x)
+    {
+        return x == (FooBar.Foo | FooBar.Bar);
+    }
+}
+"
+        );
+    }
 }
