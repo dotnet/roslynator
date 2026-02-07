@@ -1,5 +1,5 @@
-dotnet clean "$PSScriptRoot/../src/CommandLine.sln" ` -c Debug
+dotnet clean "$PSScriptRoot/../src/CommandLine.slnx" ` -c Debug
 
-dotnet build "$PSScriptRoot/../src/CommandLine.sln" -c Debug -v minimal /p:RoslynatorDotNetCli=true /m
+dotnet build "$PSScriptRoot/../src/CommandLine.slnx" -c Debug -v minimal /p:RoslynatorDotNetCli=true /m
 
 Write-Host "DONE"
