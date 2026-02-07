@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
 - Fix analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1742) by @MattFromRVA)
 
 ## [4.15.0] - 2025-12-14
