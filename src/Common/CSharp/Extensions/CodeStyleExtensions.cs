@@ -599,6 +599,30 @@ internal static class CodeStyleExtensions
         return context.GetConfigOptions().GetNullConditionalOperatorNewLinePosition(defaultValue);
     }
 
+    public static TargetBracesStyle GetTargetBracesStyle(this SyntaxNodeAnalysisContext context)
+        => context.GetConfigOptions().GetTargetBracesStyle();
+
+    public static TargetBracesStyle GetTargetBracesStyle(this AnalyzerConfigOptions configOptions)
+    {
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TargetBracesStyle, out string rawValue))
+        {
+            if (string.Equals(rawValue, ConfigOptionValues.TargetBracesStyle_Both, StringComparison.OrdinalIgnoreCase))
+            {
+                return TargetBracesStyle.Both;
+            }
+            else if (string.Equals(rawValue, ConfigOptionValues.TargetBracesStyle_Closing, StringComparison.OrdinalIgnoreCase))
+            {
+                return TargetBracesStyle.Closing;
+            }
+            else if (string.Equals(rawValue, ConfigOptionValues.TargetBracesStyle_Opening, StringComparison.OrdinalIgnoreCase))
+            {
+                return TargetBracesStyle.Opening;
+            }
+        }
+
+        return TargetBracesStyle.None;
+    }
+
     private static bool TryGetNewLinePosition(
         AnalyzerConfigOptions configOptions,
         ConfigOptionDescriptor option,

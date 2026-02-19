@@ -1733,7 +1733,7 @@ public abstract class DocumentationWriter : IDisposable
                 }
             })
             .SelectMany(grouping => grouping)
-            .ToImmutableHashSet();
+            .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 
         bool IncludesContainingNamespace(INamedTypeSymbol symbol)
         {

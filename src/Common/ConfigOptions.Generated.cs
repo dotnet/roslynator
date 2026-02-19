@@ -202,6 +202,12 @@ namespace Roslynator
             defaultValuePlaceholder: "<NUM>", 
             description:             "A number of spaces that are equivalent to a tab character");
 
+        public static readonly ConfigOptionDescriptor TargetBracesStyle = new(
+            key:                     ConfigOptionKeys.TargetBracesStyle, 
+            defaultValue:            "none", 
+            defaultValuePlaceholder: "both|closing|none|opening", 
+            description:             "Define which braces should be used as a target of the code fix");
+
         public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
             key:                     ConfigOptionKeys.TrailingCommaStyle, 
             defaultValue:            null, 

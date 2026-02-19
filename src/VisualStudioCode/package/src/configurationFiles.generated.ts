@@ -128,6 +128,10 @@ roslynator_analyzers.enabled_by_default = true|false
 # Default: 4
 # Applicable to: rcs0056
 
+#roslynator_target_braces_style = both|closing|none|opening
+# Default: none
+# Applicable to: rcs1269
+
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1260
 
@@ -927,6 +931,10 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Simplify numeric comparison
 #dotnet_diagnostic.rcs1268.severity = suggestion
+
+# Fix bracket formatting of a list
+#dotnet_diagnostic.rcs1269.severity = none
+# Options: roslynator_target_braces_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
