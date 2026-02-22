@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="Analyzers.CodeFixes/Analyzers.CodeFixes.csproj" />
+  <Project Path="Analyzers/Analyzers.csproj" />
+  <Project Path="CodeFixes/CodeFixes.csproj" />
+  <Project Path="Common/Common.csproj" />
+  <Project Path="Core/Core.csproj" />
+  <Project Path="CSharp.Workspaces/CSharp.Workspaces.csproj" />
+  <Project Path="CSharp/CSharp.csproj" />
+  <Project Path="Formatting.Analyzers.CodeFixes/Formatting.Analyzers.CodeFixes.csproj" />
+  <Project Path="Formatting.Analyzers/Formatting.Analyzers.csproj" />
+  <Project Path="Refactorings/Refactorings.csproj" />
+  <Project Path="VisualStudio/VisualStudio.csproj" />
+  <Project Path="Workspaces.Common/Workspaces.Common.csproj" />
+  <Project Path="Workspaces.Core/Workspaces.Core.csproj" />
+</Solution>
