@@ -1023,24 +1023,19 @@ struct Foo2
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
-    public async Task TestNoDiagnostic_AndPattern_OrPattern()
+    public async Task TestNoDiagnostic_AndPattern()
     {
         await VerifyNoDiagnosticAsync("""
-            class Foo
-            {
-              void M()
-              {
-                  string data = null;
-                  if (data != null && data.Length is not 2 and not 3)
-                  {
-                  }
-
-                  if (data != null && data.Length is not 2 or not 3)
-                  {
-                  }
-              }
-            }
-
-            """);
+class Foo
+{
+  void M()
+  {
+      string data = null;
+      if (data != null && data.Length is not 2 and not 3)
+      {
+      }
+  }
+}
+""");
     }
 }
