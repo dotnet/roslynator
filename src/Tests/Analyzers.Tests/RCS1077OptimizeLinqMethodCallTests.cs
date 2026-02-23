@@ -1558,81 +1558,39 @@ class C
     public async Task Test_CallConvertAllInsteadOfSelectAndToList_List_SemicolonNotMoved()
     {
         await VerifyDiagnosticAndFixAsync(@"
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-interface IEvent { }
-
-class SpecialistBioUpdatedEvent : IEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class EventPublisher
-{
-    public void EnqueueLowPriorityEvent(System.Func<object> action) { }
-}
-
-class BatchEvent
-{
-    public BatchEvent(IReadOnlyList<IEvent> events) { }
-}
-
 class C
 {
-    void M(EventPublisher eventPublisher, List<SpecialistBio> normalizedSpecialistBios)
+    void M(Action<Func<object>> action, List<object> items)
     {
-        eventPublisher.EnqueueLowPriorityEvent(() =>
+        action(() =>
         {
-            IReadOnlyList<IEvent> events = normalizedSpecialistBios
-                .[|Select(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))
+            List<string> x = items
+                .[|Select(f => f.ToString())
                 .ToList()|];
 
-            return new BatchEvent(events);
+            return x;
         });
     }
 }
 ", @"
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-interface IEvent { }
-
-class SpecialistBioUpdatedEvent : IEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class EventPublisher
-{
-    public void EnqueueLowPriorityEvent(System.Func<object> action) { }
-}
-
-class BatchEvent
-{
-    public BatchEvent(IReadOnlyList<IEvent> events) { }
-}
-
 class C
 {
-    void M(EventPublisher eventPublisher, List<SpecialistBio> normalizedSpecialistBios)
+    void M(Action<Func<object>> action, List<object> items)
     {
-        eventPublisher.EnqueueLowPriorityEvent(() =>
+        action(() =>
         {
-            IReadOnlyList<IEvent> events = normalizedSpecialistBios
-                .ConvertAll(sb => new SpecialistBioUpdatedEvent(sb.ProfileId));
+            List<string> x = items
+                .ConvertAll(f => f.ToString());
 
-            return new BatchEvent(events);
+            return x;
         });
     }
 }
@@ -1646,22 +1604,12 @@ class C
 using System.Collections.Generic;
 using System.Linq;
 
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class SpecialistBioUpdatedEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
 class C
 {
-    void M(List<SpecialistBio> normalizedSpecialistBios)
+    void M(List<object> items)
     {
-        var events = normalizedSpecialistBios
-            .[|Select(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))
+        var x = items
+            .[|Select(f => f.ToString())
             /* comment in removed segment */.ToList()|];
     }
 }
@@ -1669,22 +1617,12 @@ class C
 using System.Collections.Generic;
 using System.Linq;
 
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class SpecialistBioUpdatedEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
 class C
 {
-    void M(List<SpecialistBio> normalizedSpecialistBios)
+    void M(List<object> items)
     {
-        var events = normalizedSpecialistBios
-            .ConvertAll(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))/* comment in removed segment */;
+        var x = items
+            .ConvertAll(f => f.ToString())/* comment in removed segment */;
     }
 }
 ");
@@ -1697,22 +1635,12 @@ class C
 using System.Collections.Generic;
 using System.Linq;
 
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class SpecialistBioUpdatedEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
 class C
 {
-    void M(List<SpecialistBio> normalizedSpecialistBios)
+    void M(List<object> items)
     {
-        var events = normalizedSpecialistBios
-            .[|Select(sb => new SpecialistBioUpdatedEvent(sb.ProfileId))
+        var x = items
+            .[|Select(f => f.ToString())
             .ToList()|]; // trailing comment
     }
 }
@@ -1720,22 +1648,12 @@ class C
 using System.Collections.Generic;
 using System.Linq;
 
-class SpecialistBio
-{
-    public int ProfileId { get; }
-}
-
-class SpecialistBioUpdatedEvent
-{
-    public SpecialistBioUpdatedEvent(int profileId) { }
-}
-
 class C
 {
-    void M(List<SpecialistBio> normalizedSpecialistBios)
+    void M(List<object> items)
     {
-        var events = normalizedSpecialistBios
-            .ConvertAll(sb => new SpecialistBioUpdatedEvent(sb.ProfileId)); // trailing comment
+        var x = items
+            .ConvertAll(f => f.ToString()); // trailing comment
     }
 }
 ");
