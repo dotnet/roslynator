@@ -1553,4 +1553,109 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_List_SemicolonNotMoved()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(Action<Func<object>> action, List<object> items)
+    {
+        action(() =>
+        {
+            List<string> x = items
+                .[|Select(f => f.ToString())
+                .ToList()|];
+
+            return x;
+        });
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(Action<Func<object>> action, List<object> items)
+    {
+        action(() =>
+        {
+            List<string> x = items
+                .ConvertAll(f => f.ToString());
+
+            return x;
+        });
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_PreservesCommentInRemovedSegment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(List<object> items)
+    {
+        var x = items
+            .[|Select(f => f.ToString())
+            /* comment in removed segment */.ToList()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(List<object> items)
+    {
+        var x = items
+            .ConvertAll(f => f.ToString())/* comment in removed segment */;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_PreservesTrailingCommentAfterStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(List<object> items)
+    {
+        var x = items
+            .[|Select(f => f.ToString())
+            .ToList()|]; // trailing comment
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(List<object> items)
+    {
+        var x = items
+            .ConvertAll(f => f.ToString()); // trailing comment
+    }
+}
+");
+    }
 }
