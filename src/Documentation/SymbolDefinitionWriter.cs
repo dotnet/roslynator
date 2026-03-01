@@ -253,7 +253,9 @@ internal abstract class SymbolDefinitionWriter : IDisposable
 
     public virtual void WriteDocument(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default)
     {
-        TypeSymbols = assemblies.SelectMany(a => a.GetTypes(f => Filter.IsMatch(f))).ToImmutableHashSet();
+        TypeSymbols =
+            assemblies.SelectMany(a => a.GetTypes(f => Filter.IsMatch(f)))
+                .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 
         WriteStartDocument();
 
@@ -335,7 +337,11 @@ internal abstract class SymbolDefinitionWriter : IDisposable
             typesByNamespace = assemblies
                 .SelectMany(a => a.GetNamespaces(n => !n.IsGlobalNamespace && Filter.IsMatch(n)))
                 .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
-                .ToDictionary(f => f, _ => ImmutableArray<INamedTypeSymbol>.Empty.AsEnumerable());
+                .ToDictionary<INamespaceSymbol, INamespaceSymbol, IEnumerable<INamedTypeSymbol>>(
+                    f => f,
+                    _ => ImmutableArray<INamedTypeSymbol>.Empty.AsEnumerable(),
+                    SymbolEqualityComparer.Default
+                );
         }
         else
         {
@@ -344,7 +350,11 @@ internal abstract class SymbolDefinitionWriter : IDisposable
                 .GroupBy(t => t.ContainingNamespace, MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
                 .Where(g => Filter.IsMatch(g.Key))
                 .OrderBy(g => g.Key, Comparer.NamespaceComparer)
-                .ToDictionary(f => f.Key, f => f.AsEnumerable());
+                .ToDictionary<IGrouping<INamespaceSymbol, INamedTypeSymbol>, INamespaceSymbol, IEnumerable<INamedTypeSymbol>>(
+                    f => f.Key,
+                    f => f.AsEnumerable(),
+                    SymbolEqualityComparer.Default
+                );
         }
 
         WriteStartNamespaces();

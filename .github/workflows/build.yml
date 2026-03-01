@@ -76,7 +76,7 @@ jobs:
             ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -100,7 +100,7 @@ jobs:
           path: src/_nupkg/*nupkg
 
   build_analyzers:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -133,7 +133,7 @@ jobs:
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -154,7 +154,7 @@ jobs:
           path: src/Refactorings/bin/Release/*.*nupkg
 
   build_code_fixes:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
@@ -175,7 +175,7 @@ jobs:
           path: src/CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: windows-latest
     env:
@@ -209,7 +209,7 @@ jobs:
           delete-merged: true
 
   build_vs_code_extension:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: [ pre_build, build_analyzers ]
     runs-on: ubuntu-24.04
     env:
