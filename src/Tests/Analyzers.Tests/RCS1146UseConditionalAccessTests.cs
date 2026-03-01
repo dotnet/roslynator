@@ -1021,4 +1021,21 @@ struct Foo2
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperator_AvoidNegativeBooleanComparison, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task TestNoDiagnostic_AndPattern()
+    {
+        await VerifyNoDiagnosticAsync("""
+class Foo
+{
+  void M()
+  {
+      string data = null;
+      if (data != null && data.Length is not 2 and not 3)
+      {
+      }
+  }
+}
+""");
+    }
 }

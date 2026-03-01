@@ -58,7 +58,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Build" Version="17.14.28" ExcludeAssets="runtime" Condition="'$(TargetFramework)' == 'net9.0' OR '$(TargetFramework)' == 'net10.0'" />
+    <PackageReference Include="Microsoft.Build" Version="17.14.28" ExcludeAssets="runtime" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.Build" Version="18.0.2" ExcludeAssets="runtime" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageReference Include="Microsoft.Build.Locator" Version="$(RoslynatorMicrosoftBuildLocatorVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />
