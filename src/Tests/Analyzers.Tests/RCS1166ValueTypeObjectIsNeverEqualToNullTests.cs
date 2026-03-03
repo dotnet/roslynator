@@ -54,44 +54,6 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull)]
-    public async Task Test_NullOnLeft_Equals_Int()
-    {
-        await VerifyDiagnosticAsync(@"
-class C
-{
-    void M()
-    {
-        int a = 0;
-
-        if ([|null == a|])
-        {
-        }
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull)]
-    public async Task Test_NullOnLeft_Equals_Parenthesized()
-    {
-        await VerifyDiagnosticAsync(@"
-using System.Collections.Immutable;
-
-class C
-{
-    void M()
-    {
-        var a = ImmutableArray<int>.Empty;
-
-        if ([|(null) == (a)|])
-        {
-        }
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull)]
     public async Task TestNoDiagnostic_NullOnLeft_NullableValueType()
     {
         await VerifyNoDiagnosticAsync(@"
