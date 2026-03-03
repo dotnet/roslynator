@@ -45,20 +45,29 @@ public sealed class ValueTypeObjectIsNeverEqualToNullAnalyzer : BaseDiagnosticAn
     private static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
     {
         ExpressionSyntax left = binaryExpression.Left;
+        ExpressionSyntax right = binaryExpression.Right;
 
-        if (left?.IsMissing == false)
+        if (left?.IsMissing != false || right?.IsMissing != false)
+            return;
+
+        if (binaryExpression.SpanContainsDirectives())
+            return;
+
+        if (right.Kind() == SyntaxKind.NullLiteralExpression
+            && IsStructButNotNullableOfT(context.SemanticModel.GetTypeSymbol(left, context.CancellationToken)))
         {
-            ExpressionSyntax right = binaryExpression.Right;
-
-            if (right?.Kind() == SyntaxKind.NullLiteralExpression
-                && IsStructButNotNullableOfT(context.SemanticModel.GetTypeSymbol(left, context.CancellationToken))
-                && !binaryExpression.SpanContainsDirectives())
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.ValueTypeObjectIsNeverEqualToNull,
-                    binaryExpression);
-            }
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.ValueTypeObjectIsNeverEqualToNull,
+                binaryExpression);
+        }
+        else if (left.Kind() == SyntaxKind.NullLiteralExpression
+            && IsStructButNotNullableOfT(context.SemanticModel.GetTypeSymbol(right, context.CancellationToken)))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.ValueTypeObjectIsNeverEqualToNull,
+                binaryExpression);
         }
     }
 
