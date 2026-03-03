@@ -88,4 +88,36 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull)]
+    public async Task TestFix_NullOnLeft_Equals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Immutable;
+
+class C
+{
+    void M()
+    {
+        var a = ImmutableArray<int>.Empty;
+        if ([|null == a|])
+        {
+        }
+    }
+}
+", @"
+using System.Collections.Immutable;
+
+class C
+{
+    void M()
+    {
+        var a = ImmutableArray<int>.Empty;
+        if (default == a)
+        {
+        }
+    }
+}
+");
+    }
 }

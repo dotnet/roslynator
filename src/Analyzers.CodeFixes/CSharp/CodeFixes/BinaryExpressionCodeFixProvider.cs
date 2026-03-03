@@ -131,7 +131,11 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
+                    bool nullIsOnLeft = binaryExpression.Left.IsKind(SyntaxKind.NullLiteralExpression);
+                    ExpressionSyntax valueExpression = (nullIsOnLeft) ? binaryExpression.Right : binaryExpression.Left;
+                    ExpressionSyntax nullExpression = (nullIsOnLeft) ? binaryExpression.Left : binaryExpression.Right;
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(valueExpression, context.CancellationToken);
 
                     string title;
 
@@ -144,7 +148,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     }
                     else
                     {
-                        title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart, SymbolDisplayFormats.DisplayName)}>.Default";
+                        title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, nullExpression.SpanStart, SymbolDisplayFormats.DisplayName)}>.Default";
                     }
 
                     CodeAction codeAction = CodeAction.Create(
