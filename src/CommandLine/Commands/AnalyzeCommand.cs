@@ -101,6 +101,10 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             {
                 DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
             }
+            else if (!string.IsNullOrWhiteSpace(Options.OutputFormat) && Options.OutputFormat.Equals("sarif", StringComparison.CurrentCultureIgnoreCase))
+            {
+                DiagnosticSarifJsonSerializer.Serialize(analysisResults, Options.Output);
+            }
             else
             {
                 // Default output format is xml
