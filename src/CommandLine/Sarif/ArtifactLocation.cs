@@ -2,5 +2,5 @@
 
 internal class ArtifactLocation
 {
-    public string uri { get; set; }
+    public string Uri { get; set; }
 }

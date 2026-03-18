@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Roslynator.CommandLine.Sarif;
+﻿namespace Roslynator.CommandLine.Sarif;
 
 internal class Region
 {
-    public int startLine { get; set; }
-    public int endLine { get; set; }
-    public int startColumn { get; set; }
-    public int endColumn { get; set; }
+    public int StartLine { get; set; }
+    public int EndLine { get; set; }
+    public int StartColumn { get; set; }
+    public int EndColumn { get; set; }
 }

@@ -2,6 +2,6 @@
 
 internal class Artifact
 {
-    public ArtifactLocation location { get; set; }
-    public string sourceLanguage { get; set; }
+    public ArtifactLocation Location { get; set; }
+    public string SourceLanguage { get; set; }
 }

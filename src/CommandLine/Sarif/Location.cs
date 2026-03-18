@@ -2,6 +2,5 @@
 
 internal class Location
 {
-    public PhysicalLocation physicalLocation { get; set; }
-    public LogicalLocation[] logicalLocations { get; set; }
+    public PhysicalLocation PhysicalLocation { get; set; }
 }

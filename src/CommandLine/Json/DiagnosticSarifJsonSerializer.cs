@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -8,7 +13,7 @@ using Roslynator.Diagnostics;
 
 namespace Roslynator.CommandLine.Json;
 
-internal class DiagnosticSarifJsonSerializer
+internal static class DiagnosticSarifJsonSerializer
 {
     private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
     {
@@ -22,48 +27,81 @@ internal class DiagnosticSarifJsonSerializer
 
     public static void Serialize(
         IEnumerable<ProjectAnalysisResult> results,
-        string filePath)
+        string filePath,
+        IFormatProvider formatProvider = null)
     {
+        IEnumerable<DiagnosticInfo> diagnostics = results.SelectMany(f => f.CompilerDiagnostics.Concat(f.Diagnostics));
         var rootObject = new RootObject();
-        var run = new Run();
-        run.results = new List<Result>();
-        foreach (var result in results)
+        var run = new Run()
         {
-            foreach (var diagnostic in result.Diagnostics)
+            Results = new List<Result>()
+        };
+        foreach (DiagnosticInfo diagnostic in diagnostics)
+        {
+            Location location = null;
+            if(diagnostic.LineSpan.IsValid)
             {
-                run.results.Add(new Result()
+                location = new Location()
                 {
-                    ruleId = diagnostic.Descriptor.Id,
-                    message = new Message() { text = diagnostic.Descriptor.Title.ToString() },
-                    locations = new List<Location>()
+                    PhysicalLocation = new PhysicalLocation()
                     {
-                        new Location(){
-                            physicalLocation = new PhysicalLocation()
-                            {
-                                artifactLocation = new ArtifactLocation()
-                                {
-                                    uri = $"file://{diagnostic.LineSpan.Path}"
-                                },
-                                region = new Region()
-                                {
-                                    startLine = diagnostic.LineSpan.StartLinePosition.Line,
-                                    startColumn = diagnostic.LineSpan.StartLinePosition.Character,
-                                    endLine = diagnostic.LineSpan.EndLinePosition.Line,
-                                    endColumn = diagnostic.LineSpan.EndLinePosition.Character
-                                },
-                            },
+                        ArtifactLocation = new ArtifactLocation()
+                        {
+                            Uri = $"file:///{diagnostic.LineSpan.Path}"
+                        },
+                        Region = new Region()
+                        {
+                            StartLine = diagnostic.LineSpan.StartLinePosition.Line,
+                            StartColumn = diagnostic.LineSpan.StartLinePosition.Character,
+                            EndLine = diagnostic.LineSpan.EndLinePosition.Line,
+                            EndColumn = diagnostic.LineSpan.EndLinePosition.Character,
                         },
                     },
-                });
+                };
             }
+            run.Results.Add(new Result()
+            {
+                RuleId = diagnostic.Descriptor.Id,
+                Message = new Message() { Text = diagnostic.Descriptor.Title.ToString(formatProvider) },
+                Level = GetLevel(diagnostic.Severity),
+                Locations = new List<Location>() { location },
+            });
         }
-        run.tool = new Tool()
+        run.Artifacts = diagnostics
+            .Where(d => d.LineSpan.IsValid)
+            .Select(d => d.LineSpan.Path)
+            .Distinct()
+            .Select(path => new Artifact()
+            {
+                Location = new ArtifactLocation() { Uri = $"file:///{path}" }
+            })
+            .ToArray();
+        Assembly assembly = typeof(DiagnosticSarifJsonSerializer).Assembly;
+        string projectUrl = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().FirstOrDefault(a => a.Key == "PackageProjectUrl")?.Value;
+        AssemblyName assemblyName = assembly.GetName();
+        run.Tool = new Tool()
         {
-            driver = new ToolComponent()
+            Driver = new ToolComponent()
+            {
+                Name = assemblyName.Name,
+                Version = assemblyName.Version.ToString(),
+                InformationUri = projectUrl
+            },
         };
-        rootObject.runs = new Run[] { run };
+        rootObject.Runs = new Run[] { run };
         string report = JsonConvert.SerializeObject(rootObject, _jsonSerializerSettings);
 
         File.WriteAllText(filePath, report, Encoding.UTF8);
+    }
+
+    private static string GetLevel(Microsoft.CodeAnalysis.DiagnosticSeverity severity)
+    {
+        return severity switch
+            {
+                Microsoft.CodeAnalysis.DiagnosticSeverity.Info => "note",
+                Microsoft.CodeAnalysis.DiagnosticSeverity.Warning => "warning",
+                Microsoft.CodeAnalysis.DiagnosticSeverity.Error => "error",
+                _ => "none",
+            };
     }
 }

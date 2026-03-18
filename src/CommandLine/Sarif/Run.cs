@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Roslynator.CommandLine.Sarif;
 
 internal class Run
 {
-    public Tool tool { get; set; }
-    public Artifact[] artifacts { get; set; }
-    public IList<Result> results { get; set; }
+    public Tool Tool { get; set; }
+    public Artifact[] Artifacts { get; set; }
+    public IList<Result> Results { get; set; }
 }

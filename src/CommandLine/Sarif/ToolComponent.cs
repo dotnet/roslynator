@@ -2,7 +2,7 @@
 
 internal class ToolComponent
 {
-    public string name => "Roslynator";
-    public string version => "4.15.0";
-    public string informationUri => "https://github.com/dotnet/roslynator";
+    public string Name { get; set; }
+    public string Version { get; set; }
+    public string InformationUri { get; set; }
 }
