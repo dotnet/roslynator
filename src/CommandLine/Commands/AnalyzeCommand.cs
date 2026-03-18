@@ -97,14 +97,19 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             && analysisResults.Any(f => f.Diagnostics.Any() || f.CompilerDiagnostics.Any()))
         {
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
-            if (!string.IsNullOrWhiteSpace(Options.OutputFormat) && Options.OutputFormat.Equals("gitlab", StringComparison.CurrentCultureIgnoreCase))
+
+            switch ((string.IsNullOrWhiteSpace(Options.OutputFormat)) ? "" : Options.OutputFormat.ToLowerInvariant())
             {
-                DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
-            }
-            else
-            {
-                // Default output format is xml
-                DiagnosticXmlSerializer.Serialize(analysisResults, Options.Output, culture);
+                case "gitlab":
+                    DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
+                    break;
+                case "sarif":
+                    DiagnosticSarifJsonSerializer.Serialize(analysisResults, Options.Output, culture);
+                    break;
+                default:
+                    // Default output format is xml
+                    DiagnosticXmlSerializer.Serialize(analysisResults, Options.Output, culture);
+                    break;
             }
         }
     }
