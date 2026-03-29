@@ -39,6 +39,11 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
         HelpText = "Indicates whether suppressed diagnostics should be reported.")]
     public bool ReportSuppressedDiagnostics { get; set; }
 
+    [Option(
+        longName: "return-success-on-findings",
+        HelpText = "Indicates whether to return exit code 0 on runs when findings are reported.")]
+    public bool ReturnSuccessOnFindings { get; set; }
+
     internal bool ValidateOutputFormat()
     {
         return ParseHelpers.TryParseOutputFormat(OutputFormat);
