@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully [PR](https://github.com/dotnet/roslynator/pull/1757)
+- [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully [PR](https://github.com/dotnet/roslynator/pull/1756)
 
 ### Fixed
 
