@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [CLI] Fix `.slnx` parsing on .NET 10 SDK by suppressing the bundled ref-only `Microsoft.Build.Framework.dll`, so MSBuildLocator loads the SDK's full implementation at runtime (fixes [#1729](https://github.com/dotnet/roslynator/issues/1729), [#1748](https://github.com/dotnet/roslynator/issues/1748), [#1716](https://github.com/dotnet/roslynator/issues/1716))
+
 ## [4.15.0] - 2025-12-14
 
 ### Added
