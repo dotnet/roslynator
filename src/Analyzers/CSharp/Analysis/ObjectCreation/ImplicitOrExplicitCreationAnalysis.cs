@@ -129,11 +129,10 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.ArrowExpressionClause:
             {
                 TypeSyntax type = DetermineReturnType(parent.Parent);
-
                 SyntaxDebug.Assert(type is not null, parent);
 
                 if (type is not null)
-                    AnalyzeType(ref context, expression, type);
+                    AnalyzeType(ref context, expression, type, asyncNode: NodeContainsAsyncModifier(parent.Parent));
 
                 break;
             }
@@ -194,6 +193,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
                     if (type is not null)
                     {
+                        var asyncNode = NodeContainsAsyncModifier(node);
+
                         if (parent.IsKind(SyntaxKind.YieldReturnStatement))
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
@@ -209,7 +210,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         }
                         else
                         {
-                            AnalyzeType(ref context, expression, type);
+                            AnalyzeType(ref context, expression, type, asyncNode: asyncNode);
                         }
 
                         return;
@@ -493,10 +494,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         TypeSyntax type,
-        bool extractGenericType = false)
+        bool extractGenericType = false,
+        bool asyncNode = false)
     {
         if (!type.IsVar)
-            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType);
+            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType, asyncNode: asyncNode);
     }
 
     private void AnalyzeArrayType(
@@ -517,16 +519,23 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         ExpressionSyntax expression,
-        bool extractGenericType = false)
+        bool extractGenericType = false,
+        bool asyncNode = false)
     {
         ITypeSymbol typeSymbol1 = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
         if (extractGenericType)
         {
-            typeSymbol1 = (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
+            typeSymbol1 = ExtractTypeArgument();
+        }
+        else if (asyncNode && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && SymbolUtility.IsWellKnownTaskType(typeSymbol1))
+        {
+            typeSymbol1 = ExtractTypeArgument();
         }
 
         AnalyzeTypeSymbol(ref context, creationExpression, typeSymbol1);
+
+        ITypeSymbol? ExtractTypeArgument() => (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
     }
 
     private void AnalyzeTypeSymbol(
@@ -585,6 +594,25 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         }
 
         return null;
+    }
+
+    protected static bool NodeContainsAsyncModifier(SyntaxNode node)
+    {
+        SyntaxTokenList modifiers;
+
+        switch (node)
+        {
+            case LocalFunctionStatementSyntax localFuncStatement:
+                modifiers = localFuncStatement.Modifiers;
+                break;
+            case BaseMethodDeclarationSyntax baseMethodDeclaration:
+                modifiers = baseMethodDeclaration.Modifiers;
+                break;
+            default:
+                return false;
+        }
+
+        return modifiers.Contains(SyntaxKind.AsyncKeyword);
     }
 
     private bool AnalyzeImplicitObvious(ref SyntaxNodeAnalysisContext context)
