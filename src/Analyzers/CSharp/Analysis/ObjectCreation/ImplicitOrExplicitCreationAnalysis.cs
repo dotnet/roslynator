@@ -199,7 +199,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
+                                typeSymbol?.MetadataName == MetadataNames.System_Collections_Generic_IAsyncEnumerable_T.Name)
                             {
                                 var ienumerableOfT = (INamedTypeSymbol)typeSymbol;
 
