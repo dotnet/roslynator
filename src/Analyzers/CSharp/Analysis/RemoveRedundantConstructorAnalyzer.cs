@@ -101,7 +101,10 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
                 {
                     case PropertyDeclarationSyntax property:
                     {
-                        return property.Initializer is null;
+                        if (property.Initializer is not null)
+                            return false;
+
+                        break;
                     }
                     case FieldDeclarationSyntax field:
                     {
