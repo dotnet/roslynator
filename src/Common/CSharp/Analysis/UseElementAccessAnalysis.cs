@@ -35,6 +35,12 @@ internal static class UseElementAccessAnalysis
         if (!HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationExpression.SpanStart))
             return false;
 
+        // Skip the speculative binding check for member binding expressions (conditional access context)
+        // because GetSpeculativeSymbolInfo cannot bind a MemberBindingExpression as a standalone expression.
+        // The infinite recursion scenario this check guards against is not applicable in conditional access.
+        if (invocationInfo.Expression.IsKind(SyntaxKind.MemberBindingExpression))
+            return true;
+
         ElementAccessExpressionSyntax elementAccess = SyntaxFactory.ElementAccessExpression(
             invocationInfo.Expression,
             CSharpFactory.BracketedArgumentList(invocationInfo.Arguments[0]));
