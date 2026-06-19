@@ -123,6 +123,36 @@ readonly struct C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_ParamsArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+readonly struct C
+{
+    void M(params C[] c)
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_ParamsCollection()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+readonly struct C
+{
+    void M(params ReadOnlySpan<C> c)
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
     {
         await VerifyNoDiagnosticAsync(@"
