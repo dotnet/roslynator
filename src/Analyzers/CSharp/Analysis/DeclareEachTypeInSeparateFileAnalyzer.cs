@@ -60,7 +60,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                 {
                     Analyze(namespaceDeclaration.Members);
                 }
-                else if (SyntaxFacts.IsTypeDeclaration(member.Kind()))
+                else if (SyntaxFacts.IsTypeDeclaration(member.Kind()) && !member.Modifiers.Contains(SyntaxKind.FileKeyword))
                 {
                     if (firstTypeDeclaration is null)
                     {
