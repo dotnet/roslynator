@@ -67,6 +67,11 @@ public sealed class ImplementExceptionConstructorsAnalyzer : BaseDiagnosticAnaly
 
         var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
 
+#if ROSLYN_4_0
+        if (classDeclaration.ParameterList is not null)
+            return;
+#endif
+
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ImplementExceptionConstructors, classDeclaration.Identifier);
     }
 

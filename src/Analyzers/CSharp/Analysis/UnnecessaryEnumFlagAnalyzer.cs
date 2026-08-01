@@ -62,8 +62,9 @@ public sealed class UnnecessaryEnumFlagAnalyzer : BaseDiagnosticAnalyzer
                 for (int i = values.Count - 1; i >= 0; i--)
                 {
                     (ExpressionSyntax expression2, ulong value2) = values[i];
+                    ulong sharedBits = value & value2;
 
-                    if ((value & value2) != 0)
+                    if (sharedBits == value2 || sharedBits == value)
                     {
                         if (value <= value2)
                         {

@@ -331,6 +331,10 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                         if (pattern is ConstantPatternSyntax constantPattern2)
                             return constantPattern2.Expression.WalkDownParentheses().IsKind(SyntaxKind.NullLiteralExpression);
                     }
+                    else if (pattern.IsKind(SyntaxKind.AndPattern))
+                    {
+                        return false;
+                    }
 
                     return true;
                 }
