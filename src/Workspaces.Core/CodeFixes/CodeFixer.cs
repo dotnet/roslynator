@@ -294,12 +294,16 @@ internal class CodeFixer
             IEnumerable<Diagnostic> fixableCompilerDiagnostics = compilerDiagnostics
                 .Where(f => f.Severity != DiagnosticSeverity.Error
                     && !Options.IgnoredCompilerDiagnosticIds.Contains(f.Id)
-                    && fixersById.ContainsKey(f.Id));
+                    && fixersById.ContainsKey(f.Id)
+                    && (f.Location.SourceTree is null
+                        || Options.FileSystemFilter?.IsMatch(f.Location.SourceTree.FilePath) != false));
 
             return diagnostics
                 .Where(f => f.IsEffective(Options, project.CompilationOptions)
                     && analyzersById.ContainsKey(f.Id)
-                    && fixersById.ContainsKey(f.Id))
+                    && fixersById.ContainsKey(f.Id)
+                    && (f.Location.SourceTree is null
+                        || Options.FileSystemFilter?.IsMatch(f.Location.SourceTree.FilePath) != false))
                 .Concat(fixableCompilerDiagnostics)
                 .ToImmutableArray();
         }
@@ -357,7 +361,10 @@ internal class CodeFixer
             }
 
             diagnostics = diagnostics
-                .Where(f => f.Id == descriptor.Id && f.Severity >= Options.SeverityLevel)
+                .Where(f => f.Id == descriptor.Id
+                    && f.Severity >= Options.SeverityLevel
+                    && (f.Location.SourceTree is null
+                        || Options.FileSystemFilter?.IsMatch(f.Location.SourceTree.FilePath) != false))
                 .ToImmutableArray();
 
             if (fixKind == DiagnosticFixKind.CompilerError)

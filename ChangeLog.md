@@ -7,12 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
+
 ### Fixed
 
+- Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
 - Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
 - Fix analyzer [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) ([PR](https://github.com/dotnet/roslynator/pull/1747))
 - Fix analyzer [RCS1194](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1194) ([PR](https://github.com/dotnet/roslynator/pull/1733))
 - Fix analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1742) by @MattFromRVA)
+- [CLI] Fix `fix` command ignoring `--include` / `--exclude` file filter ([PR](https://github.com/dotnet/roslynator/pull/1758) by @hashiiiii)
 
 ## [4.15.0] - 2025-12-14
 

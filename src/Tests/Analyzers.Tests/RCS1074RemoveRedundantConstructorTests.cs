@@ -109,4 +109,36 @@ record struct C
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    public async Task TestNoDiagnostic_StructWithPropertyInitializerAfterPropertyWithoutInitializer()
+    {
+        await VerifyNoDiagnosticAsync("""
+struct C
+{
+    public string P1 { get; init; }
+    public string P2 { get; init; } = "";
+
+    public C()
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    public async Task TestNoDiagnostic_StructWithPropertyInitializerBeforePropertyWithoutInitializer()
+    {
+        await VerifyNoDiagnosticAsync("""
+struct C
+{
+    public string P1 { get; init; } = "";
+    public string P2 { get; init; }
+
+    public C()
+    {
+    }
+}
+""");
+    }
 }
