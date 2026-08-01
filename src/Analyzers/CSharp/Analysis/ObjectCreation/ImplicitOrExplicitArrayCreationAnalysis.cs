@@ -195,12 +195,12 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
             }
             else
 #endif
-            if (isObvious
-                || IsInitializerObvious(ref context))
-            {
-                ReportExplicitToImplicit(ref context);
-                return true;
-            }
+                if (isObvious
+                    || IsInitializerObvious(ref context))
+                {
+                    ReportExplicitToImplicit(ref context);
+                    return true;
+                }
         }
 
         return false;

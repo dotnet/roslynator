@@ -81,10 +81,11 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 
-        return new AnalyzeCommandResult(
-            (results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
-            results);
+        return new AnalyzeCommandResult(GetCommandStatus(Options, results), results);
     }
+
+    private static CommandStatus GetCommandStatus(AnalyzeCommandLineOptions options, ImmutableArray<ProjectAnalysisResult> results)
+        => (options.ReturnSuccessOnDiagnostics || !results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess;
 
     protected override void ProcessResults(IList<AnalyzeCommandResult> results)
     {
