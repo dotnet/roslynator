@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
+
 ### Fixed
 
 - Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
