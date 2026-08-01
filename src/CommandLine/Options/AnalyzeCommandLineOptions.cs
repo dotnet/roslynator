@@ -40,9 +40,9 @@ public class AnalyzeCommandLineOptions : AbstractAnalyzeCommandLineOptions
     public bool ReportSuppressedDiagnostics { get; set; }
 
     [Option(
-        longName: "return-success-on-findings",
-        HelpText = "Indicates whether to return exit code 0 on runs when findings are reported.")]
-    public bool ReturnSuccessOnFindings { get; set; }
+        longName: "return-success-on-diagnostics",
+        HelpText = "Indicates whether to return exit code 0 on runs when diagnostics are reported.")]
+    public bool ReturnSuccessOnDiagnostics { get; set; }
 
     internal bool ValidateOutputFormat()
     {

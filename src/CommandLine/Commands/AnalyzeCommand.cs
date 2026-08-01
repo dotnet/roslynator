@@ -85,7 +85,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
     }
 
     private static CommandStatus GetCommandStatus(AnalyzeCommandLineOptions options, ImmutableArray<ProjectAnalysisResult> results)
-        => (options.ReturnSuccessOnFindings || !results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess;
+        => (options.ReturnSuccessOnDiagnostics || !results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess;
 
     protected override void ProcessResults(IList<AnalyzeCommandResult> results)
     {
