@@ -145,7 +145,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 
         for (int i = lastIndex; i >= 0; i--)
         {
-            int oldIndex = members.IndexOf((EnumMemberDeclarationSyntax)sortedMembers[i]);
+            int oldIndex = members.IndexOf((EnumMemberDeclarationSyntax)(SyntaxNode)sortedMembers[i]);
 
             if (oldIndex == 0
                 && members[i].GetLeadingTrivia().FirstOrDefault().IsEndOfLineTrivia())
