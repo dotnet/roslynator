@@ -587,11 +587,26 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         in SimpleMemberInvocationExpressionInfo invocationInfo,
         CancellationToken cancellationToken)
     {
-        InvocationExpressionSyntax invocationExpression2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
+        InvocationExpressionSyntax toListInvocation = invocationInfo.InvocationExpression;
 
-        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "ConvertAll");
+        InvocationExpressionSyntax selectInvocation = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
 
-        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(selectInvocation, "ConvertAll");
+
+        IEnumerable<SyntaxTrivia> removedTrivia = toListInvocation.DescendantTrivia(
+            TextSpan.FromBounds(selectInvocation.Span.End, toListInvocation.Span.End));
+
+        if (removedTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+        {
+            newInvocationExpression = newInvocationExpression.WithTrailingTrivia(
+                removedTrivia.Where(f => !f.IsWhitespaceOrEndOfLineTrivia()).Concat(toListInvocation.GetTrailingTrivia()));
+        }
+        else
+        {
+            newInvocationExpression = newInvocationExpression.WithTrailingTrivia(toListInvocation.GetTrailingTrivia());
+        }
+
+        return document.ReplaceNodeAsync(toListInvocation, newInvocationExpression, cancellationToken);
     }
 
     private static Task<Document> CallSumInsteadOfSelectManyAndCountAsync(
