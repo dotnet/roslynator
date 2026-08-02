@@ -122,4 +122,70 @@ public static class C
     }
 }");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task TestNoDiagnostic_InArgument()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public static class C
+{
+    static void Foo()
+    {
+        int x = 0;
+        Bar(in x);
+    }
+
+    public static void Bar(in int p)
+    {
+    }
+}");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task TestNoDiagnostic_InArgument_RefReadOnlyParameter()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public static class C
+{
+    static void Foo()
+    {
+        int x = 0;
+        Bar(in x);
+    }
+
+    public static void Bar(ref readonly int p)
+    {
+    }
+}");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task Test_InParameter_WithoutInKeyword()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+public static class C
+{
+    static void Foo()
+    {
+        [|int|] x = 0;
+        Bar(x);
+    }
+
+    public static void Bar(in int p)
+    {
+    }
+}", @"
+public static class C
+{
+    static void Foo()
+    {
+        const int x = 0;
+        Bar(x);
+    }
+
+    public static void Bar(in int p)
+    {
+    }
+}");
+    }
 }
