@@ -16,69 +16,69 @@ public class RCS1060DeclareEachTypeInSeparateFileTests : AbstractCSharpDiagnosti
     public async Task Test_Namespace()
     {
         await VerifyDiagnosticAndFixAsync("""
-            namespace N
-            {
-                public class [|C1|]
-                {
-                }
+namespace N
+{
+    public class [|C1|]
+    {
+    }
 
-                public class [|C2|]
-                {
-                }
-            }
-            """, """
-            namespace N
-            {
-                public class C2
-                {
-                }
-            }
-            """);
+    public class [|C2|]
+    {
+    }
+}
+""", """
+namespace N
+{
+    public class C2
+    {
+    }
+}
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
     public async Task Test_FileScopedNamespace()
     {
         await VerifyDiagnosticAndFixAsync("""
-            namespace N;
+namespace N;
 
-            public class [|C1|]
-            {
-            }
+public class [|C1|]
+{
+}
 
-            public class [|C2|]
-            {
-            }
-            """, """
-            namespace N;
+public class [|C2|]
+{
+}
+""", """
+namespace N;
 
-            public class C2
-            {
-            }
-            """);
+public class C2
+{
+}
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
     public async Task Test_FirstClassWithFileKeyword_NoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
-            namespace N
-            {
-                file class C1;
-                public class C2;
-            }
-           """);
+namespace N
+{
+    file class C1;
+    public class C2;
+}
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
     public async Task Test_LastClassWithFileKeyword_NoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
-            namespace N
-            {
-                public class C1;
-                file class C2;
-            }
-           """);
+namespace N
+{
+    public class C1;
+    file class C2;
+}
+""");
     }
 }
