@@ -396,6 +396,38 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [InlineData(nameof(Task))]
+    [InlineData(nameof(ValueTask))]
+    public async Task Test_PreferImplicit_AsyncLocalFunctionReturnTask(string taskName)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        async System.Threading.Tasks." + taskName + @"<string> M2()
+        {
+            await System.Threading.Tasks.Task.Yield();
+            return new [|string|](' ', 1);
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        async System.Threading.Tasks." + taskName + @"<string> M2()
+        {
+            await System.Threading.Tasks.Task.Yield();
+            return new(' ', 1);
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+    }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Assignment()
     {

@@ -193,14 +193,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
                     if (type is not null)
                     {
-                        var asyncNode = NodeContainsAsyncModifier(node);
+                        var isAsync = NodeContainsAsyncModifier(node);
 
                         if (parent.IsKind(SyntaxKind.YieldReturnStatement))
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                             if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                                typeSymbol?.MetadataName == MetadataNames.System_Collections_Generic_IAsyncEnumerable_T.Name)
+                                typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T) == true)
                             {
                                 var ienumerableOfT = (INamedTypeSymbol)typeSymbol;
 
@@ -211,7 +211,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         }
                         else
                         {
-                            AnalyzeType(ref context, expression, type, asyncNode: asyncNode);
+                            AnalyzeType(ref context, expression, type, asyncNode: isAsync);
                         }
 
                         return;
