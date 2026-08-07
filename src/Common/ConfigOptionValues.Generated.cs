@@ -52,6 +52,10 @@ namespace Roslynator
         public const string ObjectCreationTypeStyle_Explicit                                            = "explicit";
         public const string ObjectCreationTypeStyle_Implicit                                            = "implicit";
         public const string ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious                           = "implicit_when_type_is_obvious";
+        public const string TargetBracesStyle_None                                                      = "none";
+        public const string TargetBracesStyle_Opening                                                   = "opening";
+        public const string TargetBracesStyle_Closing                                                   = "closing";
+        public const string TargetBracesStyle_Both                                                      = "both";
         public const string TrailingCommaStyle_Include                                                  = "include";
         public const string TrailingCommaStyle_Omit                                                     = "omit";
         public const string TrailingCommaStyle_OmitWhenSingleLine                                       = "omit_when_single_line";

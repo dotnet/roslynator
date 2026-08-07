@@ -280,5 +280,6 @@ namespace Roslynator
         public const string UseRawStringLiteral = "RCS1266";
         public const string UseStringInterpolationInsteadOfStringConcat = "RCS1267";
         public const string SimplifyNumericComparison = "RCS1268";
+        public const string FixBracketFormattingOfList = "RCS1269";
     }
 }

@@ -407,7 +407,7 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
 
     public bool Equals(TypeDocumentationModel other)
     {
-        return Symbol.Equals(other);
+        return SymbolEqualityComparer.Default.Equals(Symbol, other?.Symbol);
     }
 
     public override bool Equals(object obj)
@@ -418,6 +418,6 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
 
     public override int GetHashCode()
     {
-        return Symbol.GetHashCode();
+        return SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 }

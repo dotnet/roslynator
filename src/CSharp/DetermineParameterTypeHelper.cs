@@ -45,7 +45,7 @@ internal static class DetermineParameterTypeHelper
 
                         if (typeSymbol?.IsErrorType() == false)
                         {
-                            (typeSymbols ??= new HashSet<ITypeSymbol>()).Add(typeSymbol);
+                            (typeSymbols ??= new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default)).Add(typeSymbol);
                         }
                     }
 

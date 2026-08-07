@@ -6,6 +6,12 @@ root = true
 [*]
 indent_style = space
 
+[*.xml]
+indent_size = 2
+
+[Analyzers.xml]
+trim_trailing_whitespace = false
+
 # Code files
 [*.{cs,csx}]
 indent_size = 4

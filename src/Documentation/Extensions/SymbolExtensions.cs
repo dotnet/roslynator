@@ -69,7 +69,7 @@ internal static class SymbolExtensions
 
                 if (overriddenSymbol is not null)
                 {
-                    (overriddenSymbols ??= new HashSet<ISymbol>()).Add(overriddenSymbol);
+                    (overriddenSymbols ??= new HashSet<ISymbol>(SymbolEqualityComparer.Default)).Add(overriddenSymbol);
                 }
 
                 symbols.Add(symbol);
@@ -95,7 +95,7 @@ internal static class SymbolExtensions
 
                         if (overriddenSymbol is not null)
                         {
-                            (overriddenSymbols ??= new HashSet<ISymbol>()).Add(overriddenSymbol);
+                            (overriddenSymbols ??= new HashSet<ISymbol>(SymbolEqualityComparer.Default)).Add(overriddenSymbol);
                         }
                     }
                 }
