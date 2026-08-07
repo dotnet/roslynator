@@ -57,4 +57,28 @@ public class C2
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_FirstClassWithFileKeyword_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+namespace N
+{
+    file class C1;
+    public class C2;
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_LastClassWithFileKeyword_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+namespace N
+{
+    public class C1;
+    file class C2;
+}
+""");
+    }
 }

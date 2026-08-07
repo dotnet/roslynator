@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
+
 ### Fixed
 
+- Fix analyzer [RCS1118](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1118) to not report local variable passed as 'in' argument ([PR](https://github.com/dotnet/roslynator/pull/1782) by @NoahStolk)
+- Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
 - Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
 - Fix analyzer [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) ([PR](https://github.com/dotnet/roslynator/pull/1747))
 - Fix analyzer [RCS1194](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1194) ([PR](https://github.com/dotnet/roslynator/pull/1733))
+- Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to ignore classes marked with `file` modifier ([PR](https://github.com/dotnet/roslynator/pull/1777) by @cbersch)
+- Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) ([PR](https://github.com/dotnet/roslynator/pull/1774) by @cbersch)
+- [CLI] Fix `fix` command ignoring `--include` / `--exclude` file filter ([PR](https://github.com/dotnet/roslynator/pull/1758) by @hashiiiii)
 
 ## [4.15.0] - 2025-12-14
 

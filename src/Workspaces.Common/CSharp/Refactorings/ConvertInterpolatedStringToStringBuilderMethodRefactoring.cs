@@ -88,14 +88,14 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                 }
                 else
 #endif
-                if (isVerbatim)
-                {
-                    text = "@\"" + text + "\"";
-                }
-                else
-                {
-                    text = "\"" + text + "\"";
-                }
+                    if (isVerbatim)
+                    {
+                        text = "@\"" + text + "\"";
+                    }
+                    else
+                    {
+                        text = "\"" + text + "\"";
+                    }
 
                 ExpressionSyntax stringLiteral = ParseExpression(text).WithTriviaFrom(interpolatedStringText);
 
