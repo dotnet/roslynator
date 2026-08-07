@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to ignore classes marked with `file` modifier ([PR](https://github.com/dotnet/roslynator/pull/1777) by @cbersch)
 - Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) ([PR](https://github.com/dotnet/roslynator/pull/1774) by @cbersch)
 - [CLI] Fix `fix` command ignoring `--include` / `--exclude` file filter ([PR](https://github.com/dotnet/roslynator/pull/1758) by @hashiiiii)
+- [CLI] Fix loading of projects and solutions on .NET 10 SDK ([PR](https://github.com/dotnet/roslynator/pull/1783))
 
 ## [4.15.0] - 2025-12-14
 
