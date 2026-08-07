@@ -132,7 +132,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 SyntaxDebug.Assert(type is not null, parent);
 
                 if (type is not null)
-                    AnalyzeType(ref context, expression, type, asyncNode: NodeContainsAsyncModifier(parent.Parent));
+                    AnalyzeType(ref context, expression, type, isAsync: NodeContainsAsyncModifier(parent.Parent));
 
                 break;
             }
@@ -211,7 +211,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         }
                         else
                         {
-                            AnalyzeType(ref context, expression, type, asyncNode: isAsync);
+                            AnalyzeType(ref context, expression, type, isAsync: isAsync);
                         }
 
                         return;
@@ -496,10 +496,10 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ExpressionSyntax creationExpression,
         TypeSyntax type,
         bool extractGenericType = false,
-        bool asyncNode = false)
+        bool isAsync = false)
     {
         if (!type.IsVar)
-            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType, asyncNode: asyncNode);
+            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType, isAsync: isAsync);
     }
 
     private void AnalyzeArrayType(
@@ -521,7 +521,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ExpressionSyntax creationExpression,
         ExpressionSyntax expression,
         bool extractGenericType = false,
-        bool asyncNode = false)
+        bool isAsync = false)
     {
         ITypeSymbol typeSymbol1 = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
@@ -529,7 +529,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         {
             typeSymbol1 = ExtractTypeArgument();
         }
-        else if (asyncNode && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && SymbolUtility.IsWellKnownTaskType(typeSymbol1))
+        else if (isAsync && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && SymbolUtility.IsWellKnownTaskType(typeSymbol1))
         {
             typeSymbol1 = ExtractTypeArgument();
         }
