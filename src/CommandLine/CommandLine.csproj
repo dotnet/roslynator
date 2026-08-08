@@ -74,7 +74,7 @@
       a single version across all target frameworks instead would downgrade deployed dependencies
       of these packages, such as System.Reflection.MetadataLoadContext.
     -->
-    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net8.0'">17.7.2</RoslynatorMSBuildVersion>
+    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net8.0'">17.11.31</RoslynatorMSBuildVersion>
     <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net9.0'">17.14.28</RoslynatorMSBuildVersion>
     <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net10.0'">18.0.2</RoslynatorMSBuildVersion>
     <!--
