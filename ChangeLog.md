@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers
+- [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
 
 ## [4.16.0] - 2026-08-08
 
