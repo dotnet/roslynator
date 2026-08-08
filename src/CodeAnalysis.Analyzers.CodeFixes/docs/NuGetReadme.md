@@ -6,7 +6,7 @@ The package is applicable for projects that reference Roslyn packages (Microsoft
 
 ## Requirements
 
-* Visual Studio 2022
+* Visual Studio 2026
 * VS Code with [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) extension 1.21.13 or higher
 * Roslyn 3.8.0 or higher (when used directly, not as a part of IDE)
 
@@ -26,7 +26,7 @@ The package is applicable for projects that reference Roslyn packages (Microsoft
 
 ## Related Products
 
-* [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
+* [Roslynator for Visual Studio 2026](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2026)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
 * [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
 * [Roslynator Testing Framework](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
