@@ -1,16 +1,16 @@
 # Roslynator for Visual Studio Code
 
-A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-IMPORTANT: Analyzers will be removed from Roslynator for VS Code in the next major release.
-It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+Analyzers are not included in this extension. Add [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers) to your projects for diagnostics in the editor and `dotnet build`.
 
-## Prerequsities
+## Prerequisites
 
-Prerequisite for this extension is to use OmniSharp:
+This extension requires **legacy OmniSharp** (not C# Dev Kit):
 
 - Set VS Code setting `dotnet.server.useOmnisharp` to `true`
 - Disable extension **C# Dev Kit** (if installed)
+- Use a recent [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) with OmniSharp **1.39.15+** (Roslyn 5.x)
 
 NOTE: After each installation, Roslynator updates `omnisharp.json` to include references to Roslynator DLLs.
 
