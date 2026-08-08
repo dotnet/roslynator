@@ -336,4 +336,106 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfElementAt_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values.[|ElementAt(0)|];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values[0];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfFirst_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values.[|First()|];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values[0];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfLast_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values.[|Last()|];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+        var y = x?.Values[^1];
+    }
+
+    public IReadOnlyList<int> Values => new List<int>();
+}
+");
+    }
 }
