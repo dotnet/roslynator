@@ -597,7 +597,8 @@ public static class SyntaxKindTests
                 case SyntaxKind.FieldExpression:
                 // new in 4.14.0
                 case SyntaxKind.ExtensionKeyword:
-                case SyntaxKind.ExtensionDeclaration:
+                case SyntaxKind.ExtensionBlockDeclaration:
+                case SyntaxKind.ExtensionMemberCref:
                 case SyntaxKind.IgnoredDirectiveTrivia:
                 {
                     break;

@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -75,7 +76,7 @@ public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProv
 
             TypeSyntax type = declarationExpression.Type;
 
-            var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+            ILocalSymbol localSymbol = semanticModel.GetDeclaredLocalSymbol(declarationExpression.Designation, context.CancellationToken);
 
             ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
