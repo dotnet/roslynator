@@ -81,7 +81,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 
-        return new AnalyzeCommandResult(GetCommandStatus(Options, results), results);
+        return new AnalyzeCommandResult(GetCommandStatus(Options, results), results, FileSystemFilter?.RootDirectoryPath);
     }
 
     private static CommandStatus GetCommandStatus(AnalyzeCommandLineOptions options, ImmutableArray<ProjectAnalysisResult> results)
@@ -100,7 +100,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
             if (!string.IsNullOrWhiteSpace(Options.OutputFormat) && Options.OutputFormat.Equals("gitlab", StringComparison.CurrentCultureIgnoreCase))
             {
-                DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture, FileSystemFilter.RootDirectoryPath);
+                DiagnosticGitLabJsonSerializer.Serialize(results, Options.Output, culture);
             }
             else
             {
