@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -97,50 +96,13 @@ internal static class DiagnosticGitLabJsonSerializer
 
     private static string FormatPath(string path, string baseDirectoryPath)
     {
-        if (string.IsNullOrEmpty(path))
-            return path;
-
-        if (string.IsNullOrEmpty(baseDirectoryPath))
-            return ToForwardSlashPath(path);
-
-        string normalizedPath = NormalizePath(path);
-        string normalizedBase = NormalizePath(baseDirectoryPath);
-
-        StringComparison comparison = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            ? StringComparison.OrdinalIgnoreCase
-            : StringComparison.Ordinal;
-
-        if (string.Equals(normalizedPath, normalizedBase, comparison))
-            return ToForwardSlashPath(Path.GetFileName(normalizedPath));
-
-        if (normalizedPath.StartsWith(normalizedBase, comparison))
+        if (!string.IsNullOrEmpty(baseDirectoryPath)
+            && FileSystemHelpers.TryGetNormalizedFullPath(path, out string normalizedPath)
+            && FileSystemHelpers.TryGetNormalizedFullPath(baseDirectoryPath, out string normalizedBase))
         {
-            int length = normalizedBase.Length;
-
-            while (length < normalizedPath.Length && IsDirectorySeparator(normalizedPath[length]))
-                length++;
-
-            return ToForwardSlashPath(normalizedPath.Substring(length));
+            path = PathUtilities.TrimStart(normalizedPath, normalizedBase);
         }
 
-        return ToForwardSlashPath(path);
+        return path.Replace('\\', '/');
     }
-
-    private static string NormalizePath(string path)
-    {
-        try
-        {
-            return Path.GetFullPath(path);
-        }
-        catch (Exception)
-        {
-            return path;
-        }
-    }
-
-    private static bool IsDirectorySeparator(char c)
-        => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar;
-
-    private static string ToForwardSlashPath(string path)
-        => path.Replace('\\', '/');
 }
