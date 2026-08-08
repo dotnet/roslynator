@@ -153,6 +153,19 @@ class Program
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    public async Task Test_AsyncVoid()
+    {
+        await VerifyDiagnosticAsync(@"
+class C
+{
+    async void [|Foo|]()
+    {
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task TestNoDiagnostic_Interface()
     {
         await VerifyNoDiagnosticAsync(@"
