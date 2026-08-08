@@ -66,11 +66,6 @@ public sealed class VSPackage : AsyncPackage
         get { return (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage)); }
     }
 
-    public AnalyzersOptionsPage AnalyzersOptionsPage
-    {
-        get { return (AnalyzersOptionsPage)GetDialogPage(typeof(AnalyzersOptionsPage)); }
-    }
-
     public void InitializeConfig()
     {
         GeneralOptionsPage generalOptionsPage = GeneralOptionsPage;
