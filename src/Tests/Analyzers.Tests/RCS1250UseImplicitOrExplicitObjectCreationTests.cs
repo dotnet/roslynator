@@ -309,6 +309,126 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_PreferImplicit_AsyncYieldReturnStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private static string[] _test = [""foo"", ""bar""];
+
+    private record TestRecord(string Test);
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    private static async System.Collections.Generic.IAsyncEnumerable<TestRecord> TestAsync()
+    {
+        foreach (var test in _test)
+        {
+            yield return new [|TestRecord|](test);
+        }
+    }
+#pragma warning restore CS1998
+}
+", @"
+class C
+{
+    private static string[] _test = [""foo"", ""bar""];
+
+    private record TestRecord(string Test);
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    private static async System.Collections.Generic.IAsyncEnumerable<TestRecord> TestAsync()
+    {
+        foreach (var test in _test)
+        {
+            yield return new(test);
+        }
+    }
+#pragma warning restore CS1998
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [InlineData(nameof(Task))]
+    [InlineData(nameof(ValueTask))]
+    public async Task Test_PreferImplicit_AsyncReturnTask(string taskName)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    async System.Threading.Tasks." + taskName + @"<string> M()
+    {
+        await System.Threading.Tasks.Task.Yield();
+        return new [|string|](' ', 1);
+    }
+}
+", @"
+class C
+{
+    async System.Threading.Tasks." + taskName + @"<string> M()
+    {
+        await System.Threading.Tasks.Task.Yield();
+        return new(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [InlineData(nameof(Task))]
+    [InlineData(nameof(ValueTask))]
+    public async Task Test_PreferImplicit_AsyncArrowExpressionReturnTask(string taskName)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    async System.Threading.Tasks." + taskName + @"<string> M() => new [|string|](' ', 1);
+#pragma warning restore CS1998
+}
+", @"
+class C
+{
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    async System.Threading.Tasks." + taskName + @"<string> M() => new(' ', 1);
+#pragma warning restore CS1998
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [InlineData(nameof(Task))]
+    [InlineData(nameof(ValueTask))]
+    public async Task Test_PreferImplicit_AsyncLocalFunctionReturnTask(string taskName)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        async System.Threading.Tasks." + taskName + @"<string> M2()
+        {
+            await System.Threading.Tasks.Task.Yield();
+            return new [|string|](' ', 1);
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        async System.Threading.Tasks." + taskName + @"<string> M2()
+        {
+            await System.Threading.Tasks.Task.Yield();
+            return new(' ', 1);
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_Assignment()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -988,6 +1108,32 @@ class C
     void M()
     {
         string s = new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    [InlineData(nameof(Task))]
+    [InlineData(nameof(ValueTask))]
+    public async Task Test_ConvertImplicitToExplicit_AsyncReturnTask(string taskName)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    async System.Threading.Tasks." + taskName + @"<string> M()
+    {
+        await System.Threading.Tasks.Task.Yield();
+        return [|new(' ', 1)|];
+    }
+}
+", @"
+class C
+{
+    async System.Threading.Tasks." + taskName + @"<string> M()
+    {
+        await System.Threading.Tasks.Task.Yield();
+        return new string(' ', 1);
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
