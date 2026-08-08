@@ -54,6 +54,8 @@
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-hh2w-p6rv-4g7w" />
     <!-- Package 'Microsoft.Build.Tasks.Core' 17.7.2 has a known high severity vulnerability -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-h4j7-5rxr-p4wc" />
+    <!-- Package 'Microsoft.Build' 17.11.31 has a known high severity vulnerability -->
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-w3q9-fxm7-j8fq" />
   </ItemGroup>
 
   <!--
