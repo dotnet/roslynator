@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789) by @josefpihrt)
+- Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
 
 ## [4.16.0] - 2026-08-08
 
