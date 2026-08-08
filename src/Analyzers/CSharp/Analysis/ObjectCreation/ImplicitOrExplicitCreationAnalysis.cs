@@ -536,7 +536,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
         AnalyzeTypeSymbol(ref context, creationExpression, typeSymbol1);
 
-        ITypeSymbol? ExtractTypeArgument() => (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
+        ITypeSymbol ExtractTypeArgument() => (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
     }
 
     private void AnalyzeTypeSymbol(
