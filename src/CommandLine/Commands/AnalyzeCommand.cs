@@ -100,7 +100,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
             if (!string.IsNullOrWhiteSpace(Options.OutputFormat) && Options.OutputFormat.Equals("gitlab", StringComparison.CurrentCultureIgnoreCase))
             {
-                DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
+                DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture, FileSystemFilter.RootDirectoryPath);
             }
             else
             {

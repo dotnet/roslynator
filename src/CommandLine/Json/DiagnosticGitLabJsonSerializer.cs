@@ -27,63 +27,73 @@ internal static class DiagnosticGitLabJsonSerializer
     public static void Serialize(
         IEnumerable<ProjectAnalysisResult> results,
         string filePath,
-        IFormatProvider formatProvider = null)
+        IFormatProvider formatProvider = null,
+        string baseDirectoryPath = null)
     {
-        IEnumerable<DiagnosticInfo> diagnostics = results.SelectMany(f => f.CompilerDiagnostics.Concat(f.Diagnostics));
-
         var reportItems = new List<GitLabIssue>();
-        foreach (DiagnosticInfo diagnostic in diagnostics)
+
+        foreach (ProjectAnalysisResult result in results)
         {
-            GitLabIssueLocation location = null;
-            if (diagnostic.LineSpan.IsValid)
+            foreach (DiagnosticInfo diagnostic in result.CompilerDiagnostics.Concat(result.Diagnostics))
             {
-                location = new GitLabIssueLocation()
+                GitLabIssueLocation location = null;
+                if (diagnostic.LineSpan.IsValid)
                 {
-                    Path = diagnostic.LineSpan.Path,
-                    Lines = new GitLabLocationLines()
+                    location = new GitLabIssueLocation()
                     {
-                        Begin = diagnostic.LineSpan.StartLinePosition.Line
-                    },
+                        Path = FormatPath(diagnostic.LineSpan.Path, baseDirectoryPath),
+                        Lines = new GitLabLocationLines()
+                        {
+                            Begin = diagnostic.LineSpan.StartLinePosition.Line + 1
+                        },
+                    };
+                }
+
+                var severity = "minor";
+                severity = diagnostic.Severity switch
+                {
+                    DiagnosticSeverity.Warning => "major",
+                    DiagnosticSeverity.Error => "critical",
+                    _ => "minor",
                 };
-            }
 
-            var severity = "minor";
-            severity = diagnostic.Severity switch
-            {
-                DiagnosticSeverity.Warning => "major",
-                DiagnosticSeverity.Error => "critical",
-                _ => "minor",
-            };
-
-            string issueFingerPrint = $"{diagnostic.Descriptor.Id}-{diagnostic.Severity}-{location?.Path}-{location?.Lines.Begin}";
-            byte[] source = Encoding.UTF8.GetBytes(issueFingerPrint);
-            byte[] hashBytes;
+                string issueFingerPrint = $"{diagnostic.Descriptor.Id}-{diagnostic.Severity}-{location?.Path}-{location?.Lines.Begin}";
+                byte[] source = Encoding.UTF8.GetBytes(issueFingerPrint);
+                byte[] hashBytes;
 #if NETFRAMEWORK
-            using (var sha256 = SHA256.Create())
-                hashBytes = sha256.ComputeHash(source);
+                using (var sha256 = SHA256.Create())
+                    hashBytes = sha256.ComputeHash(source);
 #else
-            hashBytes = SHA256.HashData(source);
+                hashBytes = SHA256.HashData(source);
 #endif
 #pragma warning disable CA1872 // Use Convert.ToHexString instead of BitConverter.ToString
-            issueFingerPrint = BitConverter.ToString(hashBytes)
-                .Replace("-", "")
-                .ToLowerInvariant();
+                issueFingerPrint = BitConverter.ToString(hashBytes)
+                    .Replace("-", "")
+                    .ToLowerInvariant();
 #pragma warning restore CA1872
 
-            reportItems.Add(new GitLabIssue()
-            {
-                Type = "issue",
-                Fingerprint = issueFingerPrint,
-                CheckName = diagnostic.Descriptor.Id,
-                Description = diagnostic.Descriptor.Title.ToString(formatProvider),
-                Severity = severity,
-                Location = location,
-                Categories = new string[] { diagnostic.Descriptor.Category },
-            });
+                reportItems.Add(new GitLabIssue()
+                {
+                    Type = "issue",
+                    Fingerprint = issueFingerPrint,
+                    CheckName = diagnostic.Descriptor.Id,
+                    Description = diagnostic.Descriptor.Title.ToString(formatProvider),
+                    Severity = severity,
+                    Location = location,
+                    Categories = new string[] { diagnostic.Descriptor.Category },
+                });
+            }
         }
 
         string report = JsonConvert.SerializeObject(reportItems, _jsonSerializerSettings);
 
         File.WriteAllText(filePath, report, Encoding.UTF8);
+    }
+
+    private static string FormatPath(string path, string baseDirectoryPath)
+    {
+        string relativePath = PathUtilities.TrimStart(path, baseDirectoryPath);
+
+        return relativePath.Replace('\\', '/');
     }
 }
