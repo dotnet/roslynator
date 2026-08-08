@@ -46,6 +46,9 @@ public sealed class RemoveRedundantCatchBlockAnalyzer : BaseDiagnosticAnalyzer
         if (lastCatchClause.Declaration is not null)
             return;
 
+        if (lastCatchClause.Filter is not null)
+            return;
+
         if (lastCatchClause.Block?.Statements.Count != 1)
             return;
 
