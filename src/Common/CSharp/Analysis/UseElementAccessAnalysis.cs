@@ -35,9 +35,12 @@ internal static class UseElementAccessAnalysis
         if (!HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationExpression.SpanStart))
             return false;
 
-        // Skip the speculative binding check for member binding expressions (conditional access context)
-        // because GetSpeculativeSymbolInfo cannot bind a MemberBindingExpression as a standalone expression.
-        // The infinite recursion scenario this check guards against is not applicable in conditional access.
+        // GetSpeculativeSymbolInfo cannot bind a MemberBindingExpression (conditional access,
+        // e.g. 'x?.Values.ElementAt(0)') as a standalone expression, so the speculative element
+        // access below would throw. That binding's only purpose is infinite-recursion detection,
+        // which we intentionally skip here. The recursion scenario is still technically reachable
+        // via conditional access (a member returning the enclosing indexer's type), but it's rare
+        // enough that we accept not guarding it in order to fix the crash.
         if (invocationInfo.Expression.IsKind(SyntaxKind.MemberBindingExpression))
             return true;
 
