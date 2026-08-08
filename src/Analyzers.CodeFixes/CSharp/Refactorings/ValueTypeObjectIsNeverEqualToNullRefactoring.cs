@@ -20,7 +20,9 @@ internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        ExpressionSyntax right = binaryExpression.Right;
+        bool nullIsOnLeft = binaryExpression.Left.Kind() == SyntaxKind.NullLiteralExpression;
+        ExpressionSyntax nullExpression = (nullIsOnLeft) ? binaryExpression.Left : binaryExpression.Right;
+        ExpressionSyntax valueExpression = (nullIsOnLeft) ? binaryExpression.Right : binaryExpression.Left;
 
         ExpressionSyntax newNode = null;
 
@@ -28,10 +30,10 @@ internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
             || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
         {
             newNode = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions())
-                .WithTriviaFrom(right)
+                .WithTriviaFrom(nullExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(right, newNode, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(nullExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
         else
         {
@@ -43,8 +45,8 @@ internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
                 SimpleMemberAccessExpression(
                     SimpleMemberAccessExpression(equalityComparerSymbol.ToMinimalTypeSyntax(semanticModel, binaryExpression.SpanStart), IdentifierName("Default")), IdentifierName("Equals")),
                 ArgumentList(
-                    Argument(binaryExpression.Left.WithoutTrivia()),
-                    Argument(DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, right.SpanStart)))));
+                    Argument(valueExpression.WithoutTrivia()),
+                    Argument(DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, nullExpression.SpanStart)))));
 
             if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
                 newNode = LogicalNotExpression(newNode);

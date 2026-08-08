@@ -145,6 +145,9 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             if (parameter.RefKind != RefKind.None)
                 continue;
 
+            if (parameter.IsParams)
+                continue;
+
             if (walker is null)
             {
                 if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
