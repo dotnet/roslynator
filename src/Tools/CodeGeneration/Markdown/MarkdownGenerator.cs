@@ -256,7 +256,7 @@ public static class MarkdownGenerator
 
             if (!analyzer.Id.StartsWith("RCS9"))
             {
-                yield return BulletItem(Link("Extension for VS 2022", "https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022"));
+                yield return BulletItem(Link("Extension for VS 2026", "https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2026"));
                 yield return BulletItem(Link("Extension for VS Code", "https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator"));
                 yield return BulletItem(Link("Extension for Open VSX", "https://open-vsx.org/extension/josefpihrt-vscode/roslynator"));
             }

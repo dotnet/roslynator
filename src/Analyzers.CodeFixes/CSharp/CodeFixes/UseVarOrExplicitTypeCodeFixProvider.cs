@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp;
 using static Roslynator.CSharp.CodeActionFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
@@ -126,7 +127,7 @@ public sealed class UseVarOrExplicitTypeCodeFixProvider : BaseCodeFixProvider
 
                 if (typeSymbol is null)
                 {
-                    var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+                    ILocalSymbol localSymbol = semanticModel.GetDeclaredLocalSymbol(declarationExpression.Designation, context.CancellationToken);
                     typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
                 }
 

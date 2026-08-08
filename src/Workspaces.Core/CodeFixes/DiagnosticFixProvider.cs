@@ -202,6 +202,7 @@ internal static class DiagnosticFixProvider
             (a, _) =>
             {
                 if (!equivalenceKeys.IsDefaultOrEmpty
+                    && a.EquivalenceKey is not null
                     && !equivalenceKeys.Contains(a.EquivalenceKey, StringComparer.Ordinal))
                 {
                     return;
