@@ -61,6 +61,8 @@ dotnet tool install -g roslynator.dotnet.cli
 
 See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for further information.
 
+The CLI is also available out of the box in [MegaLinter](https://megalinter.io/), an open-source linters aggregator for CI (see its [Roslynator page](https://megalinter.io/latest/descriptors/csharp_roslynator/)).
+
 ## Testing Framework
 
 - Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
