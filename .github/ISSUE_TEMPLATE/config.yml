@@ -5,3 +5,6 @@ contact_links:
   - name: Contributing guide
     url: https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md
     about: Read issue and PR guidelines before opening a ticket.
+  - name: Contributing with agent skills
+    url: https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills
+    about: New to Roslyn? Step-by-step contributor and agent workflows
