@@ -2,7 +2,7 @@ name: Bug report
 description: Report incorrect analyzer, refactoring, code fix, or IDE behavior
 title: "[Bug]: "
 labels:
-  - bug
+  - Bug
 body:
   - type: markdown
     attributes:

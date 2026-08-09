@@ -2,7 +2,7 @@ name: Feature request
 description: Suggest a new feature, analyzer, refactoring, or code fix
 title: "[Feature]: "
 labels:
-  - enhancement
+  - Feature Request
 body:
   - type: markdown
     attributes:
