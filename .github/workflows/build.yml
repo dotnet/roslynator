@@ -32,7 +32,7 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-            9.0.x
+            9.0.3xx
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
       - name: Resolve version
         id: version
@@ -56,18 +56,18 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then version=$pr_version; fi
           echo "Resolved CLI version: $version"
           echo "version=${version}" >> $GITHUB_OUTPUT
-      - run: dotnet restore Roslynator.sln
-      - run: dotnet build Roslynator.sln --no-restore
+      - run: dotnet restore Roslynator.slnx
+      - run: dotnet build Roslynator.slnx --no-restore
       - run: |
-          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
-      - run: dotnet test Roslynator.sln --no-build
+          dotnet format Roslynator.slnx --no-restore --verify-no-changes --severity info
+      - run: dotnet test Roslynator.slnx --no-build
       - uses: actions/checkout@v4
         with:
           repository: josefpihrt/wordb
           path: wordb
-      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.8.3
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.11.0
       - run: |
-          roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
+          roslynator spellcheck Roslynator.slnx --dry-run --scope all --words \
             spellcheck \
             ../wordb/data/en \
             ../wordb/data/en-us \
@@ -90,7 +90,7 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-            9.0.x
+            9.0.3xx
       - run: dotnet restore Roslynator.CoreAndTesting.slnf
       - run: dotnet build Roslynator.CoreAndTesting.slnf --no-restore
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
