@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) false positive for `omit_when_single_line` on multi-line object/collection initializers ([#1439](https://github.com/dotnet/roslynator/issues/1439))
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) false positive for `omit_when_single_line` on multi-line object/collection initializers ([#1439](https://github.com/dotnet/roslynator/issues/1439)) ([PR](https://github.com/dotnet/roslynator/pull/1808))
 - Fix analyzer [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) to report `async void` methods without `Async` suffix ([PR](https://github.com/dotnet/roslynator/pull/1790))
 - Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
 - Fix analyzer [RCS0034](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0034) for types with a primary constructor and multiple constraint clauses ([PR](https://github.com/dotnet/roslynator/pull/1791))
