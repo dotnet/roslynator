@@ -178,4 +178,68 @@ class C
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_StringLiteralInAttribute_OnPartialMethodWithGeneratedCodeImplementation()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+using System.CodeDom.Compiler;
+using System.Text.RegularExpressions;
+
+partial class C
+{
+    [Obsolete([|@|]"^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex GeneratedPattern();
+
+    [GeneratedCode("MyTool", "1.2.3")]
+    private static partial Regex GeneratedPattern() => default;
+
+    [Obsolete([|@|]"^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex Pattern();
+
+    private static partial Regex Pattern() => default;
+}
+""", """
+using System;
+using System.CodeDom.Compiler;
+using System.Text.RegularExpressions;
+
+partial class C
+{
+    [Obsolete("^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex GeneratedPattern();
+
+    [GeneratedCode("MyTool", "1.2.3")]
+    private static partial Regex GeneratedPattern() => default;
+
+    [Obsolete("^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex Pattern();
+
+    private static partial Regex Pattern() => default;
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_GeneratedRegexAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Text.RegularExpressions;
+
+partial class C
+{
+    [GeneratedRegex([|@|]"^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex SchemaNameRegex();
+}
+""", """
+using System.Text.RegularExpressions;
+
+partial class C
+{
+    [GeneratedRegex("^[A-Za-z_][A-Za-z0-9_-]*$")]
+    private static partial Regex SchemaNameRegex();
+}
+""", options: Options.AddAllowedCompilerDiagnosticId("CS8795"));
+    }
 }

@@ -29,7 +29,8 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 
     public override void Initialize(AnalysisContext context)
     {
-        base.Initialize(context);
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeStringLiteralExpression(f), SyntaxKind.StringLiteralExpression);
         context.RegisterSyntaxNodeAction(f => AnalyzeInterpolatedStringExpression(f), SyntaxKind.InterpolatedStringExpression);
@@ -56,6 +57,9 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
             return;
 
         Debug.Assert(string.Compare(text, 2, literalExpression.Token.ValueText, 0, text.Length - 3, StringComparison.Ordinal) == 0, text);
+
+        if (!ShouldReport(context, node))
+            return;
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
@@ -110,10 +114,21 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
         if (interpolatedString.StringStartToken.ValueText.StartsWith("$"))
             start++;
 
+        if (!ShouldReport(context, node))
+            return;
+
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral,
             Location.Create(node.SyntaxTree, new TextSpan(start, 1)));
+    }
+
+    private static bool ShouldReport(SyntaxNodeAnalysisContext context, SyntaxNode node)
+    {
+        if (!context.IsGeneratedCode)
+            return true;
+
+        return node.Parent is AttributeArgumentSyntax;
     }
 
     private static bool ContainsQuoteOrBackslashOrCarriageReturnOrLinefeed(
