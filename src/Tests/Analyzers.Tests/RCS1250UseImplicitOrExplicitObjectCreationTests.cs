@@ -311,10 +311,11 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_AsyncYieldReturnStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
+
 class C
 {
-    private static string[] _test = [""foo"", ""bar""];
+    private static string[] _test = ["foo", "bar"];
 
     private record TestRecord(string Test);
 
@@ -328,10 +329,12 @@ class C
     }
 #pragma warning restore CS1998
 }
-", @"
+
+""", """
+
 class C
 {
-    private static string[] _test = [""foo"", ""bar""];
+    private static string[] _test = ["foo", "bar"];
 
     private record TestRecord(string Test);
 
@@ -345,7 +348,8 @@ class C
     }
 #pragma warning restore CS1998
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
     }
 
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -356,7 +360,9 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    async System.Threading.Tasks." + taskName + @"<string> M()
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M()
     {
         await System.Threading.Tasks.Task.Yield();
         return new [|string|](' ', 1);
@@ -365,7 +371,9 @@ class C
 ", @"
 class C
 {
-    async System.Threading.Tasks." + taskName + @"<string> M()
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M()
     {
         await System.Threading.Tasks.Task.Yield();
         return new(' ', 1);
@@ -383,14 +391,18 @@ class C
 class C
 {
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    async System.Threading.Tasks." + taskName + @"<string> M() => new [|string|](' ', 1);
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M() => new [|string|](' ', 1);
 #pragma warning restore CS1998
 }
 ", @"
 class C
 {
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    async System.Threading.Tasks." + taskName + @"<string> M() => new(' ', 1);
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M() => new(' ', 1);
 #pragma warning restore CS1998
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
@@ -406,7 +418,9 @@ class C
 {
     void M()
     {
-        async System.Threading.Tasks." + taskName + @"<string> M2()
+        async System.Threading.Tasks."
+            + taskName
+            + @"<string> M2()
         {
             await System.Threading.Tasks.Task.Yield();
             return new [|string|](' ', 1);
@@ -418,7 +432,9 @@ class C
 {
     void M()
     {
-        async System.Threading.Tasks." + taskName + @"<string> M2()
+        async System.Threading.Tasks."
+            + taskName
+            + @"<string> M2()
         {
             await System.Threading.Tasks.Task.Yield();
             return new(' ', 1);
@@ -1121,7 +1137,9 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    async System.Threading.Tasks." + taskName + @"<string> M()
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M()
     {
         await System.Threading.Tasks.Task.Yield();
         return [|new(' ', 1)|];
@@ -1130,7 +1148,9 @@ class C
 ", @"
 class C
 {
-    async System.Threading.Tasks." + taskName + @"<string> M()
+    async System.Threading.Tasks."
+            + taskName
+            + @"<string> M()
     {
         await System.Threading.Tasks.Task.Yield();
         return new string(' ', 1);

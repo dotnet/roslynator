@@ -193,14 +193,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
                     if (type is not null)
                     {
-                        var isAsync = NodeContainsAsyncModifier(node);
+                        bool isAsync = NodeContainsAsyncModifier(node);
 
                         if (parent.IsKind(SyntaxKind.YieldReturnStatement))
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                                typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T) == true)
+                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
+                                || typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T) == true)
                             {
                                 var ienumerableOfT = (INamedTypeSymbol)typeSymbol;
 
@@ -529,7 +529,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         {
             typeSymbol1 = ExtractTypeArgument();
         }
-        else if (isAsync && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && SymbolUtility.IsWellKnownTaskType(typeSymbol1))
+        else if (isAsync && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && typeSymbol1.IsWellKnownTaskType())
         {
             typeSymbol1 = ExtractTypeArgument();
         }
