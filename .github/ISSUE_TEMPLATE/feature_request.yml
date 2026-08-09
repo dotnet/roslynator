@@ -11,7 +11,7 @@ body:
 
         New analyzers, refactorings, and code fixes should be discussed before implementation. See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md). For questions, use [Discussions](https://github.com/dotnet/roslynator/discussions).
 
-        After approval, [.claude/skills/](https://github.com/dotnet/roslynator/tree/main/.claude/skills) guide implementation — see [Contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills).
+        After approval, see [.claude/skills/](https://github.com/dotnet/roslynator/tree/main/.claude/skills) for step-by-step workflows — [Contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills).
   - type: input
     id: summary
     attributes:
