@@ -437,6 +437,7 @@ public static class DiagnosticsExtensions
             descriptor,
             context.Symbol.Locations[0].SourceTree!,
             context.Compilation.Options,
+            context.Options,
             context.CancellationToken);
     }
 
@@ -446,6 +447,7 @@ public static class DiagnosticsExtensions
             descriptor,
             context.Node.SyntaxTree,
             context.Compilation.Options,
+            context.Options,
             context.CancellationToken);
     }
 
@@ -457,18 +459,88 @@ public static class DiagnosticsExtensions
     {
         SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
 
-        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) != true
-            && !compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
+        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) == true)
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic) == true)
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        return descriptor.IsEnabledByDefault;
+    }
+
+    internal static bool IsEffective(
+        this DiagnosticDescriptor descriptor,
+        SyntaxTree syntaxTree,
+        CompilationOptions compilationOptions,
+        AnalyzerOptions analyzerOptions,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
+
+        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) == true)
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic) == true)
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        if (descriptor.IsEnabledByDefault
+            && !string.IsNullOrEmpty(descriptor.Category))
         {
-            provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic);
+            AnalyzerConfigOptions configOptions = analyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
+            string categoryKey = $"dotnet_analyzer_diagnostic.category-{descriptor.Category.ToLowerInvariant()}.severity";
+
+            if (configOptions.TryGetValue(categoryKey, out string severity)
+                && TryParseReportDiagnostic(severity, out reportDiagnostic))
+            {
+                return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+            }
         }
 
+        if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
+            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
+
+        return descriptor.IsEnabledByDefault;
+    }
+
+    private static bool IsEnabledReportDiagnostic(ReportDiagnostic reportDiagnostic, DiagnosticDescriptor descriptor)
+    {
         return reportDiagnostic switch
         {
             Microsoft.CodeAnalysis.ReportDiagnostic.Default => descriptor.IsEnabledByDefault,
             Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
             _ => true,
         };
+    }
+
+    private static bool TryParseReportDiagnostic(string value, out ReportDiagnostic reportDiagnostic)
+    {
+        switch (value)
+        {
+            case "default":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
+                return true;
+            case "none":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Suppress;
+                return true;
+            case "silent":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Hidden;
+                return true;
+            case "suggestion":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Info;
+                return true;
+            case "warning":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Warn;
+                return true;
+            case "error":
+                reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Error;
+                return true;
+        }
+
+        reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
+        return false;
     }
 
     internal static ReportDiagnostic GetEffectiveSeverity(

@@ -340,17 +340,26 @@ internal static class DiagnosticHelpers
 
     internal static bool IsAnyEffective(SyntaxNodeAnalysisContext context, ImmutableArray<DiagnosticDescriptor> descriptors)
     {
-        return IsAnyEffective(context.Compilation, descriptors);
+        foreach (DiagnosticDescriptor descriptor in descriptors)
+        {
+            if (descriptor.IsEffective(context))
+                return true;
+        }
+
+        return false;
     }
 
     internal static bool IsAnyEffective(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor1, DiagnosticDescriptor descriptor2)
     {
-        return IsAnyEffective(context.Compilation, descriptor1, descriptor2);
+        return descriptor1.IsEffective(context)
+            || descriptor2.IsEffective(context);
     }
 
     internal static bool IsAnyEffective(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor1, DiagnosticDescriptor descriptor2, DiagnosticDescriptor descriptor3)
     {
-        return IsAnyEffective(context.Compilation, descriptor1, descriptor2, descriptor3);
+        return descriptor1.IsEffective(context)
+            || descriptor2.IsEffective(context)
+            || descriptor3.IsEffective(context);
     }
 
     internal static bool IsAnyEffective(Compilation compilation, ImmutableArray<DiagnosticDescriptor> descriptors)

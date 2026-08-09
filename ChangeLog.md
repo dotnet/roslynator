@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
 - Fix analyzer [RCS0034](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0034) for types with a primary constructor and multiple constraint clauses ([PR](https://github.com/dotnet/roslynator/pull/1791))
 - [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
+- Fix performance of [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) and [RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047) when analyzer severity is suppressed via EditorConfig
 
 ## [4.16.0] - 2026-08-08
 

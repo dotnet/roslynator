@@ -249,4 +249,30 @@ class DuckTyped
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_NoDiagnostic_WhenSeverityIsNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void FooAsync()
+    {
+    }
+}
+", options: Options.SetConfigOption("dotnet_diagnostic.RCS1047.severity", "none"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_NoDiagnostic_WhenRoslynatorCategorySeverityIsNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void FooAsync()
+    {
+    }
+}
+", options: Options.SetConfigOption("dotnet_analyzer_diagnostic.category-roslynator.severity", "none"));
+    }
 }
