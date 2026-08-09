@@ -492,7 +492,7 @@ public static class DiagnosticsExtensions
             AnalyzerConfigOptions configOptions = analyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
             string categoryKey = $"dotnet_analyzer_diagnostic.category-{descriptor.Category.ToLowerInvariant()}.severity";
 
-            if (configOptions.TryGetValue(categoryKey, out string severity)
+            if (configOptions.TryGetValue(categoryKey, out string? severity)
                 && TryParseReportDiagnostic(severity, out reportDiagnostic))
             {
                 return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
