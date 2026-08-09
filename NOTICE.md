@@ -1,4 +1,4 @@
-This project contains code from https://github.com/JosefPihrt/Orang
+This project contains code from https://github.com/josefpihrt/orang
 
 Copyright (c) Josef Pihrt. All rights reserved.
 
