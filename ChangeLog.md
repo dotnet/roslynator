@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix analyzer [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) to offer simplification for `async` `Task<>`/`ValueTask<>` and `IAsyncEnumerable<>` return types ([PR](https://github.com/dotnet/roslynator/pull/1764) by @John-Leitch)
 - Fix analyzer [RCS1118](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1118) to not report local variable passed as 'in' argument ([PR](https://github.com/dotnet/roslynator/pull/1782) by @NoahStolk)
 - Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
 - Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
