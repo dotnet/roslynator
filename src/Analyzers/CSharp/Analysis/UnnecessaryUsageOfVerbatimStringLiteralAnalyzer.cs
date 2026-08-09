@@ -125,11 +125,25 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 
     private static bool ShouldReport(SyntaxNodeAnalysisContext context, SyntaxNode node)
     {
+#if ROSLYN_4_0
         if (!context.IsGeneratedCode)
+#else
+        if (!IsGeneratedCode(context))
+#endif
             return true;
 
         return node.Parent is AttributeArgumentSyntax;
     }
+
+#if !ROSLYN_4_0
+    private static bool IsGeneratedCode(SyntaxNodeAnalysisContext context)
+    {
+        return GeneratedCodeUtility.IsGeneratedCode(
+            context.Node.SyntaxTree,
+            static trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia) || trivia.IsKind(SyntaxKind.MultiLineCommentTrivia),
+            context.CancellationToken);
+    }
+#endif
 
     private static bool ContainsQuoteOrBackslashOrCarriageReturnOrLinefeed(
         string text,
