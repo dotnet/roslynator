@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,9 +47,9 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         MemberDeclarationSyntax firstTypeDeclaration = null;
         var isFirstReported = false;
 
-        Analyze(compilationUnitMembers);
+        Analyze(compilationUnitMembers, new HashSet<string>());
 
-        void Analyze(SyntaxList<MemberDeclarationSyntax> members)
+        void Analyze(SyntaxList<MemberDeclarationSyntax> members, HashSet<string> declaredTypeNames)
         {
             foreach (MemberDeclarationSyntax member in members)
             {
@@ -58,7 +59,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                 if (member is NamespaceDeclarationSyntax namespaceDeclaration)
 #endif
                 {
-                    Analyze(namespaceDeclaration.Members);
+                    Analyze(namespaceDeclaration.Members, new HashSet<string>());
                 }
                 else if (SyntaxFacts.IsTypeDeclaration(member.Kind())
 #if ROSLYN_4_4
@@ -66,6 +67,22 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 #endif
                     )
                 {
+                    SyntaxToken identifier = CSharpUtility.GetIdentifier(member);
+
+                    if (identifier == default)
+                        continue;
+
+                    string typeName = identifier.ValueText;
+
+                    if (declaredTypeNames.Contains(typeName)
+                        && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    {
+                        continue;
+                    }
+
+                    if (!declaredTypeNames.Contains(typeName))
+                        declaredTypeNames.Add(typeName);
+
                     if (firstTypeDeclaration is null)
                     {
                         firstTypeDeclaration = member;

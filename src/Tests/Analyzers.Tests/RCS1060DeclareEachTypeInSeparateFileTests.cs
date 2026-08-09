@@ -81,4 +81,64 @@ namespace N
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassSameFile_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+namespace N
+{
+    public partial class Foo
+    {
+    }
+
+    public partial class Foo : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassWithDistinctType_Reports()
+    {
+        await VerifyDiagnosticAsync("""
+namespace N
+{
+    public partial class [|Foo|]
+    {
+    }
+
+    public class [|Bar|]
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_FileScopedNamespace_PartialClassSameFile_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+namespace N;
+
+public partial class Foo
+{
+}
+
+public partial class Foo : IDisposable
+{
+    public void Dispose()
+    {
+    }
+}
+""");
+    }
 }
