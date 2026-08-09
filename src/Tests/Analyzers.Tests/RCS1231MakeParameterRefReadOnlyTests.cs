@@ -217,4 +217,21 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_CancellationToken_SyncTaskReturningMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    public Task DoThatWay(CancellationToken cancellationToken)
+    {
+        return Task.FromCanceled(cancellationToken);
+    }
+}
+");
+    }
 }
