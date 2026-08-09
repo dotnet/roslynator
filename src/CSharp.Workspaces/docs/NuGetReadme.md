@@ -1,6 +1,6 @@
 # Roslynator.CSharp.Workspaces
 
-This package extends functionality of package [Microsoft.CodeAnalysis.CSharp.Workspaces](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces).
+This package extends the functionality of the [Microsoft.CodeAnalysis.CSharp.Workspaces](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces) package.
 
 ## Feedback
 
