@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
+- [CLI] Add SARIF output for CLT ([PR](https://github.com/dotnet/roslynator/pull/1753))
 
 ### Fixed
 
