@@ -50,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation
+- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation ([PR](https://github.com/dotnet/roslynator/pull/1799))
 
 ## [4.16.0] - 2026-08-08
 
