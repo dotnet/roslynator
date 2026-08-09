@@ -198,29 +198,38 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
         bool addParam = DiagnosticRules.AddParamElementToDocumentationComment.IsEffective(context);
         bool addTypeParam = DiagnosticRules.AddTypeParamElementToDocumentationComment.IsEffective(context);
 
+        SyntaxNode declaration = (addParam
+            || orderParams
+            || invalidReference
+            || addTypeParam)
+            ? documentationComment.GetDeclaringSyntaxForDocumentationComment()
+            : null;
+
         if (addParam
             || orderParams
             || invalidReference)
         {
-            SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(
-                (parent is MemberDeclarationSyntax) ? parent : parent.Parent);
-
-            if (addParam
-                && parameters.Any())
+            if (declaration is not null)
             {
-                foreach (ParameterSyntax parameter in parameters)
+                SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(declaration);
+
+                if (addParam
+                    && parameters.Any())
                 {
-                    if (IsMissing(documentationComment, parameter))
+                    foreach (ParameterSyntax parameter in parameters)
                     {
-                        ReportDiagnostic(context, DiagnosticRules.AddParamElementToDocumentationComment, documentationComment);
-                        break;
+                        if (IsMissing(documentationComment, parameter))
+                        {
+                            ReportDiagnostic(context, DiagnosticRules.AddParamElementToDocumentationComment, documentationComment);
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (orderParams || invalidReference)
-            {
-                Analyze(context, documentationComment.Content, parameters, XmlTag.Param, (nodes, name) => nodes.IndexOf(name));
+                if (orderParams || invalidReference)
+                {
+                    Analyze(context, documentationComment.Content, parameters, XmlTag.Param, (nodes, name) => nodes.IndexOf(name));
+                }
             }
         }
 
@@ -228,25 +237,27 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
             || orderParams
             || invalidReference)
         {
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = CSharpUtility.GetTypeParameters(
-                (parent is MemberDeclarationSyntax) ? parent : parent.Parent);
-
-            if (addTypeParam
-                && typeParameters.Any())
+            if (declaration is not null)
             {
-                foreach (TypeParameterSyntax typeParameter in typeParameters)
+                SeparatedSyntaxList<TypeParameterSyntax> typeParameters = CSharpUtility.GetTypeParameters(declaration);
+
+                if (addTypeParam
+                    && typeParameters.Any())
                 {
-                    if (IsMissing(documentationComment, typeParameter))
+                    foreach (TypeParameterSyntax typeParameter in typeParameters)
                     {
-                        ReportDiagnostic(context, DiagnosticRules.AddTypeParamElementToDocumentationComment, documentationComment);
-                        break;
+                        if (IsMissing(documentationComment, typeParameter))
+                        {
+                            ReportDiagnostic(context, DiagnosticRules.AddTypeParamElementToDocumentationComment, documentationComment);
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (orderParams || invalidReference)
-            {
-                Analyze(context, documentationComment.Content, typeParameters, XmlTag.TypeParam, (nodes, name) => nodes.IndexOf(name));
+                if (orderParams || invalidReference)
+                {
+                    Analyze(context, documentationComment.Content, typeParameters, XmlTag.TypeParam, (nodes, name) => nodes.IndexOf(name));
+                }
             }
         }
     }
