@@ -2,6 +2,10 @@
 
 Guidelines for contributing to the Roslynator repo.
 
+## Agent Skills
+
+Contributor workflows for AI agents (Cursor, Claude Code) live in [.claude/skills/](.claude/skills/) — adding analyzers, refactorings, compiler fixes, bug fixes, deprecation, and releases.
+
 ## Submitting Pull Requests
 
 * **DO** submit issues for bug fixes or features.
