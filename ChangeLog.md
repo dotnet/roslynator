@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix analyzer [RCS1192](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1192) to report unnecessary verbatim strings in attribute arguments on partial methods with generated implementations ([#1714](https://github.com/dotnet/roslynator/issues/1714))
+- Fix analyzer [RCS1192](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1192) to report unnecessary verbatim strings in attribute arguments on partial methods with generated implementations ([#1714](https://github.com/dotnet/roslynator/issues/1714)) ([PR](https://github.com/dotnet/roslynator/pull/1805))
 - Fix analyzer [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) to report `async void` methods without `Async` suffix ([PR](https://github.com/dotnet/roslynator/pull/1790))
 - Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
 - Fix analyzer [RCS0034](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0034) for types with a primary constructor and multiple constraint clauses ([PR](https://github.com/dotnet/roslynator/pull/1791))
