@@ -57,4 +57,30 @@ internal class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator)]
+    public async Task Test_EqualsNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class MyClass
+{
+    void M(object item)
+    {
+        if ([|item as MyClass == null|])
+        {
+        }
+    }
+}
+", @"
+class MyClass
+{
+    void M(object item)
+    {
+        if (!(item is MyClass))
+        {
+        }
+    }
+}
+");
+    }
 }

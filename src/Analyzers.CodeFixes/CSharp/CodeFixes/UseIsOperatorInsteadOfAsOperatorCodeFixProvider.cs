@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,8 +11,8 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
@@ -57,17 +58,35 @@ public sealed class UseIsOperatorInsteadOfAsOperatorCodeFixProvider : BaseCodeFi
 
         AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(nullCheck.Expression);
 
+        SyntaxTriviaList isTrailingTrivia = asExpressionInfo.OperatorToken.TrailingTrivia;
+        SyntaxTriviaList typeLeadingTrivia = asExpressionInfo.Type.GetLeadingTrivia();
+
+        if (!isTrailingTrivia.Any(static t => t.IsWhitespaceOrEndOfLineTrivia())
+            && !typeLeadingTrivia.Any(static t => t.IsWhitespaceOrEndOfLineTrivia()))
+        {
+            isTrailingTrivia = isTrailingTrivia.Add(Space);
+        }
+
+        SyntaxToken isKeyword = Token(
+            asExpressionInfo.OperatorToken.LeadingTrivia,
+            SyntaxKind.IsKeyword,
+            isTrailingTrivia);
+
         ExpressionSyntax newNode = IsExpression(
             asExpressionInfo.Expression,
-            SyntaxFactory.Token(asExpressionInfo.OperatorToken.LeadingTrivia, SyntaxKind.IsKeyword, asExpressionInfo.OperatorToken.TrailingTrivia),
-            asExpressionInfo.Type);
+            isKeyword,
+            asExpressionInfo.Type.WithLeadingTrivia(typeLeadingTrivia));
 
         if (nullCheck.IsCheckingNull)
-            newNode = LogicalNotExpression(newNode.WithoutTrivia().Parenthesize()).WithTriviaFrom(newNode);
+        {
+            newNode = LogicalNotExpression(
+                ParenthesizedExpression(
+                    Token(SyntaxTriviaList.Empty, SyntaxKind.OpenParenToken, SyntaxTriviaList.Empty),
+                    newNode,
+                    Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty)));
+        }
 
-        newNode = newNode
-            .Parenthesize()
-            .WithFormatterAnnotation();
+        newNode = newNode.WithFormatterAnnotation();
 
         return document.ReplaceNodeAsync(node, newNode, cancellationToken);
     }
