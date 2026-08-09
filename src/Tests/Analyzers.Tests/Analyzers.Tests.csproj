@@ -10,6 +10,14 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <!-- Some tests use C# features or rely on formatter behavior available only in newer Roslyn versions.
+       These symbols let such tests be excluded when the suite is pinned to an older RoslynatorTestRoslynVersion. -->
+  <PropertyGroup>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.8'))">$(DefineConstants);ROSLYN_TEST_4_8_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.12'))">$(DefineConstants);ROSLYN_TEST_4_12_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.14'))">$(DefineConstants);ROSLYN_TEST_4_14_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.6.2" />
@@ -18,6 +26,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <!-- Pins the Roslyn version this test project runs against. Override with /p:RoslynatorTestRoslynVersion=<version>. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorTestRoslynVersion)" />
   </ItemGroup>
 
   <ItemGroup>

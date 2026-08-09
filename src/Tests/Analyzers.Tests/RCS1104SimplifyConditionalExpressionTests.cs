@@ -24,11 +24,14 @@ public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpDiagnosti
             ? true
             : false", "f")]
 
+#if ROSLYN_TEST_4_14_OR_GREATER
+    // Expected trivia formatting matches the newer Roslyn formatter.
     [InlineData(@"[|f //a
               /*b*/ ? /*c*/ true //d
                                  /*e*/ : /*f*/ false|] /*g*/", @"f //a
                                  /*b*/  /*c*/  //d
                                  /*e*/  /*f*/  /*g*/")]
+#endif
     public async Task Test_TrueFalse(string source, string expected)
     {
         await VerifyDiagnosticAndFixAsync(@"

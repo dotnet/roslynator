@@ -75,8 +75,33 @@ jobs:
             ../wordb/data/tech.names.txt \
             ../wordb/data/tech.acronyms.txt
 
+  # Runs the test suite against a Roslyn version other than the default resolved one,
+  # so the analyzers are exercised at the Roslyn version they are compiled against
+  # (the shipped roslyn4.7 bucket), not only at the newest Roslyn.
+  test_roslyn_versions:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
+    needs: pre_build
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        roslyn: [ "4.7.0" ]
+    defaults:
+      run:
+        working-directory: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - run: dotnet restore Roslynator.sln --force /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
+      - run: dotnet build Roslynator.sln --no-restore /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
+      - run: dotnet test Roslynator.sln --no-build /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
+
   build_core_and_testing:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:

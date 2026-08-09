@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- [Testing Framework] Lower Roslyn dependency of testing packages to 3.8.0 so that the Roslyn version is determined by the consumer's own `Microsoft.CodeAnalysis.*` reference instead of being forced to a fixed version
+  - `Roslynator.Testing.Common`, `Roslynator.Testing.CSharp`, `Roslynator.Testing.CSharp.Xunit` and `Roslynator.Testing.CSharp.MSTest` now depend on `Microsoft.CodeAnalysis.*` `>= 3.8.0` (previously `>= 4.14.0`).
+  - `Roslynator.Testing.Common` no longer depends on `Roslynator.Core`.
+  - **Action required:** a test project that previously relied on the testing framework to pull in Roslyn 4.14.0 should now add its own reference, e.g. `<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />`. The chosen version also caps the C# language version available in test sources.
+
 ### Fixed
 
 - Fix analyzer [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) to report `async void` methods without `Async` suffix ([PR](https://github.com/dotnet/roslynator/pull/1790))
