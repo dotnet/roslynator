@@ -48,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
 - [CLI] Fix `generate-doc` to omit internal interfaces from type declarations and the Implements section ([PR](https://github.com/dotnet/roslynator/pull/1801))
 
+### Fixed
+
+- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation
+
 ## [4.16.0] - 2026-08-08
 
 ### Added

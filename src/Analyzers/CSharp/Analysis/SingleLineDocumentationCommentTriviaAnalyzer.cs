@@ -185,13 +185,17 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
             return;
         }
 
+        SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
+
         if (!containsSummaryElement
-            && !containsContentElement)
+            && !containsContentElement
+#if ROSLYN_5_0
+            && parent?.IsKind(SyntaxKind.ExtensionBlockDeclaration) != true
+#endif
+            )
         {
             ReportDiagnosticIfEffective(context, DiagnosticRules.AddSummaryElementToDocumentationComment, documentationComment);
         }
-
-        SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
 
         bool invalidReference = DiagnosticRules.InvalidReferenceInDocumentationComment.IsEffective(context);
         bool orderParams = DiagnosticRules.OrderElementsInDocumentationComment.IsEffective(context);

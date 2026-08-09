@@ -689,6 +689,10 @@ internal static class CSharpUtility
             case SyntaxKind.InterfaceDeclaration:
                 return ((TypeDeclarationSyntax)declaration).ParameterList;
 #endif
+#if ROSLYN_5_0
+            case SyntaxKind.ExtensionBlockDeclaration:
+                return ((ExtensionBlockDeclarationSyntax)declaration).ParameterList;
+#endif
             default:
                 return null;
         }
@@ -720,6 +724,10 @@ internal static class CSharpUtility
             case SyntaxKind.RecordStructDeclaration:
 #endif
                 return ((RecordDeclarationSyntax)declaration).TypeParameterList;
+#if ROSLYN_5_0
+            case SyntaxKind.ExtensionBlockDeclaration:
+                return ((ExtensionBlockDeclarationSyntax)declaration).TypeParameterList;
+#endif
             default:
                 return null;
         }

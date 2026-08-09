@@ -207,4 +207,20 @@ public struct Foo(string value)
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
+    public async Task TestNoDiagnostic_ExtensionBlock_ParamAndTypeParam()
+    {
+        await VerifyNoDiagnosticAsync("""
+static class C
+{
+    /// <param name="x">x</param>
+    /// <typeparam name="T">T</typeparam>
+    extension<T>(T x) where T : struct
+    {
+        public int M() => 0;
+    }
+}
+""");
+    }
 }
