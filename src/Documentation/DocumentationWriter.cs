@@ -1491,7 +1491,7 @@ public abstract class DocumentationWriter : IDisposable
 
         void WriteImplements(ISymbol symbol)
         {
-            using (IEnumerator<ISymbol> en = symbol.FindImplementedInterfaceMembers().GetEnumerator())
+            using (IEnumerator<ISymbol> en = SymbolExtensions.FilterConsumerVisibleInterfaceMembers(symbol).GetEnumerator())
             {
                 if (en.MoveNext())
                 {

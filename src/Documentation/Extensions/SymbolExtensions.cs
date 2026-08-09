@@ -388,4 +388,37 @@ internal static class SymbolExtensions
 
         return false;
     }
+
+    internal static bool IsVisibleToConsumers(INamedTypeSymbol containingType, INamedTypeSymbol interfaceType)
+    {
+        return !interfaceType.DeclaredAccessibility.IsMoreRestrictiveThan(containingType.DeclaredAccessibility);
+    }
+
+    internal static IEnumerable<INamedTypeSymbol> FilterConsumerVisibleInterfaces(
+        INamedTypeSymbol containingType,
+        IEnumerable<INamedTypeSymbol> interfaces)
+    {
+        foreach (INamedTypeSymbol interfaceType in interfaces)
+        {
+            if (IsVisibleToConsumers(containingType, interfaceType))
+                yield return interfaceType;
+        }
+    }
+
+    internal static IEnumerable<ISymbol> FilterConsumerVisibleInterfaceMembers(ISymbol symbol)
+    {
+        INamedTypeSymbol containingType = symbol.ContainingType;
+
+        if (containingType is not null)
+        {
+            foreach (ISymbol interfaceMember in symbol.FindImplementedInterfaceMembers())
+            {
+                if (interfaceMember.ContainingType is INamedTypeSymbol interfaceType
+                    && IsVisibleToConsumers(containingType, interfaceType))
+                {
+                    yield return interfaceMember;
+                }
+            }
+        }
+    }
 }

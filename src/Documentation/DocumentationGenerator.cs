@@ -1052,7 +1052,7 @@ public class DocumentationGenerator
                     }
                     case MemberDocumentationParts.Implements:
                     {
-                        writer.WriteImplementedInterfaceMembers(symbol.FindImplementedInterfaceMembers());
+                        writer.WriteImplementedInterfaceMembers(SymbolExtensions.FilterConsumerVisibleInterfaceMembers(symbol));
                         break;
                     }
                     case MemberDocumentationParts.Attributes:

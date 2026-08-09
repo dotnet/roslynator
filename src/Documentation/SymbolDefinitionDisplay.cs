@@ -62,6 +62,10 @@ internal static class SymbolDefinitionDisplay
                 {
                     interfaces = interfaces.RemoveAll(f => f.SpecialType == SpecialType.System_Collections_IEnumerable);
                 }
+
+                interfaces = interfaces
+                    .Where(f => SymbolExtensions.IsVisibleToConsumers(typeSymbol, f))
+                    .ToImmutableArray();
             }
         }
 
