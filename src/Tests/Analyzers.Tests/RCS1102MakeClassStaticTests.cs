@@ -176,4 +176,49 @@ public class Class1<T>
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_NestedClassWithInstanceMembers_UsedAsTypeArgument()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public class Common
+{
+}
+
+public class Create<TEntity, TDtoOut> where TEntity : Common
+{
+    public class Command
+    {
+        public int Value { get; set; }
+    }
+
+    public class Handler
+    {
+        public void Handle(Command command)
+        {
+        }
+    }
+}
+
+public class Foo : Common
+{
+}
+
+public class Bar
+{
+}
+
+public static class Registration
+{
+    public static void Register<T>()
+    {
+    }
+
+    public static void M()
+    {
+        Register<Create<Foo, Bar>>();
+    }
+}
+");
+    }
 }

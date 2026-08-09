@@ -129,6 +129,12 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
                             if (memberSymbol.DeclaredAccessibility.ContainsProtected())
                                 return false;
 
+                            if (namedTypeSymbol.TypeKind == TypeKind.Class
+                                && !CanBeNestedInStaticClass(namedTypeSymbol))
+                            {
+                                return false;
+                            }
+
                             break;
                         }
                         default:
@@ -169,6 +175,49 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         }
 
         return !areAllImplicitlyDeclared;
+    }
+
+    private static bool CanBeNestedInStaticClass(INamedTypeSymbol nestedClass)
+    {
+        foreach (ISymbol memberSymbol in nestedClass.GetMembers())
+        {
+            if (memberSymbol.IsImplicitlyDeclared)
+                continue;
+
+            if (memberSymbol.DeclaredAccessibility.ContainsProtected())
+                return false;
+
+            switch (memberSymbol.Kind)
+            {
+                case SymbolKind.NamedType:
+                {
+                    var namedTypeSymbol = (INamedTypeSymbol)memberSymbol;
+
+                    if (namedTypeSymbol.TypeKind == TypeKind.Class
+                        && !CanBeNestedInStaticClass(namedTypeSymbol))
+                    {
+                        return false;
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    if (!memberSymbol.IsStatic)
+                        return false;
+
+                    if (memberSymbol.Kind == SymbolKind.Method
+                        && ((IMethodSymbol)memberSymbol).MethodKind.Is(MethodKind.UserDefinedOperator, MethodKind.Conversion))
+                    {
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return true;
     }
 
     private class MakeClassStaticWalker : TypeSyntaxWalker
