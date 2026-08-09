@@ -196,6 +196,22 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_RefStruct_Returned()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public readonly ref struct RefStruct;
+
+public static class Methods
+{
+    public static RefStruct DoSomething(RefStruct @struct)
+    {
+        return @struct;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"

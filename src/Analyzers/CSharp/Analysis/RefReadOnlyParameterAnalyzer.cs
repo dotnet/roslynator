@@ -142,6 +142,9 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
                 continue;
             }
 
+            if (type.IsRefLikeType)
+                continue;
+
             if (parameter.RefKind != RefKind.None)
                 continue;
 
