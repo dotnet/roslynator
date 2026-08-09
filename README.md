@@ -30,7 +30,9 @@ Use Roslynator NuGet packages instead (for example, [Roslynator.Analyzers](https
 
 ## Contributions
 
-Contributions are welcome! See the [developer documentation](https://josefpihrt.github.io/docs/roslynator/developers) and [open issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs).
+Contributions are welcome! See the [developer documentation](https://josefpihrt.github.io/docs/roslynator/developers), [contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills), and [open issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs).
+
+**Agent skills** in [.claude/skills/](.claude/skills/) provide step-by-step workflows for Cursor and Claude Code (adding analyzers, refactorings, compiler fixes, and bug fixes). You can also read `SKILL.md` files directly as contributor guides. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 TIP: Bugfixes or small improvements can be implemented right away. Larger tasks, such as adding a new analyzer or refactoring, should be discussed first.
 
