@@ -187,6 +187,9 @@ internal class RefactoringContext
         if (CodeAnalysisConfig.Instance.Refactorings.TryGetValue(refactoring.OptionKey, out enabled))
             return enabled;
 
+        if (CodeAnalysisConfig.Instance.Refactorings.TryGetValue(refactoring.Id, out enabled))
+            return enabled;
+
         return CodeAnalysisConfig.Instance.RefactoringsEnabled ?? true;
     }
 

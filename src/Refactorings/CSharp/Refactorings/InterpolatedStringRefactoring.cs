@@ -61,13 +61,13 @@ internal static class InterpolatedStringRefactoring
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertInterpolatedStringToConcatenation)
-            && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
+            && context.Span.IsContainedInSpanOrBetweenSpans(interpolatedString))
         {
             ConvertInterpolatedStringToConcatenationRefactoring.ComputeRefactoring(context, interpolatedString);
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertInterpolatedStringToStringFormat)
-            && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
+            && context.Span.IsContainedInSpanOrBetweenSpans(interpolatedString))
         {
             ConvertInterpolatedStringToStringFormatRefactoring.ComputeRefactoring(context, interpolatedString);
         }

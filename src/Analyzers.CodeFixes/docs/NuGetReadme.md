@@ -24,6 +24,7 @@ A collection of 200+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 ## Related Products
 
+* [Roslynator.Refactorings](https://www.nuget.org/packages/Roslynator.Refactorings) NuGet package (refactorings are not included in this package)
 * [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
 * [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
