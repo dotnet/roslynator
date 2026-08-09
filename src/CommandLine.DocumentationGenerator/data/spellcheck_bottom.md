@@ -18,7 +18,7 @@ You can suppress it like any other diagnostic.
 ## Output
 
 * Command output contains up to four lists in the following order:
-  * Lines containing unknown words — for example, a method name made up of multiple words where one or more is unknown, such as `GetMaxWidht`.
+  * Words containing unknown words — for example, a method name made up of multiple words where one or more is unknown, such as `GetMaxWidht`.
   * Unknown words — words not found in any wordlist.
   * Auto fixes — automatically applied fixes.
   * User-applied fixes — fixes applied by the user (when `--interactive` is set).
