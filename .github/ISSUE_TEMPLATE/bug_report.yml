@@ -1,0 +1,56 @@
+name: Bug report
+description: Report incorrect analyzer, refactoring, code fix, or IDE behavior
+title: "[Bug] "
+labels:
+  - Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Include the rule or diagnostic ID in the title when applicable, for example `[Bug] RCS1234: short description` or `[Bug] CS0123: short description`.
+
+        See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md) for issue guidelines. For questions, use [Discussions](https://github.com/dotnet/roslynator/discussions).
+  - type: input
+    id: product-version
+    attributes:
+      label: Product and version
+      description: Roslynator package, Visual Studio/VS Code extension, or CLI version
+      placeholder: e.g. Roslynator.Analyzers 4.12.0, VS extension 4.12.2, CLI 0.10.0
+    validations:
+      required: true
+  - type: input
+    id: rule-id
+    attributes:
+      label: Rule or diagnostic ID
+      description: Analyzer, refactoring, or compiler diagnostic ID, if applicable
+      placeholder: e.g. RCS1234, RR1234, CS1234
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to reproduce the issue
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened? Include example code if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: exception
+    attributes:
+      label: Exception messages and stack traces
+      description: Paste any relevant exception output
+      render: shell
