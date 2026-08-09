@@ -1,15 +1,15 @@
 name: Bug report
 description: Report incorrect analyzer, refactoring, code fix, or IDE behavior
-title: "[Bug]: "
+title: "[Bug] "
 labels:
   - Bug
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting a bug. Please include the rule or diagnostic ID in the title when applicable (for example, `RCS1234`, `RR1234`, or `CS1234`).
+        Thanks for reporting a bug. Include the rule or diagnostic ID in the title when applicable, for example `[Bug] RCS1234: short description` or `[Bug] CS0123: short description`.
 
-        See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md) for issue guidelines.
+        See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md) for issue guidelines. For questions, use [Discussions](https://github.com/dotnet/roslynator/discussions).
   - type: input
     id: product-version
     attributes:
@@ -39,7 +39,6 @@ body:
     attributes:
       label: Actual behavior
       description: What happened? Include example code if possible.
-      render: csharp
     validations:
       required: true
   - type: textarea
@@ -47,7 +46,6 @@ body:
     attributes:
       label: Expected behavior
       description: What did you expect to happen?
-      render: csharp
     validations:
       required: true
   - type: textarea
