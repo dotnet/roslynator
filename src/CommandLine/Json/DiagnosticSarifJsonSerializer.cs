@@ -38,42 +38,48 @@ internal static class DiagnosticSarifJsonSerializer
         };
         foreach (DiagnosticInfo diagnostic in diagnostics)
         {
-            Location location = null;
-            if(diagnostic.LineSpan.IsValid)
+            List<Location> locations = null;
+            if (diagnostic.LineSpan.IsValid)
             {
-                location = new Location()
+                locations = new List<Location>()
                 {
-                    PhysicalLocation = new PhysicalLocation()
+                    new Location()
                     {
-                        ArtifactLocation = new ArtifactLocation()
+                        PhysicalLocation = new PhysicalLocation()
                         {
-                            Uri = $"file:///{diagnostic.LineSpan.Path}"
-                        },
-                        Region = new Region()
-                        {
-                            StartLine = diagnostic.LineSpan.StartLinePosition.Line,
-                            StartColumn = diagnostic.LineSpan.StartLinePosition.Character,
-                            EndLine = diagnostic.LineSpan.EndLinePosition.Line,
-                            EndColumn = diagnostic.LineSpan.EndLinePosition.Character,
+                            ArtifactLocation = new ArtifactLocation()
+                            {
+                                Uri = new Uri(diagnostic.LineSpan.Path).AbsoluteUri
+                            },
+                            Region = new Region()
+                            {
+                                // Roslyn positions are 0-based, SARIF regions are 1-based.
+                                StartLine = diagnostic.LineSpan.StartLinePosition.Line + 1,
+                                StartColumn = diagnostic.LineSpan.StartLinePosition.Character + 1,
+                                EndLine = diagnostic.LineSpan.EndLinePosition.Line + 1,
+                                EndColumn = diagnostic.LineSpan.EndLinePosition.Character + 1,
+                            },
                         },
                     },
                 };
             }
+
             run.Results.Add(new Result()
             {
                 RuleId = diagnostic.Descriptor.Id,
                 Message = new Message() { Text = diagnostic.Descriptor.Title.ToString(formatProvider) },
                 Level = GetLevel(diagnostic.Severity),
-                Locations = new List<Location>() { location },
+                Locations = locations,
             });
         }
+
         run.Artifacts = diagnostics
             .Where(d => d.LineSpan.IsValid)
             .Select(d => d.LineSpan.Path)
             .Distinct()
             .Select(path => new Artifact()
             {
-                Location = new ArtifactLocation() { Uri = $"file:///{path}" }
+                Location = new ArtifactLocation() { Uri = new Uri(path).AbsoluteUri }
             })
             .ToArray();
         Assembly assembly = typeof(DiagnosticSarifJsonSerializer).Assembly;
@@ -85,7 +91,7 @@ internal static class DiagnosticSarifJsonSerializer
             {
                 Name = assemblyName.Name,
                 Version = assemblyName.Version.ToString(),
-                InformationUri = projectUrl
+                InformationUri = projectUrl,
             },
         };
         rootObject.Runs = new Run[] { run };
@@ -97,11 +103,11 @@ internal static class DiagnosticSarifJsonSerializer
     private static string GetLevel(Microsoft.CodeAnalysis.DiagnosticSeverity severity)
     {
         return severity switch
-            {
-                Microsoft.CodeAnalysis.DiagnosticSeverity.Info => "note",
-                Microsoft.CodeAnalysis.DiagnosticSeverity.Warning => "warning",
-                Microsoft.CodeAnalysis.DiagnosticSeverity.Error => "error",
-                _ => "none",
-            };
+        {
+            Microsoft.CodeAnalysis.DiagnosticSeverity.Info => "note",
+            Microsoft.CodeAnalysis.DiagnosticSeverity.Warning => "warning",
+            Microsoft.CodeAnalysis.DiagnosticSeverity.Error => "error",
+            _ => "none",
+        };
     }
 }
