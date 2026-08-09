@@ -3,21 +3,21 @@
 Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 IMPORTANT: Analyzers will be removed from Roslynator IDE extensions in the next major release.
-It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+Use Roslynator NuGet packages instead (for example, [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
 
 ## Tools
 
 - IDE extensions for:
   - [Visual Studio](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
   - [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
-    - Prerequisite is to use OmniSharp. Otherwise (i.e. C# Dev Kit), use NuGet packages with analyzers, refactorings and code fixes.
+    - Requires OmniSharp. With C# Dev Kit, use NuGet packages for analyzers, refactorings, and code fixes.
   - [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
-- [NuGet packages](#nuget-packages) that contain collection of analyzers
+- [NuGet packages](#nuget-packages) that contain a collection of analyzers
   - [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)
   - [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers)
   - [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers)
-- [Testing framework](#testing-framework) that allows unit testing of analyzers, refactoring and code fixes
-- [.NET client libraries](#client-libraries) that extend Roslyn API
+- [Testing framework](#testing-framework) that allows unit testing of analyzers, refactorings, and code fixes
+- [.NET client libraries](#client-libraries) that extend the Roslyn API
 - [Command line tool](#command-line-tool)
 
 ## Documentation
@@ -30,11 +30,11 @@ It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](h
 
 ## Contributions
 
-Contributions are welcome! If you are interested please see:
-- documentation for [developers](https://josefpihrt.github.io/docs/roslynator/developers)
-- available [issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
+Contributions are welcome! See the [developer documentation](https://josefpihrt.github.io/docs/roslynator/developers), [contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills), and [open issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs).
 
-TIP: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
+**Agent skills** in [.claude/skills/](.claude/skills/) provide step-by-step workflows for Cursor and Claude Code (adding analyzers, refactorings, compiler fixes, and bug fixes). You can also read `SKILL.md` files directly as contributor guides. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+TIP: Bugfixes or small improvements can be implemented right away. Larger tasks, such as adding a new analyzer or refactoring, should be discussed first.
 
 ## Donations
 
@@ -54,23 +54,25 @@ For more information see the [.NET Foundation Code of Conduct](https://dotnetfou
 
 ## Command Line Tool
 
-Run following command to install Roslynator command line tool:
+To install the CLI:
 ```sh
 dotnet tool install -g roslynator.dotnet.cli
 ```
 
-See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for further information.
+See the [CLI documentation](https://josefpihrt.github.io/docs/roslynator/cli) for more information.
+
+The CLI is also integrated in [MegaLinter](https://megalinter.io/), an open-source linter aggregator for CI (see its [Roslynator page](https://megalinter.io/latest/descriptors/csharp_roslynator/)).
 
 ## Testing Framework
 
-- Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
-- See [documentation](https://josefpihrt.github.io/docs/roslynator/testing) for further information.
+- Use the testing framework to unit-test analyzers, refactorings, and code fixes.
+- See the [testing documentation](https://josefpihrt.github.io/docs/roslynator/testing) for more information.
 
 ## Client Libraries
 
-- Roslynator client libraries are meant be used for development of your own analyzers/refactorings.
-- It does not contain any analyzers/refactorings itself.
-- See [reference](https://josefpihrt.github.io/docs/roslynator/ref).
+- The client libraries extend Roslyn and are intended for building custom analyzers and refactorings.
+- These packages do not include analyzers or refactorings.
+- See the [API reference](https://josefpihrt.github.io/docs/roslynator/ref).
 
 | Package | Version | Extends |
 | --- | --- | --- |

@@ -1,1 +1,0 @@
-https://josefpihrt.github.io/docs/roslynator/configuration

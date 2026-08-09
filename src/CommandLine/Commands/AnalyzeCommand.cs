@@ -81,7 +81,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 
-        return new AnalyzeCommandResult(GetCommandStatus(Options, results), results);
+        return new AnalyzeCommandResult(GetCommandStatus(Options, results), results, FileSystemFilter?.RootDirectoryPath);
     }
 
     private static CommandStatus GetCommandStatus(AnalyzeCommandLineOptions options, ImmutableArray<ProjectAnalysisResult> results)
@@ -102,7 +102,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             switch ((string.IsNullOrWhiteSpace(Options.OutputFormat)) ? "" : Options.OutputFormat.ToLowerInvariant())
             {
                 case "gitlab":
-                    DiagnosticGitLabJsonSerializer.Serialize(analysisResults, Options.Output, culture);
+                    DiagnosticGitLabJsonSerializer.Serialize(results, Options.Output, culture);
                     break;
                 case "sarif":
                     DiagnosticSarifJsonSerializer.Serialize(analysisResults, Options.Output, culture);

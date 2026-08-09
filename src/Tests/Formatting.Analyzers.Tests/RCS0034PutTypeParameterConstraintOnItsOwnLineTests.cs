@@ -169,6 +169,19 @@ class C<T> where T : struct
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_PrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+internal sealed class Example<TEntry, TValue>(TEntry entry)
+    where TEntry : class
+    where TValue : class
+{
+    public required TEntry Entry { get; set; } = entry;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
     public async Task TestNoDiagnostic_BaseType()
     {
         await VerifyNoDiagnosticAsync(@"

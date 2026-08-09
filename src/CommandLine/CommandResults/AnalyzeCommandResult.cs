@@ -7,11 +7,14 @@ namespace Roslynator.CommandLine;
 
 internal class AnalyzeCommandResult : CommandResult
 {
-    public AnalyzeCommandResult(CommandStatus status, ImmutableArray<ProjectAnalysisResult> analysisResults)
+    public AnalyzeCommandResult(CommandStatus status, ImmutableArray<ProjectAnalysisResult> analysisResults, string rootDirectoryPath = null)
         : base(status)
     {
         AnalysisResults = analysisResults;
+        RootDirectoryPath = rootDirectoryPath;
     }
 
     public ImmutableArray<ProjectAnalysisResult> AnalysisResults { get; }
+
+    public string RootDirectoryPath { get; }
 }

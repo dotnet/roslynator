@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) to report `async void` methods without `Async` suffix ([PR](https://github.com/dotnet/roslynator/pull/1790))
+- Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
+- Fix analyzer [RCS0034](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0034) for types with a primary constructor and multiple constraint clauses ([PR](https://github.com/dotnet/roslynator/pull/1791))
+- [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
+
+## [4.16.0] - 2026-08-08
+
 ### Added
 
 - [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
@@ -14,11 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix analyzer [RCS1118](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1118) to not report local variable passed as 'in' argument ([PR](https://github.com/dotnet/roslynator/pull/1782) by @NoahStolk)
 - Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
 - Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
 - Fix analyzer [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) ([PR](https://github.com/dotnet/roslynator/pull/1747))
 - Fix analyzer [RCS1194](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1194) ([PR](https://github.com/dotnet/roslynator/pull/1733))
+- Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to ignore classes marked with `file` modifier ([PR](https://github.com/dotnet/roslynator/pull/1777) by @cbersch)
+- Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) ([PR](https://github.com/dotnet/roslynator/pull/1774) by @cbersch)
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) for conditional access expressions ([PR](https://github.com/dotnet/roslynator/pull/1772 by @krajek))
 - [CLI] Fix `fix` command ignoring `--include` / `--exclude` file filter ([PR](https://github.com/dotnet/roslynator/pull/1758) by @hashiiiii)
+- [CLI] Fix loading of projects and solutions on .NET 10 SDK ([PR](https://github.com/dotnet/roslynator/pull/1783))
 
 ## [4.15.0] - 2025-12-14
 

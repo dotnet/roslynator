@@ -59,10 +59,67 @@
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-h4j7-5rxr-p4wc" />
   </ItemGroup>
 
+  <!--
+    MSBuild is loaded from the .NET SDK at run time by MSBuildLocator. Its assemblies are a matched
+    set that is versioned and internally coupled, so a copy deployed with the tool must never be
+    mixed with the engine from the user's SDK. The runtime always prefers an assembly found next to
+    the app over anything MSBuildLocator can resolve, so any copy we deploy silently wins and the
+    SDK's is never loaded, which fails as TypeLoadException or MissingMethodException as soon as the
+    two builds diverge. Reference the packages for compilation only (ExcludeAssets="runtime") so that
+    none of them are deployed and MSBuildLocator resolves the whole set from the SDK.
+    Version matching is not an alternative: the user's SDK patch level is unknown and moves
+    independently of Roslynator's releases. See https://github.com/dotnet/roslynator/issues/1729.
+  -->
+  <PropertyGroup>
+    <!--
+      These versions select compile-time reference assemblies only, so their contents are
+      irrelevant; what matters is that they match what the restore graph already resolves. Pinning
+      a single version across all target frameworks instead would downgrade deployed dependencies
+      of these packages, such as System.Reflection.MetadataLoadContext.
+    -->
+    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net8.0'">17.7.2</RoslynatorMSBuildVersion>
+    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net9.0'">17.14.28</RoslynatorMSBuildVersion>
+    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net10.0'">18.0.2</RoslynatorMSBuildVersion>
+    <!--
+      Microsoft.Build.Tasks.Core and Microsoft.Build.Utilities.Core come from
+      Microsoft.CodeAnalysis.Workspaces.MSBuild, which resolves them at 17.7.2 for every target
+      framework. Raising them to match the versions above would pull in
+      System.Security.Cryptography.Xml 9.0.0, which has open advisories.
+    -->
+    <RoslynatorMSBuildTasksVersion>17.7.2</RoslynatorMSBuildTasksVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(RoslynatorMSBuildVersion)' != ''">
+    <PackageReference Include="Microsoft.Build" Version="$(RoslynatorMSBuildVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="$(RoslynatorMSBuildVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.NET.StringTools" Version="$(RoslynatorMSBuildVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(RoslynatorMSBuildTasksVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(RoslynatorMSBuildTasksVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!--
+    Guards the rule above. A new or updated dependency can start pulling one of these assemblies in
+    again at any time, and the result is a crash on the user's machine rather than a build failure
+    here, so fail the build instead. Microsoft.Build.Locator is deliberately deployed and excluded.
+  -->
+  <PropertyGroup>
+    <RoslynatorSdkOwnedAssemblies>;Microsoft.Build;Microsoft.Build.Framework;Microsoft.Build.Tasks.Core;Microsoft.Build.Utilities.Core;Microsoft.NET.StringTools;</RoslynatorSdkOwnedAssemblies>
+  </PropertyGroup>
+
+  <Target Name="RoslynatorVerifyNoSdkOwnedAssembliesDeployed"
+          AfterTargets="ResolveAssemblyReferences"
+          Condition="'$(RoslynatorMSBuildVersion)' != ''">
+    <ItemGroup>
+      <RoslynatorDeployedSdkOwnedAssembly
+        Include="@(ReferenceCopyLocalPaths)"
+        Condition="'%(Extension)' == '.dll' AND $(RoslynatorSdkOwnedAssemblies.Contains(';%(Filename);'))" />
+    </ItemGroup>
+    <Error Condition="'@(RoslynatorDeployedSdkOwnedAssembly)' != ''"
+           Text="These assemblies must be loaded from the .NET SDK at run time, but they are about to be deployed with the tool: @(RoslynatorDeployedSdkOwnedAssembly->'%(Filename)%(Extension)', ', '). Add a PackageReference with ExcludeAssets=&quot;runtime&quot; for whichever package now brings them in." />
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Build" Version="17.14.28" ExcludeAssets="runtime" Condition="'$(TargetFramework)' == 'net9.0'" />
-    <PackageReference Include="Microsoft.Build" Version="18.0.2" ExcludeAssets="runtime" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageReference Include="Microsoft.Build.Locator" Version="$(RoslynatorMicrosoftBuildLocatorVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />

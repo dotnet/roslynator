@@ -8,12 +8,12 @@
 
 ## Donation
 
-Although Roslynator Refactorings is free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
+Although Roslynator Refactorings is free of charge, [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) are welcome and support further development.
 
 ## Related Products
 
-* VS Extension [Roslynator 2019](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) contains all features - analyzers, refactorings and code fixes for CS diagnostics.
-* Package [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) contains only analyzers.
+* The [Roslynator 2019](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) VS extension includes analyzers, refactorings, and code fixes for CS diagnostics.
+* The [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) package includes analyzers only.
 
 ## Documentation
 

@@ -33,6 +33,17 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
             Result = true;
     }
 
+    public override void VisitArgument(ArgumentSyntax node)
+    {
+        if (node.RefKindKeyword.IsKind(SyntaxKind.InKeyword)
+            && IsLocalReference(node.Expression))
+        {
+            Result = true;
+        }
+
+        base.VisitArgument(node);
+    }
+
     public override void VisitIdentifierName(IdentifierNameSyntax node)
     {
         if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.AddressOfExpression)

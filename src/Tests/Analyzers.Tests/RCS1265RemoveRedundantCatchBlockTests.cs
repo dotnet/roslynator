@@ -176,4 +176,34 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    public async Task Test_NoDiagnostic_CatchWhen()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        try
+        {
+            MethodCall();
+        }
+        catch when (Check())
+        {
+            throw;
+        }
+    }
+
+    void MethodCall()
+    {
+    }
+
+    bool Check()
+    {
+        return true;
+    }
+}
+");
+    }
 }
