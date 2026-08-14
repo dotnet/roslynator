@@ -341,7 +341,8 @@ public abstract class CodeVerifier
             project = configFile.Project;
         }
 
-        if (descriptor is not null)
+        if (descriptor is not null
+            && !HasEditorConfigSeverityOverride(options, descriptor))
         {
             CompilationOptions newCompilationOptions = project.CompilationOptions!.EnsureDiagnosticEnabled(descriptor);
 
@@ -390,5 +391,17 @@ public abstract class CodeVerifier
 
             return fileName.Insert(index, number.ToString(CultureInfo.InvariantCulture));
         }
+    }
+
+    // EnsureDiagnosticEnabled writes DefaultSeverity into SpecificDiagnosticOptions.
+    // Skip that when EditorConfig already sets per-id or category severity, so category `none`
+    // is not overridden by the injected default.
+    private static bool HasEditorConfigSeverityOverride(TestOptions options, DiagnosticDescriptor descriptor)
+    {
+        if (options.ConfigOptions.ContainsKey($"dotnet_diagnostic.{descriptor.Id}.severity"))
+            return true;
+
+        return !string.IsNullOrEmpty(descriptor.Category)
+            && options.ConfigOptions.ContainsKey($"dotnet_analyzer_diagnostic.category-{descriptor.Category.ToLowerInvariant()}.severity");
     }
 }

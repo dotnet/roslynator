@@ -457,6 +457,18 @@ public static class DiagnosticsExtensions
         CompilationOptions compilationOptions,
         CancellationToken cancellationToken = default)
     {
+        return IsEffective(descriptor, syntaxTree, compilationOptions, analyzerOptions: null, cancellationToken);
+    }
+
+    // Precedence matches GetEffectiveSeverity, then category, then IsEnabledByDefault:
+    // tree per-id → SpecificDiagnosticOptions → global per-id → category → default.
+    internal static bool IsEffective(
+        this DiagnosticDescriptor descriptor,
+        SyntaxTree syntaxTree,
+        CompilationOptions compilationOptions,
+        AnalyzerOptions? analyzerOptions,
+        CancellationToken cancellationToken = default)
+    {
         SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
 
         if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) == true)
@@ -468,25 +480,8 @@ public static class DiagnosticsExtensions
         if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic) == true)
             return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
 
-        return descriptor.IsEnabledByDefault;
-    }
-
-    internal static bool IsEffective(
-        this DiagnosticDescriptor descriptor,
-        SyntaxTree syntaxTree,
-        CompilationOptions compilationOptions,
-        AnalyzerOptions analyzerOptions,
-        CancellationToken cancellationToken = default)
-    {
-        SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
-
-        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) == true)
-            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
-
-        if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic) == true)
-            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
-
-        if (!string.IsNullOrEmpty(descriptor.Category))
+        if (analyzerOptions is not null
+            && !string.IsNullOrEmpty(descriptor.Category))
         {
             AnalyzerConfigOptions configOptions = analyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
             string categoryKey = $"dotnet_analyzer_diagnostic.category-{descriptor.Category.ToLowerInvariant()}.severity";
@@ -497,9 +492,6 @@ public static class DiagnosticsExtensions
                 return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
             }
         }
-
-        if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
-            return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
 
         return descriptor.IsEnabledByDefault;
     }
