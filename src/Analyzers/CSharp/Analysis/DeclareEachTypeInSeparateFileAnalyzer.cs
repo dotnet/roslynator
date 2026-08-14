@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -44,6 +43,9 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         if (ContainsSingleNamespaceWithSingleNonNamespaceMember(compilationUnitMembers))
             return;
 
+        if (ContainsOnlyPartialDeclarationsOfSameType(compilationUnitMembers))
+            return;
+
         MemberDeclarationSyntax firstTypeDeclaration = null;
         var isFirstReported = false;
 
@@ -51,10 +53,6 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 
         void Analyze(SyntaxList<MemberDeclarationSyntax> members)
         {
-            (string Name, int Arity) firstTypeKey = default;
-            var hasFirstTypeKey = false;
-            HashSet<(string Name, int Arity)> declaredTypes = null;
-
             foreach (MemberDeclarationSyntax member in members)
             {
 #if ROSLYN_4_0
@@ -71,38 +69,6 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 #endif
                     )
                 {
-                    SyntaxToken identifier = CSharpUtility.GetIdentifier(member);
-
-                    if (identifier == default)
-                        continue;
-
-                    int arity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
-                    (string Name, int Arity) typeKey = (identifier.ValueText, arity);
-
-                    if (declaredTypes is not null)
-                    {
-                        if (!declaredTypes.Add(typeKey)
-                            && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                        {
-                            continue;
-                        }
-                    }
-                    else if (!hasFirstTypeKey)
-                    {
-                        firstTypeKey = typeKey;
-                        hasFirstTypeKey = true;
-                    }
-                    else if (typeKey == firstTypeKey
-                        && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        declaredTypes = new HashSet<(string Name, int Arity)>() { firstTypeKey };
-                        declaredTypes.Add(typeKey);
-                    }
-
                     if (firstTypeDeclaration is null)
                     {
                         firstTypeDeclaration = member;
@@ -147,5 +113,47 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         }
 
         return false;
+    }
+
+    private static bool ContainsOnlyPartialDeclarationsOfSameType(SyntaxList<MemberDeclarationSyntax> members)
+    {
+#if ROSLYN_4_0
+        if (members.SingleOrDefault(shouldThrow: false) is BaseNamespaceDeclarationSyntax namespaceDeclaration)
+#else
+        if (members.SingleOrDefault(shouldThrow: false) is NamespaceDeclarationSyntax namespaceDeclaration)
+#endif
+            members = namespaceDeclaration.Members;
+
+        string name = null;
+        int arity = -1;
+
+        foreach (MemberDeclarationSyntax member in members)
+        {
+            if (!SyntaxFacts.IsTypeDeclaration(member.Kind()))
+                return false;
+
+            if (!member.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                return false;
+
+            SyntaxToken identifier = CSharpUtility.GetIdentifier(member);
+
+            if (identifier == default)
+                return false;
+
+            int currentArity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
+
+            if (name is null)
+            {
+                name = identifier.ValueText;
+                arity = currentArity;
+            }
+            else if (name != identifier.ValueText
+                || arity != currentArity)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

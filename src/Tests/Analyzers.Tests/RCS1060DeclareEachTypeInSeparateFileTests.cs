@@ -160,7 +160,7 @@ namespace N
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
-    public async Task Test_PartialClassRepeatedAfterDistinctType_ReportsOncePerType()
+    public async Task Test_PartialClassRepeatedAfterDistinctType_Reports()
     {
         await VerifyDiagnosticAsync("""
 namespace N
@@ -173,7 +173,7 @@ namespace N
     {
     }
 
-    public partial class Foo
+    public partial class [|Foo|]
     {
     }
 }
@@ -195,6 +195,62 @@ namespace N
     }
 
     public partial class [|Foo|]<T, U>
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassWithoutNamespace_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+public partial class Foo
+{
+}
+
+public partial class Foo : IDisposable
+{
+    public void Dispose()
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassInTwoNamespaces_Reports()
+    {
+        await VerifyDiagnosticAsync("""
+namespace N1
+{
+    public partial class [|Foo|]
+    {
+    }
+}
+
+namespace N2
+{
+    public partial class [|Foo|]
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassesWithDifferentName_Reports()
+    {
+        await VerifyDiagnosticAsync("""
+namespace N
+{
+    public partial class [|Foo|]
+    {
+    }
+
+    public partial class [|Bar|]
     {
     }
 }
