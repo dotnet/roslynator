@@ -75,9 +75,9 @@ jobs:
             ../wordb/data/tech.names.txt \
             ../wordb/data/tech.acronyms.txt
 
-  # Runs the test suite against a Roslyn version other than the default resolved one,
-  # so the analyzers are exercised at the Roslyn version they are compiled against
-  # (the shipped roslyn4.7 bucket), not only at the newest Roslyn.
+  # Pins this repo's test projects to an older Microsoft.CodeAnalysis.* version
+  # (RoslynatorTestRoslynVersion). Analyzer projects still compile against the
+  # solution default; this does not switch RoslynatorRoslynVersion / the roslyn4.7 bucket.
   test_roslyn_versions:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build

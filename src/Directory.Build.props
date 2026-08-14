@@ -24,6 +24,7 @@
       <PropertyGroup>
         <RoslynatorRoslynVersion>4.7.0</RoslynatorRoslynVersion>
         <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
+        <!-- ROSLYN_4_4 must be semicolon-separated (was a comma, so the 4.7 bucket never defined it). -->
         <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_4_7_ONLY</DefineConstants>
       </PropertyGroup>
     </Otherwise>
