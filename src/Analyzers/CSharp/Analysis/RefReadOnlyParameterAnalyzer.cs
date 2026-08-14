@@ -151,6 +151,12 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             if (parameter.IsParams)
                 continue;
 
+            if (type.HasMetadataName(in MetadataNames.System_Threading_CancellationToken)
+                && methodSymbol.ReturnType.IsWellKnownTaskType())
+            {
+                continue;
+            }
+
             if (walker is null)
             {
                 if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))

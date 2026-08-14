@@ -362,6 +362,7 @@ internal static class ParseHelpers
         {
             "gitlab" => true,
             "xml" => true,
+            "sarif" => true,
             _ => false
         };
 

@@ -129,11 +129,10 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.ArrowExpressionClause:
             {
                 TypeSyntax type = DetermineReturnType(parent.Parent);
-
                 SyntaxDebug.Assert(type is not null, parent);
 
                 if (type is not null)
-                    AnalyzeType(ref context, expression, type);
+                    AnalyzeType(ref context, expression, type, isAsync: NodeContainsAsyncModifier(parent.Parent));
 
                 break;
             }
@@ -194,11 +193,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
                     if (type is not null)
                     {
+                        bool isAsync = NodeContainsAsyncModifier(node);
+
                         if (parent.IsKind(SyntaxKind.YieldReturnStatement))
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                            if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
+                                || typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T) == true)
                             {
                                 var ienumerableOfT = (INamedTypeSymbol)typeSymbol;
 
@@ -209,7 +211,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         }
                         else
                         {
-                            AnalyzeType(ref context, expression, type);
+                            AnalyzeType(ref context, expression, type, isAsync: isAsync);
                         }
 
                         return;
@@ -493,10 +495,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         TypeSyntax type,
-        bool extractGenericType = false)
+        bool extractGenericType = false,
+        bool isAsync = false)
     {
         if (!type.IsVar)
-            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType);
+            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType, isAsync: isAsync);
     }
 
     private void AnalyzeArrayType(
@@ -517,16 +520,23 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         ExpressionSyntax expression,
-        bool extractGenericType = false)
+        bool extractGenericType = false,
+        bool isAsync = false)
     {
         ITypeSymbol typeSymbol1 = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
         if (extractGenericType)
         {
-            typeSymbol1 = (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
+            typeSymbol1 = ExtractTypeArgument();
+        }
+        else if (isAsync && typeSymbol1 is INamedTypeSymbol { IsGenericType: true } && typeSymbol1.IsWellKnownTaskType())
+        {
+            typeSymbol1 = ExtractTypeArgument();
         }
 
         AnalyzeTypeSymbol(ref context, creationExpression, typeSymbol1);
+
+        ITypeSymbol ExtractTypeArgument() => (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
     }
 
     private void AnalyzeTypeSymbol(
@@ -585,6 +595,25 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         }
 
         return null;
+    }
+
+    protected static bool NodeContainsAsyncModifier(SyntaxNode node)
+    {
+        SyntaxTokenList modifiers;
+
+        switch (node)
+        {
+            case LocalFunctionStatementSyntax localFuncStatement:
+                modifiers = localFuncStatement.Modifiers;
+                break;
+            case BaseMethodDeclarationSyntax baseMethodDeclaration:
+                modifiers = baseMethodDeclaration.Modifiers;
+                break;
+            default:
+                return false;
+        }
+
+        return modifiers.Contains(SyntaxKind.AsyncKeyword);
     }
 
     private bool AnalyzeImplicitObvious(ref SyntaxNodeAnalysisContext context)
