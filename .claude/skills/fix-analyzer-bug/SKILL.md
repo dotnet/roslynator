@@ -56,6 +56,30 @@ cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severi
 
 Changelog examples: [references/changelog-examples.md](references/changelog-examples.md).
 
+## Pull request
+
+When the fix targets a GitHub issue, the PR body **must** include a closing keyword on its own line (same pattern as recent analyzer fix PRs):
+
+```markdown
+Fixes #NNNN
+```
+
+Use `Fixes #NNNN` or `Closes #NNNN`. A markdown link such as `[#1812](https://github.com/dotnet/roslynator/issues/1812)` does **not** create a GitHub issue reference and will not auto-close the issue.
+
+In `ChangeLog.md`, end the entry with `([PR](https://github.com/dotnet/roslynator/pull/NNNN))` (see [references/changelog-examples.md](references/changelog-examples.md)). Do not use an issue link there.
+
+Place `Fixes #NNNN` after the Summary bullets and before the Test plan, for example:
+
+```markdown
+## Summary
+- …
+
+Fixes #1812
+
+## Test plan
+- …
+```
+
 ## Common Mistakes
 
 | Mistake | Fix |
@@ -68,3 +92,5 @@ Changelog examples: [references/changelog-examples.md](references/changelog-exam
 | Full test suite | Filter by rule id is enough |
 | Skip test | CONTRIBUTING.md requires tests for bug fixes |
 | `CHANGELOG.md` | `ChangeLog.md` at repo root |
+| Changelog ends with issue link (`[#NNNN](.../issues/...)`) | End with `([PR](https://github.com/dotnet/roslynator/pull/NNNN))` |
+| Markdown-only issue link in PR body | Use `Fixes #NNNN` so GitHub links and auto-closes the issue |
