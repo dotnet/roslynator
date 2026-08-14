@@ -1051,7 +1051,7 @@ internal class RefactoringContext
             _flags = new BitArray((int)Flag.Count);
         }
 
-        // The bit array has a fixed size, so the instance never outgrows the pool.
+        // The bit array has a fixed size, so the instance never grows beyond the pool limit.
         public bool CanBeCached => true;
 
         public bool IsSet(Flag flag)
