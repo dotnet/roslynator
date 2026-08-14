@@ -47,9 +47,9 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         MemberDeclarationSyntax firstTypeDeclaration = null;
         var isFirstReported = false;
 
-        Analyze(compilationUnitMembers, new HashSet<string>());
+        Analyze(compilationUnitMembers, new HashSet<(string Name, int Arity)>());
 
-        void Analyze(SyntaxList<MemberDeclarationSyntax> members, HashSet<string> declaredTypeNames)
+        void Analyze(SyntaxList<MemberDeclarationSyntax> members, HashSet<(string Name, int Arity)> declaredTypes)
         {
             foreach (MemberDeclarationSyntax member in members)
             {
@@ -59,7 +59,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                 if (member is NamespaceDeclarationSyntax namespaceDeclaration)
 #endif
                 {
-                    Analyze(namespaceDeclaration.Members, new HashSet<string>());
+                    Analyze(namespaceDeclaration.Members, new HashSet<(string Name, int Arity)>());
                 }
                 else if (SyntaxFacts.IsTypeDeclaration(member.Kind())
 #if ROSLYN_4_4
@@ -72,16 +72,14 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                     if (identifier == default)
                         continue;
 
-                    string typeName = identifier.ValueText;
+                    int arity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
+                    var typeKey = (identifier.ValueText, arity);
 
-                    if (declaredTypeNames.Contains(typeName)
+                    if (!declaredTypes.Add(typeKey)
                         && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
                     {
                         continue;
                     }
-
-                    if (!declaredTypeNames.Contains(typeName))
-                        declaredTypeNames.Add(typeName);
 
                     if (firstTypeDeclaration is null)
                     {

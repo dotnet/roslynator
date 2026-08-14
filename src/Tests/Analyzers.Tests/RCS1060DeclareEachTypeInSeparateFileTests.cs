@@ -141,4 +141,42 @@ public partial class Foo : IDisposable
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialGenericClassSameFile_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+namespace N
+{
+    public partial class Foo<T>
+    {
+    }
+
+    public partial class Foo<T>
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassesWithDifferentArity_Reports()
+    {
+        await VerifyDiagnosticAsync("""
+namespace N
+{
+    public partial class [|Foo|]
+    {
+    }
+
+    public partial class [|Foo|]<T>
+    {
+    }
+
+    public partial class [|Foo|]<T, U>
+    {
+    }
+}
+""");
+    }
 }
