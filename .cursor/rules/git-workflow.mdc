@@ -14,7 +14,7 @@ alwaysApply: true
 - Avoid `--force` / `--force-with-lease` on shared branches unless the user explicitly requests it.
 - Do not create commits unless the user asks.
 - Do not skip git hooks (`--no-verify`) unless the user asks.
-- Do not merge your own PR unless the user explicitly asks.
+- Do not merge a PR unless the user explicitly asks.
 - When a PR resolves a GitHub issue, include `Fixes #NNNN` (or `Closes #NNNN`) on its own line in the PR body. A markdown link alone does not create a GitHub issue reference or auto-close the issue.
 
 ## This repository
