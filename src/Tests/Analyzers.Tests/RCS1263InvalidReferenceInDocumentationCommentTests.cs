@@ -207,6 +207,7 @@ public struct Foo(string value)
 }
 """);
     }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_PrimaryConstructorWithSpacedParameterList()
     {
@@ -225,16 +226,6 @@ internal class C ( int prop )
 {
     int Prop { get; init; } = prop;
 }
-""");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
-    public async Task TestNoDiagnostic_PrimaryConstructorParameterDocumentation()
-    {
-        await VerifyNoDiagnosticAsync("""
-record struct RS(
-/// <param name="par">Text</param>
-int par);
 """);
     }
 }

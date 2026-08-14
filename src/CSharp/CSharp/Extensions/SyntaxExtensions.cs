@@ -627,21 +627,6 @@ public static class SyntaxExtensions
         return node is MemberDeclarationSyntax or LocalFunctionStatementSyntax
             || node?.Parent is MemberDeclarationSyntax or LocalFunctionStatementSyntax;
     }
-
-    internal static SyntaxNode? GetDeclaringSyntaxForDocumentationComment(this DocumentationCommentTriviaSyntax documentationComment)
-    {
-        SyntaxNode? node = documentationComment.ParentTrivia.Token.Parent;
-
-        while (node is not null)
-        {
-            if (node is MemberDeclarationSyntax or LocalFunctionStatementSyntax)
-                return node;
-
-            node = node.Parent;
-        }
-
-        return null;
-    }
     #endregion DocumentationCommentTriviaSyntax
 
     #region DoStatementSyntax
