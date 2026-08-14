@@ -486,8 +486,7 @@ public static class DiagnosticsExtensions
         if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic) == true)
             return IsEnabledReportDiagnostic(reportDiagnostic, descriptor);
 
-        if (descriptor.IsEnabledByDefault
-            && !string.IsNullOrEmpty(descriptor.Category))
+        if (!string.IsNullOrEmpty(descriptor.Category))
         {
             AnalyzerConfigOptions configOptions = analyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
             string categoryKey = $"dotnet_analyzer_diagnostic.category-{descriptor.Category.ToLowerInvariant()}.severity";

@@ -184,4 +184,38 @@ class C : IFoo
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    public async Task TestNoDiagnostic_WhenSeverityIsNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    public Task Foo()
+    {
+        return Task.CompletedTask;
+    }
+}
+", options: Options
+            .SetConfigOption("dotnet_diagnostic.RCS1046.severity", "none")
+            .SetConfigOption("dotnet_diagnostic.RCS1047.severity", "none"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    public async Task TestNoDiagnostic_WhenRoslynatorCategorySeverityIsNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    public Task Foo()
+    {
+        return Task.CompletedTask;
+    }
+}
+", options: Options.SetConfigOption("dotnet_analyzer_diagnostic.category-roslynator.severity", "none"));
+    }
 }
