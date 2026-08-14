@@ -204,5 +204,4 @@ internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
             base.VisitTypeParameterConstraintClause(node);
         }
     }
-
 }

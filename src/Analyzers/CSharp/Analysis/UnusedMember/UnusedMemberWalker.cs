@@ -603,5 +603,4 @@ internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
             VisitAttributeList(attributeList);
         }
     }
-
 }

@@ -114,5 +114,4 @@ internal sealed class ContainsLocalOrParameterReferenceWalker : LocalOrParameter
                 break;
         }
     }
-
 }
