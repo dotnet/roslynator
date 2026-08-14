@@ -414,8 +414,9 @@ internal class RefactoringContext
         if (node is null)
             return;
 
-        RefactoringFlags flags = RefactoringFlagsCache.GetInstance();
-        flags.Reset();
+        using PooledObject<RefactoringFlags> pooledFlags = ObjectPool<RefactoringFlags>.Rent();
+
+        RefactoringFlags flags = pooledFlags.Value;
 
         SyntaxNode firstNode = node;
 
@@ -1036,14 +1037,12 @@ internal class RefactoringContext
             }
         }
 
-        RefactoringFlagsCache.Free(flags);
-
         await SelectedLinesRefactoring.ComputeRefactoringsAsync(this, firstNode).ConfigureAwait(false);
 
         CommentTriviaRefactoring.ComputeRefactorings(this, firstNode);
     }
 
-    private class RefactoringFlags
+    private class RefactoringFlags : IResettable
     {
         private readonly BitArray _flags;
 
@@ -1051,6 +1050,9 @@ internal class RefactoringContext
         {
             _flags = new BitArray((int)Flag.Count);
         }
+
+        // The bit array has a fixed size, so the instance never outgrows the pool.
+        public bool CanBeCached => true;
 
         public bool IsSet(Flag flag)
         {
@@ -1065,30 +1067,6 @@ internal class RefactoringContext
         public void Reset()
         {
             _flags.SetAll(false);
-        }
-    }
-
-    private static class RefactoringFlagsCache
-    {
-        [ThreadStatic]
-        private static RefactoringFlags _cachedInstance;
-
-        public static RefactoringFlags GetInstance()
-        {
-            RefactoringFlags instance = _cachedInstance;
-
-            if (instance is not null)
-            {
-                _cachedInstance = null;
-                return instance;
-            }
-
-            return new RefactoringFlags();
-        }
-
-        public static void Free(RefactoringFlags instance)
-        {
-            _cachedInstance = instance;
         }
     }
 

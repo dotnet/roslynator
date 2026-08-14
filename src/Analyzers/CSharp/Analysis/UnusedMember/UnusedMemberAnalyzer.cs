@@ -76,7 +76,9 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
-        UnusedMemberWalker walker = null;
+        using PooledObject<UnusedMemberWalker> pooledWalker = ObjectPool<UnusedMemberWalker>.Rent();
+
+        UnusedMemberWalker walker = pooledWalker.Value;
 
         foreach (MemberDeclarationSyntax member in members)
         {
@@ -91,12 +93,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                 case DelegateDeclarationSyntax declaration:
                 {
                     if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                    {
-                        if (walker is null)
-                            walker = UnusedMemberWalker.GetInstance();
-
                         walker.AddDelegate(declaration.Identifier.ValueText, declaration);
-                    }
 
                     break;
                 }
@@ -105,9 +102,6 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                     if (declaration.ExplicitInterfaceSpecifier is null
                         && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                     {
-                        if (walker is null)
-                            walker = UnusedMemberWalker.GetInstance();
-
                         walker.AddNode(declaration.Identifier.ValueText, declaration);
                     }
 
@@ -116,12 +110,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                 case EventFieldDeclarationSyntax declaration:
                 {
                     if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                    {
-                        if (walker is null)
-                            walker = UnusedMemberWalker.GetInstance();
-
                         walker.AddNodes(declaration.Declaration);
-                    }
 
                     break;
                 }
@@ -130,12 +119,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                     SyntaxTokenList modifiers = declaration.Modifiers;
 
                     if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                    {
-                        if (walker is null)
-                            walker = UnusedMemberWalker.GetInstance();
-
                         walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
-                    }
 
                     break;
                 }
@@ -175,9 +159,6 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                         }
                     }
 
-                    if (walker is null)
-                        walker = UnusedMemberWalker.GetInstance();
-
                     walker.AddNode(methodName, declaration);
 
                     break;
@@ -187,9 +168,6 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                     if (declaration.ExplicitInterfaceSpecifier is null
                         && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                     {
-                        if (walker is null)
-                            walker = UnusedMemberWalker.GetInstance();
-
                         walker.AddNode(declaration.Identifier.ValueText, declaration);
                     }
 
@@ -198,44 +176,37 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        if (walker is null)
+        Collection<NodeSymbolInfo> nodes = walker.Nodes;
+
+        if (nodes.Count == 0)
             return;
 
-        try
+        if (ShouldAnalyzeDebuggerDisplayAttribute()
+            && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
         {
-            Collection<NodeSymbolInfo> nodes = walker.Nodes;
+            if (attributes.IsDefault)
+                attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
 
-            if (ShouldAnalyzeDebuggerDisplayAttribute()
-                && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
-            {
-                if (attributes.IsDefault)
-                    attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
+            string value = attributes
+                .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
+                .ConstructorArguments
+                .SingleOrDefault(shouldThrow: false)
+                .Value?
+                .ToString();
 
-                string value = attributes
-                    .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
-                    .ConstructorArguments
-                    .SingleOrDefault(shouldThrow: false)
-                    .Value?
-                    .ToString();
-
-                if (value is not null)
-                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
-            }
-
-            if (nodes.Count > 0)
-            {
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
-
-                walker.Visit(typeDeclaration);
-
-                foreach (NodeSymbolInfo node in nodes)
-                    ReportDiagnostic(context, node.Node);
-            }
+            if (value is not null)
+                RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
         }
-        finally
+
+        if (nodes.Count > 0)
         {
-            UnusedMemberWalker.Free(walker);
+            walker.SemanticModel = semanticModel;
+            walker.CancellationToken = cancellationToken;
+
+            walker.Visit(typeDeclaration);
+
+            foreach (NodeSymbolInfo node in nodes)
+                ReportDiagnostic(context, node.Node);
         }
 
         bool ShouldAnalyzeDebuggerDisplayAttribute()

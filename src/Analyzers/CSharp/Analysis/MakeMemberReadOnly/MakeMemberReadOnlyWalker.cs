@@ -11,48 +11,33 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly;
 
-internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
+internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
 {
     private int _classOrStructDepth;
     private int _localFunctionDepth;
     private int _anonymousFunctionDepth;
     private bool _isInInstanceConstructor;
     private bool _isInStaticConstructor;
+    private bool _canBeCached = true;
 
-    [ThreadStatic]
-    private static MakeMemberReadOnlyWalker _cachedInstance;
+    public SemanticModel SemanticModel { get; private set; }
 
-    public SemanticModel SemanticModel { get; set; }
-
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; private set; }
 
     public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
 
-    public static MakeMemberReadOnlyWalker GetInstance()
+    public bool CanBeCached => _canBeCached;
+
+    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        MakeMemberReadOnlyWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Symbols.Count == 0);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new MakeMemberReadOnlyWalker();
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
     }
 
-    public static void Free(MakeMemberReadOnlyWalker walker)
+    public void Reset()
     {
-        walker.Reset();
-        _cachedInstance = walker;
-    }
+        _canBeCached = Symbols.Count <= ObjectPool.MaxCachedBufferSize;
 
-    private void Reset()
-    {
         Symbols.Clear();
         SemanticModel = null;
         CancellationToken = default;

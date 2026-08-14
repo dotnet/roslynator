@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -51,26 +49,11 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
         if (symbol?.IsErrorType() != false)
             return;
 
-        ExpressionSyntax expression = null;
-        Walker walker = null;
+        var walker = new Walker(symbol, semanticModel, cancellationToken);
 
-        try
-        {
-            walker = Walker.GetInstance();
+        walker.VisitBlock(catchClause.Block);
 
-            walker.Symbol = symbol;
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
-
-            walker.VisitBlock(catchClause.Block);
-
-            expression = walker.ThrowStatement?.Expression;
-        }
-        finally
-        {
-            if (walker is not null)
-                Walker.Free(walker);
-        }
+        ExpressionSyntax expression = walker.ThrowStatement?.Expression;
 
         if (expression is not null)
         {
@@ -83,16 +66,23 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
 
     private class Walker : CSharpSyntaxWalker
     {
-        [ThreadStatic]
-        private static Walker _cachedInstance;
+        public Walker(
+            ISymbol symbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            Symbol = symbol;
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
-        public ThrowStatementSyntax ThrowStatement { get; set; }
+        public ThrowStatementSyntax ThrowStatement { get; private set; }
 
-        public ISymbol Symbol { get; set; }
+        public ISymbol Symbol { get; }
 
-        public SemanticModel SemanticModel { get; set; }
+        public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken { get; }
 
         public override void VisitCatchClause(CatchClauseSyntax node)
         {
@@ -111,34 +101,6 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
             }
 
             base.VisitThrowStatement(node);
-        }
-
-        public static Walker GetInstance()
-        {
-            Walker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.Symbol is null);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-                Debug.Assert(walker.ThrowStatement is null);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new Walker();
-        }
-
-        public static void Free(Walker walker)
-        {
-            walker.Symbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-            walker.ThrowStatement = null;
-
-            _cachedInstance = walker;
         }
     }
 }

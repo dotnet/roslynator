@@ -9,9 +9,6 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 
 internal sealed class ContainsYieldWalker : StatementWalker
 {
-    [ThreadStatic]
-    private static ContainsYieldWalker? _cachedInstance;
-
     public ContainsYieldWalker(
         bool searchForYieldBreak = true,
         bool searchForYieldReturn = true)
@@ -25,9 +22,9 @@ internal sealed class ContainsYieldWalker : StatementWalker
         get { return YieldStatement is null; }
     }
 
-    public bool SearchForYieldBreak { get; private set; }
+    public bool SearchForYieldBreak { get; }
 
-    public bool SearchForYieldReturn { get; private set; }
+    public bool SearchForYieldReturn { get; }
 
     public YieldStatementSyntax? YieldStatement { get; private set; }
 
@@ -36,17 +33,11 @@ internal sealed class ContainsYieldWalker : StatementWalker
         if (statement is null)
             throw new ArgumentNullException(nameof(statement));
 
-        ContainsYieldWalker walker = GetInstance();
-        walker.SearchForYieldBreak = searchForYieldBreak;
-        walker.SearchForYieldReturn = searchForYieldReturn;
+        var walker = new ContainsYieldWalker(searchForYieldBreak, searchForYieldReturn);
 
         walker.VisitStatement(statement);
 
-        bool success = walker.YieldStatement is not null;
-
-        Free(walker);
-
-        return success;
+        return walker.YieldStatement is not null;
     }
 
     public override void VisitYieldStatement(YieldStatementSyntax node)
@@ -69,29 +60,5 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
     public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
     {
-    }
-
-    public static ContainsYieldWalker GetInstance()
-    {
-        ContainsYieldWalker? walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.YieldStatement is null);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new ContainsYieldWalker();
-    }
-
-    public static void Free(ContainsYieldWalker walker)
-    {
-        walker.SearchForYieldBreak = true;
-        walker.SearchForYieldReturn = true;
-        walker.YieldStatement = null;
-
-        _cachedInstance = walker;
     }
 }

@@ -13,14 +13,18 @@ namespace Roslynator.CSharp.Analysis;
 
 internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 {
-    private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
+    private readonly PooledObject<AwaitExpressionWalker> _pooledWalker;
+
+    private RemoveAsyncAwaitAnalysis(PooledObject<AwaitExpressionWalker> pooledWalker)
     {
-        Walker = walker;
+        _pooledWalker = pooledWalker;
+        Walker = pooledWalker.Value;
         AwaitExpression = null;
     }
 
     private RemoveAsyncAwaitAnalysis(AwaitExpressionSyntax awaitExpression)
     {
+        _pooledWalker = default;
         AwaitExpression = awaitExpression;
         Walker = null;
     }
@@ -181,14 +185,14 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                 if (awaitExpression is null)
                     return default;
 
-                AwaitExpressionWalker walker = VisitStatements();
+                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
 
                 if (awaitExpressions.Count == 1)
                 {
                     if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
-                        return new RemoveAsyncAwaitAnalysis(walker);
+                        return new RemoveAsyncAwaitAnalysis(pooledWalker);
                 }
                 else if (awaitExpressions.Count > 1)
                 {
@@ -201,7 +205,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                             if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
                                 && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                             {
-                                return new RemoveAsyncAwaitAnalysis(walker);
+                                return new RemoveAsyncAwaitAnalysis(pooledWalker);
                             }
 
                             break;
@@ -211,7 +215,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                             if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
                                 && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                             {
-                                return new RemoveAsyncAwaitAnalysis(walker);
+                                return new RemoveAsyncAwaitAnalysis(pooledWalker);
                             }
 
                             break;
@@ -219,49 +223,52 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                     }
                 }
 
+                pooledWalker.Dispose();
                 return default;
             }
             case SyntaxKind.IfStatement:
             {
-                AwaitExpressionWalker walker = VisitStatements();
+                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
 
                 if (awaitExpressions.Count > 0
                     && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
                     && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    return new RemoveAsyncAwaitAnalysis(walker);
+                    return new RemoveAsyncAwaitAnalysis(pooledWalker);
                 }
 
+                pooledWalker.Dispose();
                 return default;
             }
             case SyntaxKind.SwitchStatement:
             {
-                AwaitExpressionWalker walker = VisitStatements();
+                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
 
                 if (awaitExpressions.Count > 0
                     && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
                     && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    return new RemoveAsyncAwaitAnalysis(walker);
+                    return new RemoveAsyncAwaitAnalysis(pooledWalker);
                 }
 
+                pooledWalker.Dispose();
                 return default;
             }
         }
 
         return default;
 
-        AwaitExpressionWalker VisitStatements()
+        PooledObject<AwaitExpressionWalker> VisitStatements()
         {
-            AwaitExpressionWalker walker = AwaitExpressionWalker.GetInstance();
+            PooledObject<AwaitExpressionWalker> pooledWalker = ObjectPool<AwaitExpressionWalker>.Rent();
 
-            walker.VisitStatements(statements, statement);
+            pooledWalker.Value.VisitStatements(statements, statement);
 
-            return walker;
+            return pooledWalker;
         }
     }
 
@@ -451,8 +458,6 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
     public void Dispose()
     {
         if (Walker is not null)
-        {
-            AwaitExpressionWalker.Free(Walker);
-        }
+            _pooledWalker.Dispose();
     }
 }

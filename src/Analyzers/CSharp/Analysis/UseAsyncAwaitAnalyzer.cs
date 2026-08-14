@@ -154,34 +154,28 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool IsFixable(BlockSyntax body, SyntaxNodeAnalysisContext context)
     {
-        UseAsyncAwaitWalker walker = null;
+        using PooledObject<UseAsyncAwaitWalker> pooledWalker = ObjectPool<UseAsyncAwaitWalker>.Rent();
 
-        try
-        {
-            walker = UseAsyncAwaitWalker.GetInstance(context.SemanticModel, context.CancellationToken);
+        UseAsyncAwaitWalker walker = pooledWalker.Value;
 
-            walker.VisitBlock(body);
+        walker.Initialize(context.SemanticModel, context.CancellationToken);
 
-            return walker.ReturnStatement is not null
-                && !CSharpUtility.IsInUnsafeContext(body);
-        }
-        finally
-        {
-            if (walker is not null)
-                UseAsyncAwaitWalker.Free(walker);
-        }
+        walker.VisitBlock(body);
+
+        return walker.ReturnStatement is not null
+            && !CSharpUtility.IsInUnsafeContext(body);
     }
 
-    private class UseAsyncAwaitWalker : StatementWalker
+    private class UseAsyncAwaitWalker : StatementWalker, IResettable
     {
-        [ThreadStatic]
-        private static UseAsyncAwaitWalker _cachedInstance;
-
+        private readonly List<int> _usingDeclarations = [];
         private int _usingOrTryStatementDepth;
         private bool _shouldVisit = true;
-        private readonly List<int> _usingDeclarations = [];
+        private bool _canBeCached = true;
 
         public override bool ShouldVisit => _shouldVisit;
+
+        public bool CanBeCached => _canBeCached;
 
         public ReturnStatementSyntax ReturnStatement { get; private set; }
 
@@ -330,34 +324,22 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         {
         }
 
-        public static UseAsyncAwaitWalker GetInstance(SemanticModel semanticModel, CancellationToken cancellationToken)
+        public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            UseAsyncAwaitWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                _cachedInstance = null;
-            }
-            else
-            {
-                walker = new UseAsyncAwaitWalker();
-            }
-
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
-
-            return walker;
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
         }
 
-        public static void Free(UseAsyncAwaitWalker walker)
+        public void Reset()
         {
-            walker._shouldVisit = true;
-            walker._usingDeclarations.Clear();
-            walker.ReturnStatement = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
+            _canBeCached = _usingDeclarations.Count <= ObjectPool.MaxCachedBufferSize;
+            _shouldVisit = true;
+            _usingOrTryStatementDepth = 0;
 
-            _cachedInstance = walker;
+            _usingDeclarations.Clear();
+            ReturnStatement = null;
+            SemanticModel = null;
+            CancellationToken = default;
         }
     }
 }

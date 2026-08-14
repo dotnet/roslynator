@@ -143,27 +143,19 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
         if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
             return;
 
-        UnusedParameterWalker walker = null;
+        using PooledObject<UnusedParameterWalker> pooledWalker = ObjectPool<UnusedParameterWalker>.Rent();
 
-        try
+        UnusedParameterWalker walker = pooledWalker.Value;
+
+        walker.Initialize(context.SemanticModel, context.CancellationToken);
+
+        FindUnusedNodes(parameterInfo, walker, methodSymbol);
+
+        if (walker.Nodes.Count > 0
+            && !MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(methodDeclaration, methodSymbol, context.SemanticModel, context.CancellationToken))
         {
-            walker = UnusedParameterWalker.GetInstance();
-
-            walker.SetValues(context.SemanticModel, context.CancellationToken);
-
-            FindUnusedNodes(parameterInfo, walker, methodSymbol);
-
-            if (walker.Nodes.Count > 0
-                && !MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(methodDeclaration, methodSymbol, context.SemanticModel, context.CancellationToken))
-            {
-                foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
-                    ReportDiagnostic(context, kvp.Value.Node);
-            }
-        }
-        finally
-        {
-            if (walker is not null)
-                UnusedParameterWalker.Free(walker);
+            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
+                ReportDiagnostic(context, kvp.Value.Node);
         }
     }
 
@@ -337,23 +329,16 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
     {
-        UnusedParameterWalker walker = null;
+        using PooledObject<UnusedParameterWalker> pooledWalker = ObjectPool<UnusedParameterWalker>.Rent();
 
-        try
-        {
-            walker = UnusedParameterWalker.GetInstance();
-            walker.SetValues(context.SemanticModel, context.CancellationToken, isIndexer);
+        UnusedParameterWalker walker = pooledWalker.Value;
 
-            FindUnusedNodes(parameterInfo, walker);
+        walker.Initialize(context.SemanticModel, context.CancellationToken, isIndexer);
 
-            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
-                ReportDiagnostic(context, kvp.Value.Node);
-        }
-        finally
-        {
-            if (walker is not null)
-                UnusedParameterWalker.Free(walker);
-        }
+        FindUnusedNodes(parameterInfo, walker);
+
+        foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
+            ReportDiagnostic(context, kvp.Value.Node);
     }
 
     private static void FindUnusedNodes(in ParameterInfo parameterInfo, UnusedParameterWalker walker, IMethodSymbol methodSymbol = null)

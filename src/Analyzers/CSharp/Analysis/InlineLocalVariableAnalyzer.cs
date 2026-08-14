@@ -154,28 +154,18 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
                 if (localSymbol?.IsErrorType() != false)
                     return;
 
-                ContainsLocalOrParameterReferenceWalker walker = null;
+                var walker = new ContainsLocalOrParameterReferenceWalker(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                try
+                walker.Visit(forEachStatement.Statement);
+
+                if (!walker.Result
+                    && index < statements.Count - 2)
                 {
-                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
-
-                    walker.Visit(forEachStatement.Statement);
-
-                    if (!walker.Result
-                        && index < statements.Count - 2)
-                    {
-                        walker.VisitList(statements, index + 2);
-                    }
-
-                    if (!walker.Result)
-                        ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
+                    walker.VisitList(statements, index + 2);
                 }
-                finally
-                {
-                    if (walker is not null)
-                        ContainsLocalOrParameterReferenceWalker.Free(walker);
-                }
+
+                if (!walker.Result)
+                    ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
 
                 break;
             }
@@ -194,28 +184,18 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
                 if (localSymbol?.IsErrorType() != false)
                     return;
 
-                ContainsLocalOrParameterReferenceWalker walker = null;
+                var walker = new ContainsLocalOrParameterReferenceWalker(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                try
+                walker.VisitList(switchStatement.Sections);
+
+                if (!walker.Result
+                    && index < statements.Count - 2)
                 {
-                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
-
-                    walker.VisitList(switchStatement.Sections);
-
-                    if (!walker.Result
-                        && index < statements.Count - 2)
-                    {
-                        walker.VisitList(statements, index + 2);
-                    }
-
-                    if (!walker.Result)
-                        ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
+                    walker.VisitList(statements, index + 2);
                 }
-                finally
-                {
-                    if (walker is not null)
-                        ContainsLocalOrParameterReferenceWalker.Free(walker);
-                }
+
+                if (!walker.Result)
+                    ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
 
                 break;
             }
@@ -250,28 +230,18 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
         if (localSymbol?.IsErrorType() != false)
             return;
 
-        ContainsLocalOrParameterReferenceWalker walker = null;
+        var walker = new ContainsLocalOrParameterReferenceWalker(localSymbol, context.SemanticModel, context.CancellationToken);
 
-        try
+        walker.Visit(assignment.Left);
+
+        if (!walker.Result
+            && index < statements.Count - 2)
         {
-            walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
-
-            walker.Visit(assignment.Left);
-
-            if (!walker.Result
-                && index < statements.Count - 2)
-            {
-                walker.VisitList(statements, index + 2);
-            }
-
-            if (!walker.Result)
-                ReportDiagnostic(context, localDeclarationInfo, identifierName);
+            walker.VisitList(statements, index + 2);
         }
-        finally
-        {
-            if (walker is not null)
-                ContainsLocalOrParameterReferenceWalker.Free(walker);
-        }
+
+        if (!walker.Result)
+            ReportDiagnostic(context, localDeclarationInfo, identifierName);
     }
 
     private static void Analyze(
@@ -306,22 +276,12 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
 
         if (index < statements.Count - 2)
         {
-            ContainsLocalOrParameterReferenceWalker walker = null;
+            var walker = new ContainsLocalOrParameterReferenceWalker(localSymbol, context.SemanticModel, context.CancellationToken);
 
-            try
-            {
-                walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+            walker.VisitList(statements, index + 2);
 
-                walker.VisitList(statements, index + 2);
-
-                if (walker.Result)
-                    return;
-            }
-            finally
-            {
-                if (walker is not null)
-                    ContainsLocalOrParameterReferenceWalker.Free(walker);
-            }
+            if (walker.Result)
+                return;
         }
 
         ReportDiagnostic(context, localDeclarationInfo, identifierName);

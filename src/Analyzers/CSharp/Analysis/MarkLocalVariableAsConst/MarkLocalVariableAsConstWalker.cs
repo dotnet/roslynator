@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -12,20 +10,37 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst;
 
-internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
+internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker, IResettable
 {
-    [ThreadStatic]
-    private static MarkLocalVariableAsConstWalker _cachedInstance;
+    private bool _canBeCached = true;
 
     public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; private set; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; private set; }
 
-    public bool Result { get; set; }
+    public bool Result { get; private set; }
 
     protected override bool ShouldVisit => !Result;
+
+    public bool CanBeCached => _canBeCached;
+
+    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
+
+    public void Reset()
+    {
+        _canBeCached = Identifiers.Count <= ObjectPool.MaxCachedBufferSize;
+
+        Identifiers.Clear();
+        SemanticModel = null;
+        CancellationToken = default;
+        Result = false;
+    }
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)
     {
@@ -81,31 +96,5 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
     {
         return Identifiers.TryGetValue(identifierName.Identifier.ValueText, out ILocalSymbol symbol)
             && SymbolEqualityComparer.Default.Equals(symbol, SemanticModel.GetSymbol(identifierName, CancellationToken));
-    }
-
-    public static MarkLocalVariableAsConstWalker GetInstance()
-    {
-        MarkLocalVariableAsConstWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Identifiers.Count == 0);
-            Debug.Assert(!walker.Result);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new MarkLocalVariableAsConstWalker();
-    }
-
-    public static void Free(MarkLocalVariableAsConstWalker walker)
-    {
-        walker.Identifiers.Clear();
-        walker.SemanticModel = null;
-        walker.CancellationToken = default;
-        walker.Result = false;
-
-        _cachedInstance = walker;
     }
 }

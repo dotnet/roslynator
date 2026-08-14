@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -12,12 +11,10 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedMember;
 
-internal class UnusedMemberWalker : TypeSyntaxWalker
+internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
 {
-    [ThreadStatic]
-    private static UnusedMemberWalker _cachedInstance;
-
     private bool _isEmpty;
+    private bool _canBeCached = true;
 
     private IMethodSymbol _containingMethodSymbol;
 
@@ -36,8 +33,11 @@ internal class UnusedMemberWalker : TypeSyntaxWalker
         get { return !_isEmpty; }
     }
 
+    public bool CanBeCached => _canBeCached;
+
     public void Reset()
     {
+        _canBeCached = Nodes.Count <= ObjectPool.MaxCachedBufferSize;
         _isEmpty = false;
         _containingMethodSymbol = null;
 
@@ -604,28 +604,4 @@ internal class UnusedMemberWalker : TypeSyntaxWalker
         }
     }
 
-    public static UnusedMemberWalker GetInstance()
-    {
-        UnusedMemberWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker._containingMethodSymbol is null);
-            Debug.Assert(walker.Nodes.Count == 0);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new UnusedMemberWalker();
-    }
-
-    public static void Free(UnusedMemberWalker walker)
-    {
-        walker.Reset();
-
-        _cachedInstance = walker;
-    }
 }

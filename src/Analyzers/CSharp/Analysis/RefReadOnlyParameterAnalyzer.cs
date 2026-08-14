@@ -113,7 +113,11 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
 
         var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
 
-        RefReadOnlyParameterWalker walker = null;
+        using PooledObject<RefReadOnlyParameterWalker> pooledWalker = ObjectPool<RefReadOnlyParameterWalker>.Rent();
+
+        RefReadOnlyParameterWalker walker = pooledWalker.Value;
+
+        var isFirstCandidate = true;
 
         foreach (IParameterSymbol parameter in methodSymbol.Parameters)
         {
@@ -157,12 +161,12 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
                 continue;
             }
 
-            if (walker is null)
+            if (isFirstCandidate)
             {
                 if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                     break;
 
-                walker = RefReadOnlyParameterWalker.GetInstance();
+                isFirstCandidate = false;
             }
             else if (walker.Parameters.ContainsKey(parameter.Name))
             {
@@ -173,66 +177,55 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             walker.Parameters.Add(parameter.Name, parameter);
         }
 
-        if (walker is null)
-            return;
-
-        try
+        if (walker.Parameters.Count > 0)
         {
+            walker.Initialize(semanticModel, cancellationToken);
+
+            if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
+            {
+                walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
+            }
+            else
+            {
+                walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
+            }
+
             if (walker.Parameters.Count > 0)
             {
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
+                DataFlowAnalysis analysis = (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
+                    ? semanticModel.AnalyzeDataFlow((BlockSyntax)bodyOrExpressionBody)
+                    : semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
 
-                if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
+                bool? isReferencedAsMethodGroup = null;
+
+                foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
                 {
-                    walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
-                }
-                else
-                {
-                    walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
-                }
+                    var isAssigned = false;
 
-                if (walker.Parameters.Count > 0)
-                {
-                    DataFlowAnalysis analysis = (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
-                        ? semanticModel.AnalyzeDataFlow((BlockSyntax)bodyOrExpressionBody)
-                        : semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
-
-                    bool? isReferencedAsMethodGroup = null;
-
-                    foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
+                    foreach (ISymbol assignedSymbol in analysis.AlwaysAssigned)
                     {
-                        var isAssigned = false;
-
-                        foreach (ISymbol assignedSymbol in analysis.AlwaysAssigned)
+                        if (SymbolEqualityComparer.Default.Equals(assignedSymbol, kvp.Value))
                         {
-                            if (SymbolEqualityComparer.Default.Equals(assignedSymbol, kvp.Value))
-                            {
-                                isAssigned = true;
-                                break;
-                            }
-                        }
-
-                        if (isAssigned)
-                            continue;
-
-                        if (isReferencedAsMethodGroup ??= IsReferencedAsMethodGroup())
+                            isAssigned = true;
                             break;
-
-                        if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
-                        {
-                            DiagnosticHelpers.ReportDiagnostic(
-                                context,
-                                DiagnosticRules.MakeParameterRefReadOnly,
-                                parameter.Identifier);
                         }
+                    }
+
+                    if (isAssigned)
+                        continue;
+
+                    if (isReferencedAsMethodGroup ??= IsReferencedAsMethodGroup())
+                        break;
+
+                    if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
+                    {
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticRules.MakeParameterRefReadOnly,
+                            parameter.Identifier);
                     }
                 }
             }
-        }
-        finally
-        {
-            RefReadOnlyParameterWalker.Free(walker);
         }
 
         bool IsReferencedAsMethodGroup()
@@ -249,22 +242,30 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private class RefReadOnlyParameterWalker : BaseCSharpSyntaxWalker
+    private class RefReadOnlyParameterWalker : BaseCSharpSyntaxWalker, IResettable
     {
-        [ThreadStatic]
-        private static RefReadOnlyParameterWalker _cachedInstance;
-
         private int _localFunctionDepth;
         private int _anonymousFunctionDepth;
+        private bool _canBeCached = true;
 
         public Dictionary<string, IParameterSymbol> Parameters { get; } = [];
 
-        public SemanticModel SemanticModel { get; set; }
+        public SemanticModel SemanticModel { get; private set; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken { get; private set; }
+
+        public bool CanBeCached => _canBeCached;
+
+        public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
         public void Reset()
         {
+            _canBeCached = Parameters.Count <= ObjectPool.MaxCachedBufferSize;
+
             Parameters.Clear();
             SemanticModel = null;
             CancellationToken = default;
@@ -332,30 +333,6 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             _localFunctionDepth++;
             base.VisitLocalFunctionStatement(node);
             _localFunctionDepth--;
-        }
-
-        public static RefReadOnlyParameterWalker GetInstance()
-        {
-            RefReadOnlyParameterWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.Parameters.Count == 0);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new RefReadOnlyParameterWalker();
-        }
-
-        public static void Free(RefReadOnlyParameterWalker walker)
-        {
-            walker.Reset();
-
-            _cachedInstance = walker;
         }
     }
 }

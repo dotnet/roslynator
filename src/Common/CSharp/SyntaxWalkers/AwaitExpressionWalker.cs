@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -8,12 +7,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker
+internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker, IResettable
 {
-    [ThreadStatic]
-    private static AwaitExpressionWalker _cachedInstance;
-
     private bool _shouldVisit = true;
+    private bool _canBeCached = true;
 
     public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = [];
 
@@ -21,8 +18,11 @@ internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker
 
     protected override bool ShouldVisit => _shouldVisit;
 
+    public bool CanBeCached => _canBeCached;
+
     public void Reset()
     {
+        _canBeCached = AwaitExpressions.Count <= ObjectPool.MaxCachedBufferSize;
         _shouldVisit = true;
         StopOnFirstAwaitExpression = false;
         AwaitExpressions.Clear();
@@ -30,18 +30,16 @@ internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker
 
     public static bool ContainsAwaitExpression(ExpressionSyntax expression)
     {
-        AwaitExpressionWalker walker = GetInstance();
+        using PooledObject<AwaitExpressionWalker> pooledWalker = ObjectPool<AwaitExpressionWalker>.Rent();
+
+        AwaitExpressionWalker walker = pooledWalker.Value;
 
         walker.StopOnFirstAwaitExpression = true;
         walker.Visit(expression);
 
         Debug.Assert(walker.AwaitExpressions.Count <= 1);
 
-        bool result = walker.AwaitExpressions.Count == 1;
-
-        Free(walker);
-
-        return result;
+        return walker.AwaitExpressions.Count == 1;
     }
 
     public void VisitStatements(SyntaxList<StatementSyntax> statements, StatementSyntax lastStatement)
@@ -106,27 +104,5 @@ internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker
 
     public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
     {
-    }
-
-    public static AwaitExpressionWalker GetInstance()
-    {
-        AwaitExpressionWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.AwaitExpressions.Count == 0);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new AwaitExpressionWalker();
-    }
-
-    public static void Free(AwaitExpressionWalker walker)
-    {
-        walker.Reset();
-
-        _cachedInstance = walker;
     }
 }
