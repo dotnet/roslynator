@@ -334,14 +334,20 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
             {
                 foreach (INamedTypeSymbol interfaceType in allInterfaces)
                 {
-                    if (interfaceType.SpecialType != SpecialType.System_Collections_IEnumerable)
+                    if (interfaceType.IsPubliclyVisible()
+                        && interfaceType.SpecialType != SpecialType.System_Collections_IEnumerable)
+                    {
                         yield return interfaceType;
+                    }
                 }
             }
             else
             {
                 foreach (INamedTypeSymbol interfaceType in allInterfaces)
-                    yield return interfaceType;
+                {
+                    if (interfaceType.IsPubliclyVisible())
+                        yield return interfaceType;
+                }
             }
         }
     }
