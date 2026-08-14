@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to not report a file that contains only multiple partial declarations of the same type ([PR](https://github.com/dotnet/roslynator/pull/1798))
 - Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) to not suggest `in` for `ref struct` parameters ([#1725](https://github.com/dotnet/roslynator/issues/1725)) ([PR](https://github.com/dotnet/roslynator/pull/1807))
 - Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) false positive for `omit_when_single_line` on multi-line object/collection initializers ([#1439](https://github.com/dotnet/roslynator/issues/1439)) ([PR](https://github.com/dotnet/roslynator/pull/1808))
 - Fix analyzer [RCS0036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0036) to report blank lines between single-line declarations in records ([PR](https://github.com/dotnet/roslynator/pull/1813))
