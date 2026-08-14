@@ -99,7 +99,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                     }
                     else
                     {
-                        declaredTypes = new HashSet<(string Name, int Arity)> { firstTypeKey };
+                        declaredTypes = new HashSet<(string Name, int Arity)>() { firstTypeKey };
                         declaredTypes.Add(typeKey);
                     }
 
