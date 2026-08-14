@@ -969,7 +969,8 @@ internal abstract class SymbolDefinitionWriter : IDisposable
             format ?? DefinitionFormat,
             typeDeclarationOptions: GetTypeDeclarationOptions(),
             additionalOptions: GetAdditionalOptions(),
-            shouldDisplayAttribute: (s, a) => Filter.IsMatch(s, a));
+            shouldDisplayAttribute: (s, a) => Filter.IsMatch(s, a),
+            shouldDisplayInterface: f => Filter.IsMatch(f));
 
         WriteDefinition(symbol, parts);
     }
