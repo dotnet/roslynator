@@ -73,7 +73,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                         continue;
 
                     int arity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
-                    var typeKey = (identifier.ValueText, arity);
+                    (string Name, int Arity) typeKey = (identifier.ValueText, arity);
 
                     if (!declaredTypes.Add(typeKey)
                         && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
