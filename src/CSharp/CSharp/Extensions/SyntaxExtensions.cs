@@ -637,11 +637,6 @@ public static class SyntaxExtensions
             if (node is MemberDeclarationSyntax or LocalFunctionStatementSyntax)
                 return node;
 
-#if ROSLYN_5_0
-            if (node.IsKind(SyntaxKind.ExtensionBlockDeclaration))
-                return node;
-#endif
-
             node = node.Parent;
         }
 
