@@ -394,17 +394,6 @@ internal static class SymbolExtensions
         return !interfaceType.DeclaredAccessibility.IsMoreRestrictiveThan(containingType.DeclaredAccessibility);
     }
 
-    internal static IEnumerable<INamedTypeSymbol> FilterConsumerVisibleInterfaces(
-        INamedTypeSymbol containingType,
-        IEnumerable<INamedTypeSymbol> interfaces)
-    {
-        foreach (INamedTypeSymbol interfaceType in interfaces)
-        {
-            if (IsVisibleToConsumers(containingType, interfaceType))
-                yield return interfaceType;
-        }
-    }
-
     internal static IEnumerable<ISymbol> FilterConsumerVisibleInterfaceMembers(ISymbol symbol)
     {
         INamedTypeSymbol containingType = symbol.ContainingType;
