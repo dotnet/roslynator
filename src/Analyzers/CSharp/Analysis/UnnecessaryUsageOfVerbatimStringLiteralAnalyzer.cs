@@ -29,6 +29,7 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 
     public override void Initialize(AnalysisContext context)
     {
+        // Skip base.Initialize so generated-code analysis can be enabled (base sets ReportDiagnostics to None).
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 
@@ -132,7 +133,8 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 #endif
             return true;
 
-        return node.Parent is AttributeArgumentSyntax;
+        return node.Parent is AttributeArgumentSyntax
+            && node.FirstAncestorOrSelf<MemberDeclarationSyntax>()?.Modifiers.Contains(SyntaxKind.PartialKeyword) == true;
     }
 
 #if !ROSLYN_4_0
