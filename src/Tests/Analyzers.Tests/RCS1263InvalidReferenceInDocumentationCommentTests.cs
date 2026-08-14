@@ -223,4 +223,29 @@ static class C
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
+    public async Task Test_ExtensionBlock_InvalidParamName()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+static class C
+{
+    /// <param name="[|missing|]"></param>
+    /// <typeparam name="T">T</typeparam>
+    extension<T>(T x) where T : struct
+    {
+        public int M() => 0;
+    }
+}
+""", """
+static class C
+{
+    /// <typeparam name="T">T</typeparam>
+    extension<T>(T x) where T : struct
+    {
+        public int M() => 0;
+    }
+}
+""");
+    }
 }
