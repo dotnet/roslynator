@@ -29,7 +29,8 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 
     public override void Initialize(AnalysisContext context)
     {
-        // Skip base.Initialize so generated-code analysis can be enabled (base sets ReportDiagnostics to None).
+        // Skip base.Initialize: Flags.None also skips user syntax when the containing symbol is generated
+        // (e.g. [GeneratedRegex] partial). Visit those nodes, then skip generated trees below.
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 
@@ -40,6 +41,9 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
     private static void AnalyzeStringLiteralExpression(SyntaxNodeAnalysisContext context)
     {
         SyntaxNode node = context.Node;
+
+        if (IsGeneratedTree(context))
+            return;
 
         if (node.ContainsDiagnostics)
             return;
@@ -59,9 +63,6 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
 
         Debug.Assert(string.Compare(text, 2, literalExpression.Token.ValueText, 0, text.Length - 3, StringComparison.Ordinal) == 0, text);
 
-        if (!ShouldReport(context, node))
-            return;
-
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral,
@@ -71,6 +72,9 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
     private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
     {
         SyntaxNode node = context.Node;
+
+        if (IsGeneratedTree(context))
+            return;
 
         if (node.ContainsDiagnostics)
             return;
@@ -115,37 +119,19 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
         if (interpolatedString.StringStartToken.ValueText.StartsWith("$"))
             start++;
 
-        if (!ShouldReport(context, node))
-            return;
-
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral,
             Location.Create(node.SyntaxTree, new TextSpan(start, 1)));
     }
 
-    private static bool ShouldReport(SyntaxNodeAnalysisContext context, SyntaxNode node)
-    {
-#if ROSLYN_4_0
-        if (!context.IsGeneratedCode)
-#else
-        if (!IsGeneratedCode(context))
-#endif
-            return true;
-
-        return node.Parent is AttributeArgumentSyntax
-            && node.FirstAncestorOrSelf<MemberDeclarationSyntax>()?.Modifiers.Contains(SyntaxKind.PartialKeyword) == true;
-    }
-
-#if !ROSLYN_4_0
-    private static bool IsGeneratedCode(SyntaxNodeAnalysisContext context)
+    private static bool IsGeneratedTree(SyntaxNodeAnalysisContext context)
     {
         return GeneratedCodeUtility.IsGeneratedCode(
             context.Node.SyntaxTree,
             static trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia) || trivia.IsKind(SyntaxKind.MultiLineCommentTrivia),
             context.CancellationToken);
     }
-#endif
 
     private static bool ContainsQuoteOrBackslashOrCarriageReturnOrLinefeed(
         string text,
