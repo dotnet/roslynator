@@ -83,4 +83,30 @@ class MyClass
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator)]
+    public async Task Test_EqualsNull_PreservesTrailingTrivia()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class MyClass
+{
+    void M(object item)
+    {
+        if ([|item as MyClass == null|] /*x*/)
+        {
+        }
+    }
+}
+", @"
+class MyClass
+{
+    void M(object item)
+    {
+        if (!(item is MyClass) /*x*/)
+        {
+        }
+    }
+}
+");
+    }
 }

@@ -86,7 +86,9 @@ public sealed class UseIsOperatorInsteadOfAsOperatorCodeFixProvider : BaseCodeFi
                     Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty)));
         }
 
-        newNode = newNode.WithFormatterAnnotation();
+        newNode = newNode
+            .WithTriviaFrom(node)
+            .WithFormatterAnnotation();
 
         return document.ReplaceNodeAsync(node, newNode, cancellationToken);
     }
