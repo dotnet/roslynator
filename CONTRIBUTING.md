@@ -4,6 +4,8 @@ Guidelines for contributing to the Roslynator repo.
 
 ## Agent Skills
 
+Global agent rules: [AGENTS.md](AGENTS.md).
+
 **Agent skills** in [.claude/skills/](.claude/skills/) are step-by-step workflows for AI coding agents (Cursor, Claude Code). They also work as readable contributor guides — open any `SKILL.md` in that folder.
 
 | Skill | Use when |
