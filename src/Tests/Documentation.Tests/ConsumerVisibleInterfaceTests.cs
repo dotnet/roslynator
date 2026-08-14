@@ -74,11 +74,11 @@ public class C : IInternal, IPublic
         Assert.Contains(implemented, f => f.ContainingType.Name == "IPublic");
     }
 
-    private static Compilation CreateCompilation(string source)
+    private static CSharpCompilation CreateCompilation(string source)
     {
         SyntaxTree tree = CSharpSyntaxTree.ParseText(source);
 
-        var compilation = CSharpCompilation.Create(
+        CSharpCompilation compilation = CSharpCompilation.Create(
             "TestAssembly",
             new[] { tree },
             new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
