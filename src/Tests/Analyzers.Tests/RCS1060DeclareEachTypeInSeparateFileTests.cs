@@ -160,6 +160,27 @@ namespace N
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
+    public async Task Test_PartialClassRepeatedAfterDistinctType_ReportsOncePerType()
+    {
+        await VerifyDiagnosticAsync("""
+namespace N
+{
+    public partial class [|Foo|]
+    {
+    }
+
+    public class [|Bar|]
+    {
+    }
+
+    public partial class Foo
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEachTypeInSeparateFile)]
     public async Task Test_PartialClassesWithDifferentArity_Reports()
     {
         await VerifyDiagnosticAsync("""

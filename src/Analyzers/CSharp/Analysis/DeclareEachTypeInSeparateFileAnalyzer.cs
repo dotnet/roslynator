@@ -47,10 +47,14 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         MemberDeclarationSyntax firstTypeDeclaration = null;
         var isFirstReported = false;
 
-        Analyze(compilationUnitMembers, new HashSet<(string Name, int Arity)>());
+        Analyze(compilationUnitMembers);
 
-        void Analyze(SyntaxList<MemberDeclarationSyntax> members, HashSet<(string Name, int Arity)> declaredTypes)
+        void Analyze(SyntaxList<MemberDeclarationSyntax> members)
         {
+            (string Name, int Arity) firstTypeKey = default;
+            var hasFirstTypeKey = false;
+            HashSet<(string Name, int Arity)> declaredTypes = null;
+
             foreach (MemberDeclarationSyntax member in members)
             {
 #if ROSLYN_4_0
@@ -59,7 +63,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                 if (member is NamespaceDeclarationSyntax namespaceDeclaration)
 #endif
                 {
-                    Analyze(namespaceDeclaration.Members, new HashSet<(string Name, int Arity)>());
+                    Analyze(namespaceDeclaration.Members);
                 }
                 else if (SyntaxFacts.IsTypeDeclaration(member.Kind())
 #if ROSLYN_4_4
@@ -75,10 +79,28 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                     int arity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
                     (string Name, int Arity) typeKey = (identifier.ValueText, arity);
 
-                    if (!declaredTypes.Add(typeKey)
+                    if (declaredTypes is not null)
+                    {
+                        if (!declaredTypes.Add(typeKey)
+                            && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                        {
+                            continue;
+                        }
+                    }
+                    else if (!hasFirstTypeKey)
+                    {
+                        firstTypeKey = typeKey;
+                        hasFirstTypeKey = true;
+                    }
+                    else if (typeKey == firstTypeKey
                         && member.Modifiers.Contains(SyntaxKind.PartialKeyword))
                     {
                         continue;
+                    }
+                    else
+                    {
+                        declaredTypes = new HashSet<(string Name, int Arity)> { firstTypeKey };
+                        declaredTypes.Add(typeKey);
                     }
 
                     if (firstTypeDeclaration is null)
