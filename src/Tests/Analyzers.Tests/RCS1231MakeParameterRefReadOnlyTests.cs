@@ -234,4 +234,30 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task Test_ReadOnlyStruct_SyncTaskReturningMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+
+readonly struct C
+{
+    public Task<int> M(C [|c|])
+    {
+        return Task.FromResult(c.GetHashCode());
+    }
+}
+", @"
+using System.Threading.Tasks;
+
+readonly struct C
+{
+    public Task<int> M(in C c)
+    {
+        return Task.FromResult(c.GetHashCode());
+    }
+}
+");
+    }
 }

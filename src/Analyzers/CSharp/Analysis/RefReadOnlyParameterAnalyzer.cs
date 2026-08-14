@@ -59,11 +59,6 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         if (methodDeclaration.Modifiers.ContainsAny(SyntaxKind.AsyncKeyword, SyntaxKind.OverrideKeyword))
             return;
 
-        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-        if (methodSymbol?.ReturnType.IsWellKnownTaskType() == true)
-            return;
-
         Analyze(context, methodDeclaration, methodDeclaration.ParameterList, methodDeclaration.BodyOrExpressionBody());
     }
 
@@ -93,11 +88,6 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
         if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-            return;
-
-        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
-
-        if (methodSymbol?.ReturnType.IsWellKnownTaskType() == true)
             return;
 
         Analyze(context, localFunction, localFunction.ParameterList, localFunction.BodyOrExpressionBody());
@@ -149,6 +139,12 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference, parameterSyntax.Identifier);
                 }
 
+                continue;
+            }
+
+            if (type.HasMetadataName(in MetadataNames.System_Threading_CancellationToken)
+                && methodSymbol.ReturnType.IsWellKnownTaskType())
+            {
                 continue;
             }
 
