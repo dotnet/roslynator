@@ -64,7 +64,7 @@ internal static class SymbolDefinitionDisplay
                 }
 
                 interfaces = interfaces
-                    .Where(f => SymbolExtensions.IsVisibleToConsumers(typeSymbol, f))
+                    .Where(f => f.IsPubliclyVisible())
                     .ToImmutableArray();
             }
         }

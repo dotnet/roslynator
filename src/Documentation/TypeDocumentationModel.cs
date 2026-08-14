@@ -334,7 +334,7 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
             {
                 foreach (INamedTypeSymbol interfaceType in allInterfaces)
                 {
-                    if (!SymbolExtensions.IsVisibleToConsumers(Symbol, interfaceType))
+                    if (!interfaceType.IsPubliclyVisible())
                         continue;
 
                     if (interfaceType.SpecialType != SpecialType.System_Collections_IEnumerable)
@@ -345,7 +345,7 @@ public sealed class TypeDocumentationModel : IEquatable<TypeDocumentationModel>
             {
                 foreach (INamedTypeSymbol interfaceType in allInterfaces)
                 {
-                    if (SymbolExtensions.IsVisibleToConsumers(Symbol, interfaceType))
+                    if (interfaceType.IsPubliclyVisible())
                         yield return interfaceType;
                 }
             }

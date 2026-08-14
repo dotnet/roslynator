@@ -55,9 +55,6 @@ Roslynator.Documentation.DocumentationGenerator</Description>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Roslynator, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Documentation.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
-    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>
