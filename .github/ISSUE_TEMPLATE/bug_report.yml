@@ -10,6 +10,8 @@ body:
         Thanks for reporting a bug. Include the rule or diagnostic ID in the title when applicable, for example `[Bug] RCS1234: short description` or `[Bug] CS0123: short description`.
 
         See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md) for issue guidelines. For questions, use [Discussions](https://github.com/dotnet/roslynator/discussions).
+
+        **Want to contribute a fix?** You do not need deep Roslyn expertise for most bugs. See [fix-analyzer-bug](https://github.com/dotnet/roslynator/tree/main/.claude/skills/fix-analyzer-bug) and [Contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills).
   - type: input
     id: product-version
     attributes:
