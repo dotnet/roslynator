@@ -532,7 +532,8 @@ public abstract class DocumentationWriter : IDisposable
                 | SymbolDisplayTypeDeclarationOptions.IncludeModifiers
                 | SymbolDisplayTypeDeclarationOptions.BaseList,
             additionalOptions: additionalOptions,
-            shouldDisplayAttribute: (s, a) => DocumentationModel.Filter.IsMatch(s, a));
+            shouldDisplayAttribute: (s, a) => DocumentationModel.Filter.IsMatch(s, a),
+            shouldDisplayInterface: f => f.IsPubliclyVisible());
 
         StringBuilder sb = StringBuilderCache.GetInstance(attributesParts.Length + definitionParts.Length);
 
