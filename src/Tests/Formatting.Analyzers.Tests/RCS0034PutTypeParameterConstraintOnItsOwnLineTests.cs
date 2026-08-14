@@ -182,6 +182,20 @@ internal sealed class Example<TEntry, TValue>(TEntry entry)
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_PrimaryConstructor_MixedConstraints()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public class MixedConstraintService<TKey, TValue>(TKey key, TValue value)
+    where TKey : notnull
+    where TValue : new()
+{
+    public TKey Key { get; } = key;
+    public TValue Value { get; } = value;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
     public async Task TestNoDiagnostic_BaseType()
     {
         await VerifyNoDiagnosticAsync(@"

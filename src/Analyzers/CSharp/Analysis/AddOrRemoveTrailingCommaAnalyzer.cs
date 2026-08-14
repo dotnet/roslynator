@@ -61,6 +61,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
 
         int count = expressions.Count;
         int separatorCount = expressions.SeparatorCount;
+        TextSpan bracesSpan = TextSpan.FromBounds(initializer.OpenBraceToken.SpanStart, initializer.CloseBraceToken.Span.End);
 
         if (count == separatorCount)
         {
@@ -69,7 +70,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportRemove(context, expressions.GetSeparator(count - 1));
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                && initializer.IsSingleLine(cancellationToken: context.CancellationToken))
+                && bracesSpan.IsSingleLine(initializer.SyntaxTree, cancellationToken: context.CancellationToken))
             {
                 ReportRemove(context, expressions.GetSeparator(count - 1));
             }
@@ -81,7 +82,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
                 ReportAdd(context, expressions.Last());
             }
             else if (style == TrailingCommaStyle.OmitWhenSingleLine
-                && !initializer.IsSingleLine(cancellationToken: context.CancellationToken))
+                && !bracesSpan.IsSingleLine(initializer.SyntaxTree, cancellationToken: context.CancellationToken))
             {
                 ReportAdd(context, expressions.Last());
             }

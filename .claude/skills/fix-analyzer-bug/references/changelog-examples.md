@@ -32,4 +32,5 @@ Prefix with `[CLI]`.
 - Link id to docs URL
 - Plain-language behavior change
 - Backticks for code identifiers
-- PR link when known
+- End with `([PR](https://github.com/dotnet/roslynator/pull/NNNN))` — not an issue link (`[#NNNN](.../issues/...)`)
+- After the PR exists, update the changelog entry if it was drafted without the PR URL

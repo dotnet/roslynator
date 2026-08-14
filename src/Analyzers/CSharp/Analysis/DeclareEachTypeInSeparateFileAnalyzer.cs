@@ -43,6 +43,9 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         if (ContainsSingleNamespaceWithSingleNonNamespaceMember(compilationUnitMembers))
             return;
 
+        if (ContainsOnlyPartialDeclarationsOfSameType(compilationUnitMembers))
+            return;
+
         MemberDeclarationSyntax firstTypeDeclaration = null;
         var isFirstReported = false;
 
@@ -110,5 +113,47 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         }
 
         return false;
+    }
+
+    private static bool ContainsOnlyPartialDeclarationsOfSameType(SyntaxList<MemberDeclarationSyntax> members)
+    {
+#if ROSLYN_4_0
+        if (members.SingleOrDefault(shouldThrow: false) is BaseNamespaceDeclarationSyntax namespaceDeclaration)
+#else
+        if (members.SingleOrDefault(shouldThrow: false) is NamespaceDeclarationSyntax namespaceDeclaration)
+#endif
+            members = namespaceDeclaration.Members;
+
+        string name = null;
+        int arity = -1;
+
+        foreach (MemberDeclarationSyntax member in members)
+        {
+            if (!SyntaxFacts.IsTypeDeclaration(member.Kind()))
+                return false;
+
+            if (!member.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                return false;
+
+            SyntaxToken identifier = CSharpUtility.GetIdentifier(member);
+
+            if (identifier == default)
+                return false;
+
+            int currentArity = CSharpUtility.GetTypeParameterList(member)?.Parameters.Count ?? 0;
+
+            if (name is null)
+            {
+                name = identifier.ValueText;
+                arity = currentArity;
+            }
+            else if (name != identifier.ValueText
+                || arity != currentArity)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

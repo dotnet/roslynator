@@ -1,0 +1,6 @@
+---
+description: Git and PR guardrails for AI agents
+alwaysApply: true
+---
+
+Follow [AGENTS.md](../../AGENTS.md) at the repository root (source of truth).
