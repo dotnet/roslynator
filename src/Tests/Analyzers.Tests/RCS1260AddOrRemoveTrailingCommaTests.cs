@@ -569,4 +569,45 @@ class C
      }
      """, options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task TestNoDiagnostic_ObjectInitializer_OmitWhenSingleLine_SingleProperty()
+    {
+        await VerifyNoDiagnosticAsync("""
+class Object
+{
+    public string Property1 { get; set; }
+}
+
+class C
+{
+    void M()
+    {
+        var value = new Object
+        {
+            Property1 = "Value",
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task TestNoDiagnostic_CollectionInitializer_OmitWhenSingleLine_SingleElement()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var dict = new Dictionary<int, int>
+        {
+            { 1, 2 },
+        };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
 }
