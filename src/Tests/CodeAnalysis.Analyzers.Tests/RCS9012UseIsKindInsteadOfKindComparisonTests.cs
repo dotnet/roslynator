@@ -7,8 +7,7 @@ using Xunit;
 
 namespace Roslynator.CodeAnalysis.CSharp.Tests;
 
-public class RCS9012UseIsKindInsteadOfKindComparisonTests
-    : AbstractCSharpDiagnosticVerifier<UseIsKindInsteadOfKindComparisonAnalyzer, UseIsKindInsteadOfKindComparisonCodeFixProvider>
+public class RCS9012UseIsKindInsteadOfKindComparisonTests : AbstractCSharpDiagnosticVerifier<UseIsKindInsteadOfKindComparisonAnalyzer, UseIsKindInsteadOfKindComparisonCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = CodeAnalysisDiagnosticRules.UseIsKindInsteadOfKindComparison;
 

@@ -67,8 +67,14 @@ public sealed class UseIsKindInsteadOfKindComparisonCodeFixProvider : BaseCodeFi
                     semanticModel,
                     cancellationToken: cancellationToken);
 
+                if (!info.Success)
+                    return document;
+
                 builder.Add(info);
             }
+
+            if (builder.Count == 0)
+                return document;
 
             newExpression = CreateIsKindExpression(builder[0]);
 
@@ -81,6 +87,9 @@ public sealed class UseIsKindInsteadOfKindComparisonCodeFixProvider : BaseCodeFi
                 expression,
                 semanticModel,
                 cancellationToken: cancellationToken);
+
+            if (!info.Success)
+                return document;
 
             newExpression = CreateIsKindExpression(info);
         }
