@@ -51,13 +51,7 @@ internal static class CodeStyleExtensions
         if (configOptions.TryGetValueAsBool(ConfigOptions.PrefixFieldIdentifierWithUnderscore, out bool value))
             return value;
 
-        if (CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore is not null)
-            return CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore.Value;
-
-        if (configOptions.TryGetValueAsBool(LegacyConfigOptions.PrefixFieldIdentifierWithUnderscore, out value))
-            return value;
-
-        return ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+        return CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore ?? ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
     }
 
     public static int GetMaxLineLength(this AnalyzerConfigOptions configOptions)
@@ -68,16 +62,7 @@ internal static class CodeStyleExtensions
             return value;
         }
 
-        if (CodeAnalysisConfig.Instance.MaxLineLength is not null)
-            return CodeAnalysisConfig.Instance.MaxLineLength.Value;
-
-        if (configOptions.TryGetValue(LegacyConfigOptions.MaxLineLength.Key, out rawValue)
-            && int.TryParse(rawValue, out value))
-        {
-            return value;
-        }
-
-        return ConfigOptionDefaultValues.MaxLineLength;
+        return CodeAnalysisConfig.Instance.MaxLineLength ?? ConfigOptionDefaultValues.MaxLineLength;
     }
 
     public static bool? UseVarInsteadOfImplicitObjectCreation(this SyntaxNodeAnalysisContext context)
@@ -548,11 +533,6 @@ internal static class CodeStyleExtensions
     {
         if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.UnityCodeAnalysisEnabled, out bool value))
             return value;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out value))
-            return value;
-#pragma warning restore CS0618 // Type or member is obsolete
 
         return null;
     }

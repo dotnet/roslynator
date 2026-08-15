@@ -49,8 +49,6 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
-                DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
                 DiagnosticIdentifiers.FormatDocumentationCommentSummary,
                 DiagnosticIdentifiers.AddParamElementToDocumentationComment,
                 DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment);
@@ -93,26 +91,6 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
                         context.RegisterCodeFix(codeAction, diagnostic);
                     }
 
-                    break;
-                }
-                case DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Format summary on a single line",
-                        ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-                case DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Format summary on multiple lines",
-                        ct => FormatSummaryOnMultipleLinesAsync(context.Document, documentationComment, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
                 case DiagnosticIdentifiers.AddParamElementToDocumentationComment:

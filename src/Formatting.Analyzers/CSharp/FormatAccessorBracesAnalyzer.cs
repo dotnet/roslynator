@@ -25,8 +25,7 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.FormatAccessorBraces,
-                    DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
+                    DiagnosticRules.FormatAccessorBraces);
             }
 
             return _supportedDiagnostics;
@@ -59,16 +58,6 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
 
         if (openBrace.IsMissing)
             return;
-
-        if (DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine.IsEffective(context)
-            && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
-            && CanBeMadeSingleLine(accessor))
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine,
-                accessor);
-        }
 
         AccessorBracesStyle style = context.GetAccessorBracesStyle();
 

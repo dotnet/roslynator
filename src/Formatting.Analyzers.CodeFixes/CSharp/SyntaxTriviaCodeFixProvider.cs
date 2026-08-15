@@ -23,7 +23,6 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.AddBlankLineBetweenAccessors,
                 DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors,
                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectives,
-                DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
                 DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                 DiagnosticIdentifiers.RemoveNewLineBeforeBaseList);
         }
@@ -40,7 +39,6 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
             case DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors:
             case DiagnosticIdentifiers.BlankLineBetweenUsingDirectives:
             case DiagnosticIdentifiers.AddBlankLineAfterTopComment:
-            case DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:
             {
                 await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                 return;

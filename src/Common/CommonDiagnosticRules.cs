@@ -8,28 +8,6 @@ namespace Roslynator;
 
 internal static class CommonDiagnosticRules
 {
-    public static readonly DiagnosticDescriptor AnalyzerIsObsolete = DiagnosticDescriptorFactory.Create(
-        id: CommonDiagnosticIdentifiers.AnalyzerIsObsolete,
-        title: "Analyzer is obsolete",
-        messageFormat: "Analyzer {0} is obsolete.{1}",
-        category: "",
-        defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true,
-        description: null,
-        helpLinkUri: null,
-        customTags: []);
-
-    public static readonly DiagnosticDescriptor AnalyzerOptionIsObsolete = DiagnosticDescriptorFactory.Create(
-        id: CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete,
-        title: "Analyzer option is obsolete",
-        messageFormat: "Analyzer option '{0}' is obsolete{1}",
-        category: "",
-        defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: false,
-        description: null,
-        helpLinkUri: null,
-        customTags: []);
-
     public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = DiagnosticDescriptorFactory.Create(
         id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
         title: "Analyzer requires config option to be specified",

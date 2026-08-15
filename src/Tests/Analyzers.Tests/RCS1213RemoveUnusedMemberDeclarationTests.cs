@@ -364,28 +364,6 @@ namespace UnityEngine
     {
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.SuppressUnityScriptMethods, true));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
-    public async Task TestNoDiagnostic_UnityScriptMethods2()
-    {
-        await VerifyNoDiagnosticAsync(@"
-using UnityEngine;
-
-class C : MonoBehaviour
-{
-    private void Awake()
-    {
-    }
-}
-
-namespace UnityEngine
-{
-    class MonoBehaviour
-    {
-    }
-}
 ", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
 

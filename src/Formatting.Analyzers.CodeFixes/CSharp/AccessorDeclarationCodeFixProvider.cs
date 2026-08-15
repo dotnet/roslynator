@@ -22,8 +22,7 @@ public sealed class AccessorDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine,
-                DiagnosticIdentifiers.FormatAccessorBraces,
-                DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
+                DiagnosticIdentifiers.FormatAccessorBraces);
         }
     }
 
@@ -40,7 +39,6 @@ public sealed class AccessorDeclarationCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.FormatAccessorBraces:
-            case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine:
             {
                 bool isSingleLine = accessorDeclaration.IsSingleLine(includeExteriorTrivia: false);
                 string title = (isSingleLine)

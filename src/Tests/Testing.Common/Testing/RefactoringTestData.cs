@@ -80,25 +80,4 @@ public sealed class RefactoringTestData
             fileName: other.FileName)
     {
     }
-
-    /// <summary>
-    /// Creates and return new instance of <see cref="RefactoringTestData"/> updated with specified values.
-    /// </summary>
-    [Obsolete("This method is obsolete and will be removed in future version.")]
-    public RefactoringTestData Update(
-        string source,
-        IEnumerable<TextSpan> spans,
-        IEnumerable<AdditionalFile> additionalFiles,
-        string equivalenceKey,
-        string directoryPath,
-        string fileName)
-    {
-        return new(
-            source: source,
-            spans: spans,
-            additionalFiles: additionalFiles,
-            equivalenceKey: equivalenceKey,
-            directoryPath: directoryPath,
-            fileName: fileName);
-    }
 }

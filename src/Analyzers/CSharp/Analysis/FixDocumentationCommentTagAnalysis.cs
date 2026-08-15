@@ -8,7 +8,7 @@ using static Roslynator.DiagnosticHelpers;
 
 namespace Roslynator.CSharp.Analysis;
 
-public static class FixDocumentationCommentTagAnalysis
+internal static class FixDocumentationCommentTagAnalysis
 {
     public static void Analyze(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
     {
