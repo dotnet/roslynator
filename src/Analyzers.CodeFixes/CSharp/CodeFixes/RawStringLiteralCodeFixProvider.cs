@@ -84,7 +84,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
             }
         }
 #else
-        await Task.CompletedTask;
+        await Task.CompletedTask.ConfigureAwait(false);
 #endif
     }
 
