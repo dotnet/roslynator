@@ -21,6 +21,23 @@ Compiler fixes use `Diagnostics.xml` + `CodeFixes.xml` → codegen → `Compiler
 
 Read [references/implementation.md](references/implementation.md) before writing tests.
 
+## Confirm metadata parameters (hard gate)
+
+**STOP. Do NOT edit `Diagnostics.xml` / `CodeFixes.xml`, run codegen, or implement until the user has confirmed every required parameter below.** Do not invent titles or identifiers when the user (or issue) did not state them.
+
+Use `AskQuestion` when available; otherwise ask conversationally. Batch related choices.
+
+| Parameter | Required? | Notes |
+|-----------|-----------|--------|
+| Compiler `CS####` id(s) | yes | One RCF may fix multiple CS ids |
+| New `Diagnostics.xml` entry? | if CS not already cataloged | Confirm `Title` / `Message` / `HelpUrl` (usually from Microsoft docs) |
+| `RCF` `Id` | propose | Compute next free `RCF####` from `CodeFixes.xml`, or extend an existing RCF when appropriate; **do not ask** unless ambiguous |
+| `Identifier` | yes | PascalCase for the code fix |
+| `Title` | yes | Code-fix menu / docs title |
+| Code action title | yes | String passed to `CodeAction.Create` (may match or differ from XML Title) |
+
+When proposing `RCF` `Id`, state the chosen value in your plan/summary (e.g. “using next free **RCF0121**”). Skip asking other parameters only when the approved issue or the user's message already states the value explicitly.
+
 ## Quick Reference
 
 | Step | Location |
@@ -34,7 +51,8 @@ Read [references/implementation.md](references/implementation.md) before writing
 
 ## Implementation
 
-Full XML, provider, and test patterns: [references/implementation.md](references/implementation.md).
+1. Confirm metadata parameters (hard gate above).
+2. Full XML, provider, and test patterns: [references/implementation.md](references/implementation.md).
 
 Changelog:
 
@@ -55,6 +73,7 @@ cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severi
 
 | Mistake | Fix |
 |---------|-----|
+| Guess RCF `Title` / `Identifier` / code-action string | Ask — hard gate above |
 | Follow `compiler-diagnostic-fixes-testing.md` | In-repo: `AbstractCSharpCompilerDiagnosticFixVerifier` |
 | `DiagnosticId = "CS0106"` literal | Use `CompilerDiagnosticIdentifiers.CS####_Identifier` constant |
 | `[|...|]` in compiler fix tests | Compiler diagnostic location is implicit |
