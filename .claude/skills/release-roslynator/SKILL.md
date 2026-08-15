@@ -30,7 +30,7 @@ Before each step below: present what you will do, then use interactive confirmat
 | Step | Gate | Action |
 |------|------|--------|
 | 1 | Confirm before push/PR | Changelog PR (`ChangeLog.md` + VS Code `CHANGELOG.md`) |
-| 2 | Confirm before merge | Merge PR; pull `main` |
+| 2 | Confirm before merge | Squash-merge PR; pull `main` |
 | 3 | Confirm before create | GitHub release → creates `vX.Y.Z`; title same as tag (`vX.Y.Z`) |
 | 4 | Opt-in only | Optional `cli-v*` tag on a real commit; push |
 
@@ -53,7 +53,13 @@ Do **not** run `generate_all.ps1` as part of this PR unless the user asks.
 
 **STOP until user confirms Step 2.**
 
-Merge the bump PR (after CI is acceptable to the user). Pull latest `main`. Note the merge commit SHA.
+Squash-merge the bump PR (after CI is acceptable to the user):
+
+```bash
+gh pr merge <PR_NUMBER> --squash
+```
+
+Pull latest `main`. Note the squash commit SHA on `main`.
 
 **STOP.** Wait for Step 3 confirmation.
 
@@ -66,7 +72,7 @@ Create the analyzer/extension release (this creates/pushes tag `vX.Y.Z` and trig
 - Tag: `vX.Y.Z`
 - Title: `vX.Y.Z` (same as tag, **with** `v` prefix)
 - Notes: body of `## [X.Y.Z]` from root `ChangeLog.md` (sections under that header, not the heading line alone)
-- Target: merge commit on `main` (or `main` after pull)
+- Target: squash commit on `main` (or `main` after pull)
 
 Example:
 
