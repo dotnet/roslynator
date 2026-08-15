@@ -7581,6 +7581,14 @@ class FooCodeFixProvider : CodeFixProvider
 {
 }]]></After>
       </Sample>
+      <Sample>
+        <Before><![CDATA[if (token.Kind() == SyntaxKind.SemicolonToken)
+{
+}]]></Before>
+        <After><![CDATA[if (token.IsKind(SyntaxKind.SemicolonToken))
+{
+}]]></After>
+      </Sample>
     </Samples>
   </Analyzer>
 </Analyzers>

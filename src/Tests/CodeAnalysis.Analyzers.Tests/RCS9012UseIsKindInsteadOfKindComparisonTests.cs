@@ -243,4 +243,68 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseIsKindInsteadOfKindComparison)]
+    public async Task Test_SyntaxToken()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+class C
+{
+    void M()
+    {
+        SyntaxToken token = default;
+
+        if ([|token.Kind() == SyntaxKind.SemicolonToken|]) { }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+class C
+{
+    void M()
+    {
+        SyntaxToken token = default;
+
+        if (token.IsKind(SyntaxKind.SemicolonToken)) { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, CodeAnalysisDiagnosticIdentifiers.UseIsKindInsteadOfKindComparison)]
+    public async Task Test_SyntaxTrivia()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+class C
+{
+    void M()
+    {
+        SyntaxTrivia trivia = default;
+
+        if ([|trivia.Kind() != SyntaxKind.WhitespaceTrivia|]) { }
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+class C
+{
+    void M()
+    {
+        SyntaxTrivia trivia = default;
+
+        if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia)) { }
+    }
+}
+");
+    }
 }

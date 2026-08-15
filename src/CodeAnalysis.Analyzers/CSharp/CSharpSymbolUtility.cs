@@ -35,11 +35,7 @@ internal static class CSharpSymbolUtility
         if (!methodSymbol.ReturnType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
             return false;
 
-        return methodSymbol
-            .Parameters
-            .SingleOrDefault(shouldThrow: false)?
-            .Type
-            .HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode) == true;
+        return IsSyntaxKindExtensionReceiver(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type);
     }
 
     public static bool IsIsKindExtensionMethod(
@@ -73,12 +69,23 @@ internal static class CSharpSymbolUtility
         if (parameters.Length != 2)
             return false;
 
-        if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+        if (!IsSyntaxKindExtensionReceiver(parameters[0].Type))
             return false;
 
         if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
             return false;
 
         return true;
+    }
+
+    private static bool IsSyntaxKindExtensionReceiver(ITypeSymbol type)
+    {
+        if (type is null)
+            return false;
+
+        return type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode)
+            || type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxToken)
+            || type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxTrivia)
+            || type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNodeOrToken);
     }
 }
