@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add analyzer "Call 'IsKind' instead of comparing 'Kind'" ([RCS9012](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS9012)) ([#1819](https://github.com/dotnet/roslynator/issues/1819))
+- Add analyzer "Call 'IsKind' instead of comparing 'Kind'" ([RCS9012](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS9012)) ([PR](https://github.com/dotnet/roslynator/pull/1820))
 
 ### Fixed
 
