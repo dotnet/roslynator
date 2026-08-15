@@ -1,42 +1,110 @@
 ---
 name: release-roslynator
-description: Use when preparing a roslynator release, creating v* or cli-v* version tags, rolling ChangeLog.md [Unreleased], running generate_all.ps1 (not just generate_code), or bumping RoslynatorRef in josefpihrt.github.io CI.
+description: Use when shipping a roslynator release, rolling ChangeLog.md [Unreleased], updating the VS Code extension changelog, creating a GitHub v* release, or optionally tagging cli-v*.
 ---
 
 # Release Roslynator
 
 ## Overview
 
-GitVersion derives versions from tags. Separate streams: `v*` (analyzers/extensions) and `cli-v*` (CLI). After tag, bump docs site CI pins.
+Four hard-gated steps: changelog PR → merge → GitHub release (`v*`) → optional CLI tag (`cli-v*`). Versions come from the user. GitVersion derives package versions from tags — do not hardcode in props.
 
-## When to Use
+**Violating the letter of the gates is violating the spirit of the gates.** Do not batch steps or confirm once for the whole release.
 
-- Shipping a new analyzer/extension version
-- CLI-only release (`cli-v*`)
-- Rolling `## [Unreleased]` into a versioned changelog section
-- Post-release docs alignment (`RoslynatorRef` / `RoslynatorCliRef`)
+## Prerequisites
 
-**Not for:** day-to-day contributor workflows; docs publication details → `update-roslynator-docs` in docs repo.
+- **Analyzer/extension version** (e.g. `4.17.0`) — required. If missing: **STOP. Do NOT proceed.** Ask the user.
+- **CLI version** (e.g. `0.15.0` / `cli-v0.15.0`) — only needed if Step 4 is confirmed.
+- **Today’s date** for changelog headers (`YYYY-MM-DD`).
+
+**Not for:** day-to-day contributor work.
+
+## Hard gates
+
+Before each step below: present what you will do, then use interactive confirmation (`AskQuestion` if available; otherwise ask and wait). Do **not** use markdown checkboxes.
+
+**STOP. Do NOT proceed** to the next step until the user explicitly confirms the current step. Providing a CLI version does **not** skip Step 4 confirmation.
 
 ## Quick Reference
 
-| Step | Action |
-|------|--------|
-| Changelog | Roll `ChangeLog.md` `[Unreleased]` → `[x.y.z] - date` |
-| Generate | `cd tools && pwsh ./generate_all.ps1` |
-| Verify | See [references/release-and-ci.md](references/release-and-ci.md) CI verify block |
-| Tag | `v4.x.y` or `cli-v0.x.y` |
-| Docs pins | `RoslynatorRef` / `RoslynatorCliRef` in docs site workflow |
+| Step | Gate | Action |
+|------|------|--------|
+| 1 | Confirm before push/PR | Changelog PR (`ChangeLog.md` + VS Code `CHANGELOG.md`) |
+| 2 | Confirm before merge | Squash-merge PR; pull `main` |
+| 3 | Confirm before create | GitHub release → creates `vX.Y.Z`; title same as tag (`vX.Y.Z`) |
+| 4 | Opt-in only | Optional `cli-v*` tag on a real commit; push |
 
-Details: [references/release-and-ci.md](references/release-and-ci.md).
+CI / GitVersion details: [references/release-and-ci.md](references/release-and-ci.md).
+
+## Step 1 — Changelog PR
+
+**STOP until user confirms Step 1.**
+
+1. Branch from latest `main` (e.g. `release/X.Y.Z`).
+2. Root [`ChangeLog.md`](../../../ChangeLog.md): under `## [Unreleased]`, insert `## [X.Y.Z] - YYYY-MM-DD` so prior Unreleased bullets become that version’s section (same pattern as bump PR #1785). Leave `[Unreleased]` empty above it.
+3. [`src/VisualStudioCode/package/CHANGELOG.md`](../../../src/VisualStudioCode/package/CHANGELOG.md): copy that new version section (header + body) under `[Unreleased]`.
+4. Commit, push, open PR — title `Bump version to X.Y.Z`.
+
+Do **not** run `generate_all.ps1` as part of this PR unless the user asks.
+
+**STOP.** Wait for Step 2 confirmation.
+
+## Step 2 — Merge
+
+**STOP until user confirms Step 2.**
+
+Squash-merge the bump PR (after CI is acceptable to the user):
+
+```bash
+gh pr merge <PR_NUMBER> --squash
+```
+
+Pull latest `main`. Note the squash commit SHA on `main`.
+
+**STOP.** Wait for Step 3 confirmation.
+
+## Step 3 — GitHub release
+
+**STOP until user confirms Step 3.**
+
+Create the analyzer/extension release (this creates/pushes tag `vX.Y.Z` and triggers publish CI):
+
+- Tag: `vX.Y.Z`
+- Title: `vX.Y.Z` (same as tag, **with** `v` prefix)
+- Notes: body of `## [X.Y.Z]` from root `ChangeLog.md` (sections under that header, not the heading line alone)
+- Target: squash commit on `main` (or `main` after pull)
+
+Example:
+
+```bash
+gh release create "vX.Y.Z" --title "vX.Y.Z" --notes "..." --target "<sha-or-main>"
+```
+
+**STOP.** Wait for Step 4 confirmation (or user declines CLI tagging).
+
+## Step 4 — Optional CLI tag
+
+**STOP until user opts in.** If they decline, the release workflow ends here.
+
+If yes (CLI version required — ask if missing):
+
+1. `git checkout main && git pull origin main`
+2. Tag `cli-vA.B.C` on a real commit (same commit as `vX.Y.Z` unless the user specifies otherwise)
+3. `git push origin cli-vA.B.C`
+4. Verify both `v*` and `cli-v*` resolve to commits (`git rev-parse`, `git ls-remote`)
+
+Do not amend published tags.
 
 ## Common Mistakes
 
 | Mistake | Fix |
-|---------|-----|
-| Only `generate_code.ps1` at release | Use `generate_all.ps1` — includes metadata, CLI docs, API ref |
-| Hardcode version in props | GitVersion + tag drives CI version |
-| Same tag for CLI and analyzers | Separate `v*` and `cli-v*` streams |
-| Skip docs pin bump in docs site repo | Update `RoslynatorRef` / `RoslynatorCliRef` in workflow |
-| `CHANGELOG.md` | `ChangeLog.md` at repo root |
-| Amend published tag | Create new tag instead |
+|---------|------|
+| Title `4.17.0` without `v` | Title matches tag: `v4.17.0` |
+| Tag CLI because version was in the prompt | Step 4 is opt-in; still ask |
+| Merge + release + CLI in one go | Four separate STOPs |
+| Soft “ask later” while editing/pushing | Confirm **before** push/PR, merge, `gh release create`, CLI tag push |
+| `generate_all.ps1` in bump PR | Out of scope unless the user asks |
+| Root `CHANGELOG.md` | Root file is `ChangeLog.md` |
+| Same tag for CLI and analyzers | `v*` vs `cli-v*` |
+| Amend published tag | New tag instead |
+| Hardcode version in props | GitVersion + tags |
