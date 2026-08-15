@@ -197,10 +197,10 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
 #endif
                 if (isObvious
                     || IsInitializerObvious(ref context))
-                {
-                    ReportExplicitToImplicit(ref context);
-                    return true;
-                }
+            {
+                ReportExplicitToImplicit(ref context);
+                return true;
+            }
         }
 
         return false;

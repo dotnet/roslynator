@@ -48,7 +48,7 @@ Verify:
 cd tools && pwsh ./generate_code.ps1
 cd src && dotnet build Roslynator.sln
 cd src && dotnet test Tests/Refactorings.Tests --no-build --filter "FullyQualifiedName~RR####"
-cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
+cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity warn
 ```
 
 ## Common Mistakes

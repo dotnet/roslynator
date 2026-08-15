@@ -51,7 +51,7 @@ Verify (adjust project and filter):
 cd src && dotnet build Roslynator.sln
 cd src && dotnet test Tests/Analyzers.Tests --no-build --filter "FullyQualifiedName~RCS####"
 cd src && dotnet test Tests/CodeFixes.Tests --no-build --filter "FullyQualifiedName~CS####"
-cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
+cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity warn
 ```
 
 Changelog examples: [references/changelog-examples.md](references/changelog-examples.md).
