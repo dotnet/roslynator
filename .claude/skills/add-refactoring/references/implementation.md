@@ -60,6 +60,8 @@ References: `RR0011AddArgumentNameTests.cs`, `AddOrRemoveArgumentNameRefactoring
 
 ## Metadata Example
 
+Confirm `Id`, `Identifier`, `Title`, and `OptionKey` with the user before writing XML (see hard gate in `SKILL.md`).
+
 ```xml
 <Refactoring Id="RR0011" Identifier="AddArgumentName" Title="Add argument name">
   <OptionKey>add_argument_name</OptionKey>

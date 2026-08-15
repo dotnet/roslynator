@@ -11,7 +11,7 @@ Authoritative reference: https://josefpihrt.github.io/docs/roslynator/analyzer-m
 | `Id` | `RCS` + number. Prefix: `RCS0` formatting, `RCS1` general, `RCS9` code-analysis |
 | `Identifier` | PascalCase name used in generated code (`DiagnosticRules.X`, class names) |
 | `Title` | Short description |
-| `DefaultSeverity` | `Hidden`, `Info`, `Warning`, or `Error` |
+| `DefaultSeverity` | `Hidden`, `Info`, `Warning`, or `Error` — **confirm with user; do not invent** |
 | `Summary` | Longer description (markdown) for generated docs |
 
 ## Common Optional Elements
@@ -19,7 +19,7 @@ Authoritative reference: https://josefpihrt.github.io/docs/roslynator/analyzer-m
 | Element | Description |
 |---------|-------------|
 | `MessageFormat` | Required when the message has parameters; otherwise same as Title |
-| `IsEnabledByDefault` | Default `true`. Set `false` for opt-in analyzers (common for RCS0) |
+| `IsEnabledByDefault` | Default in schema is `true`, but **confirm with user** (do not assume). Set `false` for opt-in analyzers (common for RCS0) |
 | `MinLanguageVersion` | e.g. `9.0` |
 | `SupportsFadeOut` | Fade out reported syntax in the editor |
 | `SupportsFadeOutAnalyzer` | Generates an additional `RCS....FadeOut` analyzer |
@@ -31,6 +31,9 @@ Authoritative reference: https://josefpihrt.github.io/docs/roslynator/analyzer-m
 Do **not** use `<Category>` — it is ignored; all analyzers use `DiagnosticCategories.Roslynator`.
 
 Do **not** set `<Status>` on new analyzers. Lifecycle states are handled by the deprecation skill.
+
+Before writing any of these values into XML, follow the **Confirm metadata parameters** hard gate in `SKILL.md`.
+
 
 ## Example Entry
 
