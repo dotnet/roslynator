@@ -41,8 +41,8 @@ CI / GitVersion details: [references/release-and-ci.md](references/release-and-c
 **STOP until user confirms Step 1.**
 
 1. Branch from latest `main` (e.g. `release/X.Y.Z`).
-2. Root [`ChangeLog.md`](../../ChangeLog.md): under `## [Unreleased]`, insert `## [X.Y.Z] - YYYY-MM-DD` so prior Unreleased bullets become that version’s section (same pattern as bump PR #1785). Leave `[Unreleased]` empty above it.
-3. [`src/VisualStudioCode/package/CHANGELOG.md`](../../src/VisualStudioCode/package/CHANGELOG.md): copy that new version section (header + body) under `[Unreleased]`.
+2. Root [`ChangeLog.md`](../../../ChangeLog.md): under `## [Unreleased]`, insert `## [X.Y.Z] - YYYY-MM-DD` so prior Unreleased bullets become that version’s section (same pattern as bump PR #1785). Leave `[Unreleased]` empty above it.
+3. [`src/VisualStudioCode/package/CHANGELOG.md`](../../../src/VisualStudioCode/package/CHANGELOG.md): copy that new version section (header + body) under `[Unreleased]`.
 4. Commit, push, open PR — title `Bump version to X.Y.Z`.
 
 Do **not** run `generate_all.ps1` as part of this PR unless the user asks.
