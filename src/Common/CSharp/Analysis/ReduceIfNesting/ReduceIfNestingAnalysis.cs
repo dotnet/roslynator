@@ -113,7 +113,7 @@ internal static class ReduceIfNestingAnalysis
             return Success(jumpKind, parent);
         }
 
-        if (!IsFixable(ifStatement, statements, ref jumpKind))
+        if (!IsFixable(ifStatement, statements, options, ref jumpKind))
             return Fail(node);
 
         switch (parentKind)
@@ -314,6 +314,7 @@ internal static class ReduceIfNestingAnalysis
     private static bool IsFixable(
         IfStatementSyntax ifStatement,
         SyntaxList<StatementSyntax> statements,
+        ReduceIfNestingOptions options,
         ref SyntaxKind jumpKind)
     {
         int i = statements.Count - 1;
@@ -326,7 +327,7 @@ internal static class ReduceIfNestingAnalysis
 
         if (statements[i] == ifStatement)
         {
-            return true;
+            return (options & ReduceIfNestingOptions.AllowLastIf) != 0;
         }
         else if (IsFixableJumpStatement(statements[i], ref jumpKind))
         {
