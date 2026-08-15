@@ -24,7 +24,7 @@ More context: [Contributing with agent skills](https://josefpihrt.github.io/docs
 * **DO** submit issues for bug fixes or features.
 * **DO** add unit tests for bug fixes or features.
 * **DO** ensure submissions pass build and are merge conflict free.
-* **DO** update changelog.
+* **DO** update Changelog.
 * **DO NOT** submit new analyzer/refactoring/fix without discussing it first.
 * **DO NOT** submit large formatting/documentation changes without discussing it first.
 
