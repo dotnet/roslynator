@@ -29,14 +29,14 @@ Use `AskQuestion` when available; otherwise ask conversationally. Batch related 
 
 | Parameter | Required? | Notes |
 |-----------|-----------|--------|
-| `Id` | yes | Next free `RR####` |
+| `Id` | propose | Compute next free `RR####` from `Refactorings.xml`; **do not ask** unless the issue conflicts or multiple ids are plausible |
 | `Identifier` | yes | PascalCase; drives generated names |
 | `Title` | yes | Short description (light-bulb text) |
 | `OptionKey` | yes | EditorConfig key segment → `roslynator_refactoring.<key>.enabled` |
 | `Syntaxes` / `Span` | yes for docs | Where it can be invoked (documentation only; registration is in code) |
 | `Summary` / samples | recommended | Confirm if not in the issue |
 
-Skip asking only when the approved issue or the user's message already states the value explicitly.
+When proposing `Id`, state the chosen value in your plan/summary (e.g. “using next free **RR0218**”). Skip asking other parameters only when the approved issue or the user's message already states the value explicitly.
 
 ## Quick Reference
 

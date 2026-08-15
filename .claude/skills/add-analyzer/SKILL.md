@@ -29,7 +29,7 @@ Use `AskQuestion` when available; otherwise ask conversationally. Batch related 
 
 | Parameter | Required? | Allowed / notes |
 |-----------|-----------|-----------------|
-| `Id` | yes | Next free `RCS0` / `RCS1` / `RCS9` id for the package |
+| `Id` | propose | Compute next free `RCS0` / `RCS1` / `RCS9` id from `Analyzers.xml`; **do not ask** unless the issue conflicts or multiple ids are plausible |
 | `Identifier` | yes | PascalCase; drives generated names |
 | `Title` | yes | Short description |
 | `DefaultSeverity` | yes | `Hidden`, `Info`, `Warning`, or `Error` — **always ask** |
@@ -40,7 +40,7 @@ Use `AskQuestion` when available; otherwise ask conversationally. Batch related 
 | `MinLanguageVersion` | no | Ask only if C# version-gated |
 | Config option | no | See [config-options.md](references/config-options.md) |
 
-Skip asking only when the approved issue or the user's message already states the value explicitly.
+When proposing `Id`, state the chosen value in your plan/summary (e.g. “using next free **RCS9012**”). Skip asking other parameters only when the approved issue or the user's message already states the value explicitly.
 
 ## Quick Reference
 

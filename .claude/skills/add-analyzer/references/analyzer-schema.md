@@ -34,7 +34,6 @@ Do **not** set `<Status>` on new analyzers. Lifecycle states are handled by the 
 
 Before writing any of these values into XML, follow the **Confirm metadata parameters** hard gate in `SKILL.md`.
 
-
 ## Example Entry
 
 ```xml

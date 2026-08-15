@@ -31,12 +31,12 @@ Use `AskQuestion` when available; otherwise ask conversationally. Batch related 
 |-----------|-----------|--------|
 | Compiler `CS####` id(s) | yes | One RCF may fix multiple CS ids |
 | New `Diagnostics.xml` entry? | if CS not already cataloged | Confirm `Title` / `Message` / `HelpUrl` (usually from Microsoft docs) |
-| `RCF` `Id` | yes | Next free `RCF####` (or extend existing RCF) |
+| `RCF` `Id` | propose | Compute next free `RCF####` from `CodeFixes.xml`, or extend an existing RCF when appropriate; **do not ask** unless ambiguous |
 | `Identifier` | yes | PascalCase for the code fix |
 | `Title` | yes | Code-fix menu / docs title |
 | Code action title | yes | String passed to `CodeAction.Create` (may match or differ from XML Title) |
 
-Skip asking only when the approved issue or the user's message already states the value explicitly.
+When proposing `RCF` `Id`, state the chosen value in your plan/summary (e.g. “using next free **RCF0121**”). Skip asking other parameters only when the approved issue or the user's message already states the value explicitly.
 
 ## Quick Reference
 
