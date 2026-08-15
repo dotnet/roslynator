@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add analyzer "Call 'IsKind' instead of comparing 'Kind'" ([RCS9012](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS9012)) ([#1819](https://github.com/dotnet/roslynator/issues/1819))
+
 ### Fixed
 
 - Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to not report a file that contains only multiple partial declarations of the same type ([PR](https://github.com/dotnet/roslynator/pull/1798))
