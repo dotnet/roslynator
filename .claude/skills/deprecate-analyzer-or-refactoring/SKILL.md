@@ -34,7 +34,7 @@ Full detail: [references/mechanisms.md](references/mechanisms.md).
 3. Remove implementation, registration, and `*Tests.cs`
 4. **Keep** the obsolete XML entry — analyzers (`Status=Obsolete`), refactorings/RCF (`IsObsolete="true"`). Delete the whole `<Analyzer>` block only when retiring with `Status=Disabled`
 5. `dotnet build` + format verify
-6. `ChangeLog.md` under `### Changed`
+6. `CHANGELOG.md` under `### Changed`
 
 ## Common Mistakes
 

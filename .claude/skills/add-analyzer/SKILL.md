@@ -52,7 +52,7 @@ When proposing `Id`, state the chosen value in your plan/summary (e.g. “using 
 | Analyzer | RCS1 → `Analyzers/CSharp/Analysis/`; RCS0 → `Formatting.Analyzers/CSharp/`; RCS9 → `CodeAnalysis.Analyzers/CSharp/` |
 | Code fix | matching `*.CodeFixes/CSharp/CodeFixes/` |
 | Tests | `src/Tests/<Package>.Tests/RCS####IdentifierTests.cs` |
-| Changelog | `ChangeLog.md` (not `CHANGELOG.md`) under `## [Unreleased]` |
+| Changelog | `CHANGELOG.md` under `## [Unreleased]` |
 
 ## Implementation
 
@@ -85,6 +85,5 @@ cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severi
 | Follow `analyzers-testing.md` verbatim | In-repo: `AbstractCSharpDiagnosticVerifier` + `Descriptor = DiagnosticRules.X` |
 | `pwsh tools/generate_code.ps1` from repo root | Run `cd tools && pwsh ./generate_code.ps1` — generator uses `../src` relative to cwd |
 | `<Status>` on new analyzer | Use only `IsEnabledByDefault`; lifecycle is `deprecate-analyzer-or-refactoring` |
-| `CHANGELOG.md` | File is `ChangeLog.md` at repo root |
 | `context.ReportDiagnostic` | Use `DiagnosticHelpers.ReportDiagnostic` |
 | Lazy `SupportedDiagnostics` field initializer | Use `Immutable.InterlockedInitialize` pattern |

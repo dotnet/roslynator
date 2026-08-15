@@ -47,7 +47,7 @@ When proposing `RCF` `Id`, state the chosen value in your plan/summary (e.g. “
 | Codegen | `cd tools && pwsh ./generate_code.ps1` |
 | Provider | `src/CodeFixes/CSharp/CodeFixes/` |
 | Tests | `src/Tests/CodeFixes.Tests/CS####IdentifierTests.cs` |
-| Changelog | `ChangeLog.md` |
+| Changelog | `CHANGELOG.md` |
 
 ## Implementation
 

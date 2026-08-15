@@ -1,6 +1,6 @@
 ---
 name: add-refactoring
-description: Use when adding a new RR#### refactoring in roslynator, editing Refactorings.xml, registering in RefactoringContext, or when refactorings-testing.md shows XunitRefactoringVerifier or how-to says CHANGELOG.md — in-repo uses AbstractCSharpRefactoringVerifier and ChangeLog.md.
+description: Use when adding a new RR#### refactoring in roslynator, editing Refactorings.xml, registering in RefactoringContext, or when refactorings-testing.md shows XunitRefactoringVerifier — in-repo uses AbstractCSharpRefactoringVerifier and CHANGELOG.md.
 ---
 
 # Add Refactoring
@@ -47,7 +47,7 @@ When proposing `Id`, state the chosen value in your plan/summary (e.g. “using 
 | Register | `RefactoringContext.cs` or helper under `Refactorings/CSharp/Refactorings/` |
 | Implement | same folder |
 | Tests | `src/Tests/Refactorings.Tests/RR####IdentifierTests.cs` |
-| Changelog | `ChangeLog.md` under `## [Unreleased]` |
+| Changelog | `CHANGELOG.md` under `## [Unreleased]` |
 
 ## Implementation
 
@@ -76,7 +76,6 @@ cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severi
 | Guess `Title` / `OptionKey` / `Identifier` | Ask — hard gate above |
 | Follow `refactorings-testing.md` verbatim | In-repo: `AbstractCSharpRefactoringVerifier` + `RefactoringId` override |
 | Missing `<OptionKey>` | Required — EditorConfig id for enable/disable |
-| `CHANGELOG.md` in how-to | File is `ChangeLog.md` at repo root |
 | Codegen from repo root | `cd tools && pwsh ./generate_code.ps1` |
 | `[|...|]` for diagnostics | Selection span for refactorings |
 | Only `<Syntaxes>` / `<Span>` | Documentation-only; registration is in code |
