@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Drop support for Visual Studio 2022 VSIX ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Pin last 4.x release ([Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)) or use NuGet packages on Visual Studio 2022
 
+### Fixed
+
+- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation ([PR](https://github.com/dotnet/roslynator/pull/1799))
+
 ## [4.16.1] - 2026-08-16
 
 ### Fixed
