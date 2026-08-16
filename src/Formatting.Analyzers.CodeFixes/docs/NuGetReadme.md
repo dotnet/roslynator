@@ -6,11 +6,11 @@ A collection of formatting [analyzers](https://josefpihrt.github.io/docs/roslyna
 
 * Visual Studio 2026
 * VS Code with [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) extension 1.21.13 or higher
-* Roslyn 3.8.0 or higher (when used directly, not as a part of IDE)
+* Roslyn 3.8.0 or higher (when used directly, not as part of an IDE)
 
 ## Usage
 
-* Add package to your project:
+* Add the package to your project:
    ```shell
    dotnet add package roslynator.formatting.analyzers
    ```

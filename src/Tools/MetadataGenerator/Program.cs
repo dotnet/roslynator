@@ -49,7 +49,7 @@ internal static class Program
             var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
             var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
 
-            string path = Path.Combine(sourcePath, "../ChangeLog.md");
+            string path = Path.Combine(sourcePath, "../CHANGELOG.md");
             string s = File.ReadAllText(path, _utf8NoBom);
 
             ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers

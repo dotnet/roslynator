@@ -1,6 +1,6 @@
 # Roslynator.Workspaces.Core
 
-This package extends functionality of package [Microsoft.CodeAnalysis.Workspaces.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common).
+This package extends the functionality of the [Microsoft.CodeAnalysis.Workspaces.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common) package.
 
 ## Feedback
 

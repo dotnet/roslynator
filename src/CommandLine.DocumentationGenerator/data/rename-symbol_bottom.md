@@ -1,6 +1,6 @@
 ## Redirected/Piped Input
 
-Redirected/piped input will be used as a list of project/solution paths separated with newlines.
+Redirected or piped input is treated as a list of project/solution paths, one per line.
 
 ## Examples
 
@@ -103,7 +103,7 @@ roslynator rename-symbol my.sln
 #### Notes
 
 * We assume that there are files `my.sln` and `rename-constants.cs` in the current directory.
-* If the "IsMatch" method and "GetNewName" method are defined both in the same file it is allowed to specified it only once as a value of `--match-from` option.
+* If the `IsMatch` and `GetNewName` methods are both defined in the same file, the file can be specified just once, as the value of the `--match-from` option.
 * Because the code is marked with `auto-generated` tag we have to explicitly allow generated code with `--include-generated-code` switch.
 * The option `--scope member` is not required but it can make the process faster.
 

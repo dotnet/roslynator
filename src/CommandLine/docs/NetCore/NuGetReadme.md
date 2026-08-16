@@ -1,6 +1,6 @@
 # Roslynator Command-line Tool
 
-.NET Core global tool that allows to run [Roslyn](https://github.com/dotnet/roslyn) code analysis from command line.
+.NET global tool for running [Roslyn](https://github.com/dotnet/roslyn) code analysis from the command line.
 
 ## Requirements
 
@@ -8,27 +8,27 @@
 
 ## Installation
 
-Run following command to install Roslynator command-line tool:
+To install the CLI:
 ```shell
 dotnet tool install -g roslynator.dotnet.cli
 ```
 
 ## Usage
 
-Roslynator command-line tool does not contain any analyzers (such as [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
-Analyzers are either referenced as NuGet packages or it is possible to add analyzer assemblies with parameter `--analyzer-assemblies`.
+The CLI does not include analyzers (such as [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
+Reference analyzers as NuGet packages, or add analyzer assemblies with `--analyzer-assemblies`.
 
-Analyze project/solution:
+Analyze a project or solution:
 ```shell
 roslynator analyze
 ```
 
-Fix project/solution:
+Fix a project or solution:
 ```shell
 roslynator fix
 ```
 
-See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for a full list of commands.
+See the [CLI documentation](https://josefpihrt.github.io/docs/roslynator/cli) for the full list of commands.
 
 ## Feedback
 

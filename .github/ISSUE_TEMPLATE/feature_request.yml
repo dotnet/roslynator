@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a new feature, analyzer, refactoring, or code fix
+title: "[Feature] "
+labels:
+  - Feature Request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement. Use a descriptive title, for example `[Feature] Add analyzer to detect ...` or `[Feature] RCS1234: short description` when proposing a specific rule.
+
+        New analyzers, refactorings, and code fixes should be discussed before implementation. See [CONTRIBUTING.md](https://github.com/dotnet/roslynator/blob/main/CONTRIBUTING.md). For questions, use [Discussions](https://github.com/dotnet/roslynator/discussions).
+
+        After approval, see [.claude/skills/](https://github.com/dotnet/roslynator/tree/main/.claude/skills) for step-by-step workflows — [Contributing with agent skills](https://josefpihrt.github.io/docs/roslynator/contributing-with-agent-skills).
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: A short, descriptive summary of the requested feature
+      placeholder: e.g. Add analyzer to detect ...
+    validations:
+      required: true
+  - type: input
+    id: rule-id
+    attributes:
+      label: Rule ID (if applicable)
+      description: Proposed analyzer or refactoring ID, if you have one in mind
+      placeholder: e.g. RCS1234 or RR1234
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed description
+      description: Describe the use case, expected behavior, and any example code
+    validations:
+      required: true
+  - type: input
+    id: discussion
+    attributes:
+      label: Prior discussion link
+      description: Link to an existing issue or discussion, if you opened one first
+      placeholder: https://github.com/dotnet/roslynator/issues/...

@@ -57,7 +57,12 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
         }
         else if (typeDeclaration.TypeParameterList is not null)
         {
-            Analyze(context, typeDeclaration.TypeParameterList.GreaterThanToken, constraintClauses);
+#if ROSLYN_4_7
+            SyntaxToken previous = typeDeclaration.ParameterList?.CloseParenToken ?? typeDeclaration.TypeParameterList.GreaterThanToken;
+#else
+            SyntaxToken previous = typeDeclaration.TypeParameterList.GreaterThanToken;
+#endif
+            Analyze(context, previous, constraintClauses);
         }
     }
 

@@ -101,7 +101,8 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
-            if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
+            if (!methodSymbol.IsAsync
+                && !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
                 && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
                 return;

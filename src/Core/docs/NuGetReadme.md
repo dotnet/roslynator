@@ -1,6 +1,6 @@
 # Roslynator.Core
 
-This package extends functionality of package [Microsoft.CodeAnalysis.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Common).
+This package extends the functionality of the [Microsoft.CodeAnalysis.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Common) package.
 
 ## Feedback
 

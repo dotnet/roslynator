@@ -1,6 +1,6 @@
 # Roslynator.CSharp
 
-This package extends functionality of package [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp).
+This package extends the functionality of the [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) package.
 
 ## Feedback
 

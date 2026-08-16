@@ -1,14 +1,14 @@
 # Roslynator.Testing.CSharp.Xunit
 
-Test framework for unit testing of [Roslyn](https://github.com/dotnet/roslyn) analyzers, refactorings and code fixes.
+Testing framework for unit-testing [Roslyn](https://github.com/dotnet/roslyn) analyzers, refactorings, and code fixes.
 
 ## Usage
 
-Learn how to use the framework from actual usages in Roslynator repository:
+Examples in the Roslynator repository:
 
-* Tests of analyzers are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Analyzers.Tests), [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests).
-* Tests of refactorings are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Refactorings.Tests).
-* Tests of fixes of compiler diagnostics are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeFixes.Tests).
+* Analyzer tests: [Analyzers.Tests](https://github.com/dotnet/roslynator/tree/main/src/Tests/Analyzers.Tests), [CodeAnalysis.Analyzers.Tests](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests), and [Formatting.Analyzers.Tests](https://github.com/dotnet/roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
+* Refactoring tests: [Refactorings.Tests](https://github.com/dotnet/roslynator/tree/main/src/Tests/Refactorings.Tests)
+* Compiler diagnostic fix tests: [CodeFixes.Tests](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeFixes.Tests)
 
 ## Feedback
 

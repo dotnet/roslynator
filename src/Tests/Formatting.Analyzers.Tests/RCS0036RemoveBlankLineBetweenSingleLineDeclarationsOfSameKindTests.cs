@@ -32,6 +32,25 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    public async Task Test_Properties_Record()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+record C
+{
+    string P1 { get; set; }
+[|
+|]    string P2 { get; set; }
+}
+", @"
+record C
+{
+    string P1 { get; set; }
+    string P2 { get; set; }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
     public async Task Test_Events()
     {
         await VerifyDiagnosticAndFixAsync(@"

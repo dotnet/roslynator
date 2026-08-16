@@ -2,23 +2,23 @@
 
 A collection of 200+ [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-This package is recommended to be used in an enviroment where Roslynator IDE extensions cannot be used, e.g. VS Code + C# Dev Kit.
-Otherwise, do not use this package and use IDE extension which has the same functionality.
+Use this package when Roslynator IDE extensions are unavailable, such as VS Code with C# Dev Kit.
+Otherwise, use the IDE extension instead.
 
 ## Requirements
 
 * Visual Studio 2026
 * VS Code with [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) extension 1.21.13 or higher
-* Roslyn 3.8.0 or higher (when used directly, not as a part of IDE)
+* Roslyn 3.8.0 or higher (when used directly, not as part of an IDE)
 
 ## Usage
 
-* Add package to your project:
+* Add the package to your project:
    ```shell
    dotnet add package roslynator.refactorings
    ```
 
-* Use EditorConfig to [configure](https://josefpihrt.github.io/docs/roslynator/configuration) analyzers.
+* Use EditorConfig to [configure](https://josefpihrt.github.io/docs/roslynator/configuration) refactorings.
 
 ## Feedback
 

@@ -11,17 +11,17 @@ internal static class PathUtilities
     {
         if (basePath is not null)
         {
-            if (string.Equals(path, basePath, StringComparison.Ordinal))
+            if (string.Equals(path, basePath, FileSystemHelpers.Comparison))
                 return Path.GetFileName(path);
 
-            if (path.StartsWith(basePath))
+            if (path.StartsWith(basePath, FileSystemHelpers.Comparison))
             {
                 int length = basePath.Length;
 
                 if (trimLeadingDirectorySeparator)
                 {
                     while (length < path.Length
-                        && path[length] == Path.DirectorySeparatorChar)
+                        && FileSystemHelpers.IsDirectorySeparator(path[length]))
                     {
                         length++;
                     }

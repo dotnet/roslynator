@@ -44,7 +44,10 @@
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)));version=$(RoslynatorCliPackageVersion)</NuspecProperties>
   </PropertyGroup>
-
+  
+  <ItemGroup>
+    <AssemblyMetadata Include="PackageProjectUrl" Value="$(PackageProjectUrl)" />
+  </ItemGroup>
   <ItemGroup>
     <!-- Package 'Microsoft.IO.Redist' 6.0.0 has a known high severity vulnerability -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-hq7w-xv5x-g34j" />

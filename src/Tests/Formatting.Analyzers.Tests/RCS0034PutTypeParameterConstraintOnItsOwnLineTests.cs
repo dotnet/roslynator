@@ -169,6 +169,33 @@ class C<T> where T : struct
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_PrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+internal sealed class Example<TEntry, TValue>(TEntry entry)
+    where TEntry : class
+    where TValue : class
+{
+    public required TEntry Entry { get; set; } = entry;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_PrimaryConstructor_MixedConstraints()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public class MixedConstraintService<TKey, TValue>(TKey key, TValue value)
+    where TKey : notnull
+    where TValue : new()
+{
+    public TKey Key { get; } = key;
+    public TValue Value { get; } = value;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
     public async Task TestNoDiagnostic_BaseType()
     {
         await VerifyNoDiagnosticAsync(@"
