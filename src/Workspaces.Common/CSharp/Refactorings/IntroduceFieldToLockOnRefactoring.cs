@@ -20,14 +20,14 @@ internal static class IntroduceFieldToLockOnRefactoring
         LockStatementSyntax lockStatement,
         CancellationToken cancellationToken = default)
     {
-        MemberDeclarationSyntax containingMember = lockStatement.FirstAncestor<MemberDeclarationSyntax>();
+        MemberDeclarationSyntax? containingMember = lockStatement.FirstAncestor<MemberDeclarationSyntax>();
 
         Debug.Assert(containingMember is not null);
 
         if (containingMember is null)
             return document;
 
-        TypeDeclarationSyntax containingType = containingMember.FirstAncestor<TypeDeclarationSyntax>();
+        TypeDeclarationSyntax? containingType = containingMember.FirstAncestor<TypeDeclarationSyntax>();
 
         Debug.Assert(containingType is not null);
 
@@ -38,7 +38,7 @@ internal static class IntroduceFieldToLockOnRefactoring
 
         int index = members.IndexOf(containingMember);
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         string name = NameGenerator.Default.EnsureUniqueLocalName(
             LockObjectName,

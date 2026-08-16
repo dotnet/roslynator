@@ -14,8 +14,8 @@ internal static class DiagnosticDescriptorFactory
         string category,
         DiagnosticSeverity defaultSeverity,
         bool isEnabledByDefault,
-        string description = null,
-        string helpLinkUri = null,
+        string? description = null,
+        string? helpLinkUri = null,
         params string[] customTags)
     {
         isEnabledByDefault = CodeAnalysisConfig.Instance.IsDiagnosticEnabledByDefault(id, category, isEnabledByDefault);
@@ -28,7 +28,7 @@ internal static class DiagnosticDescriptorFactory
             defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category, isEnabledByDefault) ?? defaultSeverity,
             isEnabledByDefault: isEnabledByDefault,
             description: description,
-            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri),
+            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri!),
             customTags: customTags);
     }
 

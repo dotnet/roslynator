@@ -17,7 +17,7 @@ internal static class DiagnosticHelpers
         SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -30,7 +30,7 @@ internal static class DiagnosticHelpers
         SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -43,7 +43,7 @@ internal static class DiagnosticHelpers
         SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -56,7 +56,7 @@ internal static class DiagnosticHelpers
         SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -68,7 +68,7 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -79,8 +79,8 @@ internal static class DiagnosticHelpers
         SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -92,8 +92,8 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -113,7 +113,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         if (descriptor.IsEffective(context))
             ReportDiagnostic(context, descriptor, node, messageArgs);
@@ -123,7 +123,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         if (descriptor.IsEffective(context))
             ReportDiagnostic(context, descriptor, location, messageArgs);
@@ -133,7 +133,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -146,7 +146,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -159,7 +159,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -172,7 +172,7 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -184,7 +184,7 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -195,8 +195,8 @@ internal static class DiagnosticHelpers
         SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -208,21 +208,21 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
             CreateDiagnostic(descriptor, location, additionalLocations, properties, messageArgs));
     }
 
-    public static void ReportToken(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)
+    public static void ReportToken(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object?[]? messageArgs)
     {
         if (!token.IsMissing)
             ReportDiagnostic(context, descriptor, token, messageArgs);
     }
 
-    public static void ReportNode(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node, params object[] messageArgs)
+    public static void ReportNode(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node, params object?[]? messageArgs)
     {
         if (!node.IsMissing)
             ReportDiagnostic(context, descriptor, node, messageArgs);
@@ -241,7 +241,7 @@ internal static class DiagnosticHelpers
         SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -254,7 +254,7 @@ internal static class DiagnosticHelpers
         SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -267,7 +267,7 @@ internal static class DiagnosticHelpers
         SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -280,7 +280,7 @@ internal static class DiagnosticHelpers
         SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -292,7 +292,7 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -303,8 +303,8 @@ internal static class DiagnosticHelpers
         SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -316,8 +316,8 @@ internal static class DiagnosticHelpers
         DiagnosticDescriptor descriptor,
         Location location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?> properties,
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context,
@@ -377,7 +377,7 @@ internal static class DiagnosticHelpers
             || descriptor3.IsEffective(compilation);
     }
 
-    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, object[] messageArgs)
+    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, object?[]? messageArgs)
     {
         VerifyMessageArgs(descriptor, messageArgs);
 
@@ -387,7 +387,7 @@ internal static class DiagnosticHelpers
             messageArgs: messageArgs);
     }
 
-    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, object[] messageArgs)
+    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, object?[]? messageArgs)
     {
         VerifyMessageArgs(descriptor, messageArgs);
 
@@ -398,7 +398,7 @@ internal static class DiagnosticHelpers
             messageArgs: messageArgs);
     }
 
-    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, ImmutableDictionary<string, string> properties, object[] messageArgs)
+    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, ImmutableDictionary<string, string?> properties, object?[]? messageArgs)
     {
         VerifyMessageArgs(descriptor, messageArgs);
 
@@ -409,7 +409,7 @@ internal static class DiagnosticHelpers
             messageArgs: messageArgs);
     }
 
-    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, ImmutableDictionary<string, string> properties, object[] messageArgs)
+    private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, ImmutableDictionary<string, string?> properties, object?[]? messageArgs)
     {
         VerifyMessageArgs(descriptor, messageArgs);
 
@@ -422,8 +422,10 @@ internal static class DiagnosticHelpers
     }
 
     [Conditional("DEBUG")]
-    private static void VerifyMessageArgs(DiagnosticDescriptor descriptor, object[] messageArgs)
+    private static void VerifyMessageArgs(DiagnosticDescriptor descriptor, object?[]? messageArgs)
     {
+        messageArgs ??= [];
+
         string message = descriptor.MessageFormat.ToString();
         int count = Regex.Matches(message, @"\{\d\}").Count;
 

@@ -18,7 +18,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax expression = throwStatement.Expression;
+        ExpressionSyntax? expression = throwStatement.Expression;
 
         if (expression?.IsMissing == false)
         {
@@ -36,7 +36,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax expression = throwExpression.Expression;
+        ExpressionSyntax? expression = throwExpression.Expression;
 
         if (expression?.IsMissing == false)
         {
@@ -64,12 +64,12 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (IsExceptionTypeCaughtInMethod(node, typeSymbol, semanticModel, cancellationToken))
             return Fail;
 
-        ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
+        ISymbol? declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
         if (declarationSymbol?.GetSyntax(cancellationToken) is not MemberDeclarationSyntax containingMember)
             return Fail;
 
-        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
+        DocumentationCommentTriviaSyntax? comment = containingMember.GetSingleLineDocumentationComment();
 
         if (comment is null)
             return Fail;
@@ -187,17 +187,17 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         return false;
     }
 
-    internal static ISymbol GetDeclarationSymbol(
+    internal static ISymbol? GetDeclarationSymbol(
         int position,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol? symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
         return GetDeclarationSymbol(symbol);
     }
 
-    private static ISymbol GetDeclarationSymbol(ISymbol symbol)
+    private static ISymbol? GetDeclarationSymbol(ISymbol? symbol)
     {
         if (symbol is not IMethodSymbol methodSymbol)
             return null;
@@ -225,14 +225,14 @@ internal static class AddExceptionToDocumentationCommentAnalysis
     /// </summary>
     private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        SyntaxNode parent = node.Parent;
+        SyntaxNode? parent = node.Parent;
         while (parent is not null)
         {
             if (parent is TryStatementSyntax tryStatement)
             {
                 foreach (CatchClauseSyntax catchClause in tryStatement.Catches)
                 {
-                    TypeSyntax exceptionType = catchClause.Declaration?.Type;
+                    TypeSyntax? exceptionType = catchClause.Declaration?.Type;
 
                     if (exceptionType is null
                         || SymbolEqualityComparer.Default.Equals(

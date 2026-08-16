@@ -47,7 +47,7 @@ internal abstract class AbstractRequiredConfigOptionNotSetAnalyzer : DiagnosticA
 
     private static bool IsOptionSet(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option)
     {
-        return configOptions.TryGetValue(option.Key, out string _)
+        return configOptions.TryGetValue(option.Key, out string? _)
             || CodeAnalysisConfig.Instance.EditorConfig.Options.ContainsKey(option.Key);
     }
 

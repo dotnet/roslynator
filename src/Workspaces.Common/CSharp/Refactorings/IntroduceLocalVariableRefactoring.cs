@@ -58,7 +58,7 @@ internal static class IntroduceLocalVariableRefactoring
         ExpressionSyntax expression,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.Variable, semanticModel, expression.SpanStart, cancellationToken: cancellationToken);
 

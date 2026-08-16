@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
 
 internal abstract class ThrowInfo
 {
-    protected ThrowInfo(SyntaxNode node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
+    protected ThrowInfo(SyntaxNode node, ExpressionSyntax? expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
     {
         Node = node;
         Expression = expression;
@@ -21,7 +21,7 @@ internal abstract class ThrowInfo
 
     public ITypeSymbol ExceptionSymbol { get; }
 
-    public ExpressionSyntax Expression { get; }
+    public ExpressionSyntax? Expression { get; }
 
     public ISymbol DeclarationSymbol { get; }
 
@@ -38,7 +38,7 @@ internal abstract class ThrowInfo
         }
     }
 
-    public IParameterSymbol GetParameterSymbol(
+    public IParameterSymbol? GetParameterSymbol(
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
@@ -52,5 +52,5 @@ internal abstract class ThrowInfo
         }
     }
 
-    protected abstract IParameterSymbol GetParameterSymbolCore(SemanticModel semanticModel, CancellationToken cancellationToken);
+    protected abstract IParameterSymbol? GetParameterSymbolCore(SemanticModel semanticModel, CancellationToken cancellationToken);
 }

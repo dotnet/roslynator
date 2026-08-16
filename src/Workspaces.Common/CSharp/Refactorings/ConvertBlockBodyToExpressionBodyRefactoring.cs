@@ -48,12 +48,12 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
     public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration, TextSpan? span = null)
     {
-        AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+        AccessorListSyntax? accessorList = propertyDeclaration.AccessorList;
 
         if (accessorList is not null
             && span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorList) != false)
         {
-            AccessorDeclarationSyntax accessor = propertyDeclaration
+            AccessorDeclarationSyntax? accessor = propertyDeclaration
                 .AccessorList?
                 .Accessors
                 .SingleOrDefault(shouldThrow: false);
@@ -100,12 +100,12 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
     public static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration, TextSpan? span = null)
     {
-        AccessorListSyntax accessorList = indexerDeclaration.AccessorList;
+        AccessorListSyntax? accessorList = indexerDeclaration.AccessorList;
 
         if (accessorList is not null
             && span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorList) != false)
         {
-            AccessorDeclarationSyntax accessor = indexerDeclaration
+            AccessorDeclarationSyntax? accessor = indexerDeclaration
                 .AccessorList?
                 .Accessors
                 .SingleOrDefault(shouldThrow: false);
@@ -138,7 +138,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
     public static bool CanRefactor(AccessorDeclarationSyntax accessorDeclaration, TextSpan? span = null)
     {
-        BlockSyntax body = accessorDeclaration.Body;
+        BlockSyntax? body = accessorDeclaration.Body;
 
         return body is not null
             && (span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration) != false
@@ -193,11 +193,11 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
         if (newLinePosition == NewLinePosition.After)
         {
-            SyntaxToken arrowToken = CSharpUtility.GetExpressionBody(newNode).ArrowToken;
+            SyntaxToken arrowToken = CSharpUtility.GetExpressionBody(newNode)!.ArrowToken;
             var annotation = new SyntaxAnnotation();
             newNode = newNode.ReplaceToken(arrowToken, arrowToken.WithAdditionalAnnotations(annotation));
             document = await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
             arrowToken = root.GetAnnotatedTokens(annotation).Single();
             var textChange = new TextChange(TextSpan.FromBounds(arrowToken.GetPreviousToken().Span.End, arrowToken.SpanStart), " ");
             return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
@@ -208,7 +208,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
     private static NewLinePosition GetNewLinePosition(Document document, SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
     {
-        if (DiagnosticRules.PutExpressionBodyOnItsOwnLine.IsEffective(node.SyntaxTree, document.Project.CompilationOptions, cancellationToken)
+        if (DiagnosticRules.PutExpressionBodyOnItsOwnLine.IsEffective(node.SyntaxTree, document.Project.CompilationOptions!, cancellationToken)
             && ConvertExpressionBodyAnalysis.AllowPutExpressionBodyOnItsOwnLine(node.Kind()))
         {
             return configOptions.GetArrowTokenNewLinePosition();
@@ -228,7 +228,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return methodDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.ConstructorDeclaration:
@@ -238,7 +238,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return constructorDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.DestructorDeclaration:
@@ -248,7 +248,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return destructorDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.LocalFunctionStatement:
@@ -258,7 +258,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return localFunction
                     .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(localFunction.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.OperatorDeclaration:
@@ -268,7 +268,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return operatorDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.ConversionOperatorDeclaration:
@@ -278,27 +278,27 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return operatorDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body!, analysis))
                     .WithBody(null);
             }
             case SyntaxKind.PropertyDeclaration:
             {
                 var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList!);
 
                 return propertyDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block!, analysis))
                     .WithAccessorList(null);
             }
             case SyntaxKind.IndexerDeclaration:
             {
                 var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList!);
 
                 return indexerDeclaration
                     .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block!, analysis))
                     .WithAccessorList(null);
             }
             case SyntaxKind.GetAccessorDeclaration:
@@ -312,7 +312,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
 
                 return accessor
                     .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions, newLinePosition))
-                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                    .WithSemicolonToken(CreateSemicolonToken(analysis.Block!, analysis))
                     .WithBody(null);
             }
             default:
@@ -331,7 +331,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
     {
         SyntaxToken arrowToken = Token(SyntaxKind.EqualsGreaterThanToken);
 
-        ExpressionSyntax expression = analysis.Expression;
+        ExpressionSyntax expression = analysis.Expression!;
 
         SyntaxToken keyword = analysis.ReturnOrThrowKeyword;
 

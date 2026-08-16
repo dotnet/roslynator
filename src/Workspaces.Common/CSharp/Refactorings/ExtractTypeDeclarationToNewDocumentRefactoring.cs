@@ -19,11 +19,11 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
         MemberDeclarationSyntax memberDeclaration,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        SyntaxNode newRoot = root.ReplaceNode(memberDeclaration.Parent, RemoveNode(memberDeclaration));
+        SyntaxNode newRoot = root.ReplaceNode(memberDeclaration.Parent!, RemoveNode(memberDeclaration));
 
         newRoot = RemoveEmptyNamespaces(newRoot, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
@@ -47,7 +47,7 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
 
     private static SyntaxNode RemoveNode(MemberDeclarationSyntax member)
     {
-        MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+        MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent!);
         SyntaxList<MemberDeclarationSyntax> members = memberList.Members;
 
         MemberDeclarationListInfo newMemberList = memberList.RemoveNode(member, SyntaxRemoveOptions.KeepUnbalancedDirectives);
@@ -77,16 +77,16 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
         IEnumerable<MemberDeclarationSyntax> membersToRemove = GetNonNestedTypeDeclarations(compilationUnit.Members)
             .Where(f => f != memberDeclaration);
 
-        CompilationUnitSyntax newCompilationUnit = compilationUnit.RemoveNodes(
+        CompilationUnitSyntax? newCompilationUnit = compilationUnit.RemoveNodes(
             membersToRemove,
             SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-        SyntaxList<AttributeListSyntax> attributeLists = newCompilationUnit.AttributeLists;
+        SyntaxList<AttributeListSyntax> attributeLists = newCompilationUnit!.AttributeLists;
 
         if (attributeLists.Any())
             newCompilationUnit = newCompilationUnit.RemoveNodes(attributeLists, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-        return RemoveEmptyNamespaces(newCompilationUnit, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+        return RemoveEmptyNamespaces(newCompilationUnit!, SyntaxRemoveOptions.KeepUnbalancedDirectives);
     }
 
     private static string GetDocumentName(MemberDeclarationSyntax memberDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -143,6 +143,6 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
             .Cast<NamespaceDeclarationSyntax>()
             .Where(f => !f.Members.Any());
 
-        return node.RemoveNodes(emptyNamespaces, removeOptions);
+        return node.RemoveNodes(emptyNamespaces, removeOptions)!;
     }
 }

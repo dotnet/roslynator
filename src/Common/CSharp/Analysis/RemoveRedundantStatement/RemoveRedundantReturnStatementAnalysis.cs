@@ -16,7 +16,7 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
 
     public override bool IsFixable(ReturnStatementSyntax statement)
     {
-        ExpressionSyntax expression = statement.Expression;
+        ExpressionSyntax? expression = statement.Expression;
 
         if (expression is null)
             return base.IsFixable(statement);
@@ -27,15 +27,15 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
             SyntaxKind.TrueLiteralExpression,
             SyntaxKind.FalseLiteralExpression))
         {
-            SyntaxNode parent = statement.Parent;
+            SyntaxNode? parent = statement.Parent;
 
-            if (parent.IsKind(SyntaxKind.Block)
+            if (parent?.IsKind(SyntaxKind.Block) == true
                 && parent.Parent is IfStatementSyntax ifStatement
                 && ifStatement.IsSimpleIf())
             {
-                StatementSyntax nextStatement = ifStatement.NextStatement();
+                StatementSyntax? nextStatement = ifStatement.NextStatement();
 
-                if (nextStatement.IsKind(SyntaxKind.ReturnStatement)
+                if (nextStatement?.IsKind(SyntaxKind.ReturnStatement) == true
                     && ((ReturnStatementSyntax)nextStatement).Expression?.RawKind == expression.RawKind)
                 {
                     return true;
@@ -58,11 +58,11 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
             }
             case SyntaxKind.MethodDeclaration:
             {
-                return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
+                return ((MethodDeclarationSyntax?)block.Parent)?.ReturnType?.IsVoid() == true;
             }
             case SyntaxKind.LocalFunctionStatement:
             {
-                return ((LocalFunctionStatementSyntax)block.Parent).ReturnType?.IsVoid() == true;
+                return ((LocalFunctionStatementSyntax?)block.Parent)?.ReturnType?.IsVoid() == true;
             }
             case SyntaxKind.SimpleLambdaExpression:
             case SyntaxKind.ParenthesizedLambdaExpression:

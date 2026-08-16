@@ -27,7 +27,7 @@ internal static class CopyMemberDeclarationRefactoring
 
         if (identifier != default)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
             string newName = identifier.ValueText;
 
@@ -35,9 +35,9 @@ internal static class CopyMemberDeclarationRefactoring
             {
                 newName = NameGenerator.Default.EnsureUniqueName(newName, semanticModel, member.SpanStart);
 
-                ISymbol symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
+                ISymbol? symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
 
-                ImmutableArray<SyntaxNode> references = await SyntaxFinder.FindReferencesAsync(symbol, document.Solution(), documents: ImmutableHashSet.Create(document), cancellationToken: cancellationToken).ConfigureAwait(false);
+                ImmutableArray<SyntaxNode> references = await SyntaxFinder.FindReferencesAsync(symbol!, document.Solution(), documents: ImmutableHashSet.Create(document), cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName);
 
@@ -65,7 +65,7 @@ internal static class CopyMemberDeclarationRefactoring
             newMember = newMember.WithNavigationAnnotation();
         }
 
-        MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+        MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent!);
 
         int index = memberList.IndexOf(member);
 
@@ -110,7 +110,7 @@ internal static class CopyMemberDeclarationRefactoring
         {
             if (copyAfter)
             {
-                if (statementsInfos.ParentAsBlock.OpenBraceToken.GetFullSpanEndLine(cancellationToken: cancellationToken) == localFunction.GetFullSpanStartLine(cancellationToken: cancellationToken))
+                if (statementsInfos.ParentAsBlock!.OpenBraceToken.GetFullSpanEndLine(cancellationToken: cancellationToken) == localFunction.GetFullSpanStartLine(cancellationToken: cancellationToken))
                 {
                     localFunction = localFunction.WithLeadingTrivia(localFunction.GetLeadingTrivia().Insert(0, NewLine()));
                 }

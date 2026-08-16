@@ -24,7 +24,7 @@ internal class EditorConfigWriter : IDisposable
         WriteEntry("is_global", true);
     }
 
-    public void WriteEntries(IEnumerable<KeyValuePair<string, string>> entries, string keyPrefix = null)
+    public void WriteEntries(IEnumerable<KeyValuePair<string, string>> entries, string? keyPrefix = null)
     {
         foreach (KeyValuePair<string, string> entry in entries)
         {

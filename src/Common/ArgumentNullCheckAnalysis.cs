@@ -10,7 +10,7 @@ namespace Roslynator.CSharp;
 
 internal readonly struct ArgumentNullCheckAnalysis
 {
-    private ArgumentNullCheckAnalysis(ArgumentNullCheckStyle style, string name, bool success)
+    private ArgumentNullCheckAnalysis(ArgumentNullCheckStyle style, string? name, bool success)
     {
         Style = style;
         Name = name;
@@ -18,7 +18,7 @@ internal readonly struct ArgumentNullCheckAnalysis
     }
 
     public ArgumentNullCheckStyle Style { get; }
-    public string Name { get; }
+    public string? Name { get; }
     public bool Success { get; }
 
     public static ArgumentNullCheckAnalysis Create(
@@ -32,13 +32,13 @@ internal readonly struct ArgumentNullCheckAnalysis
     public static ArgumentNullCheckAnalysis Create(
         StatementSyntax statement,
         SemanticModel semanticModel,
-        string name,
+        string? name,
         CancellationToken cancellationToken = default)
     {
         if (statement is IfStatementSyntax ifStatement)
         {
             var style = ArgumentNullCheckStyle.None;
-            string identifier = null;
+            string? identifier = null;
             var success = false;
 
             if (ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
@@ -84,11 +84,11 @@ internal readonly struct ArgumentNullCheckAnalysis
     private static ArgumentNullCheckAnalysis CreateFromArgumentNullExceptionThrowIfNullCheck(
         StatementSyntax statement,
         SemanticModel semanticModel,
-        string name,
+        string? name,
         CancellationToken cancellationToken)
     {
         var style = ArgumentNullCheckStyle.None;
-        string identifier = null;
+        string? identifier = null;
         var success = false;
 
         if (statement is ExpressionStatementSyntax expressionStatement)
@@ -139,7 +139,7 @@ internal readonly struct ArgumentNullCheckAnalysis
     public static bool IsArgumentNullCheck(
         StatementSyntax statement,
         SemanticModel semanticModel,
-        string name,
+        string? name,
         CancellationToken cancellationToken = default)
     {
         return Create(statement, semanticModel, name, cancellationToken).Success;

@@ -10,13 +10,14 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 {
     public virtual bool IsFixable(TStatement statement)
     {
-        if (statement.Parent is not BlockSyntax block)
+        if (statement.Parent is not BlockSyntax initialBlock)
             return false;
 
-        if (!block.Statements.IsLast(statement, ignoreLocalFunctions: true))
+        if (!initialBlock.Statements.IsLast(statement, ignoreLocalFunctions: true))
             return false;
 
-        SyntaxNode parent = block.Parent;
+        BlockSyntax? block = initialBlock;
+        SyntaxNode? parent = block.Parent;
 
         StatementSyntax containingStatement = statement;
 
@@ -33,10 +34,12 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (StatementSyntax)parent;
 
-                    block = containingStatement.Parent as BlockSyntax;
+                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
 
-                    if (block is null)
+                    if (nextBlock is null)
                         return false;
+
+                    block = nextBlock;
 
                     if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
                         return false;
@@ -53,10 +56,12 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (TryStatementSyntax)parent;
 
-                    block = containingStatement.Parent as BlockSyntax;
+                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
 
-                    if (block is null)
+                    if (nextBlock is null)
                         return false;
+
+                    block = nextBlock;
 
                     if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
                         return false;
@@ -79,7 +84,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
     internal bool IsFixable(StatementSyntax statement, BlockSyntax block)
     {
-        SyntaxNode parent = block.Parent;
+        SyntaxNode? parent = block.Parent;
 
         StatementSyntax containingStatement = statement;
 
@@ -96,10 +101,12 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (StatementSyntax)parent;
 
-                    block = containingStatement.Parent as BlockSyntax;
+                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
 
-                    if (block is null)
+                    if (nextBlock is null)
                         return false;
+
+                    block = nextBlock;
 
                     if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
                         return false;
@@ -116,10 +123,12 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (TryStatementSyntax)parent;
 
-                    block = containingStatement.Parent as BlockSyntax;
+                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
 
-                    if (block is null)
+                    if (nextBlock is null)
                         return false;
+
+                    block = nextBlock;
 
                     if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
                         return false;

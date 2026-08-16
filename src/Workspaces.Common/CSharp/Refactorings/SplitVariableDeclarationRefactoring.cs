@@ -40,14 +40,15 @@ internal static class SplitVariableDeclarationRefactoring
         VariableDeclarationSyntax variableDeclaration,
         CancellationToken cancellationToken = default)
     {
-        switch (variableDeclaration.Parent.Kind())
+        SyntaxNode parent = variableDeclaration.Parent!;
+        switch (parent.Kind())
         {
             case SyntaxKind.LocalDeclarationStatement:
-                return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+                return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)parent, cancellationToken).ConfigureAwait(false);
             case SyntaxKind.FieldDeclaration:
-                return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+                return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)parent, cancellationToken).ConfigureAwait(false);
             case SyntaxKind.EventFieldDeclaration:
-                return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+                return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)parent, cancellationToken).ConfigureAwait(false);
             default:
                 throw new InvalidOperationException();
         }
@@ -72,7 +73,7 @@ internal static class SplitVariableDeclarationRefactoring
         FieldDeclarationSyntax declaration,
         CancellationToken cancellationToken)
     {
-        var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+        var containingMember = (TypeDeclarationSyntax)declaration.Parent!;
 
         SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
 
@@ -90,7 +91,7 @@ internal static class SplitVariableDeclarationRefactoring
         EventFieldDeclarationSyntax declaration,
         CancellationToken cancellationToken)
     {
-        var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+        var containingMember = (TypeDeclarationSyntax)declaration.Parent!;
 
         SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
 

@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Configuration;
@@ -12,7 +13,7 @@ public static partial class ConfigOptions
 {
     private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
 
-    public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
+    public static string? GetRequiredOptions(DiagnosticDescriptor descriptor)
     {
         Debug.Assert(_requiredOptions.ContainsKey(descriptor.Id), descriptor.Id);
 
@@ -24,9 +25,13 @@ public static partial class ConfigOptions
         return string.Join(" or ", values);
     }
 
-    public static bool TryGetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out string value, string defaultValue = null)
+    public static bool TryGetValue(
+        AnalyzerConfigOptions configOptions,
+        ConfigOptionDescriptor option,
+        [NotNullWhen(true)] out string? value,
+        string? defaultValue = null)
     {
-        if (configOptions.TryGetValue(option.Key, out string rawValue))
+        if (configOptions.TryGetValue(option.Key, out string? rawValue))
         {
             value = rawValue;
             return true;
@@ -39,9 +44,9 @@ public static partial class ConfigOptions
         return value is not null;
     }
 
-    public static string GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string defaultValue = null)
+    public static string? GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string? defaultValue = null)
     {
-        if (configOptions.TryGetValue(option.Key, out string value))
+        if (configOptions.TryGetValue(option.Key, out string? value))
             return value;
 
         return defaultValue
@@ -51,7 +56,7 @@ public static partial class ConfigOptions
 
     public static bool TryGetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out bool value, bool? defaultValue = null)
     {
-        if (configOptions.TryGetValue(option.Key, out string rawValue)
+        if (configOptions.TryGetValue(option.Key, out string? rawValue)
             && bool.TryParse(rawValue, out bool boolValue))
         {
             value = boolValue;
@@ -74,7 +79,7 @@ public static partial class ConfigOptions
 
     public static bool? GetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, bool? defaultValue = null)
     {
-        if (configOptions.TryGetValue(option.Key, out string rawValue)
+        if (configOptions.TryGetValue(option.Key, out string? rawValue)
             && bool.TryParse(rawValue, out bool boolValue))
         {
             return boolValue;

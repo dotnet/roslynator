@@ -19,7 +19,7 @@ internal static class ReplaceAsWithCastAnalysis
         if (!info.Success)
             return false;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Type, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(info.Type, cancellationToken);
 
         if (typeSymbol is null)
             return false;

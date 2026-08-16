@@ -49,11 +49,11 @@ roslynator_analyzers.enabled_by_default = true|false
     internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();
 
     public EditorConfigCodeAnalysisConfig(
-        IEnumerable<KeyValuePair<string, string>> options = null,
-        IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzers = null,
-        IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzerCategories = null,
-        IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-        IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
+        IEnumerable<KeyValuePair<string, string>>? options = null,
+        IEnumerable<KeyValuePair<string, ReportDiagnostic>>? analyzers = null,
+        IEnumerable<KeyValuePair<string, ReportDiagnostic>>? analyzerCategories = null,
+        IEnumerable<KeyValuePair<string, bool>>? refactorings = null,
+        IEnumerable<KeyValuePair<string, bool>>? codeFixes = null,
         bool? analyzersEnabledByDefault = null)
     {
         Options = options?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
@@ -62,13 +62,13 @@ roslynator_analyzers.enabled_by_default = true|false
         Refactorings = refactorings?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
         CodeFixes = codeFixes?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
 
-        if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string maxLineLengthRaw)
+        if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string? maxLineLengthRaw)
             && int.TryParse(maxLineLengthRaw, out int maxLineLength))
         {
             MaxLineLength = maxLineLength;
         }
 
-        if (Options.TryGetValue(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, out string prefixFieldIdentifierWithUnderscoreRaw)
+        if (Options.TryGetValue(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, out string? prefixFieldIdentifierWithUnderscoreRaw)
             && bool.TryParse(prefixFieldIdentifierWithUnderscoreRaw, out bool prefixFieldIdentifierWithUnderscore))
         {
             PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
@@ -103,7 +103,7 @@ roslynator_analyzers.enabled_by_default = true|false
         return CodeFixes;
     }
 
-    public static string GetDefaultConfigFilePath()
+    public static string? GetDefaultConfigFilePath()
     {
         string path = typeof(EditorConfigCodeAnalysisConfig).Assembly.Location;
 
@@ -197,7 +197,7 @@ roslynator_analyzers.enabled_by_default = true|false
         {
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
                 File.WriteAllText(path, FileDefaultContent, Encoding.UTF8);
             }

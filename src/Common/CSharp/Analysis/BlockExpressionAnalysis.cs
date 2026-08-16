@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Analysis;
 
 internal readonly struct BlockExpressionAnalysis
 {
-    private BlockExpressionAnalysis(StatementSyntax statement, ExpressionSyntax expression, SyntaxToken semicolonToken, SyntaxToken returnOrThrowKeyword)
+    private BlockExpressionAnalysis(StatementSyntax? statement, ExpressionSyntax? expression, SyntaxToken semicolonToken, SyntaxToken returnOrThrowKeyword)
     {
         Statement = statement;
         Expression = expression;
@@ -16,15 +16,15 @@ internal readonly struct BlockExpressionAnalysis
         ReturnOrThrowKeyword = returnOrThrowKeyword;
     }
 
-    public StatementSyntax Statement { get; }
+    public StatementSyntax? Statement { get; }
 
-    public ExpressionSyntax Expression { get; }
+    public ExpressionSyntax? Expression { get; }
 
     public SyntaxToken SemicolonToken { get; }
 
     public SyntaxToken ReturnOrThrowKeyword { get; }
 
-    public BlockSyntax Block => (Statement is not null) ? (BlockSyntax)Statement.Parent : default;
+    public BlockSyntax? Block => (Statement is not null) ? (BlockSyntax?)Statement.Parent : default;
 
     public bool Success => Expression is not null;
 
@@ -43,9 +43,9 @@ internal readonly struct BlockExpressionAnalysis
         return Create(accessor.Body);
     }
 
-    public static BlockExpressionAnalysis Create(BlockSyntax block, bool allowExpressionStatement = true)
+    public static BlockExpressionAnalysis Create(BlockSyntax? block, bool allowExpressionStatement = true)
     {
-        StatementSyntax statement = block?.Statements.SingleOrDefault(shouldThrow: false);
+        StatementSyntax? statement = block?.Statements.SingleOrDefault(shouldThrow: false);
 
         if (statement is null)
             return default;

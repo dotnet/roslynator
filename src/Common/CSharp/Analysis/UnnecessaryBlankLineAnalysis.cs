@@ -152,7 +152,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
                     previousNode = catchClause;
                 }
 
-                FinallyClauseSyntax finallyClause = tryStatement.Finally;
+        FinallyClauseSyntax? finallyClause = tryStatement.Finally;
 
                 if (finallyClause is not null)
                     Analyze(context, previousNode, finallyClause);
@@ -164,11 +164,11 @@ internal abstract class UnnecessaryBlankLineAnalysis
     {
         var elseClause = (ElseClauseSyntax)context.Node;
 
-        SyntaxNode parent = elseClause.Parent;
+        SyntaxNode? parent = elseClause.Parent;
 
         if (parent is IfStatementSyntax ifStatement)
         {
-            StatementSyntax statement = ifStatement.Statement;
+            StatementSyntax? statement = ifStatement.Statement;
 
             if (statement is not null)
                 Analyze(context, statement, elseClause);
@@ -297,8 +297,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
         if (IsStandardTriviaBetweenLines(trailingTrivia, leadingTrivia))
             return;
 
-        if (token
-            .SyntaxTree
+        if (token.SyntaxTree?
             .GetLineSpan(TextSpan.FromBounds(token.Span.End, node.SpanStart), context.CancellationToken)
             .GetLineCount() != 3)
         {
@@ -414,7 +413,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
 
         SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-        ExpressionSyntax first = expressions.FirstOrDefault();
+        ExpressionSyntax? first = expressions.FirstOrDefault();
 
         if (first is null)
             return;
@@ -550,7 +549,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
             return;
 
         int braceLine = brace.GetSpanStartLine();
-        int nodeOrTokenLine = nodeOrToken.SyntaxTree.GetLineSpan(nodeOrToken.Span).EndLine();
+        int nodeOrTokenLine = nodeOrToken.SyntaxTree!.GetLineSpan(nodeOrToken.Span).EndLine();
 
         if (braceLine - nodeOrTokenLine <= 1)
             return;

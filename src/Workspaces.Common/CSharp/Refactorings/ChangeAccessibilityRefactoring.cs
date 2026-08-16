@@ -22,9 +22,9 @@ internal static class ChangeAccessibilityRefactoring
         Accessibility.Protected,
         Accessibility.Private);
 
-    public static ISymbol GetBaseSymbolOrDefault(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+    public static ISymbol? GetBaseSymbolOrDefault(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        ISymbol symbol = GetDeclaredSymbol();
+        ISymbol? symbol = GetDeclaredSymbol();
 
         if (symbol is not null)
         {
@@ -35,7 +35,7 @@ internal static class ChangeAccessibilityRefactoring
 
             if (symbol is not null)
             {
-                SyntaxNode syntax = symbol.GetSyntaxOrDefault(cancellationToken);
+                SyntaxNode? syntax = symbol.GetSyntaxOrDefault(cancellationToken);
 
                 if (syntax is not null)
                 {
@@ -50,11 +50,11 @@ internal static class ChangeAccessibilityRefactoring
 
         return null;
 
-        ISymbol GetDeclaredSymbol()
+        ISymbol? GetDeclaredSymbol()
         {
             if (node is EventFieldDeclarationSyntax eventFieldDeclaration)
             {
-                VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
+                VariableDeclaratorSyntax? declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
                 if (declarator is not null)
                     return semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
@@ -98,14 +98,14 @@ internal static class ChangeAccessibilityRefactoring
 
             if (filter.HasAnyFlag(ModifierFilter.Partial))
             {
-                ISymbol symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
+                ISymbol? symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
 
-                foreach (SyntaxReference reference in symbol.DeclaringSyntaxReferences)
+                foreach (SyntaxReference reference in symbol!.DeclaringSyntaxReferences)
                     members.Add((MemberDeclarationSyntax)reference.GetSyntax(cancellationToken));
             }
             else if (filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
             {
-                ISymbol symbol = GetBaseSymbolOrDefault(member, semanticModel, cancellationToken);
+                ISymbol? symbol = GetBaseSymbolOrDefault(member, semanticModel, cancellationToken);
 
                 if (symbol is not null)
                 {
@@ -182,7 +182,7 @@ internal static class ChangeAccessibilityRefactoring
                 }
                 case VariableDeclaratorSyntax variableDeclarator:
                 {
-                    if (variableDeclarator.Parent.Parent is MemberDeclarationSyntax memberDeclaration2)
+                    if (variableDeclarator.Parent!.Parent is MemberDeclarationSyntax memberDeclaration2)
                         yield return memberDeclaration2;
 
                     break;

@@ -8,15 +8,15 @@ namespace Roslynator;
 
 internal static class DiagnosticProperties
 {
-    public static ImmutableDictionary<string, string> NewLinePosition_After = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("NewLinePosition", "After") });
+    public static ImmutableDictionary<string, string?> NewLinePosition_After = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string?>("NewLinePosition", "After") });
 
-    private static ImmutableDictionary<string, string> _analyzerOption_Invert;
+    private static ImmutableDictionary<string, string?>? _analyzerOption_Invert;
 
     private const string AnalyzerOptionKey = "AnalyzerOption";
 
     private const string InvertValue = "Invert";
 
-    public static ImmutableDictionary<string, string> AnalyzerOption_Invert
+    public static ImmutableDictionary<string, string?> AnalyzerOption_Invert
     {
         get
         {
@@ -24,7 +24,7 @@ internal static class DiagnosticProperties
             {
                 Interlocked.CompareExchange(
                     ref _analyzerOption_Invert,
-                    ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(AnalyzerOptionKey, InvertValue) }),
+                    ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string?>(AnalyzerOptionKey, InvertValue) }),
                     null);
             }
 
@@ -32,9 +32,9 @@ internal static class DiagnosticProperties
         }
     }
 
-    public static bool ContainsInvert(ImmutableDictionary<string, string> properties)
+    public static bool ContainsInvert(ImmutableDictionary<string, string?> properties)
     {
-        return properties.TryGetValue(AnalyzerOptionKey, out string value)
+        return properties.TryGetValue(AnalyzerOptionKey, out string? value)
             && value == InvertValue;
     }
 }

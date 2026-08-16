@@ -28,7 +28,7 @@ internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
 
         int position = newTypeDeclaration.Identifier.Span.End;
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         string propertyName = NameGenerator.Default.EnsureUniqueName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position);
 

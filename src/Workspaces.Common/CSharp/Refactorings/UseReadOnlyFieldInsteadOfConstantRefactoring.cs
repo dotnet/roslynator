@@ -21,11 +21,11 @@ internal static class UseReadOnlyFieldInsteadOfConstantRefactoring
             .RemoveModifier(SyntaxKind.ConstKeyword)
             .InsertModifier(SyntaxKind.ReadOnlyKeyword);
 
-        var containingDeclaration = (MemberDeclarationSyntax)field.Parent;
+        var containingDeclaration = (MemberDeclarationSyntax?)field.Parent;
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        if (semanticModel.GetDeclaredSymbol(containingDeclaration, cancellationToken)?.IsStatic == true)
+        if (semanticModel.GetDeclaredSymbol(containingDeclaration!, cancellationToken)?.IsStatic == true)
         {
             newField = newField.InsertModifier(SyntaxKind.StaticKeyword);
         }

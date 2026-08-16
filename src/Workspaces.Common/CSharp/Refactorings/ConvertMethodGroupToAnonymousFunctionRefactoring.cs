@@ -19,9 +19,9 @@ internal static class ConvertMethodGroupToAnonymousFunctionRefactoring
     {
         InvocationExpressionSyntax invocationExpression = InvocationExpression(expression);
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken);
+        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken)!;
 
-        LambdaExpressionSyntax lambda = null;
+        LambdaExpressionSyntax? lambda = null;
 
         ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
 
@@ -39,8 +39,8 @@ internal static class ConvertMethodGroupToAnonymousFunctionRefactoring
         }
         else
         {
-            ParameterListSyntax parameterList = null;
-            ArgumentListSyntax argumentList = null;
+            ParameterListSyntax? parameterList = null;
+            ArgumentListSyntax? argumentList = null;
 
             if (parameterSymbols.Length == 0)
             {

@@ -32,7 +32,7 @@ internal readonly struct BodyStyle
 
         var option = BodyStyleOption.None;
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BodyStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BodyStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.BodyStyle_Block, StringComparison.OrdinalIgnoreCase))
             {

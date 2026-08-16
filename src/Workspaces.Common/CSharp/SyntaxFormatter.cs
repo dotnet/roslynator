@@ -95,7 +95,7 @@ internal static class SyntaxFormatter
             }
         }
 
-        SyntaxNode parent = initializer.Parent;
+        SyntaxNode parent = initializer.Parent!;
 
         SyntaxNode newParent;
 
@@ -107,7 +107,7 @@ internal static class SyntaxFormatter
 
                 expression = expression.WithInitializer(newInitializer);
 
-                ArgumentListSyntax argumentList = expression.ArgumentList;
+                ArgumentListSyntax? argumentList = expression.ArgumentList;
 
                 if (argumentList is not null)
                 {
@@ -126,7 +126,7 @@ internal static class SyntaxFormatter
 
                 expression = expression.WithInitializer(newInitializer);
 
-                ArgumentListSyntax argumentList = expression.ArgumentList;
+                ArgumentListSyntax? argumentList = expression.ArgumentList;
 
                 if (argumentList is not null)
                 {
@@ -311,7 +311,7 @@ internal static class SyntaxFormatter
 
     public static InitializerExpressionSyntax ToMultiLine(InitializerExpressionSyntax initializer, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
     {
-        SyntaxNode parent = initializer.Parent;
+        SyntaxNode parent = initializer.Parent!;
 
         SyntaxTrivia endOfLine = DetermineEndOfLine(initializer);
 
@@ -388,7 +388,7 @@ internal static class SyntaxFormatter
         ExpressionSyntax expression,
         CancellationToken cancellationToken = default)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         return await WrapCallChainAsync(document, expression, semanticModel, cancellationToken).ConfigureAwait(false);
     }
@@ -406,7 +406,7 @@ internal static class SyntaxFormatter
         string indentation = Environment.NewLine + indentationAnalysis.GetIncreasedIndentation();
 
         TextChange? textChange = null;
-        List<TextChange> textChanges = null;
+        List<TextChange>? textChanges = null;
 
         foreach (SyntaxNode node in new MethodChain(expression))
         {
@@ -447,7 +447,7 @@ internal static class SyntaxFormatter
         }
         else
         {
-            return document.WithTextChangeAsync(textChange.Value, cancellationToken);
+            return document.WithTextChangeAsync(textChange!.Value, cancellationToken);
         }
 
         void AddTextChange(SyntaxToken operatorToken)
@@ -539,7 +539,7 @@ internal static class SyntaxFormatter
 
     private static AccessorDeclarationSyntax ToMultiLine(AccessorDeclarationSyntax accessor)
     {
-        BlockSyntax body = accessor.Body;
+        BlockSyntax? body = accessor.Body;
 
         if (body is not null)
         {

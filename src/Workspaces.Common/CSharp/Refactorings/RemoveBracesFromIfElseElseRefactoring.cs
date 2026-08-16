@@ -22,7 +22,7 @@ internal static class RemoveBracesFromIfElseElseRefactoring
 
     private class SyntaxRewriter : CSharpSyntaxRewriter
     {
-        private IfStatementSyntax _previousIf;
+        private IfStatementSyntax? _previousIf;
 
         private SyntaxRewriter()
         {
@@ -33,7 +33,7 @@ internal static class RemoveBracesFromIfElseElseRefactoring
             return (IfStatementSyntax)new SyntaxRewriter().Visit(node);
         }
 
-        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+        public override SyntaxNode? VisitIfStatement(IfStatementSyntax node)
         {
             if (_previousIf?.Equals(node.GetPreviousIf()) != false)
             {
@@ -54,9 +54,9 @@ internal static class RemoveBracesFromIfElseElseRefactoring
             return base.VisitIfStatement(node);
         }
 
-        public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
+        public override SyntaxNode? VisitElseClause(ElseClauseSyntax node)
         {
-            if (_previousIf.Equals(node.Parent)
+            if (_previousIf!.Equals(node.Parent)
                 && node.Statement?.Kind() == SyntaxKind.Block)
             {
                 return node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);

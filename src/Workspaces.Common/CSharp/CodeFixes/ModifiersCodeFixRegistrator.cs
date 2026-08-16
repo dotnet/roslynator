@@ -22,9 +22,9 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         SyntaxKind modifierKind,
-        string title = null,
-        string additionalKey = null,
-        IComparer<SyntaxKind> comparer = null)
+        string? title = null,
+        string? additionalKey = null,
+        IComparer<SyntaxKind>? comparer = null)
     {
         AddModifier(context, context.Document, diagnostic, node, modifierKind, title, additionalKey, comparer);
     }
@@ -35,9 +35,9 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         SyntaxKind modifierKind,
-        string title = null,
-        string additionalKey = null,
-        IComparer<SyntaxKind> comparer = null)
+        string? title = null,
+        string? additionalKey = null,
+        IComparer<SyntaxKind>? comparer = null)
     {
         CodeAction codeAction = CodeAction.Create(
             title ?? GetAddModifierTitle(modifierKind, node),
@@ -51,7 +51,7 @@ internal static class ModifiersCodeFixRegistrator
         Document document,
         TNode node,
         SyntaxKind modifierKind,
-        IComparer<SyntaxKind> comparer = null,
+        IComparer<SyntaxKind>? comparer = null,
         CancellationToken cancellationToken = default) where TNode : SyntaxNode
     {
         TNode newNode = AddModifier(node, modifierKind, comparer);
@@ -62,7 +62,7 @@ internal static class ModifiersCodeFixRegistrator
     private static TNode AddModifier<TNode>(
         TNode node,
         SyntaxKind modifierKind,
-        IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+        IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         switch (modifierKind)
         {
@@ -100,9 +100,9 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         IEnumerable<TNode> nodes,
         SyntaxKind modifierKind,
-        string title = null,
-        string additionalKey = null,
-        IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+        string? title = null,
+        string? additionalKey = null,
+        IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         if (nodes is IList<TNode> list)
         {
@@ -135,8 +135,8 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         SyntaxKind modifierKind,
-        string title = null,
-        string additionalKey = null)
+        string? title = null,
+        string? additionalKey = null)
     {
         Document document = context.Document;
 
@@ -153,8 +153,8 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         SyntaxToken modifier,
-        string title = null,
-        string additionalKey = null)
+        string? title = null,
+        string? additionalKey = null)
     {
         SyntaxKind kind = modifier.Kind();
 
@@ -195,8 +195,8 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         IEnumerable<TNode> nodes,
         SyntaxKind modifierKind,
-        string title = null,
-        string additionalKey = null) where TNode : SyntaxNode
+        string? title = null,
+        string? additionalKey = null) where TNode : SyntaxNode
     {
         if (nodes is IList<TNode> list)
         {
@@ -229,7 +229,7 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         Func<SyntaxToken, bool> predicate,
-        string additionalKey = null)
+        string? additionalKey = null)
     {
         SyntaxTokenList modifiers = SyntaxInfo.ModifierListInfo(node).Modifiers;
 
@@ -242,9 +242,9 @@ internal static class ModifiersCodeFixRegistrator
         SyntaxNode node,
         SyntaxTokenList modifiers,
         Func<SyntaxToken, bool> predicate,
-        string additionalKey = null)
+        string? additionalKey = null)
     {
-        List<int> indexes = null;
+        List<int>? indexes = null;
 
         for (int i = 0; i < modifiers.Count; i++)
         {
@@ -282,7 +282,7 @@ internal static class ModifiersCodeFixRegistrator
         CodeFixContext context,
         Diagnostic diagnostic,
         SyntaxNode node,
-        string additionalKey = null)
+        string? additionalKey = null)
     {
         SyntaxTokenList modifiers = SyntaxInfo.ModifierListInfo(node).Modifiers;
         SyntaxToken modifier = modifiers.SingleOrDefault(shouldThrow: false);
@@ -311,7 +311,7 @@ internal static class ModifiersCodeFixRegistrator
         CodeFixContext context,
         Diagnostic diagnostic,
         SyntaxNode node,
-        string additionalKey = null)
+        string? additionalKey = null)
     {
         var accessModifier = default(SyntaxToken);
 
@@ -356,9 +356,9 @@ internal static class ModifiersCodeFixRegistrator
         Diagnostic diagnostic,
         SyntaxNode node,
         SyntaxToken modifier,
-        string title = null,
-        string additionalKey = null,
-        IComparer<SyntaxKind> comparer = null)
+        string? title = null,
+        string? additionalKey = null,
+        IComparer<SyntaxKind>? comparer = null)
     {
         Document document = context.Document;
 
@@ -405,7 +405,7 @@ internal static class ModifiersCodeFixRegistrator
             diagnostic);
     }
 
-    private static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey)
+    private static string GetEquivalenceKey(Diagnostic diagnostic, string? additionalKey)
     {
         return EquivalenceKey.Create(diagnostic, additionalKey);
     }
@@ -438,7 +438,7 @@ internal static class ModifiersCodeFixRegistrator
             : $"Remove modifier '{GetText(modifierKind)}'";
     }
 
-    private static string GetRemoveModifiersTitle(IEnumerable<SyntaxToken> modifiers, Func<SyntaxToken, bool> predicate = null)
+    private static string GetRemoveModifiersTitle(IEnumerable<SyntaxToken> modifiers, Func<SyntaxToken, bool>? predicate = null)
     {
         if (predicate is not null)
             modifiers = modifiers.Where(predicate);

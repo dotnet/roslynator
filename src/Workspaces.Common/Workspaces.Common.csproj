@@ -8,6 +8,7 @@
     <Version>$(RoslynatorVersion)</Version>
     <AssemblyName>$(RoslynatorDllPrefix)Roslynator.Workspaces.Common</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

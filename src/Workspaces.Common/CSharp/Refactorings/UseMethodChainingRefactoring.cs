@@ -20,13 +20,13 @@ internal static class UseMethodChainingRefactoring
         ExpressionStatementSyntax expressionStatement,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         InvocationExpressionSyntax invocationExpression = GetInvocationExpression(expressionStatement);
 
         SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 
-        ITypeSymbol returnType = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken).ReturnType;
+        ITypeSymbol returnType = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken)!.ReturnType;
 
         string name = ((IdentifierNameSyntax)UseMethodChainingAnalysis.WalkDownMethodChain(invocationInfo).Expression).Identifier.ValueText;
 
@@ -108,7 +108,7 @@ internal static class UseMethodChainingRefactoring
         }
         else
         {
-            return SyntaxInfo.SimpleAssignmentExpressionInfo(expression).Right as InvocationExpressionSyntax;
+            return (SyntaxInfo.SimpleAssignmentExpressionInfo(expression).Right as InvocationExpressionSyntax)!;
         }
     }
 }

@@ -9,16 +9,16 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
 
 internal class ThrowStatementInfo : ThrowInfo
 {
-    internal ThrowStatementInfo(ThrowStatementSyntax node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
+    internal ThrowStatementInfo(ThrowStatementSyntax node, ExpressionSyntax? expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
         : base(node, expression, exceptionSymbol, declarationSymbol)
     {
     }
 
-    protected override IParameterSymbol GetParameterSymbolCore(
+    protected override IParameterSymbol? GetParameterSymbolCore(
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        SyntaxNode parent = Node.Parent;
+        SyntaxNode? parent = Node.Parent;
 
         if (parent is null)
             return null;
@@ -36,12 +36,12 @@ internal class ThrowStatementInfo : ThrowInfo
 
         var equalsExpression = (BinaryExpressionSyntax)condition;
 
-        ExpressionSyntax left = equalsExpression.Left;
+        ExpressionSyntax? left = equalsExpression.Left;
 
         if (left is null)
             return null;
 
-        ISymbol leftSymbol = semanticModel.GetSymbol(left, cancellationToken);
+        ISymbol? leftSymbol = semanticModel.GetSymbol(left, cancellationToken);
 
         if (leftSymbol?.Kind != SymbolKind.Parameter)
             return null;

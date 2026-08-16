@@ -11,7 +11,7 @@ namespace Roslynator;
 
 internal static class RuleSetLoader
 {
-    private static RuleSet _emptyRuleSet;
+    private static RuleSet? _emptyRuleSet;
 
     internal const string DefaultRuleSetName = "roslynator.ruleset";
 
@@ -35,13 +35,13 @@ internal static class RuleSetLoader
         }
     }
 
-    public static RuleSet Load(string path, ImmutableArray<string> additionalPaths)
+    public static RuleSet? Load(string path, ImmutableArray<string> additionalPaths)
     {
-        RuleSet ruleSet = Load(path);
+        RuleSet? ruleSet = Load(path);
 
         foreach (string ruleSetPath in additionalPaths)
         {
-            RuleSet ruleSet2 = Load(ruleSetPath);
+            RuleSet? ruleSet2 = Load(ruleSetPath);
 
             ruleSet = Combine(ruleSet, ruleSet2);
         }
@@ -49,12 +49,12 @@ internal static class RuleSetLoader
         return ruleSet;
     }
 
-    private static RuleSet Load(string path)
+    private static RuleSet? Load(string path)
     {
         if (!File.Exists(path))
             return null;
 
-        StreamWriter sw = null;
+        StreamWriter? sw = null;
         try
         {
             //sw = File.CreateText(path + ".log");
@@ -65,7 +65,7 @@ internal static class RuleSetLoader
 
             if (File.Exists(path))
             {
-                RuleSet ruleSet = null;
+                RuleSet? ruleSet = null;
 
                 try
                 {
@@ -105,7 +105,7 @@ internal static class RuleSetLoader
         return null;
     }
 
-    public static RuleSet Combine(RuleSet ruleSet, RuleSet parent)
+    public static RuleSet? Combine(RuleSet? ruleSet, RuleSet? parent)
     {
         if (ruleSet is null)
             return parent;

@@ -83,7 +83,7 @@ internal static class GenerateBaseConstructorsRefactoring
 
         foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
         {
-            EqualsValueClauseSyntax @default = null;
+            EqualsValueClauseSyntax? @default = null;
 
             if (parameterSymbol.HasExplicitDefaultValue)
             {

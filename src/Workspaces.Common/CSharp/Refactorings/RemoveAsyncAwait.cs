@@ -17,15 +17,15 @@ internal static class RemoveAsyncAwait
         SyntaxToken asyncKeyword,
         CancellationToken cancellationToken = default)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        SyntaxNode node = asyncKeyword.Parent;
+        SyntaxNode? node = asyncKeyword.Parent;
 
         var remover = new AwaitRemover(semanticModel, cancellationToken);
 
         SyntaxNode newNode = GetNewNode();
 
-        return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+        return await document.ReplaceNodeAsync(node!, newNode, cancellationToken).ConfigureAwait(false);
 
         SyntaxNode GetNewNode()
         {
@@ -34,23 +34,23 @@ internal static class RemoveAsyncAwait
                 case MethodDeclarationSyntax methodDeclaration:
                 {
                     return remover
-                        .VisitMethodDeclaration(methodDeclaration)
+                        .VisitMethodDeclaration(methodDeclaration)!
                         .RemoveModifier(SyntaxKind.AsyncKeyword);
                 }
                 case LocalFunctionStatementSyntax localFunction:
                 {
-                    BlockSyntax body = localFunction.Body;
+                    BlockSyntax? body = localFunction.Body;
 
                     if (body is not null)
                     {
-                        localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
+                        localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body)!);
                     }
                     else
                     {
-                        ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
+                        ArrowExpressionClauseSyntax? expressionBody = localFunction.ExpressionBody;
 
                         if (expressionBody is not null)
-                            localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
+                            localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody)!);
                     }
 
                     return localFunction.RemoveModifier(SyntaxKind.AsyncKeyword);
@@ -116,35 +116,35 @@ internal static class RemoveAsyncAwait
                 var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
 
                 if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
-                    expression = memberAccess.Expression;
+                    expression = memberAccess!.Expression;
             }
 
             return expression.WithTriviaFrom(awaitExpression);
         }
 
-        public override SyntaxNode VisitAwaitExpression(AwaitExpressionSyntax node)
+        public override SyntaxNode? VisitAwaitExpression(AwaitExpressionSyntax node)
         {
-            node = (AwaitExpressionSyntax)base.VisitAwaitExpression(node);
+            node = (AwaitExpressionSyntax)base.VisitAwaitExpression(node)!;
 
             return ExtractExpressionFromAwait(node, SemanticModel, CancellationToken);
         }
 
-        public override SyntaxNode VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+        public override SyntaxNode? VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
         {
             return node;
         }
 
-        public override SyntaxNode VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+        public override SyntaxNode? VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
             return node;
         }
 
-        public override SyntaxNode VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+        public override SyntaxNode? VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
         {
             return node;
         }
 
-        public override SyntaxNode VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+        public override SyntaxNode? VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
             return node;
         }
