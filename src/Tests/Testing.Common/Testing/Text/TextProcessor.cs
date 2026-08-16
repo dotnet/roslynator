@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Text;
 
 namespace Roslynator.Testing.Text;
 

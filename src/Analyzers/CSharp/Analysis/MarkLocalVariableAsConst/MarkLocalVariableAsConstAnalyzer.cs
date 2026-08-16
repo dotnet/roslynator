@@ -100,35 +100,22 @@ public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
         SyntaxList<StatementSyntax> statements,
         int startIndex)
     {
-        MarkLocalVariableAsConstWalker walker = null;
+        var walker = new MarkLocalVariableAsConstWalker(context.SemanticModel, context.CancellationToken);
 
-        try
+        foreach (VariableDeclaratorSyntax variable in variables)
         {
-            walker = MarkLocalVariableAsConstWalker.GetInstance();
+            var symbol = context.SemanticModel.GetDeclaredSymbol(variable, context.CancellationToken) as ILocalSymbol;
 
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
-
-            foreach (VariableDeclaratorSyntax variable in variables)
-            {
-                var symbol = context.SemanticModel.GetDeclaredSymbol(variable, context.CancellationToken) as ILocalSymbol;
-
-                if (symbol is not null)
-                    walker.Identifiers[variable.Identifier.ValueText] = symbol;
-            }
-
-            for (int i = startIndex; i < statements.Count; i++)
-            {
-                walker.Visit(statements[i]);
-
-                if (walker.Result)
-                    return false;
-            }
+            if (symbol is not null)
+                walker.Identifiers[variable.Identifier.ValueText] = symbol;
         }
-        finally
+
+        for (int i = startIndex; i < statements.Count; i++)
         {
-            if (walker is not null)
-                MarkLocalVariableAsConstWalker.Free(walker);
+            walker.Visit(statements[i]);
+
+            if (walker.Result)
+                return false;
         }
 
         return true;

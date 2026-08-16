@@ -34,11 +34,15 @@ internal static class ChangeDeclarationExpressionTypeRefactoring
             {
                 TypeSyntax type = declarationExpression.Type;
 
-                var localSymbol = (ILocalSymbol)semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken);
+                ILocalSymbol localSymbol = semanticModel.GetDeclaredLocalSymbol(declarationExpression.Designation, context.CancellationToken);
+                ITypeSymbol typeSymbol = (localSymbol?.Type)
+                    ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
-                ITypeSymbol typeSymbol = localSymbol.Type;
-
-                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
+                if (typeSymbol is not null)
+                {
+                    context.RegisterRefactoring(CodeActionFactory.ChangeType(
+                        context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
+                }
             }
         }
     }

@@ -122,6 +122,8 @@ readonly struct C
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0100"));
     }
 
+#if ROSLYN_TEST_4_12_OR_GREATER
+    // Test source uses 'params ReadOnlySpan<T>' (params collections, C# 13 / Roslyn 4.12).
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ParamsReadOnlySpan()
     {
@@ -136,6 +138,8 @@ readonly struct C
 }
 ");
     }
+
+#endif
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()

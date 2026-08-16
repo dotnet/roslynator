@@ -135,25 +135,10 @@ public sealed class UsePatternMatchingInsteadOfIsAndCastAnalyzer : BaseDiagnosti
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        bool isFixable;
-        UsePatternMatchingWalker walker = null;
+        var walker = new UsePatternMatchingWalker(identifierName, semanticModel, cancellationToken);
 
-        try
-        {
-            walker = UsePatternMatchingWalker.GetInstance();
+        walker.Visit(node);
 
-            walker.SetValues(identifierName, semanticModel, cancellationToken);
-
-            walker.Visit(node);
-
-            isFixable = walker.IsFixable.GetValueOrDefault();
-        }
-        finally
-        {
-            if (walker is not null)
-                UsePatternMatchingWalker.Free(walker);
-        }
-
-        return isFixable;
+        return walker.IsFixable.GetValueOrDefault();
     }
 }

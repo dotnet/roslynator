@@ -2,6 +2,16 @@
 
 Testing framework for unit-testing [Roslyn](https://github.com/dotnet/roslyn) analyzers, refactorings, and code fixes.
 
+## Choosing the Roslyn version
+
+This package depends on `Microsoft.CodeAnalysis.*` with a low minimum version, so it does not force a particular Roslyn version on your test project. Add a reference to the Roslyn version you want your tests to run against - typically the same version your analyzer library is built for:
+
+```xml
+<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
+```
+
+The chosen version raises the maximum C# language version the parser can accept (for example, Roslyn 3.8 supports up to C# 9). Test sources still parse at `CSharpParseOptions.Default` (not `Latest`) unless you set parse options / `LanguageVersion` (for example via `WithParseOptions` and `LanguageVersion.Latest`).
+
 ## Usage
 
 Examples in the Roslynator repository:
@@ -17,6 +27,7 @@ Examples in the Roslynator repository:
 
 ## Related Products
 
+* [Roslynator for Visual Studio 2026](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2026)
 * [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
 * [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)

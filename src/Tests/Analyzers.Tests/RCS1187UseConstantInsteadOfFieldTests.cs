@@ -13,6 +13,32 @@ public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpDiagnosticVer
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConstantInsteadOfField;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task Test_StaticConstructorThatDoesNotAssignField()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    [|private static readonly int _f = 1;|]
+
+    static C()
+    {
+        var x = 1;
+    }
+}
+", @"
+class C
+{
+    private const int _f = 1;
+
+    static C()
+    {
+        var x = 1;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
     public async Task TestNoDiagnostic_AssignmentInInStaticConstructor()
     {
         await VerifyNoDiagnosticAsync(@"

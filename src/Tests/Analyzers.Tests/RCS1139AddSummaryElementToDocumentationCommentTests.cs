@@ -50,4 +50,20 @@ partial class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
+    public async Task TestNoDiagnostic_ExtensionBlock_WithoutSummary()
+    {
+        await VerifyNoDiagnosticAsync("""
+static class C
+{
+    /// <param name="x">x</param>
+    /// <typeparam name="T">T</typeparam>
+    extension<T>(T x) where T : struct
+    {
+        public int M() => 0;
+    }
+}
+""");
+    }
 }

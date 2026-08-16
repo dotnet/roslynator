@@ -35,10 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\..\images\roslynator-logo-small.png" Pack="true" PackagePath="icon.png" Visible="false" />
     <None Include="docs\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
   </ItemGroup>

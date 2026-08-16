@@ -25,6 +25,17 @@ public static class CSharpExtensions
         return (IMethodSymbol?)ModelExtensions.GetDeclaredSymbol(semanticModel, localFunction, cancellationToken);
     }
 
+    internal static ILocalSymbol? GetDeclaredLocalSymbol(
+        this SemanticModel semanticModel,
+        VariableDesignationSyntax designation,
+        CancellationToken cancellationToken = default)
+    {
+        if (designation is SingleVariableDesignationSyntax singleVariableDesignation)
+            return (ILocalSymbol?)semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken);
+
+        return null;
+    }
+
     /// <summary>
     /// Returns what symbol, if any, the specified attribute syntax bound to.
     /// </summary>

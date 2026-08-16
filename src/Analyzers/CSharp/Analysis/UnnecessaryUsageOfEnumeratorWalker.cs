@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,30 +11,24 @@ namespace Roslynator.CSharp.Analysis;
 
 internal class UnnecessaryUsageOfEnumeratorWalker : BaseCSharpSyntaxWalker
 {
-    [ThreadStatic]
-    private static UnnecessaryUsageOfEnumeratorWalker _cachedInstance;
-
+    private readonly VariableDeclaratorSyntax _variableDeclarator;
+    private readonly string _name;
+    private readonly SemanticModel _semanticModel;
+    private readonly CancellationToken _cancellationToken;
     private ISymbol _symbol;
-    private VariableDeclaratorSyntax _variableDeclarator;
-    private string _name;
-    private SemanticModel _semanticModel;
-    private CancellationToken _cancellationToken;
 
-    public bool? IsFixable { get; private set; }
-
-    public void SetValues(
+    public UnnecessaryUsageOfEnumeratorWalker(
         VariableDeclaratorSyntax variableDeclarator,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IsFixable = null;
-
-        _symbol = null;
-        _name = variableDeclarator?.Identifier.ValueText;
         _variableDeclarator = variableDeclarator;
+        _name = variableDeclarator?.Identifier.ValueText;
         _semanticModel = semanticModel;
         _cancellationToken = cancellationToken;
     }
+
+    public bool? IsFixable { get; private set; }
 
     protected override bool ShouldVisit => IsFixable != false;
 
@@ -85,30 +78,5 @@ internal class UnnecessaryUsageOfEnumeratorWalker : BaseCSharpSyntaxWalker
         }
 
         IsFixable = true;
-    }
-
-    public static UnnecessaryUsageOfEnumeratorWalker GetInstance()
-    {
-        UnnecessaryUsageOfEnumeratorWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker._symbol is null);
-            Debug.Assert(walker._variableDeclarator is null);
-            Debug.Assert(walker._semanticModel is null);
-            Debug.Assert(walker._cancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new UnnecessaryUsageOfEnumeratorWalker();
-    }
-
-    public static void Free(UnnecessaryUsageOfEnumeratorWalker walker)
-    {
-        walker.SetValues(default(VariableDeclaratorSyntax), default(SemanticModel), default(CancellationToken));
-
-        _cachedInstance = walker;
     }
 }

@@ -212,50 +212,34 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
             && !propertySymbol.IsStatic
             && (propertySymbol.IsVirtual || propertySymbol.IsOverride);
 
-        var isFixable = false;
-        UseAutoPropertyWalker walker = null;
+        ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
 
-        try
+        if (syntaxReferences.Length == 1)
         {
-            walker = UseAutoPropertyWalker.GetInstance();
+            var walker = new UseAutoPropertyWalker(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
 
-            ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
+            walker.Visit(propertyDeclaration.Parent);
 
-            if (syntaxReferences.Length == 1)
-            {
-                walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
-
-                walker.Visit(propertyDeclaration.Parent);
-
-                isFixable = walker.Success;
-            }
-            else
-            {
-                foreach (SyntaxReference syntaxReference in syntaxReferences)
-                {
-                    SyntaxNode typeDeclaration = syntaxReference.GetSyntax(cancellationToken);
-
-                    if (typeDeclaration.SyntaxTree != semanticModel.SyntaxTree)
-                    {
-                        isFixable = false;
-                        break;
-                    }
-
-                    walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
-
-                    walker.Visit(typeDeclaration);
-
-                    isFixable = walker.Success;
-
-                    if (!isFixable)
-                        break;
-                }
-            }
+            return walker.Success;
         }
-        finally
+
+        var isFixable = false;
+
+        foreach (SyntaxReference syntaxReference in syntaxReferences)
         {
-            if (walker is not null)
-                UseAutoPropertyWalker.Free(walker);
+            SyntaxNode typeDeclaration = syntaxReference.GetSyntax(cancellationToken);
+
+            if (typeDeclaration.SyntaxTree != semanticModel.SyntaxTree)
+                return false;
+
+            var walker = new UseAutoPropertyWalker(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
+
+            walker.Visit(typeDeclaration);
+
+            isFixable = walker.Success;
+
+            if (!isFixable)
+                break;
         }
 
         return isFixable;
@@ -461,19 +445,7 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
     {
         private bool _isInInstanceConstructor;
 
-        public IFieldSymbol FieldSymbol { get; private set; }
-
-        public bool ShouldSearchForReferenceInInstanceConstructor { get; private set; }
-
-        public SemanticModel SemanticModel { get; private set; }
-
-        public CancellationToken CancellationToken { get; private set; }
-
-        public bool Success { get; set; } = true;
-
-        protected override bool ShouldVisit => Success;
-
-        public void SetValues(
+        public UseAutoPropertyWalker(
             IFieldSymbol fieldSymbol,
             bool shouldSearchForReferenceInInstanceConstructor,
             SemanticModel semanticModel,
@@ -483,8 +455,19 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
             ShouldSearchForReferenceInInstanceConstructor = shouldSearchForReferenceInInstanceConstructor;
             SemanticModel = semanticModel;
             CancellationToken = cancellationToken;
-            Success = true;
         }
+
+        public IFieldSymbol FieldSymbol { get; }
+
+        public bool ShouldSearchForReferenceInInstanceConstructor { get; }
+
+        public SemanticModel SemanticModel { get; }
+
+        public CancellationToken CancellationToken { get; }
+
+        public bool Success { get; private set; } = true;
+
+        protected override bool ShouldVisit => Success;
 
         public override void VisitArgument(ArgumentSyntax node)
         {
@@ -653,37 +636,6 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
         {
             return string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
                 && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), FieldSymbol);
-        }
-
-        [ThreadStatic]
-        private static UseAutoPropertyWalker _cachedInstance;
-
-        public static UseAutoPropertyWalker GetInstance()
-        {
-            UseAutoPropertyWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.FieldSymbol is null);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new UseAutoPropertyWalker();
-        }
-
-        public static void Free(UseAutoPropertyWalker walker)
-        {
-            walker.SetValues(
-                default(IFieldSymbol),
-                false,
-                default(SemanticModel),
-                default(CancellationToken));
-
-            _cachedInstance = walker;
         }
     }
 }

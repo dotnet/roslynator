@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -9,9 +8,6 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 
 internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 {
-    [ThreadStatic]
-    private static ContainsCommentWalker? _cachedInstance;
-
     public ContainsCommentWalker(TextSpan span)
         : base(SyntaxWalkerDepth.Trivia)
     {
@@ -20,7 +16,7 @@ internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 
     public bool Result { get; set; }
 
-    public TextSpan Span { get; set; }
+    public TextSpan Span { get; }
 
     public override void VisitTrivia(SyntaxTrivia trivia)
     {
@@ -46,35 +42,10 @@ internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 
     public static bool ContainsComment(SyntaxNode node, TextSpan span)
     {
-        ContainsCommentWalker walker = GetInstance(span);
+        var walker = new ContainsCommentWalker(span);
 
         walker.Visit(node);
 
-        bool result = walker.Result;
-
-        Free(walker);
-
-        return result;
-    }
-
-    public static ContainsCommentWalker GetInstance(TextSpan span)
-    {
-        ContainsCommentWalker? walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            _cachedInstance = null;
-            walker.Result = false;
-            walker.Span = span;
-
-            return walker;
-        }
-
-        return new ContainsCommentWalker(span);
-    }
-
-    public static void Free(ContainsCommentWalker walker)
-    {
-        _cachedInstance = walker;
+        return walker.Result;
     }
 }

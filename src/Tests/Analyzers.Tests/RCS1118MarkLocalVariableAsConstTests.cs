@@ -141,6 +141,8 @@ public static class C
 }");
     }
 
+#if ROSLYN_TEST_4_8_OR_GREATER
+    // Test source uses a 'ref readonly' parameter (C# 12 / Roslyn 4.8).
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task TestNoDiagnostic_InArgument_RefReadOnlyParameter()
     {
@@ -158,6 +160,8 @@ public static class C
     }
 }");
     }
+
+#endif
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task Test_InParameter_WithoutInKeyword()

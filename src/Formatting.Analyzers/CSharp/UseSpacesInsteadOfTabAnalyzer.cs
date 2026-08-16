@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -41,25 +39,20 @@ public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
         if (!tree.TryGetRoot(out SyntaxNode root))
             return;
 
-        UseSpacesInsteadOfTabWalker walker = UseSpacesInsteadOfTabWalker.GetInstance();
+        var walker = new UseSpacesInsteadOfTabWalker(context);
 
-        walker.AnalysisContext = context;
         walker.Visit(root);
-
-        UseSpacesInsteadOfTabWalker.Free(walker);
     }
 
     private class UseSpacesInsteadOfTabWalker : CSharpSyntaxWalker
     {
-        [ThreadStatic]
-        private static UseSpacesInsteadOfTabWalker _cachedInstance;
-
-        public UseSpacesInsteadOfTabWalker()
+        public UseSpacesInsteadOfTabWalker(SyntaxTreeAnalysisContext analysisContext)
             : base(SyntaxWalkerDepth.StructuredTrivia)
         {
+            AnalysisContext = analysisContext;
         }
 
-        public SyntaxTreeAnalysisContext AnalysisContext { get; set; }
+        public SyntaxTreeAnalysisContext AnalysisContext { get; }
 
         public override void VisitTrivia(SyntaxTrivia trivia)
         {
@@ -85,29 +78,6 @@ public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
                         Location.Create(AnalysisContext.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                 }
             }
-        }
-
-        public static UseSpacesInsteadOfTabWalker GetInstance()
-        {
-            UseSpacesInsteadOfTabWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.AnalysisContext.Tree is null);
-                Debug.Assert(walker.AnalysisContext.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new UseSpacesInsteadOfTabWalker();
-        }
-
-        public static void Free(UseSpacesInsteadOfTabWalker walker)
-        {
-            walker.AnalysisContext = default;
-
-            _cachedInstance = walker;
         }
     }
 }

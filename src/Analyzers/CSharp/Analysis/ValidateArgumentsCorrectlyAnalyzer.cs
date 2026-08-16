@@ -81,13 +81,11 @@ public sealed class ValidateArgumentsCorrectlyAnalyzer : BaseDiagnosticAnalyzer
 
         context.CancellationToken.ThrowIfCancellationRequested();
 
-        ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
+        var walker = new ContainsYieldWalker();
 
         walker.VisitBlock(body);
 
         YieldStatementSyntax yieldStatement = walker.YieldStatement;
-
-        ContainsYieldWalker.Free(walker);
 
         if (yieldStatement is null)
             return;
