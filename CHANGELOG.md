@@ -22,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Bump Roslyn to 5.0.0 ([PR](https://github.com/dotnet/roslynator/pull/1787))
-  - CLI and testing library target Roslyn 5.0.0
-  - Solution build and tests use Roslyn 5.0.0 by default
+  - CLI targets Roslyn 5.0.0
+  - Solution build and tests use Roslyn 5.0.0 by default (the testing *packages* floor at 3.8.0; see Breaking)
 - Replace Visual Studio 2022 extension with **Roslynator 2026** for Visual Studio 2026 (`[18.0,19.0)`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Extension ships refactorings and compiler diagnostic code fixes; analyzers via NuGet
   - [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) remains available as the last 4.x VSIX
