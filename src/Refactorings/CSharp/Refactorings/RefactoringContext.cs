@@ -414,7 +414,7 @@ internal class RefactoringContext
         if (node is null)
             return;
 
-        RefactoringFlags flags = new();
+        var flags = new RefactoringFlags();
         await ComputeRefactoringsForNodeAsync(node, flags).ConfigureAwait(false);
     }
 
