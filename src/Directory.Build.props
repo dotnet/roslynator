@@ -20,19 +20,32 @@
         <NoWarn>$(NoWarn);8600;8604;8625</NoWarn>
       </PropertyGroup>
     </When>
-    <Otherwise>
+    <When Condition="$(RoslynVersion) == 'roslyn4.7'">
       <PropertyGroup>
         <RoslynatorRoslynVersion>4.7.0</RoslynatorRoslynVersion>
         <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
-        <!-- ROSLYN_4_4 must be semicolon-separated (was a comma, so the 4.7 bucket never defined it). -->
         <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_4_7_ONLY</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(RoslynVersion) == 'roslyn5.0'">
+      <PropertyGroup>
+        <RoslynatorRoslynVersion>5.0.0</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.11.0</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_5_0;ROSLYN_5_0_ONLY</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <RoslynatorRoslynVersion>5.0.0</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.11.0</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_5_0;ROSLYN_5_0_ONLY</DefineConstants>
       </PropertyGroup>
     </Otherwise>
   </Choose>
-  
+
   <PropertyGroup>
     <Version Condition="'$(Version)' == ''">1.0.0</Version>
-    <RoslynatorCliRoslynVersion>4.14.0</RoslynatorCliRoslynVersion>
+    <RoslynatorCliRoslynVersion>5.0.0</RoslynatorCliRoslynVersion>
     <!-- Roslyn version the shipped Roslynator.Testing.* packages are compiled against.
          Kept at the minimum supported Roslyn so the packages declare a low (>=) dependency floor;
          consumers' own Microsoft.CodeAnalysis.* references then determine the effective version. -->

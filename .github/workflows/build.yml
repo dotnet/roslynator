@@ -33,6 +33,7 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
       - name: Resolve version
         id: version
@@ -151,6 +152,8 @@ jobs:
       - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn4.7
+      - run: dotnet restore --force /p:RoslynVersion=roslyn5.0
+      - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn5.0
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
@@ -172,6 +175,8 @@ jobs:
       - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn4.7
+      - run: dotnet restore --force /p:RoslynVersion=roslyn5.0
+      - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn5.0
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
@@ -193,6 +198,8 @@ jobs:
       - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn4.7
+      - run: dotnet restore --force /p:RoslynVersion=roslyn5.0
+      - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn5.0
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
@@ -235,7 +242,7 @@ jobs:
 
   build_vs_code_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
-    needs: [ pre_build, build_analyzers ]
+    needs: [ pre_build ]
     runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
@@ -247,7 +254,6 @@ jobs:
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: |
-          mkdir package/roslyn/analyzers
           mkdir package/roslyn/refactorings
           mkdir package/roslyn/fixes
           cp bin/Release/netstandard2.0/Roslynator.Core.dll package/roslyn/common
@@ -256,10 +262,6 @@ jobs:
           cp bin/Release/netstandard2.0/Roslynator.Workspaces.Core.dll package/roslyn/common
           cp bin/Release/netstandard2.0/Roslynator.Workspaces.Common.dll package/roslyn/common
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Workspaces.dll package/roslyn/common
-          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.CodeFixes.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.CodeFixes.dll package/roslyn/analyzers
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Refactorings.dll package/roslyn/refactorings
           cp bin/Release/netstandard2.0/Roslynator.CSharp.CodeFixes.dll package/roslyn/fixes
         name: Copy DLLs to package

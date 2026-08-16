@@ -2,7 +2,7 @@
   "name": "roslynator",
   "publisher": "josefpihrt-vscode",
   "displayName": "Roslynator",
-  "description": "A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.",
+  "description": "A collection of refactorings and compiler diagnostic fixes for C#, powered by Roslyn. Use Roslynator NuGet packages for analyzers.",
   "icon": "images/icon.png",
   "version": "1.0.0",
   "author": "Josef Pihrt",

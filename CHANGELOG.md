@@ -7,12 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `roslyn5.0` NuGet package flavor (`analyzers/dotnet/roslyn5.0/cs`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
+
 ### Changed
 
+- Bump Roslyn to 5.0.0 ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - CLI and testing library target Roslyn 5.0.0
+  - Solution build and tests use Roslyn 5.0.0 by default
+- Replace Visual Studio 2022 extension with **Roslynator 2026** for Visual Studio 2026 (`[18.0,19.0)`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Extension ships refactorings and compiler diagnostic code fixes; analyzers via NuGet
+  - [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) remains available as the last 4.x VSIX
+- Visual Studio Code extension ships refactorings and compiler diagnostic code fixes only ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Analyzers require Roslynator NuGet packages
+  - Requires OmniSharp with Roslyn 5.x (C# extension 1.39.15+; set `dotnet.server.useOmnisharp` to `true`)
 - [Testing Framework] Lower Roslyn dependency of testing packages to 3.8.0 so that the Roslyn version is determined by the consumer's own `Microsoft.CodeAnalysis.*` reference instead of being forced to a fixed version ([PR](https://github.com/dotnet/roslynator/pull/1810))
   - `Roslynator.Testing.Common`, `Roslynator.Testing.CSharp`, `Roslynator.Testing.CSharp.Xunit` and `Roslynator.Testing.CSharp.MSTest` now depend on `Microsoft.CodeAnalysis.*` `>= 3.8.0` (previously `>= 4.14.0`).
   - `Roslynator.Testing.Common` no longer depends on `Roslynator.Core`.
   - **Action required:** a test project that previously relied on the testing framework to pull in Roslyn 4.14.0 should now add its own reference, e.g. `<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />`. The chosen version also caps the C# language version available in test sources.
+
+### Removed
+
+- Remove bundled analyzers from Visual Studio extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Use [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers) NuGet package for diagnostics
+- Remove bundled analyzers from Visual Studio Code extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Use Roslynator NuGet packages for diagnostics
+- Remove `AnalyzersOptionsPage` from Visual Studio extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
+- Drop support for Visual Studio 2022 VSIX ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Pin last 4.x release ([Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)) or use NuGet packages on Visual Studio 2022
 
 ## [4.16.1] - 2026-08-16
 

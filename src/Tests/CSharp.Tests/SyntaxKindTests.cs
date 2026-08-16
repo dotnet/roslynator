@@ -602,9 +602,11 @@ public static class SyntaxKindTests
 #if ROSLYN_TEST_4_14_OR_GREATER
                 // new in 4.14.0
                 case SyntaxKind.ExtensionKeyword:
-                case SyntaxKind.ExtensionDeclaration:
                 case SyntaxKind.IgnoredDirectiveTrivia:
 #endif
+                // new in 5.0.0
+                case SyntaxKind.ExtensionBlockDeclaration:
+                case SyntaxKind.ExtensionMemberCref:
                 {
                     break;
                 }

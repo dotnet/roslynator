@@ -489,7 +489,7 @@ internal static class CSharpTypeAnalysis
 
         bool IsLocalThatSupportsExplicitDeclaration(VariableDesignationSyntax variableDesignation)
         {
-            if (semanticModel.GetDeclaredSymbol(variableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
+            if (semanticModel.GetDeclaredLocalSymbol(variableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
                 return false;
 
             ITypeSymbol typeSymbol = localSymbol.Type;
