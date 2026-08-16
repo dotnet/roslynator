@@ -1,6 +1,6 @@
 ---
 name: release-roslynator
-description: Use when shipping a roslynator release, rolling ChangeLog.md [Unreleased], updating the VS Code extension changelog, creating a GitHub v* release, or optionally tagging cli-v*.
+description: Use when shipping a roslynator release, rolling CHANGELOG.md [Unreleased], updating the VS Code extension changelog, creating a GitHub v* release, or optionally tagging cli-v*.
 ---
 
 # Release Roslynator
@@ -29,7 +29,7 @@ Before each step below: present what you will do, then use interactive confirmat
 
 | Step | Gate | Action |
 |------|------|--------|
-| 1 | Confirm before push/PR | Changelog PR (`ChangeLog.md` + VS Code `CHANGELOG.md`) |
+| 1 | Confirm before push/PR | Changelog PR (root `CHANGELOG.md` + VS Code `package/CHANGELOG.md`) |
 | 2 | Confirm before merge | Squash-merge PR; pull `main` |
 | 3 | Confirm before create | GitHub release → creates `vX.Y.Z`; title same as tag (`vX.Y.Z`) |
 | 4 | Opt-in only | Optional `cli-v*` tag on a real commit; push |
@@ -41,7 +41,7 @@ CI / GitVersion details: [references/release-and-ci.md](references/release-and-c
 **STOP until user confirms Step 1.**
 
 1. Branch from latest `main` (e.g. `release/X.Y.Z`).
-2. Root [`ChangeLog.md`](../../../ChangeLog.md): under `## [Unreleased]`, insert `## [X.Y.Z] - YYYY-MM-DD` so prior Unreleased bullets become that version’s section (same pattern as bump PR #1785). Leave `[Unreleased]` empty above it.
+2. Root [`CHANGELOG.md`](../../../CHANGELOG.md): under `## [Unreleased]`, insert `## [X.Y.Z] - YYYY-MM-DD` so prior Unreleased bullets become that version’s section (same pattern as bump PR #1785). Leave `[Unreleased]` empty above it.
 3. [`src/VisualStudioCode/package/CHANGELOG.md`](../../../src/VisualStudioCode/package/CHANGELOG.md): copy that new version section (header + body) under `[Unreleased]`.
 4. Commit, push, open PR — title `Bump version to X.Y.Z`.
 
@@ -71,7 +71,7 @@ Create the analyzer/extension release (this creates/pushes tag `vX.Y.Z` and trig
 
 - Tag: `vX.Y.Z`
 - Title: `vX.Y.Z` (same as tag, **with** `v` prefix)
-- Notes: body of `## [X.Y.Z]` from root `ChangeLog.md` (sections under that header, not the heading line alone)
+- Notes: body of `## [X.Y.Z]` from root `CHANGELOG.md` (sections under that header, not the heading line alone)
 - Target: squash commit on `main` (or `main` after pull)
 
 Example:
@@ -104,7 +104,6 @@ Do not amend published tags.
 | Merge + release + CLI in one go | Four separate STOPs |
 | Soft “ask later” while editing/pushing | Confirm **before** push/PR, merge, `gh release create`, CLI tag push |
 | `generate_all.ps1` in bump PR | Out of scope unless the user asks |
-| Root `CHANGELOG.md` | Root file is `ChangeLog.md` |
 | Same tag for CLI and analyzers | `v*` vs `cli-v*` |
 | Amend published tag | New tag instead |
 | Hardcode version in props | GitVersion + tags |
