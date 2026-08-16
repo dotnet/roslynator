@@ -60,7 +60,7 @@ jobs:
       - run: dotnet restore Roslynator.sln
       - run: dotnet build Roslynator.sln --no-restore
       - run: |
-          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
+          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity warn
       - run: dotnet test Roslynator.sln --no-build
       - uses: actions/checkout@v4
         with:

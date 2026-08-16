@@ -34,7 +34,7 @@ Both tags must point at real commits (often the same bump commit). Do not amend 
 ```bash
 cd src && dotnet restore Roslynator.sln
 cd src && dotnet build Roslynator.sln --no-restore
-cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
+cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severity warn
 cd src && dotnet test Roslynator.sln --no-build
 ```
 

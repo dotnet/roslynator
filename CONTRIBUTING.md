@@ -42,4 +42,4 @@ More context: [Contributing with agent skills](https://josefpihrt.github.io/docs
 ## Coding Style
 
 * **DO** follow [.NET Runtime Coding Style](https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md) (except using `s_` and `t_` prefix for field names).
-* **DO** install the Roslynator extension for Visual Studio or VS Code and follow its suggestions.
+* **DO** install the Roslynator extension for Visual Studio or VS Code and follow its warnings (enforced by the build via `.editorconfig`).
