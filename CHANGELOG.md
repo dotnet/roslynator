@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.16.1] - 2026-08-16
+
 ### Fixed
 
 - Fix analyzer [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) to report a field consistently when the containing type has a static constructor that does not assign the field
