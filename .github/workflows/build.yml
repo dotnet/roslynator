@@ -76,11 +76,6 @@ jobs:
             ../wordb/data/tech.names.txt \
             ../wordb/data/tech.acronyms.txt
 
-  # Note: a matrix that pins RoslynatorTestRoslynVersion below the solution Roslyn
-  # floor is not viable after the Roslyn 5.0 bump — test projects ProjectReference
-  # analyzers that require Microsoft.CodeAnalysis.* >= 5.0.0, so NuGet rejects e.g. 4.7.0.
-  # Consumers of Roslynator.Testing.* can still choose their own Roslyn version.
-
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
