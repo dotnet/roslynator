@@ -7339,6 +7339,65 @@ string s = """
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1269</Id>
+    <Identifier>UnnecessaryNullCoalescing</Identifier>
+    <Title>Unnecessary null coalescing</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <MinLanguageVersion>8.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[#nullable enable
+
+class C
+{
+    C(string[] errors)
+    {
+        Errors = errors ?? [];
+    }
+
+    string[] Errors { get; }
+}]]></Before>
+        <After><![CDATA[#nullable enable
+
+class C
+{
+    C(string[] errors)
+    {
+        Errors = errors;
+    }
+
+    string[] Errors { get; }
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[#nullable enable
+
+class C
+{
+    string _context = "";
+
+    void M(string completionContext)
+    {
+        _context ??= completionContext;
+    }
+}]]></Before>
+        <After><![CDATA[#nullable enable
+
+class C
+{
+    string _context = "";
+
+    void M(string completionContext)
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This analyzer uses nullable flow analysis. A non-nullable field or property used with `??=` for lazy initialization should be declared as `T?`.</Remarks>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>
