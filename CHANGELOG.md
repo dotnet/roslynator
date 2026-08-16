@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Drop support for Visual Studio 2022 VSIX ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Pin last 4.x release ([Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)) or use NuGet packages on Visual Studio 2022
 
+### Fixed
+
+- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation ([PR](https://github.com/dotnet/roslynator/pull/1799))
+
 ## [4.16.1] - 2026-08-16
 
 ### Fixed
@@ -47,10 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) to not report `CancellationToken` in sync methods returning `Task` ([PR](https://github.com/dotnet/roslynator/pull/1802))
 - [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
 - [CLI] Fix `generate-doc` to omit internal interfaces from type declarations and the Implements section ([PR](https://github.com/dotnet/roslynator/pull/1801))
-
-### Fixed
-
-- Fix analyzers [RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263) and [RCS1139](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1139) for C# 14 extension block documentation ([PR](https://github.com/dotnet/roslynator/pull/1799))
 
 ## [4.16.0] - 2026-08-08
 
