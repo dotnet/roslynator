@@ -51,8 +51,9 @@
          consumers' own Microsoft.CodeAnalysis.* references then determine the effective version. -->
     <RoslynatorTestingRoslynVersion>3.8.0</RoslynatorTestingRoslynVersion>
     <!-- Roslyn version used when running this repo's own test suite (src/Tests/*.Tests).
-         Override on the command line, e.g. /p:RoslynatorTestRoslynVersion=4.7.0 -->
-    <RoslynatorTestRoslynVersion>4.14.0</RoslynatorTestRoslynVersion>
+         Must be >= the solution Roslyn floor (analyzers reference Microsoft.CodeAnalysis.* at that version).
+         Override on the command line, e.g. /p:RoslynatorTestRoslynVersion=5.0.0 -->
+    <RoslynatorTestRoslynVersion>5.0.0</RoslynatorTestRoslynVersion>
     <RoslynatorAnalyzersPackageReferenceVersion>4.12.11</RoslynatorAnalyzersPackageReferenceVersion>
     <RoslynatorCliPackageVersion>$(RoslynatorCliVersion)</RoslynatorCliPackageVersion>
     <RoslynatorPackageVersion>$(Version)</RoslynatorPackageVersion>

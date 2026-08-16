@@ -10,7 +10,7 @@ This package depends on `Microsoft.CodeAnalysis.*` with a low minimum version, s
 <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
 ```
 
-The chosen version also determines the maximum C# language version available in your test source code (for example, Roslyn 3.8 supports up to C# 9).
+The chosen version raises the maximum C# language version the parser can accept (for example, Roslyn 3.8 supports up to C# 9). Test sources still parse at `CSharpParseOptions.Default` (not `Latest`) unless you set parse options / `LanguageVersion` (for example via `WithParseOptions` and `LanguageVersion.Latest`).
 
 ## Usage
 

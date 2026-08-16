@@ -76,30 +76,10 @@ jobs:
             ../wordb/data/tech.names.txt \
             ../wordb/data/tech.acronyms.txt
 
-  # Pins this repo's test projects to an older Microsoft.CodeAnalysis.* version
-  # (RoslynatorTestRoslynVersion). Analyzer projects still compile against the
-  # solution default; this does not switch RoslynatorRoslynVersion / the roslyn4.7 bucket.
-  test_roslyn_versions:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
-    needs: pre_build
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        roslyn: [ "4.7.0" ]
-    defaults:
-      run:
-        working-directory: src
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-      - run: dotnet restore Roslynator.sln --force /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
-      - run: dotnet build Roslynator.sln --no-restore /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
-      - run: dotnet test Roslynator.sln --no-build /p:RoslynatorTestRoslynVersion=${{ matrix.roslyn }}
+  # Note: a matrix that pins RoslynatorTestRoslynVersion below the solution Roslyn
+  # floor is not viable after the Roslyn 5.0 bump — test projects ProjectReference
+  # analyzers that require Microsoft.CodeAnalysis.* >= 5.0.0, so NuGet rejects e.g. 4.7.0.
+  # Consumers of Roslynator.Testing.* can still choose their own Roslyn version.
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
