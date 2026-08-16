@@ -36,6 +36,12 @@ suite('Auto update omnisharp.json', () => {
 		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.EnableAnalyzersSupport);
 		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.LocationPaths?.some(
 			p => p.endsWith('/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/common')));
+		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.LocationPaths?.some(
+			p => p.endsWith('/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/refactorings')));
+		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.LocationPaths?.some(
+			p => p.endsWith('/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/fixes')));
+		assert.ok(!omnisharpSettings.RoslynExtensionsOptions?.LocationPaths?.some(
+			p => p.endsWith('/roslyn/analyzers')));
 	});
 
 	test('Update omnisharp.json', () => {
@@ -44,7 +50,6 @@ suite('Auto update omnisharp.json', () => {
 				EnableAnalyzersSupport: true,
 				LocationPaths: [
 					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/common',
-					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/analyzers',
 					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/refactorings',
 					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/fixes'
 				]

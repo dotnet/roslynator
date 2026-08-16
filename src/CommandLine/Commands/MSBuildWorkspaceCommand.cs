@@ -52,7 +52,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             if (workspace is null)
                 return CommandStatus.Fail;
 
-            workspace.WorkspaceFailed += (sender, args) => WorkspaceFailed(sender, args);
+            using IDisposable workspaceFailedSubscription = workspace.RegisterWorkspaceFailedHandler(args => WorkspaceFailed(workspace, args));
 
             using var cts = new CancellationTokenSource();
             Console.CancelKeyPress += (sender, e) =>

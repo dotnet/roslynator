@@ -28,7 +28,6 @@ suite('Auto update omnisharp.json', () => {
 				locationPaths: [
 					'/path/to/custom/analyzers/',
 					'c:/Users/Adrian/.vscode/extensions/josefpihrt-vscode.roslynator-2.9.0/roslyn/common',
-					'c:/Users/Adrian/.vscode/extensions/josefpihrt-vscode.roslynator-2.9.0/roslyn/analyzers',
 					'c:/Users/Adrian/.vscode/extensions/josefpihrt-vscode.roslynator-2.9.0/roslyn/refactorings',
 					'c:/Users/Adrian/.vscode/extensions/josefpihrt-vscode.roslynator-2.9.0/roslyn/fixes'
 				]
