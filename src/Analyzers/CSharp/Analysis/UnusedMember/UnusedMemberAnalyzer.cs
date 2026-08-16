@@ -200,8 +200,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
         if (nodes.Count > 0)
         {
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
+            walker.Initialize(semanticModel, cancellationToken);
 
             walker.Visit(typeDeclaration);
 

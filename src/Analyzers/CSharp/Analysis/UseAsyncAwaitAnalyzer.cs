@@ -332,7 +332,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         public void Reset()
         {
-            _canBeCached = _usingDeclarations.Count <= ObjectPool.MaxCachedBufferSize;
+            // Count is always 0 after a balanced visit; Capacity is the retained buffer size.
+            _canBeCached = _usingDeclarations.Capacity <= ObjectPool.MaxCachedBufferSize;
             _shouldVisit = true;
             _usingOrTryStatementDepth = 0;
 

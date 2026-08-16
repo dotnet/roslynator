@@ -20,9 +20,9 @@ internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
 
     public Collection<NodeSymbolInfo> Nodes { get; } = [];
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; private set; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; private set; }
 
     public bool IsAnyNodeConst { get; private set; }
 
@@ -34,6 +34,12 @@ internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
     }
 
     public bool CanBeCached => _canBeCached;
+
+    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
 
     public void Reset()
     {

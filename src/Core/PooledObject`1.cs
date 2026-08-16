@@ -4,17 +4,25 @@ using System;
 
 namespace Roslynator;
 
-internal readonly struct PooledObject<T> : IDisposable where T : class, IResettable, new()
+internal struct PooledObject<T> : IDisposable where T : class, IResettable, new()
 {
+    private T? _value;
+
     internal PooledObject(T value)
     {
-        Value = value;
+        _value = value;
     }
 
-    public T Value { get; }
+    public readonly T Value => _value!;
 
     public void Dispose()
     {
-        ObjectPool<T>.Free(Value);
+        T? value = _value;
+
+        if (value is null)
+            return;
+
+        _value = null;
+        ObjectPool<T>.Free(value);
     }
 }
