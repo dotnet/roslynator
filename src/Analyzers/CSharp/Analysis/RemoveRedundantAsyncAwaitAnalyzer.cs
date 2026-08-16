@@ -87,11 +87,9 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
             return;
 
-        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, context.SemanticModel, context.CancellationToken))
-        {
-            if (analysis.Success)
-                ReportDiagnostic(context, asyncKeyword, analysis);
-        }
+        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, context.SemanticModel, context.CancellationToken);
+        if (analysis.Success)
+            ReportDiagnostic(context, asyncKeyword, analysis);
     }
 
     private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
@@ -106,11 +104,9 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
             return;
 
-        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, context.SemanticModel, context.CancellationToken))
-        {
-            if (analysis.Success)
-                ReportDiagnostic(context, asyncKeyword, analysis);
-        }
+        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, context.SemanticModel, context.CancellationToken);
+        if (analysis.Success)
+            ReportDiagnostic(context, asyncKeyword, analysis);
     }
 
     private static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
@@ -125,11 +121,9 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
             return;
 
-        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, context.SemanticModel, context.CancellationToken))
-        {
-            if (analysis.Success)
-                ReportDiagnostic(context, asyncKeyword, analysis);
-        }
+        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, context.SemanticModel, context.CancellationToken);
+        if (analysis.Success)
+            ReportDiagnostic(context, asyncKeyword, analysis);
     }
 
     private static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
@@ -144,11 +138,9 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
             return;
 
-        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(lambda, context.SemanticModel, context.CancellationToken))
-        {
-            if (analysis.Success)
-                ReportDiagnostic(context, asyncKeyword, analysis);
-        }
+        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(lambda, context.SemanticModel, context.CancellationToken);
+        if (analysis.Success)
+            ReportDiagnostic(context, asyncKeyword, analysis);
     }
 
     private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken asyncKeyword, RemoveAsyncAwaitAnalysis analysis)

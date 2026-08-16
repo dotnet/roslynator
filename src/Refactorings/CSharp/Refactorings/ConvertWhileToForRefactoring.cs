@@ -116,38 +116,25 @@ internal static class ConvertWhileToForRefactoring
                     return resultIndex;
                 }
 
-                ContainsLocalOrParameterReferenceWalker walker = null;
+                var walker = new ContainsLocalOrParameterReferenceWalker(symbol, semanticModel, cancellationToken);
 
-                try
+                if (mustBeReferencedInsideWhileStatement)
                 {
-                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, semanticModel, cancellationToken);
+                    walker.VisitWhileStatement(whileStatement);
 
-                    if (mustBeReferencedInsideWhileStatement)
-                    {
-                        walker.VisitWhileStatement(whileStatement);
-
-                        if (!walker.Result)
-                        {
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
-                            return resultIndex;
-                        }
-                    }
-
-                    walker.Result = false;
-
-                    if (whileStatementIndex == -1)
-                        whileStatementIndex = statements.IndexOf(whileStatement);
-
-                    walker.VisitList(statements, whileStatementIndex + 1);
-
-                    if (walker.Result)
+                    if (!walker.Result)
                         return resultIndex;
                 }
-                finally
-                {
-                    if (walker is not null)
-                        ContainsLocalOrParameterReferenceWalker.Free(walker);
-                }
+
+                walker.Result = false;
+
+                if (whileStatementIndex == -1)
+                    whileStatementIndex = statements.IndexOf(whileStatement);
+
+                walker.VisitList(statements, whileStatementIndex + 1);
+
+                if (walker.Result)
+                    return resultIndex;
 
                 resultIndex = i;
             }

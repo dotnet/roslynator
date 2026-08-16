@@ -1,9 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -318,7 +316,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         if (body is null)
             return;
 
-        SyntaxWalker walker = SyntaxWalker.GetInstance();
+        var walker = new SyntaxWalker();
 
         walker.VisitBlock(body);
 
@@ -327,8 +325,6 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
             foreach (ExpressionSyntax expression in walker.Expressions)
                 ReportDiagnostic(context, expression);
         }
-
-        SyntaxWalker.Free(walker);
     }
 
     public static bool IsTaskOrTaskOfT(ITypeSymbol typeSymbol)
@@ -355,9 +351,6 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
     private class SyntaxWalker : StatementWalker
     {
-        [ThreadStatic]
-        private static SyntaxWalker _cachedInstance;
-
         public List<ExpressionSyntax> Expressions { get; private set; }
 
         public override void VisitReturnStatement(ReturnStatementSyntax node)
@@ -376,28 +369,6 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
         public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
-        }
-
-        public static SyntaxWalker GetInstance()
-        {
-            SyntaxWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.Expressions is null || walker.Expressions.Count == 0);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new SyntaxWalker();
-        }
-
-        public static void Free(SyntaxWalker walker)
-        {
-            walker.Expressions?.Clear();
-
-            _cachedInstance = walker;
         }
     }
 }

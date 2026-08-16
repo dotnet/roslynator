@@ -70,26 +70,11 @@ public sealed class UnnecessaryExplicitUseOfEnumeratorAnalyzer : BaseDiagnosticA
         if (!string.Equals(invocationInfo2.NameText, WellKnownMemberNames.GetEnumeratorMethodName, StringComparison.Ordinal))
             return;
 
-        bool? isFixable;
-        UnnecessaryUsageOfEnumeratorWalker walker = null;
+        var walker = new UnnecessaryUsageOfEnumeratorWalker(declarator, context.SemanticModel, context.CancellationToken);
 
-        try
-        {
-            walker = UnnecessaryUsageOfEnumeratorWalker.GetInstance();
+        walker.Visit(whileStatement.Statement);
 
-            walker.SetValues(declarator, context.SemanticModel, context.CancellationToken);
-
-            walker.Visit(whileStatement.Statement);
-
-            isFixable = walker.IsFixable;
-        }
-        finally
-        {
-            if (walker is not null)
-                UnnecessaryUsageOfEnumeratorWalker.Free(walker);
-        }
-
-        if (isFixable == true)
+        if (walker.IsFixable == true)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryExplicitUseOfEnumerator, usingStatement.UsingKeyword);
         }

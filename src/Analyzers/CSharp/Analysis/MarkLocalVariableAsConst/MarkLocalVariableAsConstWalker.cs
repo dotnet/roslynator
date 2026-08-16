@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -14,16 +12,19 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst;
 
 internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
 {
-    [ThreadStatic]
-    private static MarkLocalVariableAsConstWalker _cachedInstance;
+    public MarkLocalVariableAsConstWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
 
     public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; }
 
-    public bool Result { get; set; }
+    public bool Result { get; private set; }
 
     protected override bool ShouldVisit => !Result;
 
@@ -81,31 +82,5 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
     {
         return Identifiers.TryGetValue(identifierName.Identifier.ValueText, out ILocalSymbol symbol)
             && SymbolEqualityComparer.Default.Equals(symbol, SemanticModel.GetSymbol(identifierName, CancellationToken));
-    }
-
-    public static MarkLocalVariableAsConstWalker GetInstance()
-    {
-        MarkLocalVariableAsConstWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Identifiers.Count == 0);
-            Debug.Assert(!walker.Result);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new MarkLocalVariableAsConstWalker();
-    }
-
-    public static void Free(MarkLocalVariableAsConstWalker walker)
-    {
-        walker.Identifiers.Clear();
-        walker.SemanticModel = null;
-        walker.CancellationToken = default;
-        walker.Result = false;
-
-        _cachedInstance = walker;
     }
 }

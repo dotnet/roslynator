@@ -227,29 +227,11 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
         if (IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt())
             return;
 
-        bool result;
-        RemoveRedundantAssignmentWalker walker = null;
+        var walker = new RemoveRedundantAssignmentWalker(symbol, context.SemanticModel, context.CancellationToken);
 
-        try
-        {
-            walker = RemoveRedundantAssignmentWalker.GetInstance();
+        walker.Visit(assignmentInfo.Right);
 
-            walker.Symbol = symbol;
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
-            walker.Result = false;
-
-            walker.Visit(assignmentInfo.Right);
-
-            result = walker.Result;
-        }
-        finally
-        {
-            if (walker is not null)
-                RemoveRedundantAssignmentWalker.Free(walker);
-        }
-
-        if (result)
+        if (walker.Result)
             return;
 
         if (IsDeclaredInTryStatementOrCatchClauseAndReferencedInFinallyClause(context, assignmentInfo.Statement, symbol))
@@ -324,22 +306,12 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
                 if (block is not null)
                 {
-                    ContainsLocalOrParameterReferenceWalker walker = null;
+                    var walker = new ContainsLocalOrParameterReferenceWalker(symbol, context.SemanticModel, context.CancellationToken);
 
-                    try
-                    {
-                        walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, context.SemanticModel, context.CancellationToken);
+                    walker.VisitBlock(block);
 
-                        walker.VisitBlock(block);
-
-                        if (walker.Result)
-                            return true;
-                    }
-                    finally
-                    {
-                        if (walker is not null)
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
-                    }
+                    if (walker.Result)
+                        return true;
                 }
             }
 
@@ -351,18 +323,25 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
     private class RemoveRedundantAssignmentWalker : LocalOrParameterReferenceWalker
     {
-        [ThreadStatic]
-        private static RemoveRedundantAssignmentWalker _cachedInstance;
-
         private int _anonymousFunctionDepth;
 
-        public bool Result { get; set; }
+        public RemoveRedundantAssignmentWalker(
+            ISymbol symbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            Symbol = symbol;
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
-        public ISymbol Symbol { get; set; }
+        public bool Result { get; private set; }
 
-        public SemanticModel SemanticModel { get; set; }
+        public ISymbol Symbol { get; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public SemanticModel SemanticModel { get; }
+
+        public CancellationToken CancellationToken { get; }
 
         protected override bool ShouldVisit => !Result;
 
@@ -399,32 +378,6 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
             _anonymousFunctionDepth++;
             base.VisitParenthesizedLambdaExpression(node);
             _anonymousFunctionDepth--;
-        }
-
-        public static RemoveRedundantAssignmentWalker GetInstance()
-        {
-            RemoveRedundantAssignmentWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.Symbol is null);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new RemoveRedundantAssignmentWalker();
-        }
-
-        public static void Free(RemoveRedundantAssignmentWalker walker)
-        {
-            walker.Symbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-
-            _cachedInstance = walker;
         }
     }
 }

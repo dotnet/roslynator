@@ -365,15 +365,11 @@ internal static class OptimizeMethodCallAnalysis
 
                         if (forEachVariableSymbol is not null)
                         {
-                            ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(forEachVariableSymbol, semanticModel, cancellationToken);
+                            var walker = new ContainsLocalOrParameterReferenceWalker(forEachVariableSymbol, semanticModel, cancellationToken);
 
                             walker.Visit(invocationInfo.Expression);
 
-                            bool containsReference = walker.Result;
-
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
-
-                            if (!containsReference)
+                            if (!walker.Result)
                             {
                                 DiagnosticHelpers.ReportDiagnostic(
                                     context,

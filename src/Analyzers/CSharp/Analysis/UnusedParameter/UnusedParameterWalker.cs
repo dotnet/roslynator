@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,35 +12,28 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter;
 
 internal class UnusedParameterWalker : TypeSyntaxWalker
 {
-    [ThreadStatic]
-    private static UnusedParameterWalker _cachedInstance;
-
     private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
 
     private bool _isEmpty;
 
+    public UnusedParameterWalker(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+        IsIndexer = isIndexer;
+    }
+
     public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; }
 
-    public bool IsIndexer { get; set; }
+    public bool IsIndexer { get; }
 
     public bool IsAnyTypeParameter { get; set; }
 
     protected override bool ShouldVisit => !_isEmpty;
-
-    public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
-    {
-        _isEmpty = false;
-
-        Nodes.Clear();
-        SemanticModel = semanticModel;
-        CancellationToken = cancellationToken;
-        IsIndexer = isIndexer;
-        IsAnyTypeParameter = false;
-    }
 
     public void AddParameter(ParameterSyntax parameter)
     {
@@ -196,29 +188,5 @@ internal class UnusedParameterWalker : TypeSyntaxWalker
         {
             base.VisitTypeParameterConstraintClause(node);
         }
-    }
-
-    public static UnusedParameterWalker GetInstance()
-    {
-        UnusedParameterWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Nodes.Count == 0);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new UnusedParameterWalker();
-    }
-
-    public static void Free(UnusedParameterWalker walker)
-    {
-        walker.SetValues(default(SemanticModel), default(CancellationToken));
-
-        _cachedInstance = walker;
     }
 }

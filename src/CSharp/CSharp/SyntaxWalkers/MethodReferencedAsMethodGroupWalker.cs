@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,16 +10,23 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 
 internal class MethodReferencedAsMethodGroupWalker : BaseCSharpSyntaxWalker
 {
-    [ThreadStatic]
-    private static MethodReferencedAsMethodGroupWalker? _cachedInstance;
+    public MethodReferencedAsMethodGroupWalker(
+        IMethodSymbol symbol,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        Symbol = symbol;
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
 
     public bool Result { get; set; }
 
-    public IMethodSymbol? Symbol { get; set; }
+    public IMethodSymbol Symbol { get; }
 
-    public SemanticModel? SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; }
 
     protected override bool ShouldVisit => !Result;
 
@@ -28,9 +34,9 @@ internal class MethodReferencedAsMethodGroupWalker : BaseCSharpSyntaxWalker
     {
         CancellationToken.ThrowIfCancellationRequested();
 
-        if (string.Equals(Symbol!.Name, node.Identifier.ValueText, StringComparison.Ordinal)
+        if (string.Equals(Symbol.Name, node.Identifier.ValueText, StringComparison.Ordinal)
             && !IsInvoked(node)
-            && SymbolEqualityComparer.Default.Equals(SemanticModel!.GetSymbol(node, CancellationToken), Symbol))
+            && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(node, CancellationToken), Symbol))
         {
             Result = true;
         }
@@ -87,55 +93,10 @@ internal class MethodReferencedAsMethodGroupWalker : BaseCSharpSyntaxWalker
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        var result = false;
+        var walker = new MethodReferencedAsMethodGroupWalker(methodSymbol, semanticModel, cancellationToken);
 
-        MethodReferencedAsMethodGroupWalker? walker = null;
+        walker.Visit(node);
 
-        try
-        {
-            walker = GetInstance();
-
-            walker.Symbol = methodSymbol;
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
-
-            walker.Visit(node);
-
-            result = walker.Result;
-        }
-        finally
-        {
-            if (walker is not null)
-                Free(walker);
-        }
-
-        return result;
-    }
-
-    private static MethodReferencedAsMethodGroupWalker GetInstance()
-    {
-        MethodReferencedAsMethodGroupWalker? walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Symbol is null);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new MethodReferencedAsMethodGroupWalker();
-    }
-
-    private static void Free(MethodReferencedAsMethodGroupWalker walker)
-    {
-        walker.Result = false;
-        walker.Symbol = null;
-        walker.SemanticModel = null;
-        walker.CancellationToken = default;
-
-        _cachedInstance = walker;
+        return walker.Result;
     }
 }

@@ -11,7 +11,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
+internal readonly struct RemoveAsyncAwaitAnalysis
 {
     private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
     {
@@ -257,7 +257,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 
         AwaitExpressionWalker VisitStatements()
         {
-            AwaitExpressionWalker walker = AwaitExpressionWalker.GetInstance();
+            var walker = new AwaitExpressionWalker();
 
             walker.VisitStatements(statements, statement);
 
@@ -446,13 +446,5 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         }
 
         throw new InvalidOperationException();
-    }
-
-    public void Dispose()
-    {
-        if (Walker is not null)
-        {
-            AwaitExpressionWalker.Free(Walker);
-        }
     }
 }

@@ -68,29 +68,11 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         if (!AnalyzeMembers(members))
             return;
 
-        bool canBeMadeStatic;
-        MakeClassStaticWalker walker = null;
+        var walker = new MakeClassStaticWalker(symbol, context.SemanticModel, context.CancellationToken);
 
-        try
-        {
-            walker = MakeClassStaticWalker.GetInstance();
+        walker.Visit(classDeclaration);
 
-            walker.CanBeMadeStatic = true;
-            walker.Symbol = symbol;
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
-
-            walker.Visit(classDeclaration);
-
-            canBeMadeStatic = walker.CanBeMadeStatic;
-        }
-        finally
-        {
-            if (walker is not null)
-                MakeClassStaticWalker.Free(walker);
-        }
-
-        if (canBeMadeStatic)
+        if (walker.CanBeMadeStatic)
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassStatic, classDeclaration.Identifier);
     }
 
@@ -173,16 +155,23 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
 
     private class MakeClassStaticWalker : TypeSyntaxWalker
     {
-        [ThreadStatic]
-        private static MakeClassStaticWalker _cachedInstance;
+        public MakeClassStaticWalker(
+            INamedTypeSymbol symbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            Symbol = symbol;
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
-        public bool CanBeMadeStatic { get; set; }
+        public bool CanBeMadeStatic { get; private set; } = true;
 
-        public INamedTypeSymbol Symbol { get; set; }
+        public INamedTypeSymbol Symbol { get; }
 
-        public SemanticModel SemanticModel { get; set; }
+        public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken { get; }
 
         protected override bool ShouldVisit => CanBeMadeStatic;
 
@@ -209,32 +198,6 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
                     CanBeMadeStatic = false;
                 }
             }
-        }
-
-        public static MakeClassStaticWalker GetInstance()
-        {
-            MakeClassStaticWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.Symbol is null);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new MakeClassStaticWalker();
-        }
-
-        public static void Free(MakeClassStaticWalker walker)
-        {
-            walker.Symbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-
-            _cachedInstance = walker;
         }
     }
 }

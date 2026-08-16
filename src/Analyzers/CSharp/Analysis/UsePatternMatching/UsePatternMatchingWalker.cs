@@ -1,7 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,34 +10,28 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching;
 
 internal class UsePatternMatchingWalker : BaseCSharpSyntaxWalker
 {
-    [ThreadStatic]
-    private static UsePatternMatchingWalker _cachedInstance;
-
+    private readonly IdentifierNameSyntax _identifierName;
+    private readonly string _name;
+    private readonly SemanticModel _semanticModel;
+    private readonly CancellationToken _cancellationToken;
     private ISymbol _symbol;
-    private IdentifierNameSyntax _identifierName;
-    private string _name;
-    private SemanticModel _semanticModel;
-    private CancellationToken _cancellationToken;
+
+    public UsePatternMatchingWalker(
+        IdentifierNameSyntax identifierName,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        _identifierName = identifierName;
+        _name = identifierName?.Identifier.ValueText;
+        _semanticModel = semanticModel;
+        _cancellationToken = cancellationToken;
+    }
 
     public bool? IsFixable { get; private set; }
 
     protected override bool ShouldVisit
     {
         get { return IsFixable != false; }
-    }
-
-    public void SetValues(
-        IdentifierNameSyntax identifierName,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken)
-    {
-        IsFixable = null;
-
-        _symbol = null;
-        _name = identifierName?.Identifier.ValueText;
-        _identifierName = identifierName;
-        _semanticModel = semanticModel;
-        _cancellationToken = cancellationToken;
     }
 
     public override void VisitIdentifierName(IdentifierNameSyntax node)
@@ -78,30 +70,5 @@ internal class UsePatternMatchingWalker : BaseCSharpSyntaxWalker
                 IsFixable = true;
             }
         }
-    }
-
-    public static UsePatternMatchingWalker GetInstance()
-    {
-        UsePatternMatchingWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker._symbol is null);
-            Debug.Assert(walker._identifierName is null);
-            Debug.Assert(walker._semanticModel is null);
-            Debug.Assert(walker._cancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new UsePatternMatchingWalker();
-    }
-
-    public static void Free(UsePatternMatchingWalker walker)
-    {
-        walker.SetValues(default(IdentifierNameSyntax), default(SemanticModel), default(CancellationToken));
-
-        _cachedInstance = walker;
     }
 }

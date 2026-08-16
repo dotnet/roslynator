@@ -29,9 +29,7 @@ internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedunda
         if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), containingStatement))
             return false;
 
-        ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
-
-        var success = false;
+        var walker = new ContainsYieldWalker();
 
         int index = statements.IndexOf(containingStatement);
 
@@ -39,14 +37,10 @@ internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedunda
         {
             walker.VisitStatement(statements[i]);
 
-            success = walker.YieldStatement is not null;
-
-            if (success)
-                break;
+            if (walker.YieldStatement is not null)
+                return true;
         }
 
-        ContainsYieldWalker.Free(walker);
-
-        return success;
+        return false;
     }
 }

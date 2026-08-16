@@ -116,43 +116,26 @@ public sealed class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnos
 
         bool ContainsContinueStatement()
         {
-            ContainsContinueStatementWalker walker = ContainsContinueStatementWalker.GetInstance();
-            walker.ContainsContinueStatement = false;
-
-            var containsContinueStatement = false;
+            var walker = new ContainsContinueStatementWalker();
 
             foreach (StatementSyntax innerStatement in innerStatements)
             {
                 walker.Visit(innerStatement);
 
                 if (walker.ContainsContinueStatement)
-                {
-                    containsContinueStatement = true;
-                    break;
-                }
+                    return true;
             }
 
-            ContainsContinueStatementWalker.Free(walker);
-
-            return containsContinueStatement;
+            return false;
         }
 
         bool IsLocalVariableReferencedAfterWhileStatement()
         {
-            ContainsLocalOrParameterReferenceWalker walker = null;
-            try
-            {
-                walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, semanticModel, cancellationToken);
+            var walker = new ContainsLocalOrParameterReferenceWalker(symbol, semanticModel, cancellationToken);
 
-                walker.VisitList(outerStatements, index + 1);
+            walker.VisitList(outerStatements, index + 1);
 
-                return walker.Result;
-            }
-            finally
-            {
-                if (walker is not null)
-                    ContainsLocalOrParameterReferenceWalker.Free(walker);
-            }
+            return walker.Result;
         }
     }
 
@@ -182,10 +165,7 @@ public sealed class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnos
 
     private class ContainsContinueStatementWalker : BaseCSharpSyntaxWalker
     {
-        [ThreadStatic]
-        private static ContainsContinueStatementWalker _cachedInstance;
-
-        public bool ContainsContinueStatement { get; set; }
+        public bool ContainsContinueStatement { get; private set; }
 
         protected override bool ShouldVisit => !ContainsContinueStatement;
 
@@ -212,24 +192,6 @@ public sealed class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnos
 
         public override void VisitWhileStatement(WhileStatementSyntax node)
         {
-        }
-
-        public static ContainsContinueStatementWalker GetInstance()
-        {
-            ContainsContinueStatementWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new ContainsContinueStatementWalker();
-        }
-
-        public static void Free(ContainsContinueStatementWalker walker)
-        {
-            _cachedInstance = walker;
         }
     }
 }
