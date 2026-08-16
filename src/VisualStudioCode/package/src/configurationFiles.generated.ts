@@ -7,7 +7,7 @@ is_global = true
 # Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
 # Full list of available options: https://josefpihrt.github.io/docs/roslynator/configuration
 
-# Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
+# Set severity for all analyzers that are enabled by default (https://learn.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-the-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
 dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
 
 # Enable/disable all analyzers by default.
@@ -927,6 +927,9 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Simplify numeric comparison
 #dotnet_diagnostic.rcs1268.severity = suggestion
+
+# Unnecessary null coalescing
+#dotnet_diagnostic.rcs1269.severity = suggestion
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

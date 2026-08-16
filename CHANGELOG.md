@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add analyzer "Unnecessary null coalescing" ([RCS1269](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1269)) ([#1658](https://github.com/dotnet/roslynator/issues/1658))
 - Add `roslyn5.0` NuGet package flavor (`analyzers/dotnet/roslyn5.0/cs`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
 
 ### Breaking

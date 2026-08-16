@@ -3323,5 +3323,17 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.SimplifyNumericComparison, 
             customTags:         []);
 
+        /// <summary>RCS1269</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryNullCoalescing = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryNullCoalescing, 
+            title:              "Unnecessary null coalescing", 
+            messageFormat:      "Unnecessary null coalescing", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullCoalescing, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }
