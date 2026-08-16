@@ -211,7 +211,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
-    public async Task Test_NestedCoalesce_InnerOnly()
+    public async Task Test_NestedCoalesce_EntireChain()
     {
         await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
@@ -231,6 +231,90 @@ class C
     void M(string a, string b, string c)
     {
         string x = a;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
+    public async Task Test_CoalesceAssignment_EmbeddedIf()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+#nullable enable
+
+class C
+{
+    string _context = "";
+
+    void M(bool flag, string completionContext)
+    {
+        if (flag)
+            _context [|??= completionContext|];
+    }
+}
+""", """
+#nullable enable
+
+class C
+{
+    string _context = "";
+
+    void M(bool flag, string completionContext)
+    {
+        if (flag)
+        {
+        }
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
+    public async Task Test_CoalesceAssignment_WithCoalesceRight()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M(string x, string? a, string b)
+    {
+        x [|??= a ?? b|];
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M(string x, string? a, string b)
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
+    public async Task Test_ClassConstraint()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M<T>(T x, T y) where T : class
+    {
+        T z = x [|?? y|];
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M<T>(T x, T y) where T : class
+    {
+        T z = x;
     }
 }
 ");

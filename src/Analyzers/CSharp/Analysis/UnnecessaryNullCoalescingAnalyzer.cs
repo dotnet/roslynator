@@ -122,7 +122,6 @@ public sealed class UnnecessaryNullCoalescingAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.AnonymousObjectCreationExpression:
             case SyntaxKind.ArrayCreationExpression:
             case SyntaxKind.ImplicitArrayCreationExpression:
-            case SyntaxKind.ImplicitObjectCreationExpression:
             case SyntaxKind.InterpolatedStringExpression:
             case SyntaxKind.ThisExpression:
             case SyntaxKind.StringLiteralExpression:

@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -63,7 +64,17 @@ public sealed class UnnecessaryNullCoalescingCodeFixProvider : BaseCodeFixProvid
         var assignment = (AssignmentExpressionSyntax)node;
 
         if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
+        {
+            if (expressionStatement.IsEmbedded())
+            {
+                return document.ReplaceNodeAsync(
+                    expressionStatement,
+                    Block().WithTriviaFrom(expressionStatement).WithFormatterAnnotation(),
+                    cancellationToken);
+            }
+
             return document.RemoveStatementAsync(expressionStatement, cancellationToken);
+        }
 
         return ReplaceAssignmentWithLeftAsync(document, assignment, cancellationToken);
     }
