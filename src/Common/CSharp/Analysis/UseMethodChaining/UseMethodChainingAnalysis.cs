@@ -21,7 +21,7 @@ internal abstract class UseMethodChainingAnalysis
     {
         InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-        SyntaxNode parent = invocationExpression.Parent;
+        SyntaxNode? parent = invocationExpression.Parent;
 
         switch (parent?.Kind())
         {
@@ -84,7 +84,7 @@ internal abstract class UseMethodChainingAnalysis
         if (statements.Count == 1)
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
         if (methodSymbol is null)
             return false;

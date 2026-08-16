@@ -47,7 +47,7 @@ internal static class IfRefactoring
 
                 VariableDeclaratorSyntax declarator = analysis.Statement.Declaration.Variables[0];
 
-                EqualsValueClauseSyntax initializer = declarator.Initializer;
+                EqualsValueClauseSyntax? initializer = declarator.Initializer;
 
                 EqualsValueClauseSyntax newInitializer = (initializer is not null)
                     ? initializer.WithValue(conditionalExpression)
@@ -201,7 +201,7 @@ internal static class IfRefactoring
         IfStatementSyntax ifStatement = analysis.IfStatement;
         int position = ifStatement.SpanStart;
 
-        ITypeSymbol targetType = GetTargetType();
+        ITypeSymbol? targetType = GetTargetType();
 
         BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(
             analysis.Left.WithoutTrivia(),
@@ -248,9 +248,9 @@ internal static class IfRefactoring
             return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }
 
-        ITypeSymbol GetTargetType()
+        ITypeSymbol? GetTargetType()
         {
-            IMethodSymbol methodSymbol = analysis.SemanticModel.GetEnclosingSymbol<IMethodSymbol>(position, cancellationToken);
+            IMethodSymbol? methodSymbol = analysis.SemanticModel.GetEnclosingSymbol<IMethodSymbol>(position, cancellationToken);
 
             Debug.Assert(methodSymbol is not null, "");
 
@@ -533,7 +533,7 @@ internal static class IfRefactoring
     private static BinaryExpressionSyntax CreateCoalesceExpression(
         ExpressionSyntax left,
         ExpressionSyntax right,
-        ITypeSymbol targetType,
+        ITypeSymbol? targetType,
         int position,
         SemanticModel semanticModel)
     {

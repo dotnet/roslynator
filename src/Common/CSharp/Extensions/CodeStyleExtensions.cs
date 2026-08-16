@@ -12,7 +12,7 @@ internal static class CodeStyleExtensions
 {
     public static bool TryGetTabLength(this AnalyzerConfigOptions configOptions, out int tabLength)
     {
-        if (configOptions.TryGetValue(ConfigOptionKeys.TabLength, out string tabLengthStr)
+        if (configOptions.TryGetValue(ConfigOptionKeys.TabLength, out string? tabLengthStr)
             && int.TryParse(tabLengthStr, NumberStyles.None, CultureInfo.InvariantCulture, out tabLength))
         {
             return true;
@@ -24,7 +24,7 @@ internal static class CodeStyleExtensions
 
     public static bool TryGetIndentSize(this AnalyzerConfigOptions configOptions, out int indentSize)
     {
-        if (configOptions.TryGetValue("indent_size", out string indentSizeStr)
+        if (configOptions.TryGetValue("indent_size", out string? indentSizeStr)
             && int.TryParse(indentSizeStr, NumberStyles.None, CultureInfo.InvariantCulture, out indentSize))
         {
             return true;
@@ -36,7 +36,7 @@ internal static class CodeStyleExtensions
 
     public static bool TryGetIndentStyle(this AnalyzerConfigOptions configOptions, out IndentStyle indentStyle)
     {
-        if (configOptions.TryGetValue("indent_style", out string indentStyleStr)
+        if (configOptions.TryGetValue("indent_style", out string? indentStyleStr)
             && Enum.TryParse(indentStyleStr, ignoreCase: true, out indentStyle))
         {
             return true;
@@ -56,7 +56,7 @@ internal static class CodeStyleExtensions
 
     public static int GetMaxLineLength(this AnalyzerConfigOptions configOptions)
     {
-        if (configOptions.TryGetValue(ConfigOptionKeys.MaxLineLength, out string rawValue)
+        if (configOptions.TryGetValue(ConfigOptionKeys.MaxLineLength, out string? rawValue)
             && int.TryParse(rawValue, out int value))
         {
             return value;
@@ -133,7 +133,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlankLineBetweenUsingDirectives, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlankLineBetweenUsingDirectives, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never, StringComparison.OrdinalIgnoreCase))
             {
@@ -152,7 +152,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AccessorBracesStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AccessorBracesStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.AccessorBracesStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
             {
@@ -171,7 +171,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlockBracesStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlockBracesStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.BlockBracesStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
             {
@@ -200,7 +200,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseAnonymousFunctionOrMethodGroup, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseAnonymousFunctionOrMethodGroup, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
             {
@@ -219,7 +219,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumHasFlagStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumHasFlagStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.EnumHasFlagStyle_Method, StringComparison.OrdinalIgnoreCase))
             {
@@ -250,7 +250,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EmptyStringStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EmptyStringStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.EmptyStringStyle_Field, StringComparison.OrdinalIgnoreCase))
                 return EmptyStringStyle.Field;
@@ -266,7 +266,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.NullCheckStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.NullCheckStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.NullCheckStyle_EqualityOperator, StringComparison.OrdinalIgnoreCase))
                 return NullCheckStyle.EqualityOperator;
@@ -282,7 +282,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
             {
@@ -305,7 +305,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationParenthesesStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationParenthesesStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
             {
@@ -324,7 +324,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AccessibilityModifiers, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AccessibilityModifiers, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.AccessibilityModifiers_Explicit, StringComparison.OrdinalIgnoreCase))
             {
@@ -343,7 +343,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TrailingCommaStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TrailingCommaStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.TrailingCommaStyle_Include, StringComparison.OrdinalIgnoreCase))
             {
@@ -366,7 +366,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationTypeStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationTypeStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
             {
@@ -389,7 +389,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseVar, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseVar, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.UseVar_Always, StringComparison.OrdinalIgnoreCase))
             {
@@ -422,7 +422,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ArrayCreationTypeStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ArrayCreationTypeStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
             {
@@ -448,7 +448,7 @@ internal static class CodeStyleExtensions
 
     public static InfiniteLoopStyle GetInfiniteLoopStyle(this AnalyzerConfigOptions configOptions)
     {
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.InfiniteLoopStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.InfiniteLoopStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.InfiniteLoopStyle_For, StringComparison.OrdinalIgnoreCase))
             {
@@ -467,7 +467,7 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.DocCommentSummaryStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.DocCommentSummaryStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.DocCommentSummaryStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
             {
@@ -489,7 +489,7 @@ internal static class CodeStyleExtensions
 
     public static EnumFlagValueStyle GetEnumFlagValueStyle(this AnalyzerConfigOptions configOptions)
     {
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumFlagValueStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumFlagValueStyle, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber, StringComparison.OrdinalIgnoreCase))
             {
@@ -539,7 +539,7 @@ internal static class CodeStyleExtensions
 
     public static BlankLineBetweenSwitchSections GetBlankLineBetweenSwitchSections(this SyntaxNodeAnalysisContext context)
     {
-        if (ConfigOptions.TryGetValue(context.GetConfigOptions(), ConfigOptions.BlankLineBetweenSwitchSections, out string rawValue))
+        if (ConfigOptions.TryGetValue(context.GetConfigOptions(), ConfigOptions.BlankLineBetweenSwitchSections, out string? rawValue))
         {
             if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenSwitchSections_Include, StringComparison.OrdinalIgnoreCase))
                 return BlankLineBetweenSwitchSections.Include;
@@ -584,7 +584,7 @@ internal static class CodeStyleExtensions
         ConfigOptionDescriptor option,
         out NewLinePosition newLinePosition)
     {
-        if (ConfigOptions.TryGetValue(configOptions, option, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, option, out string? rawValue))
         {
             if (string.Equals(rawValue, "before", StringComparison.OrdinalIgnoreCase))
             {

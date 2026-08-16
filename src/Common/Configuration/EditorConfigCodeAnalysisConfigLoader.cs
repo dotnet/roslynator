@@ -20,7 +20,7 @@ internal static class EditorConfigCodeAnalysisConfigLoader
             ?? EditorConfigCodeAnalysisConfig.Empty;
     }
 
-    internal static EditorConfigCodeAnalysisConfig LoadAndCatchIfThrows(IEnumerable<string> paths, Action<Exception> exceptionHandler)
+    internal static EditorConfigCodeAnalysisConfig? LoadAndCatchIfThrows(IEnumerable<string> paths, Action<Exception> exceptionHandler)
     {
         try
         {
@@ -36,10 +36,10 @@ internal static class EditorConfigCodeAnalysisConfigLoader
 
     private static EditorConfigCodeAnalysisConfig LoadInternal(IEnumerable<string> paths)
     {
-        Dictionary<string, bool> refactorings = null;
-        Dictionary<string, bool> codeFixes = null;
-        Dictionary<string, ReportDiagnostic> categories = null;
-        Dictionary<string, string> options = null;
+        Dictionary<string, bool>? refactorings = null;
+        Dictionary<string, bool>? codeFixes = null;
+        Dictionary<string, ReportDiagnostic>? categories = null;
+        Dictionary<string, string>? options = null;
         bool? analyzersEnabledByDefault = null;
 
         ImmutableDictionary<string, string> allOptions = ImmutableDictionary<string, string>.Empty;

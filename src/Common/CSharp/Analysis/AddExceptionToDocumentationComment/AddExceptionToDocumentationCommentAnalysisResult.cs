@@ -19,7 +19,7 @@ internal readonly struct AddExceptionToDocumentationCommentAnalysisResult
         get { return ThrowInfo is not null; }
     }
 
-    public ISymbol DeclarationSymbol
+    public ISymbol? DeclarationSymbol
     {
         get { return ThrowInfo?.DeclarationSymbol; }
     }

@@ -27,8 +27,8 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
             {
                 var interpolation = (InterpolationSyntax)content;
 
-                InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
+                InterpolationAlignmentClauseSyntax? alignmentClause = interpolation.AlignmentClause;
+                InterpolationFormatClauseSyntax? formatClause = interpolation.FormatClause;
 
                 if (alignmentClause is not null
                     || formatClause is not null)

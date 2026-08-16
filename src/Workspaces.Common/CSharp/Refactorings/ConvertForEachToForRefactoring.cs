@@ -36,7 +36,7 @@ internal static class ConvertForEachToForRefactoring
 
         MemberAccessExpressionSyntax countOrLengthMemberAccess = SimpleMemberAccessExpression(
             forEachExpression.WithoutTrivia(),
-            IdentifierName(CSharpUtility.GetCountOrLengthPropertyName(forEachExpression, semanticModel, cancellationToken)));
+            IdentifierName(CSharpUtility.GetCountOrLengthPropertyName(forEachExpression, semanticModel, cancellationToken)!));
 
         VariableDeclarationSyntax declaration;
         BinaryExpressionSyntax condition;
@@ -99,7 +99,7 @@ internal static class ConvertForEachToForRefactoring
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ILocalSymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
+        ILocalSymbol? symbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
 
         foreach (SyntaxNode node in forEachStatement.Statement.DescendantNodes())
         {

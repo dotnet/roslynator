@@ -12,16 +12,16 @@ namespace Roslynator.CSharp.Analysis;
 
 internal static class GenerateBaseConstructorsAnalysis
 {
-    public static List<IMethodSymbol> GetMissingBaseConstructors(
+    public static List<IMethodSymbol>? GetMissingBaseConstructors(
         ClassDeclarationSyntax classDeclaration,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, cancellationToken);
+        INamedTypeSymbol? symbol = semanticModel.GetDeclaredSymbol(classDeclaration, cancellationToken);
 
         if (symbol?.IsStatic == false)
         {
-            INamedTypeSymbol baseSymbol = symbol.BaseType;
+            INamedTypeSymbol? baseSymbol = symbol.BaseType;
 
             if (baseSymbol?.IsObject() == false)
                 return GetMissingBaseConstructors(symbol, baseSymbol);
@@ -30,26 +30,26 @@ internal static class GenerateBaseConstructorsAnalysis
         return null;
     }
 
-    public static List<IMethodSymbol> GetMissingBaseConstructors(
+    public static List<IMethodSymbol>? GetMissingBaseConstructors(
         RecordDeclarationSyntax recordDeclaration,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(recordDeclaration, cancellationToken);
+        INamedTypeSymbol? symbol = semanticModel.GetDeclaredSymbol(recordDeclaration, cancellationToken);
 
-        INamedTypeSymbol baseSymbol = symbol?.BaseType;
+        INamedTypeSymbol? baseSymbol = symbol?.BaseType;
 
         if (baseSymbol?.IsObject() == false)
-            return GetMissingBaseConstructors(symbol, baseSymbol);
+            return GetMissingBaseConstructors(symbol!, baseSymbol);
 
         return null;
     }
 
-    private static List<IMethodSymbol> GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
+    private static List<IMethodSymbol>? GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
     {
         ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors.RemoveAll(f => f.IsImplicitlyDeclared);
 
-        List<IMethodSymbol> missing = null;
+        List<IMethodSymbol>? missing = null;
 
         foreach (IMethodSymbol baseConstructor in GetBaseConstructors(baseSymbol))
         {
@@ -89,7 +89,7 @@ internal static class GenerateBaseConstructorsAnalysis
             && constructors[0].IsImplicitlyDeclared
             && baseSymbol.BaseType?.IsObject() == false)
         {
-            baseSymbol = baseSymbol.BaseType;
+            baseSymbol = baseSymbol.BaseType!;
 
             constructors = baseSymbol.InstanceConstructors;
         }
@@ -109,7 +109,7 @@ internal static class GenerateBaseConstructorsAnalysis
     {
         public static ParametersComparer Instance { get; } = new();
 
-        public override bool Equals(IMethodSymbol x, IMethodSymbol y)
+        public override bool Equals(IMethodSymbol? x, IMethodSymbol? y)
         {
             if (object.ReferenceEquals(x, y))
                 return true;
@@ -135,7 +135,7 @@ internal static class GenerateBaseConstructorsAnalysis
             return true;
         }
 
-        public override int GetHashCode(IMethodSymbol obj)
+        public override int GetHashCode(IMethodSymbol? obj)
         {
             return 0;
         }

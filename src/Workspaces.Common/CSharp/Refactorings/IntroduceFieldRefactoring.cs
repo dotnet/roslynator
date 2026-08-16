@@ -18,9 +18,9 @@ internal static class IntroduceFieldRefactoring
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        MemberDeclarationSyntax containingMember = expressionStatement.FirstAncestor<MemberDeclarationSyntax>();
+        MemberDeclarationSyntax containingMember = expressionStatement.FirstAncestor<MemberDeclarationSyntax>()!;
 
-        var containingType = (TypeDeclarationSyntax)containingMember.Parent;
+        var containingType = (TypeDeclarationSyntax)containingMember.Parent!;
 
         string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 

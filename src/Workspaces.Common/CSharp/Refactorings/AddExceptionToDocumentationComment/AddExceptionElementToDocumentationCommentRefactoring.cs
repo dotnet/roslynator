@@ -36,7 +36,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
                     {
                         var throwStatement = (ThrowStatementSyntax)node;
 
-                        ThrowInfo info = GetUndocumentedExceptionInfo(node, throwStatement.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
+                        ThrowInfo? info = GetUndocumentedExceptionInfo(node, throwStatement.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
                         if (info is not null)
                             yield return info;
@@ -49,7 +49,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
                     if (predicate(node))
                     {
                         var throwExpression = (ThrowExpressionSyntax)node;
-                        ThrowInfo info = GetUndocumentedExceptionInfo(node, throwExpression.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
+                        ThrowInfo? info = GetUndocumentedExceptionInfo(node, throwExpression.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
                         if (info is not null)
                             yield return info;
@@ -61,9 +61,9 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
         }
     }
 
-    private static ThrowInfo GetUndocumentedExceptionInfo(
+    private static ThrowInfo? GetUndocumentedExceptionInfo(
         SyntaxNode node,
-        ExpressionSyntax expression,
+        ExpressionSyntax? expression,
         MemberDeclarationSyntax declaration,
         ISymbol declarationSymbol,
         INamedTypeSymbol exceptionSymbol,
@@ -79,7 +79,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
         if (!InheritsFromException(typeSymbol, exceptionSymbol))
             return null;
 
-        DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
+        DocumentationCommentTriviaSyntax? comment = declaration.GetSingleLineDocumentationComment();
 
         if (comment is null)
             return null;
@@ -211,7 +211,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
         return RefactorAsync(document, throwStatement, throwStatement.Expression, cancellationToken);
     }
 
-    private static bool InheritsFromException(ITypeSymbol typeSymbol, INamedTypeSymbol exceptionSymbol)
+    private static bool InheritsFromException(ITypeSymbol? typeSymbol, INamedTypeSymbol exceptionSymbol)
     {
         return typeSymbol?.TypeKind == TypeKind.Class
             && typeSymbol.BaseType?.IsObject() == false
@@ -221,29 +221,29 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
     private static async Task<Document> RefactorAsync(
         Document document,
         SyntaxNode node,
-        ExpressionSyntax expression,
+        ExpressionSyntax? expression,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+        ITypeSymbol? exceptionSymbol = semanticModel.GetTypeSymbol(expression!, cancellationToken);
 
-        ISymbol declarationSymbol = AddExceptionToDocumentationCommentAnalysis.GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
+        ISymbol? declarationSymbol = AddExceptionToDocumentationCommentAnalysis.GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
-        var memberDeclaration = (MemberDeclarationSyntax)await declarationSymbol
+        var memberDeclaration = (MemberDeclarationSyntax)await declarationSymbol!
             .GetSyntaxAsync(cancellationToken)
             .ConfigureAwait(false);
 
         SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationCommentTrivia();
 
-        ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
+        ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol!, declarationSymbol!);
 
         return await RefactorAsync(
             document,
             trivia,
             throwInfo,
             memberDeclaration,
-            declarationSymbol,
+            declarationSymbol!,
             semanticModel,
             cancellationToken)
             .ConfigureAwait(false);
@@ -254,9 +254,9 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
         AddExceptionToDocumentationCommentAnalysisResult analysis,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        var memberDeclaration = (MemberDeclarationSyntax)await analysis.DeclarationSymbol
+        var memberDeclaration = (MemberDeclarationSyntax)await analysis.DeclarationSymbol!
             .GetSyntaxAsync(cancellationToken)
             .ConfigureAwait(false);
 
@@ -265,7 +265,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
             analysis.DocumentationComment,
             analysis.ThrowInfo,
             memberDeclaration,
-            analysis.DeclarationSymbol,
+            analysis.DeclarationSymbol!,
             semanticModel,
             cancellationToken)
             .ConfigureAwait(false);
@@ -282,9 +282,9 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
     {
         var throwInfos = new List<ThrowInfo>() { throwInfo };
 
-        INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName("System.Exception");
+        INamedTypeSymbol? exceptionSymbol = semanticModel.GetTypeByMetadataName("System.Exception");
 
-        foreach (ThrowInfo info in GetOtherUndocumentedExceptions(memberDeclaration, declarationSymbol, node => node != throwInfo.Node, exceptionSymbol, semanticModel, cancellationToken))
+        foreach (ThrowInfo info in GetOtherUndocumentedExceptions(memberDeclaration, declarationSymbol, node => node != throwInfo.Node, exceptionSymbol!, semanticModel, cancellationToken))
         {
             if (!throwInfos.Any(f => SymbolEqualityComparer.Default.Equals(f.ExceptionSymbol, info.ExceptionSymbol)))
                 throwInfos.Add(info);
@@ -298,7 +298,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
         {
             sb.Append(indent);
 
-            IParameterSymbol parameterSymbol = info.GetParameterSymbol(semanticModel, cancellationToken);
+            IParameterSymbol? parameterSymbol = info.GetParameterSymbol(semanticModel, cancellationToken);
 
             AppendExceptionDocumentation(trivia, info.ExceptionSymbol, parameterSymbol, semanticModel, ref sb);
         }
@@ -330,7 +330,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
     private static void AppendExceptionDocumentation(
         SyntaxTrivia trivia,
         ITypeSymbol exceptionSymbol,
-        IParameterSymbol parameterSymbol,
+        IParameterSymbol? parameterSymbol,
         SemanticModel semanticModel,
         ref StringBuilder sb)
     {

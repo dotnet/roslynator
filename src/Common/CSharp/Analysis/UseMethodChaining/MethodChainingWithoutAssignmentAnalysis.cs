@@ -35,7 +35,7 @@ internal class MethodChainingWithoutAssignmentAnalysis : UseMethodChainingAnalys
         if (name != identifierName.Identifier.ValueText)
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(topInvocationInfo.InvocationExpression, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(topInvocationInfo.InvocationExpression, cancellationToken);
 
         return methodSymbol?.IsStatic == false
             && SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, typeSymbol)

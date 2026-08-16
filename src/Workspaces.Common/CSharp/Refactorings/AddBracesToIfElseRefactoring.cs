@@ -26,9 +26,9 @@ internal static class AddBracesToIfElseRefactoring
 
     private class SyntaxRewriter : CSharpSyntaxRewriter
     {
-        private IfStatementSyntax _previousIf;
+        private IfStatementSyntax? _previousIf;
 
-        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+        public override SyntaxNode? VisitIfStatement(IfStatementSyntax node)
         {
             if (node is null)
                 throw new ArgumentNullException(nameof(node));
@@ -52,12 +52,12 @@ internal static class AddBracesToIfElseRefactoring
             return base.VisitIfStatement(node);
         }
 
-        public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
+        public override SyntaxNode? VisitElseClause(ElseClauseSyntax node)
         {
             if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (_previousIf.Equals(node.Parent)
+            if (_previousIf!.Equals(node.Parent)
                 && node.Statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
             {
                 return node.WithStatement(SyntaxFactory.Block(node.Statement));

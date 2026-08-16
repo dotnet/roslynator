@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -13,7 +14,7 @@ internal static class CommonWorkspaceExtensions
         this Document document,
         SyntaxNode node,
         string optionKey,
-        out string value)
+        [NotNullWhen(true)] out string? value)
     {
         return TryGetAnalyzerOptionValue(document, node.SyntaxTree, optionKey, out value);
     }
@@ -22,16 +23,16 @@ internal static class CommonWorkspaceExtensions
         this Document document,
         SyntaxToken token,
         string optionKey,
-        out string value)
+        [NotNullWhen(true)] out string? value)
     {
-        return TryGetAnalyzerOptionValue(document, token.SyntaxTree, optionKey, out value);
+        return TryGetAnalyzerOptionValue(document, token.SyntaxTree!, optionKey, out value);
     }
 
     public static bool TryGetAnalyzerOptionValue(
         this Document document,
         SyntaxTree syntaxTree,
         string optionKey,
-        out string value)
+        [NotNullWhen(true)] out string? value)
     {
         if (document
             .Project

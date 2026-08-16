@@ -26,7 +26,7 @@ internal static class CommonExtensions
         if (analyzerOptions
             .AnalyzerConfigOptionsProvider
             .GetOptions(syntaxTree)
-            .TryGetValue(option.Key, out string value)
+            .TryGetValue(option.Key, out string? value)
             && bool.TryParse(value, out bool result))
         {
             return result;
@@ -55,7 +55,7 @@ internal static class CommonExtensions
         if (analyzerOptions
             .AnalyzerConfigOptionsProvider
             .GetOptions(syntaxTree)
-            .TryGetValue(option.Key, out string rawValue)
+            .TryGetValue(option.Key, out string? rawValue)
             && bool.TryParse(rawValue, out bool value))
         {
             result = value;
@@ -75,7 +75,7 @@ internal static class CommonExtensions
         if (analyzerOptions
             .AnalyzerConfigOptionsProvider
             .GetOptions(syntaxTree)
-            .TryGetValue(option.Key, out string rawValue)
+            .TryGetValue(option.Key, out string? rawValue)
             && int.TryParse(rawValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int value))
         {
             result = value;
@@ -99,19 +99,19 @@ internal static class CommonExtensions
 
     internal static bool IsEnabled(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option)
     {
-        return analyzerConfigOptions.TryGetValue(option.Key, out string rawValue)
+        return analyzerConfigOptions.TryGetValue(option.Key, out string? rawValue)
             && bool.TryParse(rawValue, out bool value)
             && value;
     }
 
     internal static bool ContainsKey(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option)
     {
-        return analyzerConfigOptions.TryGetValue(option.Key, out string _);
+        return analyzerConfigOptions.TryGetValue(option.Key, out string? _);
     }
 
     internal static bool ContainsKey(this AnalyzerConfigOptions analyzerConfigOptions, string key)
     {
-        return analyzerConfigOptions.TryGetValue(key, out string _);
+        return analyzerConfigOptions.TryGetValue(key, out string? _);
     }
 
     internal static bool TryGetValueAsBool(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option, out bool value)
@@ -123,7 +123,7 @@ internal static class CommonExtensions
     {
         value = false;
 
-        return analyzerConfigOptions.TryGetValue(key, out string rawValue)
+        return analyzerConfigOptions.TryGetValue(key, out string? rawValue)
             && bool.TryParse(rawValue, out value);
     }
 

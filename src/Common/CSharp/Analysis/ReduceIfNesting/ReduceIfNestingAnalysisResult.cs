@@ -29,7 +29,7 @@ internal readonly struct ReduceIfNestingAnalysisResult
 
     public SyntaxKind JumpKind { get; }
 
-    public SyntaxNode TopNode { get; }
+    public SyntaxNode? TopNode { get; }
 
     public bool Success
     {

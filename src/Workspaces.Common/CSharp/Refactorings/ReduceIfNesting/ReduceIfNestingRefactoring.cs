@@ -22,7 +22,7 @@ internal static partial class ReduceIfNestingRefactoring
 
         SyntaxNode node = statementsInfo.Parent;
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         var rewriter = new ReduceIfStatementRewriter(
             jumpKind,
@@ -31,7 +31,7 @@ internal static partial class ReduceIfNestingRefactoring
             semanticModel,
             cancellationToken);
 
-        SyntaxNode newNode = rewriter.Visit(node).WithFormatterAnnotation();
+        SyntaxNode newNode = rewriter.Visit(node)!.WithFormatterAnnotation();
 
         return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
     }

@@ -22,7 +22,7 @@ internal static class UseElementAccessAnalysis
             return false;
 
         ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken);
-        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
+        IMethodSymbol? methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -30,7 +30,10 @@ internal static class UseElementAccessAnalysis
         if (!IsLinqElementAt(methodSymbol, allowImmutableArrayExtension: true))
             return false;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
+
+        if (typeSymbol is null)
+            return false;
 
         if (!HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationExpression.SpanStart))
             return false;
@@ -64,7 +67,7 @@ internal static class UseElementAccessAnalysis
             return false;
 
         ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken);
-        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
+        IMethodSymbol? methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -72,9 +75,10 @@ internal static class UseElementAccessAnalysis
         if (!IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "First", allowImmutableArrayExtension: true))
             return false;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        return HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
+        return typeSymbol is not null
+            && HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
     }
 
     public static bool IsFixableLast(
@@ -92,7 +96,7 @@ internal static class UseElementAccessAnalysis
             return false;
 
         ExtensionMethodSymbolInfo reducedExtensionMethodInfo = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken);
-        IMethodSymbol methodSymbol = reducedExtensionMethodInfo.Symbol;
+        IMethodSymbol? methodSymbol = reducedExtensionMethodInfo.Symbol;
 
         if (methodSymbol is null)
             return false;
@@ -100,9 +104,10 @@ internal static class UseElementAccessAnalysis
         if (!IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Last", allowImmutableArrayExtension: true))
             return false;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        return HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
+        return typeSymbol is not null
+            && HasAccessibleIndexer(typeSymbol, reducedExtensionMethodInfo.ReducedSymbolOrSymbol.ReturnType, semanticModel, invocationInfo.InvocationExpression.SpanStart);
     }
 
     private static bool CheckInfiniteRecursion(
@@ -111,11 +116,11 @@ internal static class UseElementAccessAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol? symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
         if (symbol is not null)
         {
-            IPropertySymbol propertySymbol = null;
+            IPropertySymbol? propertySymbol = null;
 
             if (symbol.Kind == SymbolKind.Property)
             {

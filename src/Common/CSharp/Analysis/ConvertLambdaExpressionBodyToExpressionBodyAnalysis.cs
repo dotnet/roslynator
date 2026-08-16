@@ -18,12 +18,12 @@ internal static class ConvertLambdaExpressionBodyToExpressionBodyAnalysis
 
         var block = (BlockSyntax)body;
 
-        StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
+        StatementSyntax? statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
         if (statement is null)
             return false;
 
-        ExpressionSyntax expression = GetExpression(statement);
+        ExpressionSyntax? expression = GetExpression(statement);
 
         return expression?.IsSingleLine() == true
             && lambda
@@ -34,7 +34,7 @@ internal static class ConvertLambdaExpressionBodyToExpressionBodyAnalysis
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia());
     }
 
-    private static ExpressionSyntax GetExpression(StatementSyntax statement)
+    private static ExpressionSyntax? GetExpression(StatementSyntax statement)
     {
         switch (statement.Kind())
         {

@@ -46,7 +46,11 @@ internal static class ReduceIfNestingAnalysis
             return Fail(ifStatement);
 
         SyntaxNode node = statementsInfo.Parent;
-        SyntaxNode parent = node.Parent;
+        SyntaxNode? parent = node.Parent;
+
+        if (parent is null)
+            return Fail(ifStatement);
+
         SyntaxKind parentKind = parent.Kind();
 
         SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
@@ -274,14 +278,19 @@ internal static class ReduceIfNestingAnalysis
 
                 var elseClause = (ElseClauseSyntax)parent;
 
-                return AnalyzeCore(elseClause.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
+                IfStatementSyntax? topmostIf = elseClause.GetTopmostIf();
+
+                if (topmostIf is null)
+                    return Fail(parent);
+
+                return AnalyzeCore(topmostIf, semanticModel, jumpKind, options, cancellationToken);
             }
         }
 
         return Fail(parent);
     }
 
-    private static bool IsNestedFix(SyntaxNode node, SemanticModel semanticModel, ReduceIfNestingOptions options, CancellationToken cancellationToken)
+    private static bool IsNestedFix(SyntaxNode? node, SemanticModel semanticModel, ReduceIfNestingOptions options, CancellationToken cancellationToken)
     {
         options |= ReduceIfNestingOptions.AllowNestedFix;
 
@@ -295,6 +304,9 @@ internal static class ReduceIfNestingAnalysis
                     return true;
 
                 node = analysis.TopNode;
+
+                if (node is null)
+                    return false;
             }
 
             if (node is MemberDeclarationSyntax)
@@ -376,7 +388,7 @@ internal static class ReduceIfNestingAnalysis
             }
             case ReturnStatementSyntax returnStatement:
             {
-                ExpressionSyntax expression = returnStatement.Expression;
+                ExpressionSyntax? expression = returnStatement.Expression;
 
                 if (expression is null)
                     return SyntaxKind.ReturnStatement;
@@ -396,7 +408,7 @@ internal static class ReduceIfNestingAnalysis
             }
             case ThrowStatementSyntax throwStatement:
             {
-                ExpressionSyntax expression = throwStatement.Expression;
+                ExpressionSyntax? expression = throwStatement.Expression;
 
                 if (expression is null)
                     return SyntaxKind.ThrowStatement;

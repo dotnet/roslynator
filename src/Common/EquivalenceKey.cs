@@ -11,17 +11,17 @@ internal static class EquivalenceKey
 
     private const string Separator = ".";
 
-    public static string Create(RefactoringDescriptor descriptor, string additionalKey1 = null, string additionalKey2 = null)
+    public static string Create(RefactoringDescriptor descriptor, string? additionalKey1 = null, string? additionalKey2 = null)
     {
         return Create(descriptor.Id, additionalKey1, additionalKey2);
     }
 
-    public static string Create(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
+    public static string Create(Diagnostic diagnostic, string? additionalKey1 = null, string? additionalKey2 = null)
     {
         return Create(diagnostic.Id, additionalKey1, additionalKey2);
     }
 
-    public static string Create(string key, string additionalKey1 = null, string additionalKey2 = null)
+    public static string Create(string key, string? additionalKey1 = null, string? additionalKey2 = null)
     {
         Debug.Assert(!string.IsNullOrEmpty(key));
 
@@ -46,7 +46,7 @@ internal static class EquivalenceKey
         }
     }
 
-    internal static string Join(string value1, string value2)
+    internal static string Join(string? value1, string? value2)
     {
         if (value1 is not null)
         {

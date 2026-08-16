@@ -47,19 +47,19 @@ internal abstract class IfAnalysis
         if (!ifStatement.IsTopmostIf())
             return Empty;
 
-        ExpressionSyntax condition = ifStatement.Condition?.WalkDownParentheses();
+        ExpressionSyntax? condition = ifStatement.Condition?.WalkDownParentheses();
 
         if (condition is null)
             return Empty;
 
-        ElseClauseSyntax elseClause = ifStatement.Else;
+        ElseClauseSyntax? elseClause = ifStatement.Else;
 
         if (elseClause is not null)
         {
             if (!CheckDirectivesAndComments(ifStatement, options))
                 return Empty;
 
-            StatementSyntax statement1 = ifStatement.SingleNonBlockStatementOrDefault();
+            StatementSyntax? statement1 = ifStatement.SingleNonBlockStatementOrDefault();
 
             if (statement1 is null)
                 return Empty;
@@ -71,7 +71,7 @@ internal abstract class IfAnalysis
                 SyntaxKind.ReturnStatement,
                 SyntaxKind.YieldReturnStatement))
             {
-                StatementSyntax statement2 = elseClause.SingleNonBlockStatementOrDefault();
+                StatementSyntax? statement2 = elseClause.SingleNonBlockStatementOrDefault();
 
                 if (statement2?.Kind() == kind1)
                 {
@@ -127,8 +127,8 @@ internal abstract class IfAnalysis
     private static ImmutableArray<IfAnalysis> Analyze(
         IfStatementSyntax ifStatement,
         ExpressionSyntax condition,
-        ExpressionSyntax expression1,
-        ExpressionSyntax expression2,
+        ExpressionSyntax? expression1,
+        ExpressionSyntax? expression2,
         IfAnalysisOptions options,
         bool isYield,
         SemanticModel semanticModel,
@@ -171,7 +171,7 @@ internal abstract class IfAnalysis
 
             if (nullCheck.Success)
             {
-                IfAnalysis refactoring = CreateIfToReturnStatement(
+                IfAnalysis? refactoring = CreateIfToReturnStatement(
                     ifStatement,
                     (nullCheck.IsCheckingNull) ? expression2 : expression1,
                     (nullCheck.IsCheckingNull) ? expression1 : expression2,
@@ -186,7 +186,7 @@ internal abstract class IfAnalysis
             }
         }
 
-        IfToReturnWithBooleanExpressionAnalysis ifToReturnWithBooleanExpression = null;
+        IfToReturnWithBooleanExpressionAnalysis? ifToReturnWithBooleanExpression = null;
 
         if (options.UseBooleanExpression
             && (IsBooleanLiteralExpression(expression1.Kind()) || IsBooleanLiteralExpression(expression2.Kind()))
@@ -196,7 +196,7 @@ internal abstract class IfAnalysis
             ifToReturnWithBooleanExpression = IfToReturnWithBooleanExpressionAnalysis.Create(ifStatement, expression1, expression2, semanticModel, isYield);
         }
 
-        IfToReturnWithConditionalExpressionAnalysis ifToReturnWithConditionalExpression = null;
+        IfToReturnWithConditionalExpressionAnalysis? ifToReturnWithConditionalExpression = null;
 
         if (options.UseConditionalExpression
             && (!IsBooleanLiteralExpression(expression1.Kind()) || !IsBooleanLiteralExpression(expression2.Kind()))
@@ -209,7 +209,7 @@ internal abstract class IfAnalysis
         return ToImmutableArray(ifToReturnWithBooleanExpression, ifToReturnWithConditionalExpression);
     }
 
-    private static IfAnalysis CreateIfToReturnStatement(
+    private static IfAnalysis? CreateIfToReturnStatement(
         IfStatementSyntax ifStatement,
         ExpressionSyntax expression1,
         ExpressionSyntax expression2,
@@ -225,14 +225,18 @@ internal abstract class IfAnalysis
             return CreateIfToReturnStatement(isNullable: false);
         }
 
-        expression1 = GetNullableOfTValueProperty(expression1, semanticModel, cancellationToken);
+        ExpressionSyntax? valueProperty = GetNullableOfTValueProperty(expression1, semanticModel, cancellationToken);
 
-        if (AreEquivalent(nullCheck.Expression, expression1))
+        if (valueProperty is not null
+            && AreEquivalent(nullCheck.Expression, valueProperty))
+        {
+            expression1 = valueProperty;
             return CreateIfToReturnStatement(isNullable: true);
+        }
 
         return null;
 
-        IfAnalysis CreateIfToReturnStatement(bool isNullable)
+        IfAnalysis? CreateIfToReturnStatement(bool isNullable)
         {
             if (!isNullable
                 && expression2.Kind() == SyntaxKind.NullLiteralExpression)
@@ -296,7 +300,7 @@ internal abstract class IfAnalysis
 
             if (nullCheck.Success)
             {
-                IfAnalysis refactoring = CreateIfToAssignment(
+                IfAnalysis? refactoring = CreateIfToAssignment(
                     ifStatement,
                     left1,
                     (nullCheck.IsCheckingNull) ? right2 : right1,
@@ -321,7 +325,7 @@ internal abstract class IfAnalysis
         return Empty;
     }
 
-    private static IfAnalysis CreateIfToAssignment(
+    private static IfAnalysis? CreateIfToAssignment(
         IfStatementSyntax ifStatement,
         ExpressionSyntax left,
         ExpressionSyntax expression1,
@@ -337,20 +341,29 @@ internal abstract class IfAnalysis
             return CreateIfToAssignment(isNullable: false);
         }
 
-        expression1 = GetNullableOfTValueProperty(expression1, semanticModel, cancellationToken);
+        ExpressionSyntax? valueProperty = GetNullableOfTValueProperty(expression1, semanticModel, cancellationToken);
 
-        if (AreEquivalent(nullCheck.Expression, expression1))
+        if (valueProperty is not null
+            && AreEquivalent(nullCheck.Expression, valueProperty))
+        {
+            expression1 = valueProperty;
             return CreateIfToAssignment(isNullable: true);
+        }
 
         return null;
 
-        IfAnalysis CreateIfToAssignment(bool isNullable)
+        IfAnalysis? CreateIfToAssignment(bool isNullable)
         {
             if (!isNullable
                 && expression2.Kind() == SyntaxKind.NullLiteralExpression)
             {
                 if (options.UseExpression)
-                    return new IfElseToAssignmentWithExpressionAnalysis(ifStatement, expression1.FirstAncestor<ExpressionStatementSyntax>(), semanticModel);
+                {
+                    if (expression1.FirstAncestor<ExpressionStatementSyntax>() is not { } expressionStatement)
+                        return null;
+
+                    return new IfElseToAssignmentWithExpressionAnalysis(ifStatement, expressionStatement, semanticModel);
+                }
             }
             else if (options.UseCoalesceExpression)
             {
@@ -418,7 +431,7 @@ internal abstract class IfAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        VariableDeclaratorSyntax declarator = localDeclarationStatement
+        VariableDeclaratorSyntax? declarator = localDeclarationStatement
             .Declaration?
             .Variables
             .SingleOrDefault(shouldThrow: false);
@@ -426,17 +439,27 @@ internal abstract class IfAnalysis
         if (declarator is null)
             return Empty;
 
-        ElseClauseSyntax elseClause = ifStatement.Else;
+        ElseClauseSyntax? elseClause = ifStatement.Else;
 
         if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) != false)
             return Empty;
 
-        SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
+        StatementSyntax? statement1 = ifStatement.SingleNonBlockStatementOrDefault();
+
+        if (statement1 is null)
+            return Empty;
+
+        SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(statement1);
 
         if (!assignment1.Success)
             return Empty;
 
-        SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.SingleNonBlockStatementOrDefault());
+        StatementSyntax? statement2 = elseClause.SingleNonBlockStatementOrDefault();
+
+        if (statement2 is null)
+            return Empty;
+
+        SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(statement2);
 
         if (!assignment2.Success)
             return Empty;
@@ -480,12 +503,17 @@ internal abstract class IfAnalysis
         if (!assignment.Success)
             return Empty;
 
-        SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
+        StatementSyntax? ifStatementBody = ifStatement.SingleNonBlockStatementOrDefault();
+
+        if (ifStatementBody is null)
+            return Empty;
+
+        SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatementBody);
 
         if (!assignment1.Success)
             return Empty;
 
-        ElseClauseSyntax elseClause = ifStatement.Else;
+        ElseClauseSyntax? elseClause = ifStatement.Else;
 
         ExpressionSyntax whenFalse;
 
@@ -494,7 +522,12 @@ internal abstract class IfAnalysis
             if (elseClause.Statement.IsKind(SyntaxKind.IfStatement))
                 return Empty;
 
-            SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.SingleNonBlockStatementOrDefault());
+            StatementSyntax? elseStatement = elseClause.SingleNonBlockStatementOrDefault();
+
+            if (elseStatement is null)
+                return Empty;
+
+            SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseStatement);
 
             if (!assignment2.Success)
                 return Empty;
@@ -540,12 +573,12 @@ internal abstract class IfAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax condition = ifStatement.Condition?.WalkDownParentheses();
+        ExpressionSyntax? condition = ifStatement.Condition?.WalkDownParentheses();
 
         if (condition?.IsMissing != false)
             return Empty;
 
-        StatementSyntax statement = ifStatement.SingleNonBlockStatementOrDefault();
+        StatementSyntax? statement = ifStatement.SingleNonBlockStatementOrDefault();
 
         if (statement?.IsKind(SyntaxKind.ReturnStatement) != true)
             return Empty;
@@ -569,7 +602,7 @@ internal abstract class IfAnalysis
         return ImmutableArray.Create(this);
     }
 
-    private static ImmutableArray<IfAnalysis> ToImmutableArray(IfAnalysis refactoring1, IfAnalysis refactoring2)
+    private static ImmutableArray<IfAnalysis> ToImmutableArray(IfAnalysis? refactoring1, IfAnalysis? refactoring2)
     {
         if (refactoring1 is not null)
         {
@@ -590,7 +623,7 @@ internal abstract class IfAnalysis
         return Empty;
     }
 
-    private static ExpressionSyntax GetNullableOfTValueProperty(
+    private static ExpressionSyntax? GetNullableOfTValueProperty(
         ExpressionSyntax expression,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)

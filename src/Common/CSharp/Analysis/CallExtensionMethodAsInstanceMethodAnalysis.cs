@@ -21,7 +21,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
         bool allowAnyExpression = false,
         CancellationToken cancellationToken = default)
     {
-        ExpressionSyntax expression = invocationExpression
+        ExpressionSyntax? expression = invocationExpression
             .ArgumentList?
             .Arguments
             .FirstOrDefault()?
@@ -48,7 +48,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
             }
         }
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken);
 
         if (methodSymbol is null)
             return Fail;
@@ -56,7 +56,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
         if (!methodSymbol.IsOrdinaryExtensionMethod())
             return Fail;
 
-        InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
+        InvocationExpressionSyntax? newInvocationExpression = GetNewInvocation(invocationExpression);
 
         if (newInvocationExpression is null)
             return Fail;
@@ -82,18 +82,18 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
             case SyntaxKind.SimpleMemberAccessExpression:
                 return ((MemberAccessExpressionSyntax)expression).Name;
             default:
-                return null;
+                return default;
         }
     }
 
-    private static InvocationExpressionSyntax GetNewInvocation(InvocationExpressionSyntax invocation)
+    private static InvocationExpressionSyntax? GetNewInvocation(InvocationExpressionSyntax invocation)
     {
         ExpressionSyntax expression = invocation.Expression;
         ArgumentListSyntax argumentList = invocation.ArgumentList;
         SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
         ArgumentSyntax argument = arguments[0];
 
-        MemberAccessExpressionSyntax newMemberAccess = CreateNewMemberAccessExpression();
+        MemberAccessExpressionSyntax? newMemberAccess = CreateNewMemberAccessExpression();
 
         if (newMemberAccess is null)
             return null;
@@ -102,7 +102,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
             .WithExpression(newMemberAccess)
             .WithArgumentList(argumentList.WithArguments(arguments.Remove(argument)));
 
-        MemberAccessExpressionSyntax CreateNewMemberAccessExpression()
+        MemberAccessExpressionSyntax? CreateNewMemberAccessExpression()
         {
             switch (expression.Kind())
             {

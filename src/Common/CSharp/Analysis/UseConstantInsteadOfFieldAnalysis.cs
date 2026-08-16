@@ -61,7 +61,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
         VariableDeclaratorSyntax firstDeclarator = declarators[0];
 
-        var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
+        var fieldSymbol = (IFieldSymbol?)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
 
         if (fieldSymbol is null)
             return false;
@@ -71,7 +71,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
         foreach (VariableDeclaratorSyntax declarator in declarators)
         {
-            ExpressionSyntax value = declarator.Initializer?.Value;
+            ExpressionSyntax? value = declarator.Initializer?.Value;
 
             if (value is null)
                 return false;
@@ -107,7 +107,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
                 var constructorDeclaration = (ConstructorDeclarationSyntax)syntaxReference.GetSyntax(cancellationToken);
 
-                BlockSyntax body = constructorDeclaration.Body;
+                BlockSyntax? body = constructorDeclaration.Body;
 
                 if (body is not null)
                 {

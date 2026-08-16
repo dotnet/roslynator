@@ -37,17 +37,17 @@ internal static class ConvertHasFlagCallToBitwiseOperationAnalysis
         if (CSharpUtility.IsConditionallyAccessed(invocationInfo.InvocationExpression))
             return false;
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
         if (methodSymbol?.IsStatic == false
             && methodSymbol.IsReturnType(SpecialType.System_Boolean)
             && methodSymbol.HasSingleParameter(SpecialType.System_Enum)
             && methodSymbol.IsContainingType(SpecialType.System_Enum)
-            && !semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum))
+            && semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken)?.HasMetadataName(MetadataNames.System_Enum) != true)
         {
             ExpressionSyntax expression = invocationInfo.Arguments.Single().Expression;
 
-            if (!semanticModel.GetTypeSymbol(expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum)
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken)?.HasMetadataName(MetadataNames.System_Enum) != true
                 && semanticModel.HasConstantValue(expression, cancellationToken))
             {
                 return true;

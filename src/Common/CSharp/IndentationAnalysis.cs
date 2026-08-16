@@ -88,7 +88,7 @@ internal sealed class IndentationAnalysis
         }
         else
         {
-            return default;
+            return new IndentationAnalysis(indentation, null, null, null);
         }
     }
 
@@ -267,7 +267,10 @@ internal sealed class IndentationAnalysis
                 }
             }
 
-            node = node.Parent;
+            if (node.Parent is not { } parent)
+                break;
+
+            node = parent;
         }
         while (node is not null);
 
@@ -279,14 +282,14 @@ internal sealed class IndentationAnalysis
             {
                 if (member is NamespaceDeclarationSyntax namespaceDeclaration)
                 {
-                    MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
+                    MemberDeclarationSyntax? member2 = namespaceDeclaration.Members.FirstOrDefault();
 
                     if (member2 is not null)
                         return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
                 }
                 else if (member is TypeDeclarationSyntax typeDeclaration)
                 {
-                    MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
+                    MemberDeclarationSyntax? member2 = typeDeclaration.Members.FirstOrDefault();
 
                     if (member2 is not null)
                         return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
@@ -297,7 +300,7 @@ internal sealed class IndentationAnalysis
 
                     if (statement2 is SwitchStatementSyntax switchStatement)
                     {
-                        SwitchSectionSyntax switchSection = switchStatement.Sections.FirstOrDefault();
+                        SwitchSectionSyntax? switchSection = switchStatement.Sections.FirstOrDefault();
 
                         if (switchSection is not null)
                             return SyntaxTriviaAnalysis.DetermineIndentation(switchSection, cancellationToken);
@@ -306,7 +309,7 @@ internal sealed class IndentationAnalysis
                     }
                     else
                     {
-                        StatementSyntax statement3 = GetContainedStatement(statement2);
+                        StatementSyntax? statement3 = GetContainedStatement(statement2);
 
                         if (statement3 is not null)
                         {
@@ -344,7 +347,7 @@ internal sealed class IndentationAnalysis
             return default;
         }
 
-        StatementSyntax GetContainedStatement(StatementSyntax statement)
+        StatementSyntax? GetContainedStatement(StatementSyntax statement)
         {
             switch (statement.Kind())
             {

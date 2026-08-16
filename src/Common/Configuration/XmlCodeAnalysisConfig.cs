@@ -17,11 +17,11 @@ public class XmlCodeAnalysisConfig
     public static XmlCodeAnalysisConfig Empty { get; } = new();
 
     internal XmlCodeAnalysisConfig(
-        IEnumerable<string> includes = null,
-        IEnumerable<KeyValuePair<string, bool>> analyzers = null,
-        IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-        IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-        IEnumerable<string> ruleSets = null,
+        IEnumerable<string>? includes = null,
+        IEnumerable<KeyValuePair<string, bool>>? analyzers = null,
+        IEnumerable<KeyValuePair<string, bool>>? codeFixes = null,
+        IEnumerable<KeyValuePair<string, bool>>? refactorings = null,
+        IEnumerable<string>? ruleSets = null,
         bool? prefixFieldIdentifierWithUnderscore = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
         int? maxLineLength = ConfigOptionDefaultValues.MaxLineLength)
     {
@@ -36,7 +36,7 @@ public class XmlCodeAnalysisConfig
         string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
 
         if (!string.IsNullOrEmpty(path))
-            path = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
+            path = Path.Combine(Path.GetDirectoryName(path)!, RuleSetLoader.DefaultRuleSetName);
 
         RuleSet ruleSet = RuleSetLoader.Load(path, RuleSets) ?? RuleSetLoader.EmptyRuleSet;
 
@@ -62,7 +62,7 @@ public class XmlCodeAnalysisConfig
 
     public int? MaxLineLength { get; }
 
-    public static string GetDefaultConfigFilePath()
+    public static string? GetDefaultConfigFilePath()
     {
         string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
 

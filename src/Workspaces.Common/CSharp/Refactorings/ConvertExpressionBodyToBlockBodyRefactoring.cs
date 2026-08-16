@@ -25,7 +25,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
     {
         AnalyzerConfigOptions configOptions = document.GetConfigOptions(selectedMembers.Parent.SyntaxTree);
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         IEnumerable<MemberDeclarationSyntax> newMembers = selectedMembers
             .UnderlyingList
@@ -34,7 +34,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                 selectedMembers.Count,
                 member =>
                 {
-                    ArrowExpressionClauseSyntax expressionBody = CSharpUtility.GetExpressionBody(member);
+                    ArrowExpressionClauseSyntax? expressionBody = CSharpUtility.GetExpressionBody(member);
 
                     if (expressionBody is not null
                         && ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
@@ -55,7 +55,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
     {
         AnalyzerConfigOptions configOptions = document.GetConfigOptions(expressionBody.SyntaxTree);
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         SyntaxNode newNode = Refactor(expressionBody, configOptions, semanticModel, cancellationToken);
 
@@ -70,7 +70,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
             newNode = newNode.ReplaceToken(token, newToken);
         }
 
-        return await document.ReplaceNodeAsync(expressionBody.Parent, newNode, cancellationToken).ConfigureAwait(false);
+        return await document.ReplaceNodeAsync(expressionBody.Parent!, newNode, cancellationToken).ConfigureAwait(false);
     }
 
     public static SyntaxNode Refactor(
@@ -79,9 +79,9 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        SyntaxNode node = expressionBody.Parent;
+        SyntaxNode node = expressionBody.Parent!;
 
-        ExpressionSyntax expression = expressionBody.Expression;
+        ExpressionSyntax expression = expressionBody.Expression!;
 
         switch (node.Kind())
         {
@@ -232,7 +232,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                 case SyntaxKind.AwaitExpression:
                 {
                     ITypeSymbol originalDefinition = semanticModel
-                        .GetTypeSymbol(returnType, cancellationToken)
+                        .GetTypeSymbol(returnType, cancellationToken)!
                         .OriginalDefinition;
 
                     if (!originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T)
@@ -286,7 +286,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
             {
                 if (e is ThrowExpressionSyntax throwExpression)
                 {
-                    return ThrowStatement(Token(SyntaxKind.ThrowKeyword), throwExpression.Expression, s);
+                    return ThrowStatement(Token(SyntaxKind.ThrowKeyword), throwExpression.Expression!, s);
                 }
                 else
                 {

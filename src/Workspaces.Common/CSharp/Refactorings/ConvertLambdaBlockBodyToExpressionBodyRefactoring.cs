@@ -21,7 +21,7 @@ internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
     {
         var block = (BlockSyntax)lambda.Body;
 
-        ExpressionSyntax expression = GetExpression(block.Statements[0]).WithoutTrivia();
+        ExpressionSyntax expression = GetExpression(block.Statements[0])!.WithoutTrivia();
 
         LambdaExpressionSyntax newLambda = GetNewLambda()
             .WithTriviaFrom(lambda)
@@ -29,7 +29,7 @@ internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
 
         return document.ReplaceNodeAsync(lambda, newLambda, cancellationToken);
 
-        static ExpressionSyntax GetExpression(StatementSyntax statement)
+        static ExpressionSyntax? GetExpression(StatementSyntax statement)
         {
             switch (statement.Kind())
             {
@@ -45,7 +45,7 @@ internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
                 {
                     return ThrowExpression(
                         Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
-                        ((ThrowStatementSyntax)statement).Expression);
+                        ((ThrowStatementSyntax)statement).Expression!);
                 }
             }
 

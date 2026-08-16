@@ -67,7 +67,7 @@ internal static partial class ReduceIfNestingRefactoring
             }
         }
 
-        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+        public override SyntaxNode? VisitIfStatement(IfStatementSyntax node)
         {
             if (node.Parent == _statementsInfo.Parent)
             {
@@ -77,7 +77,7 @@ internal static partial class ReduceIfNestingRefactoring
             return node;
         }
 
-        public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
+        public override SyntaxNode? VisitSwitchSection(SwitchSectionSyntax node)
         {
             if (_statementsInfo.Parent is null)
             {
@@ -87,7 +87,7 @@ internal static partial class ReduceIfNestingRefactoring
             return node;
         }
 
-        public override SyntaxNode VisitBlock(BlockSyntax node)
+        public override SyntaxNode? VisitBlock(BlockSyntax node)
         {
             if (_statementsInfo.Parent is null
                 && node.IsParentKind(SyntaxKind.SwitchSection))
@@ -97,15 +97,18 @@ internal static partial class ReduceIfNestingRefactoring
 
             _statementsInfo = new StatementListInfo(node);
 
-            IfStatementSyntax ifStatement = FindFixableIfStatement(_statementsInfo.Statements, _jumpKind);
+            IfStatementSyntax? ifStatement = FindFixableIfStatement(_statementsInfo.Statements, _jumpKind);
 
-            if (ReduceIfNestingAnalysis.IsFixable(ifStatement))
+            if (ifStatement is not null
+                && ReduceIfNestingAnalysis.IsFixable(ifStatement))
+            {
                 return Rewrite(_statementsInfo, ifStatement);
+            }
 
             return node;
         }
 
-        private static IfStatementSyntax FindFixableIfStatement(SyntaxList<StatementSyntax> statements, SyntaxKind jumpKind)
+        private static IfStatementSyntax? FindFixableIfStatement(SyntaxList<StatementSyntax> statements, SyntaxKind jumpKind)
         {
             int i = statements.Count - 1;
 
@@ -162,9 +165,9 @@ internal static partial class ReduceIfNestingRefactoring
             ExpressionSyntax newCondition = _logicalInverter.LogicallyInvert(ifStatement.Condition, _semanticModel, _cancellationToken);
 
             if (_recursive)
-                ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);
+                ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement)!;
 
-            var block = (BlockSyntax)ifStatement.Statement;
+            var block = (BlockSyntax)ifStatement.Statement!;
 
             BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
 

@@ -27,16 +27,16 @@ internal readonly struct RemoveAsyncAwaitAnalysis
 
     public bool Success => AwaitExpression is not null || Walker?.AwaitExpressions.Count > 0;
 
-    public AwaitExpressionSyntax AwaitExpression { get; }
+    public AwaitExpressionSyntax? AwaitExpression { get; }
 
-    public AwaitExpressionWalker Walker { get; }
+    public AwaitExpressionWalker? Walker { get; }
 
     public static RemoveAsyncAwaitAnalysis Create(
         MethodDeclarationSyntax methodDeclaration,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        BlockSyntax body = methodDeclaration.Body;
+        BlockSyntax? body = methodDeclaration.Body;
 
         if (body is not null)
         {
@@ -44,7 +44,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         }
         else
         {
-            ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
+            ArrowExpressionClauseSyntax? expressionBody = methodDeclaration.ExpressionBody;
 
             if (expressionBody is not null)
                 return AnalyzeExpressionBody(methodDeclaration, expressionBody, semanticModel, cancellationToken);
@@ -58,7 +58,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        BlockSyntax body = localFunction.Body;
+        BlockSyntax? body = localFunction.Body;
 
         if (body is not null)
         {
@@ -66,7 +66,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         }
         else
         {
-            ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
+            ArrowExpressionClauseSyntax? expressionBody = localFunction.ExpressionBody;
 
             if (expressionBody is not null)
                 return AnalyzeExpressionBody(localFunction, expressionBody, semanticModel, cancellationToken);
@@ -151,7 +151,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
     {
         SyntaxList<StatementSyntax> statements = body.Statements;
 
-        StatementSyntax statement = null;
+        StatementSyntax? statement = null;
 
         foreach (StatementSyntax s in statements)
         {
@@ -176,7 +176,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
             {
                 var returnStatement = (ReturnStatementSyntax)statement;
 
-                AwaitExpressionSyntax awaitExpression = GetAwaitExpression(returnStatement);
+                AwaitExpressionSyntax? awaitExpression = GetAwaitExpression(returnStatement);
 
                 if (awaitExpression is null)
                     return default;
@@ -279,7 +279,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
                 return false;
             }
 
-            AwaitExpressionSyntax awaitExpression = GetAwaitExpression(ifOrElse.Statement);
+            AwaitExpressionSyntax? awaitExpression = GetAwaitExpression(ifOrElse.Statement);
 
             if (awaitExpression is null)
                 return false;
@@ -304,7 +304,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
                 return false;
             }
 
-            AwaitExpressionSyntax awaitExpression = GetAwaitExpression(section.Statements.LastOrDefault());
+            AwaitExpressionSyntax? awaitExpression = GetAwaitExpression(section.Statements.LastOrDefault());
 
             if (awaitExpression is null)
                 return false;
@@ -315,7 +315,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         return expectedCount == count;
     }
 
-    private static AwaitExpressionSyntax GetAwaitExpression(StatementSyntax statement)
+    private static AwaitExpressionSyntax? GetAwaitExpression(StatementSyntax? statement)
     {
         if (statement is null)
             return null;
@@ -339,9 +339,9 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         return null;
     }
 
-    private static AwaitExpressionSyntax GetAwaitExpression(ReturnStatementSyntax returnStatement)
+    private static AwaitExpressionSyntax? GetAwaitExpression(ReturnStatementSyntax returnStatement)
     {
-        ExpressionSyntax expression = returnStatement.Expression;
+        ExpressionSyntax? expression = returnStatement.Expression;
 
         if (expression?.Kind() == SyntaxKind.AwaitExpression)
             return (AwaitExpressionSyntax)expression;
@@ -355,17 +355,17 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IMethodSymbol methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
+        IMethodSymbol? methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
 
         if (methodSymbol is null)
             return false;
 
-        ITypeSymbol returnType = methodSymbol.ReturnType;
+        ITypeSymbol? returnType = methodSymbol.ReturnType;
 
         if (returnType?.OriginalDefinition.IsAwaitable(semanticModel, node.SpanStart) != true)
             return false;
 
-        ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
+        ITypeSymbol? typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
 
         if (typeArgument is null)
             return false;
@@ -385,17 +385,17 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IMethodSymbol methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
+        IMethodSymbol? methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
 
         if (methodSymbol is null)
             return false;
 
-        ITypeSymbol returnType = methodSymbol.ReturnType;
+        ITypeSymbol? returnType = methodSymbol.ReturnType;
 
         if (returnType?.OriginalDefinition.IsAwaitable(semanticModel, node.SpanStart) != true)
             return false;
 
-        ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
+        ITypeSymbol? typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
 
         if (typeArgument is null)
             return false;
@@ -415,7 +415,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
 
         ExpressionSyntax expression = awaitExpression.Expression;
 
-        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+        ITypeSymbol? expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
         if (expressionTypeSymbol is null)
             return false;
@@ -429,7 +429,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis
             && SymbolEqualityComparer.Default.Equals(returnType, semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken));
     }
 
-    private static IMethodSymbol GetMethodSymbol(
+    private static IMethodSymbol? GetMethodSymbol(
         SyntaxNode node,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
@@ -438,11 +438,11 @@ internal readonly struct RemoveAsyncAwaitAnalysis
         {
             case SyntaxKind.MethodDeclaration:
             case SyntaxKind.LocalFunctionStatement:
-                return (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, cancellationToken);
+                return (IMethodSymbol?)semanticModel.GetDeclaredSymbol(node, cancellationToken);
             case SyntaxKind.SimpleLambdaExpression:
             case SyntaxKind.ParenthesizedLambdaExpression:
             case SyntaxKind.AnonymousMethodExpression:
-                return (IMethodSymbol)semanticModel.GetSymbol(node, cancellationToken);
+                return (IMethodSymbol?)semanticModel.GetSymbol(node, cancellationToken);
         }
 
         throw new InvalidOperationException();

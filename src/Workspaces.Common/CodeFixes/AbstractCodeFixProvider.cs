@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
@@ -23,12 +24,12 @@ public abstract class AbstractCodeFixProvider : CodeFixProvider
         return WellKnownFixAllProviders.BatchFixer;
     }
 
-    protected static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
+    protected static string GetEquivalenceKey(Diagnostic diagnostic, string? additionalKey1 = null, string? additionalKey2 = null)
     {
         return EquivalenceKey.Create(diagnostic, additionalKey1, additionalKey2);
     }
 
-    protected static string GetEquivalenceKey(string key, string additionalKey1 = null, string additionalKey2 = null)
+    protected static string GetEquivalenceKey(string key, string? additionalKey1 = null, string? additionalKey2 = null)
     {
         return EquivalenceKey.Create(key, additionalKey1, additionalKey2);
     }
@@ -36,10 +37,10 @@ public abstract class AbstractCodeFixProvider : CodeFixProvider
     protected static bool TryFindFirstAncestorOrSelf<TNode>(
         SyntaxNode root,
         TextSpan span,
-        out TNode node,
+        [NotNullWhen(true)] out TNode? node,
         bool findInsideTrivia = false,
         bool getInnermostNodeForTie = true,
-        Func<TNode, bool> predicate = null,
+        Func<TNode, bool>? predicate = null,
         bool ascendOutOfTrivia = true) where TNode : SyntaxNode
     {
         node = root
@@ -54,10 +55,10 @@ public abstract class AbstractCodeFixProvider : CodeFixProvider
     protected static bool TryFindFirstDescendantOrSelf<TNode>(
         SyntaxNode root,
         TextSpan span,
-        out TNode node,
+        [NotNullWhen(true)] out TNode? node,
         bool findInsideTrivia = false,
         bool getInnermostNodeForTie = true,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = true) where TNode : SyntaxNode
     {
         node = root
@@ -72,10 +73,10 @@ public abstract class AbstractCodeFixProvider : CodeFixProvider
     protected static bool TryFindNode<TNode>(
         SyntaxNode root,
         TextSpan span,
-        out TNode node,
+        [NotNullWhen(true)] out TNode? node,
         bool findInsideTrivia = false,
         bool getInnermostNodeForTie = true,
-        Func<TNode, bool> predicate = null) where TNode : SyntaxNode
+        Func<TNode, bool>? predicate = null) where TNode : SyntaxNode
     {
         node = root.FindNode(span, findInsideTrivia: findInsideTrivia, getInnermostNodeForTie: getInnermostNodeForTie) as TNode;
 
@@ -130,7 +131,7 @@ public abstract class AbstractCodeFixProvider : CodeFixProvider
         }
 
         [Conditional("DEBUG")]
-        public static void NotNull<T>(T value) where T : class
+        public static void NotNull<T>(T? value) where T : class
         {
             Debug.Assert(value is not null, $"{nameof(value)} is null");
         }

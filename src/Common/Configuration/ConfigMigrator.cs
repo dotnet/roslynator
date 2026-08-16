@@ -27,7 +27,12 @@ internal static class ConfigMigrator
 
     private static void Migrate(string path)
     {
-        string editorConfigPath = Path.Combine(Path.GetDirectoryName(path), EditorConfigCodeAnalysisConfig.FileName);
+        string? directoryPath = Path.GetDirectoryName(path);
+
+        if (string.IsNullOrEmpty(directoryPath))
+            return;
+
+        string editorConfigPath = Path.Combine(directoryPath, EditorConfigCodeAnalysisConfig.FileName);
 
         if (File.Exists(editorConfigPath))
             return;
@@ -35,39 +40,42 @@ internal static class ConfigMigrator
         var xmlConfigMigrated = false;
         var ruleSetMigrated = false;
 
-        EditorConfigWriter writer = null;
+        EditorConfigWriter? writer = null;
         try
         {
             if (File.Exists(path))
             {
-                XmlCodeAnalysisConfig config = XmlCodeAnalysisConfigLoader.Load(path, XmlConfigLoadOptions.SkipIncludes);
+                XmlCodeAnalysisConfig? config = XmlCodeAnalysisConfigLoader.Load(path, XmlConfigLoadOptions.SkipIncludes);
 
-                writer = new EditorConfigWriter(new StringWriter());
+                if (config is not null)
+                {
+                    writer = new EditorConfigWriter(new StringWriter());
 
-                writer.WriteGlobalDirective();
-                writer.WriteLine();
+                    writer.WriteGlobalDirective();
+                    writer.WriteLine();
 
-                if (config.MaxLineLength is not null)
-                    writer.WriteEntry(ConfigOptionKeys.MaxLineLength, config.MaxLineLength.ToString());
+                    if (config.MaxLineLength is not null)
+                        writer.WriteEntry(ConfigOptionKeys.MaxLineLength, config.MaxLineLength.ToString());
 
-                if (config.PrefixFieldIdentifierWithUnderscore is not null)
-                    writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, config.PrefixFieldIdentifierWithUnderscore.Value);
+                    if (config.PrefixFieldIdentifierWithUnderscore is not null)
+                        writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, config.PrefixFieldIdentifierWithUnderscore.Value);
 
-                writer.WriteLineIf(config.MaxLineLength is not null || config.PrefixFieldIdentifierWithUnderscore is not null);
+                    writer.WriteLineIf(config.MaxLineLength is not null || config.PrefixFieldIdentifierWithUnderscore is not null);
 
-                writer.WriteRefactorings(config.Refactorings.OrderBy(f => f.Key));
-                writer.WriteLineIf(config.Refactorings.Count > 0);
+                    writer.WriteRefactorings(config.Refactorings.OrderBy(f => f.Key));
+                    writer.WriteLineIf(config.Refactorings.Count > 0);
 
-                writer.WriteCompilerDiagnosticFixes(config.CodeFixes.OrderBy(f => f.Key));
-                writer.WriteLineIf(config.CodeFixes.Count > 0);
-                xmlConfigMigrated = true;
+                    writer.WriteCompilerDiagnosticFixes(config.CodeFixes.OrderBy(f => f.Key));
+                    writer.WriteLineIf(config.CodeFixes.Count > 0);
+                    xmlConfigMigrated = true;
+                }
             }
 
-            string ruleSetPath = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
+            string ruleSetPath = Path.Combine(directoryPath, RuleSetLoader.DefaultRuleSetName);
 
             if (File.Exists(ruleSetPath))
             {
-                RuleSet ruleSet = null;
+                RuleSet? ruleSet = null;
 
                 try
                 {
