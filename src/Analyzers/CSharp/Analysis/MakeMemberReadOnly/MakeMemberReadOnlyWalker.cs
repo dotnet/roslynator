@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,7 +9,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly;
 
-internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
+internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
 {
     private int _classOrStructDepth;
     private int _localFunctionDepth;
@@ -19,33 +17,17 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
     private bool _isInInstanceConstructor;
     private bool _isInStaticConstructor;
 
-    public SemanticModel SemanticModel { get; private set; }
-
-    public CancellationToken CancellationToken { get; private set; }
-
-    public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
-
-    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+    public MakeMemberReadOnlyWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SemanticModel = semanticModel;
         CancellationToken = cancellationToken;
     }
 
-    public bool Reset()
-    {
-        bool canBeCached = Symbols.Count <= ObjectPool.MaxCachedBufferSize;
+    public SemanticModel SemanticModel { get; }
 
-        Symbols.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        _classOrStructDepth = 0;
-        _localFunctionDepth = 0;
-        _anonymousFunctionDepth = 0;
-        _isInInstanceConstructor = false;
-        _isInStaticConstructor = false;
+    public CancellationToken CancellationToken { get; }
 
-        return canBeCached;
-    }
+    public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)
     {

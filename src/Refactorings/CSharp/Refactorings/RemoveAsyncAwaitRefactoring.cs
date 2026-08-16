@@ -18,11 +18,9 @@ internal static class RemoveAsyncAwaitRefactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken))
-                {
-                    if (analysis.Success)
-                        RegisterRefactoring();
-                }
+                RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken);
+                if (analysis.Success)
+                    RegisterRefactoring();
 
                 return;
             }
@@ -30,11 +28,9 @@ internal static class RemoveAsyncAwaitRefactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken))
-                {
-                    if (analysis.Success)
-                        RegisterRefactoring();
-                }
+                RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken);
+                if (analysis.Success)
+                    RegisterRefactoring();
 
                 return;
             }
@@ -42,11 +38,9 @@ internal static class RemoveAsyncAwaitRefactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken))
-                {
-                    if (analysis.Success)
-                        RegisterRefactoring();
-                }
+                RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken);
+                if (analysis.Success)
+                    RegisterRefactoring();
 
                 return;
             }
@@ -54,11 +48,9 @@ internal static class RemoveAsyncAwaitRefactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken))
-                {
-                    if (analysis.Success)
-                        RegisterRefactoring();
-                }
+                RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken);
+                if (analysis.Success)
+                    RegisterRefactoring();
 
                 return;
             }
@@ -66,11 +58,9 @@ internal static class RemoveAsyncAwaitRefactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken))
-                {
-                    if (analysis.Success)
-                        RegisterRefactoring();
-                }
+                RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken);
+                if (analysis.Success)
+                    RegisterRefactoring();
 
                 return;
             }

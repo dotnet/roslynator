@@ -154,11 +154,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool IsFixable(BlockSyntax body, SyntaxNodeAnalysisContext context)
     {
-        using PooledObject<UseAsyncAwaitWalker> pooledWalker = ObjectPool<UseAsyncAwaitWalker>.Rent();
-
-        UseAsyncAwaitWalker walker = pooledWalker.Value;
-
-        walker.Initialize(context.SemanticModel, context.CancellationToken);
+        var walker = new UseAsyncAwaitWalker(context.SemanticModel, context.CancellationToken);
 
         walker.VisitBlock(body);
 
@@ -166,19 +162,25 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
             && !CSharpUtility.IsInUnsafeContext(body);
     }
 
-    private class UseAsyncAwaitWalker : StatementWalker, IResettable
+    private class UseAsyncAwaitWalker : StatementWalker
     {
         private readonly List<int> _usingDeclarations = [];
         private int _usingOrTryStatementDepth;
         private bool _shouldVisit = true;
 
+        public UseAsyncAwaitWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
+
         public override bool ShouldVisit => _shouldVisit;
 
         public ReturnStatementSyntax ReturnStatement { get; private set; }
 
-        public SemanticModel SemanticModel { get; private set; }
+        public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public CancellationToken CancellationToken { get; }
 
         public override void VisitUsingStatement(UsingStatementSyntax node)
         {
@@ -319,27 +321,6 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
-        }
-
-        public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            SemanticModel = semanticModel;
-            CancellationToken = cancellationToken;
-        }
-
-        public bool Reset()
-        {
-            // Count is always 0 after a balanced visit; Capacity is the retained buffer size.
-            bool canBeCached = _usingDeclarations.Capacity <= ObjectPool.MaxCachedBufferSize;
-            _shouldVisit = true;
-            _usingOrTryStatementDepth = 0;
-
-            _usingDeclarations.Clear();
-            ReturnStatement = null;
-            SemanticModel = null;
-            CancellationToken = default;
-
-            return canBeCached;
         }
     }
 }

@@ -10,35 +10,23 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst;
 
-internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker, IResettable
+internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
 {
-    public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
-
-    public SemanticModel SemanticModel { get; private set; }
-
-    public CancellationToken CancellationToken { get; private set; }
-
-    public bool Result { get; private set; }
-
-    protected override bool ShouldVisit => !Result;
-
-    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+    public MarkLocalVariableAsConstWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SemanticModel = semanticModel;
         CancellationToken = cancellationToken;
     }
 
-    public bool Reset()
-    {
-        bool canBeCached = Identifiers.Count <= ObjectPool.MaxCachedBufferSize;
+    public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
 
-        Identifiers.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        Result = false;
+    public SemanticModel SemanticModel { get; }
 
-        return canBeCached;
-    }
+    public CancellationToken CancellationToken { get; }
+
+    public bool Result { get; private set; }
+
+    protected override bool ShouldVisit => !Result;
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)
     {

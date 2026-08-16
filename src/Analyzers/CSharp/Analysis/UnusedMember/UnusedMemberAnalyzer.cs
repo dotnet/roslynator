@@ -76,9 +76,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
-        using PooledObject<UnusedMemberWalker> pooledWalker = ObjectPool<UnusedMemberWalker>.Rent();
-
-        UnusedMemberWalker walker = pooledWalker.Value;
+        var walker = new UnusedMemberWalker(semanticModel, cancellationToken);
 
         foreach (MemberDeclarationSyntax member in members)
         {
@@ -200,8 +198,6 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
         if (nodes.Count > 0)
         {
-            walker.Initialize(semanticModel, cancellationToken);
-
             walker.Visit(typeDeclaration);
 
             foreach (NodeSymbolInfo node in nodes)

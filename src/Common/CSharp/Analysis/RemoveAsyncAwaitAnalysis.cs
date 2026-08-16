@@ -11,27 +11,25 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
+internal readonly struct RemoveAsyncAwaitAnalysis
 {
-    private readonly Holder _holder;
-
     private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
     {
-        _holder = new Holder(walker);
+        Walker = walker;
         AwaitExpression = null;
     }
 
     private RemoveAsyncAwaitAnalysis(AwaitExpressionSyntax awaitExpression)
     {
-        _holder = null;
         AwaitExpression = awaitExpression;
+        Walker = null;
     }
 
     public bool Success => AwaitExpression is not null || Walker?.AwaitExpressions.Count > 0;
 
     public AwaitExpressionSyntax AwaitExpression { get; }
 
-    public AwaitExpressionWalker Walker => _holder?.Walker;
+    public AwaitExpressionWalker Walker { get; }
 
     public static RemoveAsyncAwaitAnalysis Create(
         MethodDeclarationSyntax methodDeclaration,
@@ -183,14 +181,14 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                 if (awaitExpression is null)
                     return default;
 
-                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
+                AwaitExpressionWalker walker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                 if (awaitExpressions.Count == 1)
                 {
                     if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
-                        return Take(ref pooledWalker);
+                        return new RemoveAsyncAwaitAnalysis(walker);
                 }
                 else if (awaitExpressions.Count > 1)
                 {
@@ -203,7 +201,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                             if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
                                 && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                             {
-                                return Take(ref pooledWalker);
+                                return new RemoveAsyncAwaitAnalysis(walker);
                             }
 
                             break;
@@ -213,7 +211,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                             if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
                                 && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                             {
-                                return Take(ref pooledWalker);
+                                return new RemoveAsyncAwaitAnalysis(walker);
                             }
 
                             break;
@@ -221,60 +219,50 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
                     }
                 }
 
-                pooledWalker.Dispose();
                 return default;
             }
             case SyntaxKind.IfStatement:
             {
-                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
+                AwaitExpressionWalker walker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                 if (awaitExpressions.Count > 0
                     && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
                     && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    return Take(ref pooledWalker);
+                    return new RemoveAsyncAwaitAnalysis(walker);
                 }
 
-                pooledWalker.Dispose();
                 return default;
             }
             case SyntaxKind.SwitchStatement:
             {
-                PooledObject<AwaitExpressionWalker> pooledWalker = VisitStatements();
+                AwaitExpressionWalker walker = VisitStatements();
 
-                HashSet<AwaitExpressionSyntax> awaitExpressions = pooledWalker.Value.AwaitExpressions;
+                HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                 if (awaitExpressions.Count > 0
                     && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
                     && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                 {
-                    return Take(ref pooledWalker);
+                    return new RemoveAsyncAwaitAnalysis(walker);
                 }
 
-                pooledWalker.Dispose();
                 return default;
             }
         }
 
         return default;
 
-        PooledObject<AwaitExpressionWalker> VisitStatements()
+        AwaitExpressionWalker VisitStatements()
         {
-            PooledObject<AwaitExpressionWalker> pooledWalker = ObjectPool<AwaitExpressionWalker>.Rent();
+            var walker = new AwaitExpressionWalker();
 
-            pooledWalker.Value.VisitStatements(statements, statement);
+            walker.VisitStatements(statements, statement);
 
-            return pooledWalker;
+            return walker;
         }
-    }
-
-    private static RemoveAsyncAwaitAnalysis Take(ref PooledObject<AwaitExpressionWalker> pooledWalker)
-    {
-        AwaitExpressionWalker walker = pooledWalker.Value;
-        pooledWalker = default;
-        return new RemoveAsyncAwaitAnalysis(walker);
     }
 
     private static bool VerifyIfStatement(
@@ -458,27 +446,5 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         }
 
         throw new InvalidOperationException();
-    }
-
-    public void Dispose()
-    {
-        Holder holder = _holder;
-        AwaitExpressionWalker walker = holder?.Walker;
-
-        if (walker is null)
-            return;
-
-        holder.Walker = null;
-        ObjectPool<AwaitExpressionWalker>.Free(walker);
-    }
-
-    private sealed class Holder
-    {
-        public Holder(AwaitExpressionWalker walker)
-        {
-            Walker = walker;
-        }
-
-        public AwaitExpressionWalker Walker;
     }
 }

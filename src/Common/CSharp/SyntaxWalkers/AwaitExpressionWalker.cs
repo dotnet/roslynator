@@ -7,32 +7,25 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker, IResettable
+internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker
 {
     private bool _shouldVisit = true;
 
+    public AwaitExpressionWalker(bool stopOnFirstAwaitExpression = false)
+    {
+        StopOnFirstAwaitExpression = stopOnFirstAwaitExpression;
+    }
+
     public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = [];
 
-    private bool StopOnFirstAwaitExpression { get; set; }
+    private bool StopOnFirstAwaitExpression { get; }
 
     protected override bool ShouldVisit => _shouldVisit;
 
-    public bool Reset()
-    {
-        bool canBeCached = AwaitExpressions.Count <= ObjectPool.MaxCachedBufferSize;
-        _shouldVisit = true;
-        StopOnFirstAwaitExpression = false;
-        AwaitExpressions.Clear();
-        return canBeCached;
-    }
-
     public static bool ContainsAwaitExpression(ExpressionSyntax expression)
     {
-        using PooledObject<AwaitExpressionWalker> pooledWalker = ObjectPool<AwaitExpressionWalker>.Rent();
+        var walker = new AwaitExpressionWalker(stopOnFirstAwaitExpression: true);
 
-        AwaitExpressionWalker walker = pooledWalker.Value;
-
-        walker.StopOnFirstAwaitExpression = true;
         walker.Visit(expression);
 
         Debug.Assert(walker.AwaitExpressions.Count <= 1);

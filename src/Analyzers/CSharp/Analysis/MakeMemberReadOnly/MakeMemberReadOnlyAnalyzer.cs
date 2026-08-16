@@ -58,11 +58,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
         if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
             return;
 
-        using PooledObject<MakeMemberReadOnlyWalker> pooledWalker = ObjectPool<MakeMemberReadOnlyWalker>.Rent();
-
-        MakeMemberReadOnlyWalker walker = pooledWalker.Value;
-
-        walker.Initialize(context.SemanticModel, context.CancellationToken);
+        var walker = new MakeMemberReadOnlyWalker(context.SemanticModel, context.CancellationToken);
 
         AnalyzeTypeDeclaration(context, typeDeclaration, walker);
     }

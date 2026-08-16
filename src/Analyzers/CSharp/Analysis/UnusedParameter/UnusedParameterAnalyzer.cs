@@ -143,11 +143,7 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
         if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
             return;
 
-        using PooledObject<UnusedParameterWalker> pooledWalker = ObjectPool<UnusedParameterWalker>.Rent();
-
-        UnusedParameterWalker walker = pooledWalker.Value;
-
-        walker.Initialize(context.SemanticModel, context.CancellationToken);
+        var walker = new UnusedParameterWalker(context.SemanticModel, context.CancellationToken);
 
         FindUnusedNodes(parameterInfo, walker, methodSymbol);
 
@@ -329,11 +325,7 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
     {
-        using PooledObject<UnusedParameterWalker> pooledWalker = ObjectPool<UnusedParameterWalker>.Rent();
-
-        UnusedParameterWalker walker = pooledWalker.Value;
-
-        walker.Initialize(context.SemanticModel, context.CancellationToken, isIndexer);
+        var walker = new UnusedParameterWalker(context.SemanticModel, context.CancellationToken, isIndexer);
 
         FindUnusedNodes(parameterInfo, walker);
 

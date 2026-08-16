@@ -10,44 +10,30 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedParameter;
 
-internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
+internal class UnusedParameterWalker : TypeSyntaxWalker
 {
     private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
 
     private bool _isEmpty;
 
-    public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
-
-    public SemanticModel SemanticModel { get; private set; }
-
-    public CancellationToken CancellationToken { get; private set; }
-
-    public bool IsIndexer { get; private set; }
-
-    public bool IsAnyTypeParameter { get; set; }
-
-    protected override bool ShouldVisit => !_isEmpty;
-
-    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
+    public UnusedParameterWalker(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
     {
         SemanticModel = semanticModel;
         CancellationToken = cancellationToken;
         IsIndexer = isIndexer;
     }
 
-    public bool Reset()
-    {
-        bool canBeCached = Nodes.Count <= ObjectPool.MaxCachedBufferSize;
-        _isEmpty = false;
+    public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
 
-        Nodes.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        IsIndexer = false;
-        IsAnyTypeParameter = false;
+    public SemanticModel SemanticModel { get; }
 
-        return canBeCached;
-    }
+    public CancellationToken CancellationToken { get; }
+
+    public bool IsIndexer { get; }
+
+    public bool IsAnyTypeParameter { get; set; }
+
+    protected override bool ShouldVisit => !_isEmpty;
 
     public void AddParameter(ParameterSyntax parameter)
     {

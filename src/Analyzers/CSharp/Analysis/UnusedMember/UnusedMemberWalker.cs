@@ -11,17 +11,23 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedMember;
 
-internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
+internal class UnusedMemberWalker : TypeSyntaxWalker
 {
     private bool _isEmpty;
 
     private IMethodSymbol _containingMethodSymbol;
 
+    public UnusedMemberWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
+
     public Collection<NodeSymbolInfo> Nodes { get; } = [];
 
-    public SemanticModel SemanticModel { get; private set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; private set; }
+    public CancellationToken CancellationToken { get; }
 
     public bool IsAnyNodeConst { get; private set; }
 
@@ -30,27 +36,6 @@ internal class UnusedMemberWalker : TypeSyntaxWalker, IResettable
     protected override bool ShouldVisit
     {
         get { return !_isEmpty; }
-    }
-
-    public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
-    {
-        SemanticModel = semanticModel;
-        CancellationToken = cancellationToken;
-    }
-
-    public bool Reset()
-    {
-        bool canBeCached = Nodes.Count <= ObjectPool.MaxCachedBufferSize;
-        _isEmpty = false;
-        _containingMethodSymbol = null;
-
-        Nodes.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        IsAnyNodeConst = false;
-        IsAnyNodeDelegate = false;
-
-        return canBeCached;
     }
 
     public void AddDelegate(string name, SyntaxNode node)

@@ -414,15 +414,8 @@ internal class RefactoringContext
         if (node is null)
             return;
 
-        RefactoringFlags flags = ObjectPool<RefactoringFlags>.RentInstance();
-        try
-        {
-            await ComputeRefactoringsForNodeAsync(node, flags).ConfigureAwait(false);
-        }
-        finally
-        {
-            ObjectPool<RefactoringFlags>.Free(flags);
-        }
+        RefactoringFlags flags = new();
+        await ComputeRefactoringsForNodeAsync(node, flags).ConfigureAwait(false);
     }
 
     private async Task ComputeRefactoringsForNodeAsync(SyntaxNode node, RefactoringFlags flags)
@@ -1051,7 +1044,7 @@ internal class RefactoringContext
         CommentTriviaRefactoring.ComputeRefactorings(this, firstNode);
     }
 
-    private class RefactoringFlags : IResettable
+    private class RefactoringFlags
     {
         private readonly BitArray _flags;
 
@@ -1068,12 +1061,6 @@ internal class RefactoringContext
         public void Set(Flag flag)
         {
             _flags.Set((int)flag, true);
-        }
-
-        public bool Reset()
-        {
-            _flags.SetAll(false);
-            return true;
         }
     }
 

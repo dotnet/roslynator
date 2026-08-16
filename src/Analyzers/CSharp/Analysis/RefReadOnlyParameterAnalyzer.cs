@@ -113,9 +113,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
 
         var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
 
-        using PooledObject<RefReadOnlyParameterWalker> pooledWalker = ObjectPool<RefReadOnlyParameterWalker>.Rent();
-
-        RefReadOnlyParameterWalker walker = pooledWalker.Value;
+        var walker = new RefReadOnlyParameterWalker(semanticModel, cancellationToken);
 
         var isFirstCandidate = true;
 
@@ -179,8 +177,6 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
 
         if (walker.Parameters.Count > 0)
         {
-            walker.Initialize(semanticModel, cancellationToken);
-
             if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
             {
                 walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
@@ -242,35 +238,22 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private class RefReadOnlyParameterWalker : BaseCSharpSyntaxWalker, IResettable
+    private class RefReadOnlyParameterWalker : BaseCSharpSyntaxWalker
     {
         private int _localFunctionDepth;
         private int _anonymousFunctionDepth;
 
-        public Dictionary<string, IParameterSymbol> Parameters { get; } = [];
-
-        public SemanticModel SemanticModel { get; private set; }
-
-        public CancellationToken CancellationToken { get; private set; }
-
-        public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
+        public RefReadOnlyParameterWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             SemanticModel = semanticModel;
             CancellationToken = cancellationToken;
         }
 
-        public bool Reset()
-        {
-            bool canBeCached = Parameters.Count <= ObjectPool.MaxCachedBufferSize;
+        public Dictionary<string, IParameterSymbol> Parameters { get; } = [];
 
-            Parameters.Clear();
-            SemanticModel = null;
-            CancellationToken = default;
-            _localFunctionDepth = 0;
-            _anonymousFunctionDepth = 0;
+        public SemanticModel SemanticModel { get; }
 
-            return canBeCached;
-        }
+        public CancellationToken CancellationToken { get; }
 
         protected override bool ShouldVisit => Parameters.Count > 0;
 

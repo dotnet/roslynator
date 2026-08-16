@@ -100,11 +100,7 @@ public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
         SyntaxList<StatementSyntax> statements,
         int startIndex)
     {
-        using PooledObject<MarkLocalVariableAsConstWalker> pooledWalker = ObjectPool<MarkLocalVariableAsConstWalker>.Rent();
-
-        MarkLocalVariableAsConstWalker walker = pooledWalker.Value;
-
-        walker.Initialize(context.SemanticModel, context.CancellationToken);
+        var walker = new MarkLocalVariableAsConstWalker(context.SemanticModel, context.CancellationToken);
 
         foreach (VariableDeclaratorSyntax variable in variables)
         {
