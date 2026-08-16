@@ -21,6 +21,27 @@ Roslynator analyzers are metadata-driven: edit `Analyzers.xml`, codegen, impleme
 
 **Read this skill and `references/implementation.md` before writing tests.** Published [analyzers-testing.md](https://josefpihrt.github.io/docs/roslynator/analyzers-testing) targets NuGet consumers — copying it produces code that does not compile in this repo.
 
+## Confirm metadata parameters (hard gate)
+
+**STOP. Do NOT edit `Analyzers.xml`, run codegen, or implement until the user has confirmed every required parameter below.** Do not invent defaults when the user (or issue) did not state them.
+
+Use `AskQuestion` when available; otherwise ask conversationally. Batch related choices.
+
+| Parameter | Required? | Allowed / notes |
+|-----------|-----------|-----------------|
+| `Id` | propose | Compute next free `RCS0` / `RCS1` / `RCS9` id from `Analyzers.xml`; **do not ask** unless the issue conflicts or multiple ids are plausible |
+| `Identifier` | yes | PascalCase; drives generated names |
+| `Title` | yes | Short description |
+| `DefaultSeverity` | yes | `Hidden`, `Info`, `Warning`, or `Error` — **always ask** |
+| `IsEnabledByDefault` | yes | `true` / `false` — **always ask** (RCS0 often `false`) |
+| `MessageFormat` | if message has `{n}` placeholders | Otherwise omit (same as Title) |
+| Code fix? | yes | Strongly recommended; confirm yes/no |
+| `SupportsFadeOut` / fade-out analyzer | no | Ask only if unused-code style |
+| `MinLanguageVersion` | no | Ask only if C# version-gated |
+| Config option | no | See [config-options.md](references/config-options.md) |
+
+When proposing `Id`, state the chosen value in your plan/summary (e.g. “using next free **RCS9012**”). Skip asking other parameters only when the approved issue or the user's message already states the value explicitly.
+
 ## Quick Reference
 
 | Step | Location / command |
@@ -31,14 +52,15 @@ Roslynator analyzers are metadata-driven: edit `Analyzers.xml`, codegen, impleme
 | Analyzer | RCS1 → `Analyzers/CSharp/Analysis/`; RCS0 → `Formatting.Analyzers/CSharp/`; RCS9 → `CodeAnalysis.Analyzers/CSharp/` |
 | Code fix | matching `*.CodeFixes/CSharp/CodeFixes/` |
 | Tests | `src/Tests/<Package>.Tests/RCS####IdentifierTests.cs` |
-| Changelog | `ChangeLog.md` (not `CHANGELOG.md`) under `## [Unreleased]` |
+| Changelog | `CHANGELOG.md` under `## [Unreleased]` |
 
 ## Implementation
 
-1. Add `<Analyzer>` entry; schema in [references/analyzer-schema.md](references/analyzer-schema.md). Use docs-site [analyzer-metadata](https://josefpihrt.github.io/docs/roslynator/analyzer-metadata), not `Template.Analyzers.xml`.
-2. Optional config option before codegen — [references/config-options.md](references/config-options.md).
-3. Codegen from `tools/` (required cwd — see Common Mistakes).
-4. Implement analyzer, code fix (strongly recommended), tests — [references/implementation.md](references/implementation.md).
+1. Confirm metadata parameters (hard gate above).
+2. Add `<Analyzer>` entry; schema in [references/analyzer-schema.md](references/analyzer-schema.md). Use docs-site [analyzer-metadata](https://josefpihrt.github.io/docs/roslynator/analyzer-metadata), not `Template.Analyzers.xml`.
+3. Optional config option before codegen — [references/config-options.md](references/config-options.md).
+4. Codegen from `tools/` (required cwd — see Common Mistakes).
+5. Implement analyzer, code fix (if confirmed), tests — [references/implementation.md](references/implementation.md).
 
 Changelog line:
 
@@ -59,9 +81,9 @@ cd src && dotnet format Roslynator.sln --no-restore --verify-no-changes --severi
 
 | Mistake | Fix |
 |---------|-----|
+| Guess `DefaultSeverity` / `IsEnabledByDefault` | Ask — hard gate above |
 | Follow `analyzers-testing.md` verbatim | In-repo: `AbstractCSharpDiagnosticVerifier` + `Descriptor = DiagnosticRules.X` |
 | `pwsh tools/generate_code.ps1` from repo root | Run `cd tools && pwsh ./generate_code.ps1` — generator uses `../src` relative to cwd |
 | `<Status>` on new analyzer | Use only `IsEnabledByDefault`; lifecycle is `deprecate-analyzer-or-refactoring` |
-| `CHANGELOG.md` | File is `ChangeLog.md` at repo root |
 | `context.ReportDiagnostic` | Use `DiagnosticHelpers.ReportDiagnostic` |
 | Lazy `SupportedDiagnostics` field initializer | Use `Immutable.InterlockedInitialize` pattern |

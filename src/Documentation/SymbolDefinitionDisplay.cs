@@ -18,7 +18,8 @@ internal static class SymbolDefinitionDisplay
         SymbolDisplayFormat format,
         SymbolDisplayTypeDeclarationOptions typeDeclarationOptions = SymbolDisplayTypeDeclarationOptions.None,
         SymbolDisplayAdditionalOptions additionalOptions = SymbolDisplayAdditionalOptions.None,
-        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute = null)
+        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute = null,
+        Func<INamedTypeSymbol, bool> shouldDisplayInterface = null)
     {
         ImmutableArray<SymbolDisplayPart> parts;
 
@@ -62,6 +63,9 @@ internal static class SymbolDefinitionDisplay
                 {
                     interfaces = interfaces.RemoveAll(f => f.SpecialType == SpecialType.System_Collections_IEnumerable);
                 }
+
+                if (shouldDisplayInterface is not null)
+                    interfaces = interfaces.RemoveAll(f => !shouldDisplayInterface(f));
             }
         }
 

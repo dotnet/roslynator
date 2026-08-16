@@ -4,7 +4,7 @@
 * [Project website](https://github.com/dotnet/roslynator)
 * [List of refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings)
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
-* [Release notes](https://github.com/dotnet/roslynator/blob/main/ChangeLog.md)
+* [Release notes](https://github.com/dotnet/roslynator/blob/main/CHANGELOG.md)
 
 ## Donation
 

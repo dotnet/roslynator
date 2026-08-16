@@ -200,6 +200,22 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_RefStruct_Returned()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public readonly ref struct RefStruct;
+
+public static class Methods
+{
+    public static RefStruct DoSomething(RefStruct @struct)
+    {
+        return @struct;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
     public async Task TestNoDiagnostic_ExpressionTree()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -218,6 +234,49 @@ class C
     }
 
     public DateTime P { get; set; }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_CancellationToken_SyncTaskReturningMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    public Task DoThatWay(CancellationToken cancellationToken)
+    {
+        return Task.FromCanceled(cancellationToken);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task Test_ReadOnlyStruct_SyncTaskReturningMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+
+readonly struct C
+{
+    public Task<int> M(C [|c|])
+    {
+        return Task.FromResult(c.GetHashCode());
+    }
+}
+", @"
+using System.Threading.Tasks;
+
+readonly struct C
+{
+    public Task<int> M(in C c)
+    {
+        return Task.FromResult(c.GetHashCode());
+    }
 }
 ");
     }

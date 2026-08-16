@@ -14,21 +14,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Roslynator.Testing.Common` no longer depends on `Roslynator.Core`.
   - **Action required:** a test project that previously relied on the testing framework to pull in Roslyn 4.14.0 should now add its own reference, e.g. `<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />`. The chosen version also caps the C# language version available in test sources.
 
+## [4.16.1] - 2026-08-16
+
 ### Fixed
 
+- Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to not report a file that contains only multiple partial declarations of the same type ([PR](https://github.com/dotnet/roslynator/pull/1798))
+- Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) to not suggest `in` for `ref struct` parameters ([#1725](https://github.com/dotnet/roslynator/issues/1725)) ([PR](https://github.com/dotnet/roslynator/pull/1807))
+- Fix analyzer [RCS1260](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1260) false positive for `omit_when_single_line` on multi-line object/collection initializers ([#1439](https://github.com/dotnet/roslynator/issues/1439)) ([PR](https://github.com/dotnet/roslynator/pull/1808))
+- Fix analyzer [RCS0036](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0036) to report blank lines between single-line declarations in records ([PR](https://github.com/dotnet/roslynator/pull/1813))
 - Fix analyzer [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046) to report `async void` methods without `Async` suffix ([PR](https://github.com/dotnet/roslynator/pull/1790))
 - Fix analyzer [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) to not report catch clauses with a `when` filter ([PR](https://github.com/dotnet/roslynator/pull/1789))
 - Fix analyzer [RCS0034](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0034) for types with a primary constructor and multiple constraint clauses ([PR](https://github.com/dotnet/roslynator/pull/1791))
+- Fix analyzer [RCS1231](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1231) to not report `CancellationToken` in sync methods returning `Task` ([PR](https://github.com/dotnet/roslynator/pull/1802))
 - [CLI] Fix GitLab output format to use relative paths, forward slashes, and 1-based line numbers ([PR](https://github.com/dotnet/roslynator/pull/1792))
+- [CLI] Fix `generate-doc` to omit internal interfaces from type declarations and the Implements section ([PR](https://github.com/dotnet/roslynator/pull/1801))
 
 ## [4.16.0] - 2026-08-08
 
 ### Added
 
 - [CLI] Suppress error code from Roslynator when it detects issues in code but runs successfully ([PR](https://github.com/dotnet/roslynator/pull/1756) by @mdrybak)
+- [CLI] Add SARIF output for CLT ([PR](https://github.com/dotnet/roslynator/pull/1753))
 
 ### Fixed
 
+- Fix analyzer [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) to offer simplification for `async` `Task<>`/`ValueTask<>` and `IAsyncEnumerable<>` return types ([PR](https://github.com/dotnet/roslynator/pull/1764) by @John-Leitch)
 - Fix analyzer [RCS1118](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1118) to not report local variable passed as 'in' argument ([PR](https://github.com/dotnet/roslynator/pull/1782) by @NoahStolk)
 - Fix analyzer [RCS1074](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1074) ([PR](https://github.com/dotnet/roslynator/pull/1768) by @cbersch)
 - Fix enum contained flags check for partial matches in [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/1740) by @ovska)
