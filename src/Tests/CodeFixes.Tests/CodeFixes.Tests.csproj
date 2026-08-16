@@ -20,6 +20,11 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <!-- Pins the Roslyn version this test project runs against. Override with /p:RoslynatorTestRoslynVersion=<version>. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorTestRoslynVersion)" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\CodeFixes\CodeFixes.csproj" />
     <ProjectReference Include="..\..\Common\Common.csproj" />

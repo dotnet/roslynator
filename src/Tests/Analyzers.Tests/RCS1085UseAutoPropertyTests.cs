@@ -953,6 +953,8 @@ class C
 ");
     }
 
+#if ROSLYN_TEST_4_8_OR_GREATER
+    // Test source uses primary constructors and 'ref readonly' parameters (C# 12 / Roslyn 4.8).
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
     public async Task TestNoDiagnostic_BackingFieldUsedByReference()
     {
@@ -1007,4 +1009,5 @@ public ref struct Example(ref int value1, ref int value2)
 "
         );
     }
+#endif
 }

@@ -1,0 +1,14 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Some tests use C# features or rely on formatter behavior available only in newer Roslyn versions.
+       These symbols let such tests be excluded when the suite is pinned to an older RoslynatorTestRoslynVersion. -->
+  <PropertyGroup>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.8'))">$(DefineConstants);ROSLYN_TEST_4_8_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.11'))">$(DefineConstants);ROSLYN_TEST_4_11_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.12'))">$(DefineConstants);ROSLYN_TEST_4_12_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(RoslynatorTestRoslynVersion)', '4.14'))">$(DefineConstants);ROSLYN_TEST_4_14_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+
+</Project>

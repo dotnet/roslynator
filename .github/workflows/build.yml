@@ -77,7 +77,7 @@ jobs:
             ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
-    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v')
     needs: pre_build
     runs-on: ubuntu-24.04
     env:
