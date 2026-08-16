@@ -143,5 +143,17 @@ namespace Roslynator.CodeAnalysis
             helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
             customTags:         []);
 
+        /// <summary>RCS9012</summary>
+        public static readonly DiagnosticDescriptor UseIsKindInsteadOfKindComparison = DiagnosticDescriptorFactory.Create(
+            id:                 CodeAnalysisDiagnosticIdentifiers.UseIsKindInsteadOfKindComparison, 
+            title:              "Call 'IsKind' instead of comparing 'Kind'", 
+            messageFormat:      "Call 'IsKind' instead of comparing 'Kind'", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        CodeAnalysisDiagnosticIdentifiers.UseIsKindInsteadOfKindComparison, 
+            customTags:         []);
+
     }
 }

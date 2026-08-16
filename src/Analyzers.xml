@@ -7549,4 +7549,45 @@ class FooCodeFixProvider : CodeFixProvider
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer>
+    <Id>RCS9012</Id>
+    <Identifier>UseIsKindInsteadOfKindComparison</Identifier>
+    <Title>Call 'IsKind' instead of comparing 'Kind'</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (node.Kind() == SyntaxKind.IdentifierName)
+{
+}]]></Before>
+        <After><![CDATA[if (node.IsKind(SyntaxKind.IdentifierName))
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (node.Kind() != SyntaxKind.IdentifierName)
+{
+}]]></Before>
+        <After><![CDATA[if (!node.IsKind(SyntaxKind.IdentifierName))
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (node.Kind() == SyntaxKind.IfStatement || node.Kind() == SyntaxKind.WhileStatement)
+{
+}]]></Before>
+        <After><![CDATA[if (node.IsKind(SyntaxKind.IfStatement) || node.IsKind(SyntaxKind.WhileStatement))
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (token.Kind() == SyntaxKind.SemicolonToken)
+{
+}]]></Before>
+        <After><![CDATA[if (token.IsKind(SyntaxKind.SemicolonToken))
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
