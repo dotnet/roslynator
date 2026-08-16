@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove legacy config keys `roslynator.max_line_length`, `roslynator.prefix_field_identifier_with_underscore`, and `roslynator_suppress_unity_script_methods`. Use `roslynator_max_line_length`, `roslynator_prefix_field_identifier_with_underscore`, and `roslynator_unity_code_analysis.enabled`.
 - [CLI] Remove obsolete command `generate-doc-root`. Use `generate-doc --root-file-path` instead.
 
+## [4.16.1] - 2026-08-16
+
 ### Fixed
 
 - Fix analyzer [RCS1060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1060) to not report a file that contains only multiple partial declarations of the same type ([PR](https://github.com/dotnet/roslynator/pull/1798))

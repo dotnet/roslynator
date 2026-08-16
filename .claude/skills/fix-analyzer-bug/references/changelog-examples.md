@@ -1,6 +1,6 @@
 # Changelog Examples
 
-File: `ChangeLog.md` at repo root (not `CHANGELOG.md`).
+File: `CHANGELOG.md` at repo root (not `src/VisualStudioCode/package/CHANGELOG.md`).
 
 ## Analyzer fix
 
