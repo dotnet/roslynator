@@ -1,12 +1,12 @@
 ## Overview
 
-* A collection of refactorings, and fixes for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+* A collection of refactorings and compiler diagnostic fixes for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 * [Project website](https://github.com/dotnet/roslynator)
 * [List of refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings)
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
 * [Release notes](https://github.com/dotnet/roslynator/blob/main/CHANGELOG.md)
 
-Analyzers are not included in this extension. Use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) to enable analyzers in Visual Studio and `dotnet build`.
+Analyzers and RCS analyzer code fixes are not included in this extension. Use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) to enable analyzers and their code fixes in Visual Studio and `dotnet build`.
 
 ## Donation
 

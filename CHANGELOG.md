@@ -17,16 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - CLI and testing library target Roslyn 5.0.0
   - Solution build and tests use Roslyn 5.0.0 by default
 - Replace Visual Studio 2022 extension with **Roslynator 2026** for Visual Studio 2026 (`[18.0,19.0)`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
-  - Extension ships refactorings and code fixes only
-- Visual Studio Code extension ships refactorings and code fixes only ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - Extension ships refactorings and compiler diagnostic code fixes; RCS analyzer diagnostics and code fixes via NuGet
+- Visual Studio Code extension ships refactorings and compiler diagnostic code fixes only ([PR](https://github.com/dotnet/roslynator/pull/1787))
+  - RCS analyzer diagnostics and code fixes require Roslynator NuGet packages
   - Requires OmniSharp with Roslyn 5.x (C# extension 1.39.15+; set `dotnet.server.useOmnisharp` to `true`)
 
 ### Removed
 
 - Remove bundled analyzers from Visual Studio extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
-  - Use [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers) NuGet package for diagnostics
+  - Use [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers) NuGet package for diagnostics and RCS analyzer code fixes
 - Remove bundled analyzers from Visual Studio Code extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
-  - Use Roslynator NuGet packages for diagnostics
+  - Use Roslynator NuGet packages for diagnostics and RCS analyzer code fixes
 - Remove `AnalyzersOptionsPage` from Visual Studio extension ([PR](https://github.com/dotnet/roslynator/pull/1787))
 - Drop support for Visual Studio 2022 VSIX ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Pin last 4.x release or use NuGet packages on Visual Studio 2022

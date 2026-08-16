@@ -35,11 +35,11 @@ internal static class ChangeDeclarationExpressionTypeRefactoring
                 TypeSyntax type = declarationExpression.Type;
 
                 ILocalSymbol localSymbol = semanticModel.GetDeclaredLocalSymbol(declarationExpression.Designation, context.CancellationToken);
+                ITypeSymbol typeSymbol = (localSymbol?.Type)
+                    ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
-                if (localSymbol is not null)
+                if (typeSymbol is not null)
                 {
-                    ITypeSymbol typeSymbol = localSymbol.Type;
-
                     context.RegisterRefactoring(CodeActionFactory.ChangeType(
                         context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
                 }

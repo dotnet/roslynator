@@ -38,7 +38,7 @@
       <PropertyGroup>
         <RoslynatorRoslynVersion>5.0.0</RoslynatorRoslynVersion>
         <RoslynatorRoslynAnalyzersVersion>3.11.0</RoslynatorRoslynAnalyzersVersion>
-        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_5_0</DefineConstants>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_2;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_5_0;ROSLYN_5_0_ONLY</DefineConstants>
       </PropertyGroup>
     </Otherwise>
   </Choose>

@@ -7,7 +7,7 @@ Otherwise, use the IDE extension instead.
 
 ## Requirements
 
-* Visual Studio 2026
+* Visual Studio 2022 or 2026
 * VS Code with [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) extension 1.21.13 or higher
 * Roslyn 3.8.0 or higher (when used directly, not as part of an IDE)
 
