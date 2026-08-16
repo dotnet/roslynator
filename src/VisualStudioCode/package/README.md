@@ -72,7 +72,7 @@ Default configuration is loaded once when the IDE starts. Therefore, it may be n
 
 ## Requirements
 
-This extension requires [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher.
+This extension requires [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) with OmniSharp **1.39.15+** (Roslyn 5.x). See [Prerequisites](#prerequisites).
 
 ## Donation
 

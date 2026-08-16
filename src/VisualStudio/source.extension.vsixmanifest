@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="05dad5e8-7968-4e0a-96e1-13ccae79371a" Version="1.0.0" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>Roslynator 2026</DisplayName>
-    <Description xml:space="preserve">A collection of refactorings and fixes for C#, powered by Roslyn. Use Roslynator NuGet packages for analyzers.</Description>
+    <Description xml:space="preserve">A collection of refactorings and compiler diagnostic fixes for C#, powered by Roslyn. Use Roslynator NuGet packages for analyzers.</Description>
     <MoreInfo>https://github.com/dotnet/roslynator</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>https://github.com/dotnet/roslynator/blob/main/CHANGELOG.md</ReleaseNotes>

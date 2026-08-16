@@ -6,7 +6,7 @@
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
 * [Release notes](https://github.com/dotnet/roslynator/blob/main/CHANGELOG.md)
 
-Analyzers and RCS analyzer code fixes are not included in this extension. Use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) to enable analyzers and their code fixes in Visual Studio and `dotnet build`.
+Analyzers are not included in this extension. Use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) to enable analyzers in Visual Studio and `dotnet build`.
 
 ## Donation
 
@@ -15,6 +15,7 @@ Although Roslynator is free of charge, [donations](https://www.paypal.com/cgi-bi
 ## Related Products
 
 * Package [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) contains analyzers.
+* [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) (last 4.x release)
 
 ## Documentation
 
