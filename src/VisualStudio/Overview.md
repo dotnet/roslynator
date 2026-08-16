@@ -5,7 +5,7 @@
 * [List of analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers)
 * [List of refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings)
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
-* [Release notes](https://github.com/dotnet/roslynator/blob/main/ChangeLog.md)
+* [Release notes](https://github.com/dotnet/roslynator/blob/main/CHANGELOG.md)
 
 IMPORTANT: Analyzers will be removed from the Roslynator extension in the next major release.
 Use Roslynator NuGet packages instead (for example, [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
