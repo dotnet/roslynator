@@ -21,8 +21,7 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.RemoveTrailingWhitespace,
-                    DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine);
+                    DiagnosticRules.RemoveTrailingWhitespace);
             }
 
             return _supportedDiagnostics;
@@ -44,51 +43,18 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
         if (!context.Tree.TryGetRoot(out SyntaxNode root))
             return;
 
-        var emptyLines = default(TextSpan);
         var previousLineIsEmpty = false;
         int i = 0;
 
         foreach (TextLine textLine in sourceText.Lines)
         {
-            var lineIsEmpty = false;
-
             if (textLine.Span.Length == 0)
             {
                 SyntaxTrivia endOfLine = root.FindTrivia(textLine.End);
-
-                if (endOfLine.IsEndOfLineTrivia())
-                {
-                    lineIsEmpty = true;
-
-                    if (previousLineIsEmpty)
-                    {
-                        if (emptyLines.IsEmpty)
-                        {
-                            emptyLines = endOfLine.Span;
-                        }
-                        else
-                        {
-                            emptyLines = TextSpan.FromBounds(emptyLines.Start, endOfLine.Span.End);
-                        }
-                    }
-                }
-                else
-                {
-                    emptyLines = default;
-                }
+                previousLineIsEmpty = endOfLine.IsEndOfLineTrivia();
             }
             else
             {
-                if (!emptyLines.IsEmpty)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.Obsolete_RemoveUnnecessaryBlankLine,
-                        Location.Create(context.Tree, emptyLines));
-                }
-
-                emptyLines = default;
-
                 int end = textLine.End - 1;
 
                 if (char.IsWhiteSpace(sourceText[end]))
@@ -116,9 +82,10 @@ public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
                             Location.Create(context.Tree, whitespace));
                     }
                 }
+
+                previousLineIsEmpty = false;
             }
 
-            previousLineIsEmpty = lineIsEmpty;
             i++;
         }
     }

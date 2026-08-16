@@ -16,9 +16,9 @@ public sealed class CodeAnalysisConfig
     public static CodeAnalysisConfig Instance { get; private set; } = new();
 
     private CodeAnalysisConfig(
-        XmlCodeAnalysisConfig xmlConfig = null,
-        EditorConfigCodeAnalysisConfig editorConfig = null,
-        VisualStudioCodeAnalysisConfig visualStudioConfig = null)
+        XmlCodeAnalysisConfig? xmlConfig = null,
+        EditorConfigCodeAnalysisConfig? editorConfig = null,
+        VisualStudioCodeAnalysisConfig? visualStudioConfig = null)
     {
         if (xmlConfig is not null)
         {
@@ -26,10 +26,10 @@ public sealed class CodeAnalysisConfig
         }
         else
         {
-            string xmlConfigPath = XmlCodeAnalysisConfig.GetDefaultConfigFilePath();
+            string? xmlConfigPath = XmlCodeAnalysisConfig.GetDefaultConfigFilePath();
 
-            XmlConfig = (File.Exists(xmlConfigPath))
-                ? XmlCodeAnalysisConfigLoader.Load(xmlConfigPath)
+            XmlConfig = (xmlConfigPath is not null && File.Exists(xmlConfigPath))
+                ? XmlCodeAnalysisConfigLoader.Load(xmlConfigPath) ?? XmlCodeAnalysisConfig.Empty
                 : XmlCodeAnalysisConfig.Empty;
         }
 
@@ -42,10 +42,10 @@ public sealed class CodeAnalysisConfig
             IEnumerable<string> editorConfigPaths = XmlConfig.Includes
                 .Where(path => Path.GetFileName(path) == EditorConfigCodeAnalysisConfig.FileName);
 
-            string defaultEditorConfigPath = EditorConfigCodeAnalysisConfig.GetDefaultConfigFilePath();
+            string? defaultEditorConfigPath = EditorConfigCodeAnalysisConfig.GetDefaultConfigFilePath();
 
             if (!string.IsNullOrEmpty(defaultEditorConfigPath))
-                editorConfigPaths = (new string[] { defaultEditorConfigPath }).Concat(editorConfigPaths);
+                editorConfigPaths = (new string[] { defaultEditorConfigPath! }).Concat(editorConfigPaths);
 
             EditorConfig = EditorConfigCodeAnalysisConfigLoader.Load(editorConfigPaths);
         }
@@ -127,7 +127,7 @@ public sealed class CodeAnalysisConfig
 
     public ImmutableDictionary<string, bool> CodeFixes { get; }
 
-    public static event EventHandler Updated;
+    public static event EventHandler? Updated;
 
     public bool? GetOptionAsBool(string key)
     {

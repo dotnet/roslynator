@@ -18,7 +18,7 @@ internal static class UseLambdaInsteadOfAnonymousMethodRefactoring
     {
         ExpressionSyntax newNode = ParenthesizedLambdaExpression(
             anonymousMethod.AsyncKeyword,
-            anonymousMethod.ParameterList,
+            anonymousMethod.ParameterList!,
             Token(SyntaxKind.EqualsGreaterThanToken),
             anonymousMethod.Block);
 

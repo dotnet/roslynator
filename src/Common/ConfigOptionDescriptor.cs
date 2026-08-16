@@ -6,9 +6,9 @@ public class ConfigOptionDescriptor
 {
     public ConfigOptionDescriptor(
         string key,
-        string defaultValue = null,
-        string defaultValuePlaceholder = null,
-        string description = null)
+        string? defaultValue = null,
+        string? defaultValuePlaceholder = null,
+        string? description = null)
     {
         Key = key;
         DefaultValue = defaultValue;
@@ -21,11 +21,11 @@ public class ConfigOptionDescriptor
 
     public string Key { get; }
 
-    public string DefaultValue { get; }
+    public string? DefaultValue { get; }
 
     internal bool? DefaultValueAsBool { get; }
 
-    public string DefaultValuePlaceholder { get; }
+    public string? DefaultValuePlaceholder { get; }
 
-    public string Description { get; }
+    public string? Description { get; }
 }

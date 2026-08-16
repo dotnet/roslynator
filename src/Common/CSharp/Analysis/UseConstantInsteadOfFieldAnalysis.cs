@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -62,7 +61,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
         VariableDeclaratorSyntax firstDeclarator = declarators[0];
 
-        var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
+        var fieldSymbol = (IFieldSymbol?)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
 
         if (fieldSymbol is null)
             return false;
@@ -72,7 +71,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
         foreach (VariableDeclaratorSyntax declarator in declarators)
         {
-            ExpressionSyntax value = declarator.Initializer?.Value;
+            ExpressionSyntax? value = declarator.Initializer?.Value;
 
             if (value is null)
                 return false;
@@ -108,32 +107,15 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
                 var constructorDeclaration = (ConstructorDeclarationSyntax)syntaxReference.GetSyntax(cancellationToken);
 
-                BlockSyntax body = constructorDeclaration.Body;
+                BlockSyntax? body = constructorDeclaration.Body;
 
                 if (body is not null)
                 {
-                    bool canBeConvertedToConstant;
-                    UseConstantInsteadOfFieldWalker walker = null;
+                    var walker = new UseConstantInsteadOfFieldWalker(fieldSymbol, semanticModel, cancellationToken);
 
-                    try
-                    {
-                        walker = UseConstantInsteadOfFieldWalker.GetInstance();
+                    walker.VisitBlock(body);
 
-                        walker.FieldSymbol = fieldSymbol;
-                        walker.SemanticModel = semanticModel;
-                        walker.CancellationToken = cancellationToken;
-
-                        walker.VisitBlock(body);
-
-                        canBeConvertedToConstant = walker.CanBeConvertedToConstant;
-                    }
-                    finally
-                    {
-                        if (walker is not null)
-                            UseConstantInsteadOfFieldWalker.Free(walker);
-                    }
-
-                    if (!canBeConvertedToConstant)
+                    if (!walker.CanBeConvertedToConstant)
                         return false;
                 }
             }
@@ -144,16 +126,23 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
     private class UseConstantInsteadOfFieldWalker : AssignedExpressionWalker
     {
-        [ThreadStatic]
-        private static UseConstantInsteadOfFieldWalker _cachedInstance;
+        public UseConstantInsteadOfFieldWalker(
+            IFieldSymbol fieldSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            FieldSymbol = fieldSymbol;
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
-        public IFieldSymbol FieldSymbol { get; set; }
+        public IFieldSymbol FieldSymbol { get; }
 
-        public SemanticModel SemanticModel { get; set; }
+        public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken { get; }
 
-        public bool CanBeConvertedToConstant { get; set; }
+        public bool CanBeConvertedToConstant { get; private set; } = true;
 
         protected override bool ShouldVisit
         {
@@ -203,33 +192,6 @@ internal static class UseConstantInsteadOfFieldAnalysis
             }
 
             base.VisitArgument(node);
-        }
-
-        public static UseConstantInsteadOfFieldWalker GetInstance()
-        {
-            UseConstantInsteadOfFieldWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.FieldSymbol is null);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new UseConstantInsteadOfFieldWalker();
-        }
-
-        public static void Free(UseConstantInsteadOfFieldWalker walker)
-        {
-            walker.FieldSymbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-            walker.CanBeConvertedToConstant = true;
-
-            _cachedInstance = walker;
         }
     }
 }

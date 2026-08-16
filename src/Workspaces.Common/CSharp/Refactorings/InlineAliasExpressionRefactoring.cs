@@ -16,27 +16,27 @@ internal static class InlineAliasExpressionRefactoring
         UsingDirectiveSyntax usingDirective,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        IAliasSymbol aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken);
+        IAliasSymbol? aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken);
 
-        SyntaxNode parent = usingDirective.Parent;
+        SyntaxNode? parent = usingDirective.Parent;
 
 #if ROSLYN_4_0
-        Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration), "");
+        Debug.Assert(parent!.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration), "");
 #else
-        Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration), "");
+        Debug.Assert(parent!.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration), "");
 #endif
 
-        int index = SyntaxInfo.UsingDirectiveListInfo(parent).IndexOf(usingDirective);
+        int index = SyntaxInfo.UsingDirectiveListInfo(parent!).IndexOf(usingDirective);
 
-        var rewriter = new Rewriter(aliasSymbol, aliasSymbol.Target.ToTypeSyntax(), semanticModel, cancellationToken);
+        var rewriter = new Rewriter(aliasSymbol!, aliasSymbol!.Target.ToTypeSyntax(), semanticModel, cancellationToken);
 
-        SyntaxNode newNode = rewriter.Visit(parent);
+        SyntaxNode newNode = rewriter.Visit(parent)!;
 
         newNode = RemoveUsingDirective(newNode, index);
 
-        return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
+        return await document.ReplaceNodeAsync(parent!, newNode, cancellationToken).ConfigureAwait(false);
     }
 
     private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
@@ -44,12 +44,12 @@ internal static class InlineAliasExpressionRefactoring
         switch (node)
         {
             case CompilationUnitSyntax compilationUnit:
-                return compilationUnit.RemoveNode(compilationUnit.Usings[index]);
+                return compilationUnit.RemoveNode(compilationUnit.Usings[index])!;
             case NamespaceDeclarationSyntax namespaceDeclaration:
-                return namespaceDeclaration.RemoveNode(namespaceDeclaration.Usings[index]);
+                return namespaceDeclaration.RemoveNode(namespaceDeclaration.Usings[index])!;
 #if ROSLYN_4_0
             case FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclaration:
-                return fileScopedNamespaceDeclaration.RemoveNode(fileScopedNamespaceDeclaration.Usings[index]);
+                return fileScopedNamespaceDeclaration.RemoveNode(fileScopedNamespaceDeclaration.Usings[index])!;
 #endif
         }
 
@@ -74,9 +74,9 @@ internal static class InlineAliasExpressionRefactoring
 
         public CancellationToken CancellationToken { get; }
 
-        public override SyntaxNode VisitAliasQualifiedName(AliasQualifiedNameSyntax node)
+        public override SyntaxNode? VisitAliasQualifiedName(AliasQualifiedNameSyntax node)
         {
-            IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node.Alias, CancellationToken);
+            IAliasSymbol? aliasSymbol = SemanticModel.GetAliasInfo(node.Alias, CancellationToken);
             if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol))
             {
                 return SyntaxFactory.QualifiedName((NameSyntax)Replacement, node.Name)
@@ -87,9 +87,9 @@ internal static class InlineAliasExpressionRefactoring
             return base.VisitAliasQualifiedName(node);
         }
 
-        public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+        public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
         {
-            IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node, CancellationToken);
+            IAliasSymbol? aliasSymbol = SemanticModel.GetAliasInfo(node, CancellationToken);
 
             if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol))
             {

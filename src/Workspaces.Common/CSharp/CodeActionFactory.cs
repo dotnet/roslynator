@@ -23,7 +23,7 @@ internal static class CodeActionFactory
         Func<SyntaxToken, bool> tokenPredicate,
         string newLineReplacement = " ")
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = (await context.GetSyntaxRootAsync().ConfigureAwait(false))!;
         Diagnostic diagnostic = context.Diagnostics[0];
         int position = context.Span.Start;
         SyntaxToken token = root.FindToken(position);
@@ -60,7 +60,7 @@ internal static class CodeActionFactory
 
         if (!block.ContainsComment)
         {
-            string indentation = null;
+            string? indentation = null;
 
             if (block.Kind == TriviaBlockKind.NoNewLine)
                 indentation = GetIncreasedIndentation(block.First, configOptions, context.CancellationToken);
@@ -91,7 +91,7 @@ internal static class CodeActionFactory
 
     public static async Task RegisterCodeActionForBlankLineAsync(CodeFixContext context)
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = (await context.GetSyntaxRootAsync().ConfigureAwait(false))!;
         Diagnostic diagnostic = context.Diagnostics[0];
         int position = context.Span.Start;
 
@@ -100,7 +100,7 @@ internal static class CodeActionFactory
         TextChange textChange = GetTextChangeForBlankLine(block);
 
         CodeAction codeAction = CodeAction.Create(
-            (textChange.NewText.Length == 0) ? "Remove blank line" : "Add blank line",
+            (textChange.NewText?.Length == 0) ? "Remove blank line" : "Add blank line",
             ct => context.Document.WithTextChangeAsync(textChange, ct),
             EquivalenceKey.Create(diagnostic));
 
@@ -109,11 +109,11 @@ internal static class CodeActionFactory
 
     public static async Task RegisterCodeActionForNewLineAsync(
         CodeFixContext context,
-        string title = null,
-        string indentation = null,
+        string? title = null,
+        string? indentation = null,
         bool increaseIndentation = false)
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = (await context.GetSyntaxRootAsync().ConfigureAwait(false))!;
         Diagnostic diagnostic = context.Diagnostics[0];
 
         TextChange textChange = GetTextChangeForNewLine(
@@ -125,7 +125,7 @@ internal static class CodeActionFactory
             context.CancellationToken);
 
         CodeAction codeAction = CodeAction.Create(
-            title ?? ((textChange.NewText.Length == 0) ? "Remove newline" : "Add newline"),
+            title ?? ((textChange.NewText?.Length == 0) ? "Remove newline" : "Add newline"),
             ct => context.Document.WithTextChangeAsync(textChange, ct),
             EquivalenceKey.Create(diagnostic));
 
@@ -136,7 +136,7 @@ internal static class CodeActionFactory
         SyntaxNode root,
         int position,
         AnalyzerConfigOptions configOptions,
-        string indentation = null,
+        string? indentation = null,
         bool increaseIndentation = false,
         CancellationToken cancellationToken = default)
     {
@@ -186,7 +186,7 @@ internal static class CodeActionFactory
     public static TextChange GetTextChangeForNewLine(
         TriviaBlock block,
         AnalyzerConfigOptions configOptions,
-        string indentation = null,
+        string? indentation = null,
         string newLineReplacement = " ",
         bool increaseIndentation = false,
         CancellationToken cancellationToken = default)
@@ -262,21 +262,21 @@ internal static class CodeActionFactory
 
     private static string GetIncreasedIndentation(SyntaxNodeOrToken nodeOrToken, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
     {
-        SyntaxNode node = (nodeOrToken.IsNode) ? nodeOrToken.AsNode() : nodeOrToken.AsToken().Parent;
+        SyntaxNode? node = (nodeOrToken.IsNode) ? nodeOrToken.AsNode()! : nodeOrToken.AsToken().Parent;
 
-        SyntaxNode statementOrMember = node.FirstAncestorOrSelf(f => f is StatementSyntax
+        SyntaxNode? statementOrMember = node!.FirstAncestorOrSelf(f => f is StatementSyntax
             || f is MemberDeclarationSyntax
             || f is SwitchLabelSyntax);
 
-        return SyntaxTriviaAnalysis.GetIncreasedIndentation(statementOrMember ?? node, configOptions, cancellationToken);
+        return SyntaxTriviaAnalysis.GetIncreasedIndentation((statementOrMember ?? node)!, configOptions, cancellationToken);
     }
 
     public static CodeAction Create(
         string title,
         Func<CancellationToken, Task<Solution>> createChangedSolution,
         RefactoringDescriptor descriptor,
-        string additionalEquivalenceKey1 = null,
-        string additionalEquivalenceKey2 = null)
+        string? additionalEquivalenceKey1 = null,
+        string? additionalEquivalenceKey2 = null)
     {
         return CodeAction.Create(
             title,
@@ -288,8 +288,8 @@ internal static class CodeActionFactory
         string title,
         Func<CancellationToken, Task<Document>> createChangedDocument,
         RefactoringDescriptor descriptor,
-        string additionalEquivalenceKey1 = null,
-        string additionalEquivalenceKey2 = null)
+        string? additionalEquivalenceKey1 = null,
+        string? additionalEquivalenceKey2 = null)
     {
         return CodeAction.Create(
             title,
@@ -300,8 +300,8 @@ internal static class CodeActionFactory
     public static CodeAction ChangeTypeToVar(
         Document document,
         TypeSyntax type,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? "Use implicit type",
@@ -312,8 +312,8 @@ internal static class CodeActionFactory
     public static CodeAction ChangeTypeToVar(
         Document document,
         TupleExpressionSyntax tupleExpression,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? "Use implicit type",
@@ -326,7 +326,7 @@ internal static class CodeActionFactory
         TypeSyntax type,
         ITypeSymbol newTypeSymbol,
         SemanticModel semanticModel,
-        string equivalenceKey = null)
+        string? equivalenceKey = null)
     {
         return ChangeType(document, type, newTypeSymbol, semanticModel, title: "Use explicit type", equivalenceKey: equivalenceKey);
     }
@@ -336,8 +336,8 @@ internal static class CodeActionFactory
         TypeSyntax type,
         ITypeSymbol newTypeSymbol,
         SemanticModel semanticModel,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         if (title is null)
         {
@@ -383,8 +383,8 @@ internal static class CodeActionFactory
         ExpressionSyntax expression,
         ITypeSymbol destinationType,
         SemanticModel semanticModel,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         SymbolDisplayFormat format = GetSymbolDisplayFormat(expression, destinationType, semanticModel);
 
@@ -401,8 +401,8 @@ internal static class CodeActionFactory
     public static CodeAction RemoveMemberDeclaration(
         Document document,
         MemberDeclarationSyntax memberDeclaration,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? $"Remove {CSharpFacts.GetTitle(memberDeclaration)}",
@@ -413,8 +413,8 @@ internal static class CodeActionFactory
     public static CodeAction RemoveStatement(
         Document document,
         StatementSyntax statement,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? $"Remove {CSharpFacts.GetTitle(statement)}",
@@ -426,8 +426,8 @@ internal static class CodeActionFactory
         Document document,
         ExpressionSyntax expression,
         ITypeSymbol typeSymbol,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? "Replace 'null' with default value",
@@ -445,8 +445,8 @@ internal static class CodeActionFactory
     public static CodeAction RemoveAsyncAwait(
         Document document,
         SyntaxToken asyncKeyword,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? "Remove async/await",
@@ -457,8 +457,8 @@ internal static class CodeActionFactory
     public static CodeAction RemoveParentheses(
         Document document,
         ParenthesizedExpressionSyntax parenthesizedExpression,
-        string title = null,
-        string equivalenceKey = null)
+        string? title = null,
+        string? equivalenceKey = null)
     {
         return CodeAction.Create(
             title ?? "Remove parentheses",

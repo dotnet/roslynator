@@ -98,7 +98,6 @@ internal static class Program
                     typeof(FixCommandLineOptions),
                     typeof(FormatCommandLineOptions),
                     typeof(GenerateDocCommandLineOptions),
-                    typeof(GenerateDocRootCommandLineOptions),
                     typeof(HelpCommandLineOptions),
                     typeof(ListSymbolsCommandLineOptions),
                     typeof(LogicalLinesOfCodeCommandLineOptions),
@@ -179,8 +178,6 @@ internal static class Program
                             return FormatAsync(formatCommandLineOptions).Result;
                         case GenerateDocCommandLineOptions generateDocCommandLineOptions:
                             return GenerateDocAsync(generateDocCommandLineOptions).Result;
-                        case GenerateDocRootCommandLineOptions generateDocRootCommandLineOptions:
-                            return GenerateDocRootAsync(generateDocRootCommandLineOptions).Result;
                         case ListSymbolsCommandLineOptions listSymbolsCommandLineOptions:
                             return ListSymbolsAsync(listSymbolsCommandLineOptions).Result;
                         case LogicalLinesOfCodeCommandLineOptions logicalLinesOfCodeCommandLineOptions:
@@ -739,53 +736,6 @@ internal static class Program
             fileSystemFilter: CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-
-    private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
-    {
-        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
-
-        if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.DefaultValues.IgnoredRootParts))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnum(options.FilesLayout, OptionNames.Layout, out FilesLayout filesLayout, FilesLayout.Hierarchical))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
-            return ExitCodes.Error;
-
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Path, out ImmutableArray<PathInfo> paths))
-            return ExitCodes.Error;
-
-        var command = new GenerateDocRootCommand(
-            options,
-            depth,
-            ignoredParts,
-            includeContainingNamespaceFilter: includeContainingNamespaceFilter,
-            visibility,
-            documentationHost,
-            filesLayout,
-            options.GroupByCommonNamespace,
-            projectFilter,
-            CreateFileSystemFilter(options));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
 
         return GetExitCode(status);
     }

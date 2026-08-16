@@ -57,6 +57,8 @@
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-hh2w-p6rv-4g7w" />
     <!-- Package 'Microsoft.Build.Tasks.Core' 17.7.2 has a known high severity vulnerability -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-h4j7-5rxr-p4wc" />
+    <!-- Package 'Microsoft.Build' 17.11.31 has a known high severity vulnerability -->
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-w3q9-fxm7-j8fq" />
   </ItemGroup>
 
   <!--
@@ -77,7 +79,7 @@
       a single version across all target frameworks instead would downgrade deployed dependencies
       of these packages, such as System.Reflection.MetadataLoadContext.
     -->
-    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net8.0'">17.7.2</RoslynatorMSBuildVersion>
+    <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net8.0'">17.11.31</RoslynatorMSBuildVersion>
     <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net9.0'">17.14.28</RoslynatorMSBuildVersion>
     <RoslynatorMSBuildVersion Condition="'$(TargetFramework)' == 'net10.0'">18.0.2</RoslynatorMSBuildVersion>
     <!--

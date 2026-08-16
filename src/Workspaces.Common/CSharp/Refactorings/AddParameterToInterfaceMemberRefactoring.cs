@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings;
 
 internal static class AddParameterToInterfaceMemberRefactoring
 {
-    public static CodeAction ComputeRefactoringForExplicitImplementation(
+    public static CodeAction? ComputeRefactoringForExplicitImplementation(
         CommonFixContext context,
         MemberDeclarationSyntax memberDeclaration)
     {
@@ -70,7 +70,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
         CommonFixContext context,
         MemberDeclarationSyntax memberDeclaration,
         SyntaxTokenList modifiers,
-        ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier,
+        ExplicitInterfaceSpecifierSyntax? explicitInterfaceSpecifier,
         SeparatedSyntaxList<ParameterSyntax> parameters)
     {
         if (!parameters.Any())
@@ -88,21 +88,21 @@ internal static class AddParameterToInterfaceMemberRefactoring
             modifiers);
     }
 
-    public static CodeAction ComputeRefactoringForExplicitImplementation(
+    public static CodeAction? ComputeRefactoringForExplicitImplementation(
         CommonFixContext context,
         MemberDeclarationSyntax memberDeclaration,
-        ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier,
+        ExplicitInterfaceSpecifierSyntax? explicitInterfaceSpecifier,
         SeparatedSyntaxList<ParameterSyntax> parameters)
     {
         if (!parameters.Any())
             return default;
 
-        NameSyntax explicitInterfaceName = explicitInterfaceSpecifier?.Name;
+        NameSyntax? explicitInterfaceName = explicitInterfaceSpecifier?.Name;
 
         if (explicitInterfaceName is null)
             return default;
 
-        var interfaceSymbol = (INamedTypeSymbol)context.SemanticModel.GetTypeSymbol(explicitInterfaceName, context.CancellationToken);
+        var interfaceSymbol = (INamedTypeSymbol?)context.SemanticModel.GetTypeSymbol(explicitInterfaceName, context.CancellationToken);
 
         if (interfaceSymbol?.TypeKind != TypeKind.Interface)
             return default;
@@ -110,12 +110,12 @@ internal static class AddParameterToInterfaceMemberRefactoring
         if (interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is not InterfaceDeclarationSyntax _)
             return default;
 
-        ISymbol memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
+        ISymbol? memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
 
         if (memberSymbol is null)
             return default;
 
-        ISymbol interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
+        ISymbol? interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
 
         if (interfaceMemberSymbol is null)
             return default;
@@ -131,14 +131,14 @@ internal static class AddParameterToInterfaceMemberRefactoring
         if (!modifiers.Contains(SyntaxKind.PublicKeyword))
             return default;
 
-        BaseListSyntax baseList = GetBaseList(memberDeclaration.Parent);
+        BaseListSyntax? baseList = GetBaseList(memberDeclaration.Parent);
 
         if (baseList is null)
             return default;
 
         SeparatedSyntaxList<BaseTypeSyntax> baseTypes = baseList.Types;
 
-        ISymbol memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
+        ISymbol? memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
 
         if (memberSymbol is null)
             return default;
@@ -148,14 +148,14 @@ internal static class AddParameterToInterfaceMemberRefactoring
 
         int count = 0;
 
-        CodeAction singleCodeAction = null;
-        List<CodeAction> codeActions = default;
+        CodeAction? singleCodeAction = null;
+        List<CodeAction>? codeActions = default;
 
         for (int i = 0; i < baseTypes.Count; i++)
         {
             BaseTypeSyntax baseType = baseTypes[i];
 
-            Diagnostic diagnostic = context.SemanticModel.GetDiagnostic("CS0535", baseType.Type.Span, context.CancellationToken);
+            Diagnostic? diagnostic = context.SemanticModel.GetDiagnostic("CS0535", baseType.Type.Span, context.CancellationToken);
 
             if (diagnostic?.Location.SourceSpan != baseType.Type.Span)
                 continue;
@@ -168,7 +168,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
             if (interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is not InterfaceDeclarationSyntax _)
                 continue;
 
-            ISymbol interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
+            ISymbol? interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
 
             if (interfaceMemberSymbol is not null)
             {
@@ -202,7 +202,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
         return default;
     }
 
-    private static ISymbol FindInterfaceMember(
+    private static ISymbol? FindInterfaceMember(
         ISymbol memberSymbol,
         INamedTypeSymbol interfaceSymbol)
     {
@@ -226,7 +226,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
         return null;
     }
 
-    private static ISymbol FindInterfaceMethod(
+    private static ISymbol? FindInterfaceMethod(
         IMethodSymbol methodSymbol,
         INamedTypeSymbol interfaceSymbol)
     {
@@ -277,7 +277,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
         return null;
     }
 
-    private static ISymbol FindInterfaceIndexer(
+    private static ISymbol? FindInterfaceIndexer(
         IPropertySymbol propertySymbol,
         INamedTypeSymbol interfaceSymbol)
     {
@@ -382,9 +382,9 @@ internal static class AddParameterToInterfaceMemberRefactoring
         }
     }
 
-    private static BaseListSyntax GetBaseList(SyntaxNode node)
+    private static BaseListSyntax? GetBaseList(SyntaxNode? node)
     {
-        switch (node.Kind())
+        switch (node?.Kind())
         {
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)node).BaseList;
@@ -399,7 +399,7 @@ internal static class AddParameterToInterfaceMemberRefactoring
 
     private static ParameterSyntax CreateParameter(IParameterSymbol parameterSymbol)
     {
-        ExpressionSyntax defaultValue = (parameterSymbol.HasExplicitDefaultValue)
+        ExpressionSyntax? defaultValue = (parameterSymbol.HasExplicitDefaultValue)
             ? parameterSymbol.GetDefaultValueSyntax()
             : null;
 

@@ -145,9 +145,9 @@ internal static class ChangeAccessibilityAnalysis
         return valid;
     }
 
-    public static ISymbol GetBaseSymbolOrDefault(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+    public static ISymbol? GetBaseSymbolOrDefault(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        ISymbol symbol = GetDeclaredSymbol();
+        ISymbol? symbol = GetDeclaredSymbol();
 
         if (symbol is not null)
         {
@@ -158,7 +158,7 @@ internal static class ChangeAccessibilityAnalysis
 
             if (symbol is not null)
             {
-                SyntaxNode syntax = symbol.GetSyntaxOrDefault(cancellationToken);
+                SyntaxNode? syntax = symbol.GetSyntaxOrDefault(cancellationToken);
 
                 if (syntax is not null)
                 {
@@ -173,11 +173,11 @@ internal static class ChangeAccessibilityAnalysis
 
         return null;
 
-        ISymbol GetDeclaredSymbol()
+        ISymbol? GetDeclaredSymbol()
         {
             if (node is EventFieldDeclarationSyntax eventFieldDeclaration)
             {
-                VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
+                VariableDeclaratorSyntax? declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
                 if (declarator is not null)
                     return semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
@@ -202,7 +202,7 @@ internal static class ChangeAccessibilityAnalysis
             {
                 foreach (VariableDeclaratorSyntax declarator in eventFieldDeclaration.Declaration.Variables)
                 {
-                    var symbol = (IEventSymbol)semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
+                    var symbol = (IEventSymbol?)semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
 
                     if (symbol?
                         .BaseOverriddenEvent()?

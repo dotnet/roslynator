@@ -361,37 +361,24 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
 
         if (localSymbol.IsKind(SymbolKind.Local))
         {
-            bool isReferenced;
-            ContainsLocalOrParameterReferenceWalker walker = null;
+            var walker = new ContainsLocalOrParameterReferenceWalker(localSymbol, context.SemanticModel, context.CancellationToken);
 
-            try
+            walker.VisitList(switchStatement.Sections);
+
+            if (!walker.Result)
             {
-                walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+                StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
 
-                walker.VisitList(switchStatement.Sections);
-
-                if (!walker.Result)
+                if (statementsInfo.Success)
                 {
-                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
+                    int index = statementsInfo.IndexOf(switchStatement);
 
-                    if (statementsInfo.Success)
-                    {
-                        int index = statementsInfo.IndexOf(switchStatement);
-
-                        if (index < statementsInfo.Count - 1)
-                            walker.VisitList(statementsInfo.Statements, index + 1);
-                    }
+                    if (index < statementsInfo.Count - 1)
+                        walker.VisitList(statementsInfo.Statements, index + 1);
                 }
-
-                isReferenced = walker.Result;
-            }
-            finally
-            {
-                if (walker is not null)
-                    ContainsLocalOrParameterReferenceWalker.Free(walker);
             }
 
-            return isReferenced;
+            return walker.Result;
         }
 
         return false;

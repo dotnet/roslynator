@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -19,11 +18,11 @@ public readonly struct CallExtensionMethodAsInstanceMethodAnalysisResult : IEqua
         MethodSymbol = methodSymbol;
     }
 
-    public InvocationExpressionSyntax InvocationExpression { get; }
+    public InvocationExpressionSyntax? InvocationExpression { get; }
 
-    public InvocationExpressionSyntax NewInvocationExpression { get; }
+    public InvocationExpressionSyntax? NewInvocationExpression { get; }
 
-    public IMethodSymbol MethodSymbol { get; }
+    public IMethodSymbol? MethodSymbol { get; }
 
     public bool Success
     {
@@ -42,9 +41,9 @@ public readonly struct CallExtensionMethodAsInstanceMethodAnalysisResult : IEqua
 
     public bool Equals(CallExtensionMethodAsInstanceMethodAnalysisResult other)
     {
-        return EqualityComparer<InvocationExpressionSyntax>.Default.Equals(InvocationExpression, other.InvocationExpression)
-            && EqualityComparer<InvocationExpressionSyntax>.Default.Equals(NewInvocationExpression, other.NewInvocationExpression)
-            && EqualityComparer<IMethodSymbol>.Default.Equals(MethodSymbol, other.MethodSymbol);
+        return InvocationExpression == other.InvocationExpression
+            && NewInvocationExpression == other.NewInvocationExpression
+            && MethodSymbol == other.MethodSymbol;
     }
 
     public override int GetHashCode()

@@ -1,16 +1,16 @@
 # Roslynator for Visual Studio Code
 
-A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings), and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings), and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-IMPORTANT: Analyzers will be removed from Roslynator for VS Code in the next major release.
-Use Roslynator NuGet packages instead (for example, [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
+Analyzers are not included in this extension. Add [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers) to your projects for diagnostics in the editor and `dotnet build`.
 
 ## Prerequisites
 
-This extension requires OmniSharp:
+This extension requires **legacy OmniSharp** (not C# Dev Kit):
 
 - Set VS Code setting `dotnet.server.useOmnisharp` to `true`
 - Disable extension **C# Dev Kit** (if installed)
+- Use a recent [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) with OmniSharp **1.39.15+** (Roslyn 5.x)
 
 NOTE: After each installation, Roslynator updates `omnisharp.json` with references to its DLLs.
 
@@ -72,7 +72,7 @@ Default configuration is loaded once when the IDE starts. Therefore, it may be n
 
 ## Requirements
 
-This extension requires [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher.
+This extension requires [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) with OmniSharp **1.39.15+** (Roslyn 5.x). See [Prerequisites](#prerequisites).
 
 ## Donation
 

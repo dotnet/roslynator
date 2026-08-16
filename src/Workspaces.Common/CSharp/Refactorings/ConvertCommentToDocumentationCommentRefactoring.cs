@@ -89,12 +89,12 @@ internal static class ConvertCommentToDocumentationCommentRefactoring
 
         SyntaxToken token = trivia.Token;
 
-        EnumMemberDeclarationSyntax enumMemberDeclaration = token
+        EnumMemberDeclarationSyntax? enumMemberDeclaration = token
             .GetPreviousToken()
-            .Parent
+            .Parent!
             .FirstAncestorOrSelf<EnumMemberDeclarationSyntax>();
 
-        int enumMemberIndex = enumDeclaration.Members.IndexOf(enumMemberDeclaration);
+        int enumMemberIndex = enumDeclaration.Members.IndexOf(enumMemberDeclaration!);
 
         SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
 

@@ -11,8 +11,8 @@ internal class VisualStudioCodeAnalysisConfig
 
     public VisualStudioCodeAnalysisConfig(
         bool prefixFieldIdentifierWithUnderscore = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
-        IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-        IEnumerable<KeyValuePair<string, bool>> codeFixes = null)
+        IEnumerable<KeyValuePair<string, bool>>? refactorings = null,
+        IEnumerable<KeyValuePair<string, bool>>? codeFixes = null)
     {
         Refactorings = refactorings?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;
         CodeFixes = codeFixes?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;

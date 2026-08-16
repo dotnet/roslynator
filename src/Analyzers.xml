@@ -5851,7 +5851,6 @@ x = "";]]></Before>
     <SupportsFadeOut>true</SupportsFadeOut>
     <ConfigOptions>
       <Option Key="unity_code_analysis.enabled" />
-      <Option Key="suppress_unity_script_methods" />
     </ConfigOptions>
   </Analyzer>
   <Analyzer>

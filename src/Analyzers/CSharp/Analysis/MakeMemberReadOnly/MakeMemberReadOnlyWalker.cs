@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -19,49 +17,17 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
     private bool _isInInstanceConstructor;
     private bool _isInStaticConstructor;
 
-    [ThreadStatic]
-    private static MakeMemberReadOnlyWalker _cachedInstance;
+    public MakeMemberReadOnlyWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; }
 
     public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
-
-    public static MakeMemberReadOnlyWalker GetInstance()
-    {
-        MakeMemberReadOnlyWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker.Symbols.Count == 0);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new MakeMemberReadOnlyWalker();
-    }
-
-    public static void Free(MakeMemberReadOnlyWalker walker)
-    {
-        walker.Reset();
-        _cachedInstance = walker;
-    }
-
-    private void Reset()
-    {
-        Symbols.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        _classOrStructDepth = 0;
-        _localFunctionDepth = 0;
-        _anonymousFunctionDepth = 0;
-        _isInInstanceConstructor = false;
-        _isInStaticConstructor = false;
-    }
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)
     {

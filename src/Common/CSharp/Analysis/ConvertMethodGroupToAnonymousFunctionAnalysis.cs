@@ -13,7 +13,7 @@ public static class ConvertMethodGroupToAnonymousFunctionAnalysis
     {
         if (CanBeMethodGroup(identifierName))
         {
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(identifierName, cancellationToken);
+            IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(identifierName, cancellationToken);
 
             if (methodSymbol is not null)
                 return true;
@@ -26,7 +26,7 @@ public static class ConvertMethodGroupToAnonymousFunctionAnalysis
     {
         if (CanBeMethodGroup(memberAccessExpression))
         {
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(memberAccessExpression, cancellationToken);
+            IMethodSymbol? methodSymbol = semanticModel.GetMethodSymbol(memberAccessExpression, cancellationToken);
 
             if (methodSymbol is not null)
                 return true;
@@ -39,7 +39,10 @@ public static class ConvertMethodGroupToAnonymousFunctionAnalysis
     {
         expression = expression.WalkUpParentheses();
 
-        SyntaxNode parent = expression.Parent;
+        SyntaxNode? parent = expression.Parent;
+
+        if (parent is null)
+            return false;
 
         switch (parent.Kind())
         {

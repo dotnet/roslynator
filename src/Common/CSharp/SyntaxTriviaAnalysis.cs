@@ -32,7 +32,7 @@ internal static class SyntaxTriviaAnalysis
     {
         if (nodeOrToken.IsNode)
         {
-            return DetermineEndOfLine(nodeOrToken.AsNode(), defaultValue);
+            return DetermineEndOfLine(nodeOrToken.AsNode()!, defaultValue);
         }
         else if (nodeOrToken.IsToken)
         {
@@ -112,7 +112,7 @@ internal static class SyntaxTriviaAnalysis
 
     public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default)
     {
-        SyntaxTree tree = nodeOrToken.SyntaxTree;
+        SyntaxTree? tree = nodeOrToken.SyntaxTree;
 
         if (tree is null)
             return CSharpFactory.EmptyWhitespace();
@@ -134,14 +134,17 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        SyntaxNode node = (nodeOrToken.IsNode)
+        SyntaxNode? node = (nodeOrToken.IsNode)
             ? nodeOrToken.AsNode()
             : nodeOrToken.AsToken().Parent;
 
-        SyntaxNode node2 = node;
+        SyntaxNode? node2 = node;
 
-        while (!node2.FullSpan.Contains(lineStartIndex))
+        while (node2?.FullSpan.Contains(lineStartIndex) == false)
             node2 = node2.GetParent(ascendOutOfTrivia: true);
+
+        if (node2 is null)
+            return CSharpFactory.EmptyWhitespace();
 
         if (node2.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
         {
@@ -171,7 +174,8 @@ internal static class SyntaxTriviaAnalysis
             }
         }
 
-        if (!IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
+        if (node is not null
+            && !IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
         {
             node = node.Parent;
 

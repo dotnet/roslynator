@@ -11,7 +11,7 @@ namespace Roslynator.CSharp;
 
 internal static class DocumentRefactoringFactory
 {
-    public static Func<CancellationToken, Task<Document>> ChangeTypeAndAddAwait(
+    public static Func<CancellationToken, Task<Document>>? ChangeTypeAndAddAwait(
         Document document,
         VariableDeclarationSyntax variableDeclaration,
         VariableDeclaratorSyntax variableDeclarator,
@@ -28,12 +28,12 @@ internal static class DocumentRefactoringFactory
         if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
             return default;
 
-        SyntaxNode containingMethod = GetContainingMethod();
+        SyntaxNode? containingMethod = GetContainingMethod();
 
         if (containingMethod is null)
             return default;
 
-        SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
+        SyntaxNode? bodyOrExpressionBody = GetBodyOrExpressionBody();
 
         if (bodyOrExpressionBody is null)
             return default;
@@ -54,7 +54,7 @@ internal static class DocumentRefactoringFactory
 
         return ct => DocumentRefactorings.ChangeTypeAndAddAwaitAsync(document, variableDeclaration, variableDeclarator, containingMethod, typeArgument, semanticModel, ct);
 
-        SyntaxNode GetContainingMethod()
+        SyntaxNode? GetContainingMethod()
         {
             foreach (SyntaxReference syntaxReference in methodSymbol.DeclaringSyntaxReferences)
             {
@@ -67,9 +67,9 @@ internal static class DocumentRefactoringFactory
             return null;
         }
 
-        SyntaxNode GetBodyOrExpressionBody()
+        SyntaxNode? GetBodyOrExpressionBody()
         {
-            switch (containingMethod.Kind())
+            switch (containingMethod!.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)containingMethod).BodyOrExpressionBody();

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -14,18 +13,21 @@ namespace Roslynator.CSharp.Analysis.UnusedMember;
 
 internal class UnusedMemberWalker : TypeSyntaxWalker
 {
-    [ThreadStatic]
-    private static UnusedMemberWalker _cachedInstance;
-
     private bool _isEmpty;
 
     private IMethodSymbol _containingMethodSymbol;
 
+    public UnusedMemberWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
+
     public Collection<NodeSymbolInfo> Nodes { get; } = [];
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; set; }
+    public CancellationToken CancellationToken { get; }
 
     public bool IsAnyNodeConst { get; private set; }
 
@@ -34,18 +36,6 @@ internal class UnusedMemberWalker : TypeSyntaxWalker
     protected override bool ShouldVisit
     {
         get { return !_isEmpty; }
-    }
-
-    public void Reset()
-    {
-        _isEmpty = false;
-        _containingMethodSymbol = null;
-
-        Nodes.Clear();
-        SemanticModel = null;
-        CancellationToken = default;
-        IsAnyNodeConst = false;
-        IsAnyNodeDelegate = false;
     }
 
     public void AddDelegate(string name, SyntaxNode node)
@@ -602,30 +592,5 @@ internal class UnusedMemberWalker : TypeSyntaxWalker
 
             VisitAttributeList(attributeList);
         }
-    }
-
-    public static UnusedMemberWalker GetInstance()
-    {
-        UnusedMemberWalker walker = _cachedInstance;
-
-        if (walker is not null)
-        {
-            Debug.Assert(walker._containingMethodSymbol is null);
-            Debug.Assert(walker.Nodes.Count == 0);
-            Debug.Assert(walker.SemanticModel is null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
-        }
-
-        return new UnusedMemberWalker();
-    }
-
-    public static void Free(UnusedMemberWalker walker)
-    {
-        walker.Reset();
-
-        _cachedInstance = walker;
     }
 }

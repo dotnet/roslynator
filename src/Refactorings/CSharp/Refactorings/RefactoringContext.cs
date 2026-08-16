@@ -414,9 +414,12 @@ internal class RefactoringContext
         if (node is null)
             return;
 
-        RefactoringFlags flags = RefactoringFlagsCache.GetInstance();
-        flags.Reset();
+        var flags = new RefactoringFlags();
+        await ComputeRefactoringsForNodeAsync(node, flags).ConfigureAwait(false);
+    }
 
+    private async Task ComputeRefactoringsForNodeAsync(SyntaxNode node, RefactoringFlags flags)
+    {
         SyntaxNode firstNode = node;
 
         for (; node is not null; node = node.GetParent(ascendOutOfTrivia: true))
@@ -1036,8 +1039,6 @@ internal class RefactoringContext
             }
         }
 
-        RefactoringFlagsCache.Free(flags);
-
         await SelectedLinesRefactoring.ComputeRefactoringsAsync(this, firstNode).ConfigureAwait(false);
 
         CommentTriviaRefactoring.ComputeRefactorings(this, firstNode);
@@ -1060,35 +1061,6 @@ internal class RefactoringContext
         public void Set(Flag flag)
         {
             _flags.Set((int)flag, true);
-        }
-
-        public void Reset()
-        {
-            _flags.SetAll(false);
-        }
-    }
-
-    private static class RefactoringFlagsCache
-    {
-        [ThreadStatic]
-        private static RefactoringFlags _cachedInstance;
-
-        public static RefactoringFlags GetInstance()
-        {
-            RefactoringFlags instance = _cachedInstance;
-
-            if (instance is not null)
-            {
-                _cachedInstance = null;
-                return instance;
-            }
-
-            return new RefactoringFlags();
-        }
-
-        public static void Free(RefactoringFlags instance)
-        {
-            _cachedInstance = instance;
         }
     }
 

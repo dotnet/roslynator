@@ -10,7 +10,7 @@ internal static class ExpandExpressionBodyAnalysis
 {
     public static bool IsFixable(ArrowExpressionClauseSyntax arrowExpressionClause)
     {
-        SyntaxNode parent = arrowExpressionClause.Parent;
+        SyntaxNode? parent = arrowExpressionClause.Parent;
 
         return parent is not null
             && CSharpFacts.CanHaveExpressionBody(parent.Kind());

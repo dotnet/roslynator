@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Text;
+using Roslynator.Testing.Text;
 using static System.Environment;
 
 namespace Roslynator.Testing;

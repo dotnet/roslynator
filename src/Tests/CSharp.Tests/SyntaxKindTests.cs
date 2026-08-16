@@ -588,17 +588,25 @@ public static class SyntaxKindTests
                 case SyntaxKind.CollectionExpression:
                 case SyntaxKind.ExpressionElement:
                 case SyntaxKind.SpreadElement:
+#if ROSLYN_TEST_4_11_OR_GREATER
                 // new in 4.11.0
                 case SyntaxKind.AllowsConstraintClause:
                 case SyntaxKind.AllowsKeyword:
                 case SyntaxKind.RazorContentToken:
                 case SyntaxKind.RefStructConstraint:
+#endif
+#if ROSLYN_TEST_4_12_OR_GREATER
                 // new in 4.12.0
                 case SyntaxKind.FieldExpression:
+#endif
+#if ROSLYN_TEST_4_14_OR_GREATER
                 // new in 4.14.0
                 case SyntaxKind.ExtensionKeyword:
-                case SyntaxKind.ExtensionDeclaration:
                 case SyntaxKind.IgnoredDirectiveTrivia:
+#endif
+                // new in 5.0.0
+                case SyntaxKind.ExtensionBlockDeclaration:
+                case SyntaxKind.ExtensionMemberCref:
                 {
                     break;
                 }

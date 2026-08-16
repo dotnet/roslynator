@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,12 +13,12 @@ namespace Roslynator.Configuration;
 
 internal static class XmlCodeAnalysisConfigLoader
 {
-    public static XmlCodeAnalysisConfig Load(string path)
+    public static XmlCodeAnalysisConfig? Load(string path)
     {
         return LoadAndCatchIfThrows(path, exceptionHandler: ex => Debug.Fail(ex.ToString()));
     }
 
-    internal static XmlCodeAnalysisConfig LoadAndCatchIfThrows(string uri, XmlConfigLoadOptions options = XmlConfigLoadOptions.None, Action<Exception> exceptionHandler = null)
+    internal static XmlCodeAnalysisConfig? LoadAndCatchIfThrows(string uri, XmlConfigLoadOptions options = XmlConfigLoadOptions.None, Action<Exception>? exceptionHandler = null)
     {
         try
         {
@@ -32,14 +33,16 @@ internal static class XmlCodeAnalysisConfigLoader
         }
     }
 
-    internal static XmlCodeAnalysisConfig Load(string path, XmlConfigLoadOptions options = XmlConfigLoadOptions.None)
+    internal static XmlCodeAnalysisConfig? Load(string path, XmlConfigLoadOptions options = XmlConfigLoadOptions.None)
     {
-        if (!TryGetNormalizedFullPath(path, out path))
+        if (!TryGetNormalizedFullPath(path, out string? normalizedPath))
             return null;
 
-        Builder builder = null;
+        path = normalizedPath;
 
-        Queue<string> queue = null;
+        Builder? builder = null;
+
+        Queue<string>? queue = null;
 
         Load(path, ref builder, ref queue);
 
@@ -72,7 +75,7 @@ internal static class XmlCodeAnalysisConfigLoader
 
                 loadedIncludes.Add(include);
             }
-            while (queue.Count > 0);
+            while (queue!.Count > 0);
         }
 
         if (builder is null)
@@ -90,12 +93,12 @@ internal static class XmlCodeAnalysisConfigLoader
 
     private static void Load(
         string uri,
-        ref Builder builder,
-        ref Queue<string> includes)
+        ref Builder? builder,
+        ref Queue<string>? includes)
     {
         XDocument doc = XDocument.Load(uri);
 
-        string directoryPath = null;
+        string? directoryPath = null;
 
         XElement root = doc.Root;
 
@@ -120,7 +123,7 @@ internal static class XmlCodeAnalysisConfigLoader
                         {
                             directoryPath ??= Path.GetDirectoryName(uri);
 
-                            string path = LoadPath(attribute, directoryPath);
+                            string? path = LoadPath(attribute, directoryPath);
 
                             if (path is not null)
                                 (includes ??= new Queue<string>()).Enqueue(path);
@@ -241,7 +244,7 @@ internal static class XmlCodeAnalysisConfigLoader
         {
             if (e.HasName("Refactoring"))
             {
-                string id = null;
+                string? id = null;
                 bool? isEnabled = null;
 
                 foreach (XAttribute attribute in e.Attributes())
@@ -263,7 +266,7 @@ internal static class XmlCodeAnalysisConfigLoader
                 if (!string.IsNullOrEmpty(id)
                     && isEnabled is not null)
                 {
-                    builder.Refactorings[id] = isEnabled.Value;
+                    builder.Refactorings[id!] = isEnabled.Value;
                 }
             }
             else
@@ -279,7 +282,7 @@ internal static class XmlCodeAnalysisConfigLoader
         {
             if (e.HasName("CodeFix"))
             {
-                string id = null;
+                string? id = null;
                 bool? isEnabled = null;
 
                 foreach (XAttribute attribute in e.Attributes())
@@ -301,7 +304,7 @@ internal static class XmlCodeAnalysisConfigLoader
                 if (!string.IsNullOrEmpty(id)
                     && isEnabled is not null)
                 {
-                    builder.CodeFixes[id] = isEnabled.Value;
+                    builder.CodeFixes[id!] = isEnabled.Value;
                 }
             }
             else
@@ -313,13 +316,13 @@ internal static class XmlCodeAnalysisConfigLoader
 
     private static void LoadRuleSets(XElement element, Builder builder, string filePath)
     {
-        string directoryPath = null;
+        string? directoryPath = null;
 
         foreach (XElement e in element.Elements())
         {
             if (e.HasName("RuleSet"))
             {
-                string path = null;
+                string? path = null;
 
                 foreach (XAttribute attribute in e.Attributes())
                 {
@@ -337,7 +340,7 @@ internal static class XmlCodeAnalysisConfigLoader
 
                 if (!string.IsNullOrEmpty(path))
                 {
-                    builder.RuleSets.Add(path);
+                    builder.RuleSets.Add(path!);
                 }
             }
             else
@@ -347,7 +350,7 @@ internal static class XmlCodeAnalysisConfigLoader
         }
     }
 
-    private static string LoadPath(XAttribute attribute, string basePath)
+    private static string? LoadPath(XAttribute attribute, string? basePath)
     {
         string path = attribute.Value.Trim();
 
@@ -358,17 +361,17 @@ internal static class XmlCodeAnalysisConfigLoader
             path = path.Replace("%LOCALAPPDATA%", localAppDataPath);
         }
 
-        return (TryGetNormalizedFullPath(path, basePath, out path))
-            ? path
+        return (TryGetNormalizedFullPath(path, basePath, out string? result))
+            ? result
             : null;
     }
 
     private class Builder
     {
-        private ImmutableDictionary<string, bool>.Builder _analyzers;
-        private ImmutableDictionary<string, bool>.Builder _codeFixes;
-        private ImmutableDictionary<string, bool>.Builder _refactorings;
-        private ImmutableArray<string>.Builder _ruleSets;
+        private ImmutableDictionary<string, bool>.Builder? _analyzers;
+        private ImmutableDictionary<string, bool>.Builder? _codeFixes;
+        private ImmutableDictionary<string, bool>.Builder? _refactorings;
+        private ImmutableArray<string>.Builder? _ruleSets;
 
         public ImmutableDictionary<string, bool>.Builder Analyzers
         {
@@ -395,14 +398,15 @@ internal static class XmlCodeAnalysisConfigLoader
         public int MaxLineLength { get; set; } = ConfigOptionDefaultValues.MaxLineLength;
     }
 
-    private static bool TryGetNormalizedFullPath(string path, out string result)
+    private static bool TryGetNormalizedFullPath(string path, [NotNullWhen(true)] out string? result)
     {
         return TryGetNormalizedFullPath(path, null, out result);
     }
 
-    private static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
+    private static bool TryGetNormalizedFullPath(string path, string? basePath, [NotNullWhen(true)] out string? result)
     {
-        if (!FileSystemHelpers.TryGetNormalizedFullPath(path, basePath, out result))
+        if (!FileSystemHelpers.TryGetNormalizedFullPath(path, basePath, out result)
+            || result is null)
         {
             Debug.WriteLine($"Path is invalid: {path}");
             return false;

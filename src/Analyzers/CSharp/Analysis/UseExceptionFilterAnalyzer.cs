@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -55,27 +54,11 @@ public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
         if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
             ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
         {
-            bool canUseExceptionFilter;
-            UseExceptionFilterWalker walker = null;
+            var walker = new UseExceptionFilterWalker(context.SemanticModel, context.CancellationToken);
 
-            try
-            {
-                walker = UseExceptionFilterWalker.GetInstance();
+            walker.Visit(ifStatement.Condition);
 
-                walker.SemanticModel = context.SemanticModel;
-                walker.CancellationToken = context.CancellationToken;
-
-                walker.Visit(ifStatement.Condition);
-
-                canUseExceptionFilter = walker.CanUseExceptionFilter;
-            }
-            finally
-            {
-                if (walker is not null)
-                    UseExceptionFilterWalker.Free(walker);
-            }
-
-            if (!canUseExceptionFilter)
+            if (!walker.CanUseExceptionFilter)
                 return;
 
             if (ifStatement.ContainsUnbalancedIfElseDirectives())
@@ -93,16 +76,19 @@ public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
 
     private class UseExceptionFilterWalker : BaseCSharpSyntaxWalker
     {
-        [ThreadStatic]
-        private static UseExceptionFilterWalker _cachedInstance;
-
         private static readonly Regex _exceptionElementRegex = new(@"\<(?i:exception)\ +cref=(?:""|')");
 
-        public bool CanUseExceptionFilter { get; set; } = true;
+        public UseExceptionFilterWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
-        public SemanticModel SemanticModel { get; set; }
+        public bool CanUseExceptionFilter { get; private set; } = true;
 
-        public CancellationToken CancellationToken { get; set; }
+        public SemanticModel SemanticModel { get; }
+
+        public CancellationToken CancellationToken { get; }
 
         protected override bool ShouldVisit => CanUseExceptionFilter;
 
@@ -171,32 +157,6 @@ public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
 
         public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
-        }
-
-        public static UseExceptionFilterWalker GetInstance()
-        {
-            UseExceptionFilterWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                Debug.Assert(walker.CanUseExceptionFilter = true);
-                Debug.Assert(walker.SemanticModel is null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new UseExceptionFilterWalker();
-        }
-
-        public static void Free(UseExceptionFilterWalker walker)
-        {
-            walker.CanUseExceptionFilter = true;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-
-            _cachedInstance = walker;
         }
     }
 }

@@ -102,6 +102,8 @@ class C
 ");
     }
 
+#if ROSLYN_TEST_4_14_OR_GREATER
+    // Expected trivia formatting matches the newer Roslyn formatter.
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task Test_Method_RegionPreprocessorDirectives()
     {
@@ -123,6 +125,8 @@ class C
 }
 ");
     }
+
+#endif
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_Property_AttributeArgument_NameOf()
@@ -347,28 +351,6 @@ class C
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_UnityScriptMethods()
-    {
-        await VerifyNoDiagnosticAsync(@"
-using UnityEngine;
-
-class C : MonoBehaviour
-{
-    private void Awake()
-    {
-    }
-}
-
-namespace UnityEngine
-{
-    class MonoBehaviour
-    {
-    }
-}
-", options: Options.AddConfigOption(ConfigOptionKeys.SuppressUnityScriptMethods, true));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
-    public async Task TestNoDiagnostic_UnityScriptMethods2()
     {
         await VerifyNoDiagnosticAsync(@"
 using UnityEngine;

@@ -46,7 +46,6 @@ export function ensureOmnisharpConfigurationUpdated(context: Context) {
 	const roslynPath = path.join(context.extensionDirectoryPath, 'roslyn');
 	const locationPaths = [
 		path.join(roslynPath, 'common'),
-		path.join(roslynPath, 'analyzers'),
 		path.join(roslynPath, 'refactorings'),
 		path.join(roslynPath, 'fixes')
 	].map(p => p.replace(/\\/g, '/'));

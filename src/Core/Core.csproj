@@ -83,15 +83,6 @@
       <_Parameter1>Roslynator.CSharp.Refactorings, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Testing.Common, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
-    </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Testing.CSharp, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
-    </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Testing.VisualBasic, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
-    </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Roslynator.Core.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">

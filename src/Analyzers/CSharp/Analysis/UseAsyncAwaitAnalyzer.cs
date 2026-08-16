@@ -154,40 +154,33 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool IsFixable(BlockSyntax body, SyntaxNodeAnalysisContext context)
     {
-        UseAsyncAwaitWalker walker = null;
+        var walker = new UseAsyncAwaitWalker(context.SemanticModel, context.CancellationToken);
 
-        try
-        {
-            walker = UseAsyncAwaitWalker.GetInstance(context.SemanticModel, context.CancellationToken);
+        walker.VisitBlock(body);
 
-            walker.VisitBlock(body);
-
-            return walker.ReturnStatement is not null
-                && !CSharpUtility.IsInUnsafeContext(body);
-        }
-        finally
-        {
-            if (walker is not null)
-                UseAsyncAwaitWalker.Free(walker);
-        }
+        return walker.ReturnStatement is not null
+            && !CSharpUtility.IsInUnsafeContext(body);
     }
 
     private class UseAsyncAwaitWalker : StatementWalker
     {
-        [ThreadStatic]
-        private static UseAsyncAwaitWalker _cachedInstance;
-
+        private readonly List<int> _usingDeclarations = [];
         private int _usingOrTryStatementDepth;
         private bool _shouldVisit = true;
-        private readonly List<int> _usingDeclarations = [];
+
+        public UseAsyncAwaitWalker(SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+        }
 
         public override bool ShouldVisit => _shouldVisit;
 
         public ReturnStatementSyntax ReturnStatement { get; private set; }
 
-        public SemanticModel SemanticModel { get; private set; }
+        public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public CancellationToken CancellationToken { get; }
 
         public override void VisitUsingStatement(UsingStatementSyntax node)
         {
@@ -328,36 +321,6 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
-        }
-
-        public static UseAsyncAwaitWalker GetInstance(SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            UseAsyncAwaitWalker walker = _cachedInstance;
-
-            if (walker is not null)
-            {
-                _cachedInstance = null;
-            }
-            else
-            {
-                walker = new UseAsyncAwaitWalker();
-            }
-
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
-
-            return walker;
-        }
-
-        public static void Free(UseAsyncAwaitWalker walker)
-        {
-            walker._shouldVisit = true;
-            walker._usingDeclarations.Clear();
-            walker.ReturnStatement = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-
-            _cachedInstance = walker;
         }
     }
 }

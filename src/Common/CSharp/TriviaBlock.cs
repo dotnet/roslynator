@@ -91,9 +91,12 @@ internal readonly struct TriviaBlock
             }
         }
 
-        return Location.Create(
-            (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree,
-            span);
+        SyntaxTree? syntaxTree = (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree;
+
+        if (syntaxTree is null)
+            return Location.None;
+
+        return Location.Create(syntaxTree, span);
     }
 
     public TriviaBlockReader CreateReader()

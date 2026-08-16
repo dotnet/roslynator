@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
@@ -24,8 +23,7 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.FormatBlockBraces,
-                    DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock);
+                    DiagnosticRules.FormatBlockBraces);
             }
 
             return _supportedDiagnostics;
@@ -53,15 +51,6 @@ public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
 
         if (openBrace.IsMissing)
             return;
-
-        if (DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
-            && block.SyntaxTree.IsSingleLineSpan(block.Span))
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
-                Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
-        }
 
         BlockBracesStyle style = context.GetBlockBracesStyle();
 

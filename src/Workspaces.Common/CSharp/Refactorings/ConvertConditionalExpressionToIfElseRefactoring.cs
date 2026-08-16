@@ -20,7 +20,7 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
 
     public const string RecursiveTitle = Title + " (recursively)";
 
-    public static (CodeAction codeAction, CodeAction recursiveCodeAction) ComputeRefactoring(
+    public static (CodeAction? codeAction, CodeAction? recursiveCodeAction) ComputeRefactoring(
         Document document,
         ConditionalExpressionSyntax conditionalExpression,
         in CodeActionData data,
@@ -28,12 +28,12 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        CodeAction codeAction = null;
-        CodeAction recursiveCodeAction = null;
+        CodeAction? codeAction = null;
+        CodeAction? recursiveCodeAction = null;
 
         ExpressionSyntax expression = conditionalExpression.WalkUpParentheses();
 
-        SyntaxNode parent = expression.Parent;
+        SyntaxNode parent = expression.Parent!;
 
         if (parent.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
         {
@@ -166,7 +166,7 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
     {
         VariableDeclaratorSyntax variableDeclarator = localDeclaration.Declaration.Variables[0];
 
-        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.RemoveNode(variableDeclarator.Initializer, SyntaxRemoveOptions.KeepExteriorTrivia);
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.RemoveNode(variableDeclarator.Initializer!, SyntaxRemoveOptions.KeepExteriorTrivia)!;
 
         TypeSyntax type = newLocalDeclaration.Declaration.Type;
 
@@ -174,7 +174,7 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
         {
             newLocalDeclaration = newLocalDeclaration.ReplaceNode(
                 type,
-                semanticModel.GetTypeSymbol(conditionalExpression, cancellationToken)
+                semanticModel.GetTypeSymbol(conditionalExpression, cancellationToken)!
                     .ToMinimalTypeSyntax(semanticModel, type.SpanStart)
                     .WithTriviaFrom(type));
         }
@@ -199,7 +199,7 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
         Func<ExpressionSyntax, StatementSyntax> createStatement,
         bool recursive = false)
     {
-        StatementSyntax statement = null;
+        StatementSyntax? statement = null;
 
         if (recursive
             && conditionalExpression.WhenTrue.WalkDownParentheses() is ConditionalExpressionSyntax whenTrue)

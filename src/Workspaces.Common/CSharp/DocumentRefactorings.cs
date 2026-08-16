@@ -31,7 +31,7 @@ internal static class DocumentRefactorings
             && declarationExpression.Designation is ParenthesizedVariableDesignationSyntax designation)
         {
 #if DEBUG
-            SyntaxNode parent = declarationExpression.Parent;
+            SyntaxNode parent = declarationExpression.Parent!;
 
             switch (parent.Kind())
             {
@@ -242,7 +242,7 @@ internal static class DocumentRefactorings
     {
         TypeSyntax type = variableDeclaration.Type;
 
-        ExpressionSyntax value = variableDeclarator.Initializer.Value;
+        ExpressionSyntax value = variableDeclarator.Initializer!.Value;
 
         AwaitExpressionSyntax newValue = AwaitExpression(value.WithoutTrivia()).WithTriviaFrom(value);
 
@@ -302,15 +302,15 @@ internal static class DocumentRefactorings
 
     public static async Task<Document> AddNewDocumentationCommentsAsync(
         Document document,
-        DocumentationCommentGeneratorSettings settings = null,
+        DocumentationCommentGeneratorSettings? settings = null,
         bool skipNamespaceDeclaration = true,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
         var rewriter = new AddNewDocumentationCommentRewriter(settings, skipNamespaceDeclaration);
 
-        SyntaxNode newRoot = rewriter.Visit(root);
+        SyntaxNode newRoot = rewriter.Visit(root)!;
 
         return document.WithSyntaxRoot(newRoot);
     }
@@ -318,15 +318,15 @@ internal static class DocumentRefactorings
     public static async Task<Document> AddBaseOrNewDocumentationCommentsAsync(
         Document document,
         SemanticModel semanticModel,
-        DocumentationCommentGeneratorSettings settings = null,
+        DocumentationCommentGeneratorSettings? settings = null,
         bool skipNamespaceDeclaration = true,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
         var rewriter = new AddBaseOrNewDocumentationCommentRewriter(semanticModel, settings, skipNamespaceDeclaration, cancellationToken);
 
-        SyntaxNode newRoot = rewriter.Visit(root);
+        SyntaxNode newRoot = rewriter.Visit(root)!;
 
         return document.WithSyntaxRoot(newRoot);
     }
@@ -355,7 +355,7 @@ internal static class DocumentRefactorings
 
         if (!leading.Any())
         {
-            SyntaxNode parent = parenthesizedExpression.Parent;
+            SyntaxNode parent = parenthesizedExpression.Parent!;
 
             switch (parent.Kind())
             {

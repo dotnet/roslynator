@@ -24,7 +24,6 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 Immutable.InterlockedInitialize(
                     ref _supportedDiagnostics,
-                    DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
                     DiagnosticRules.BlankLineBetweenUsingDirectives);
             }
 
@@ -96,25 +95,15 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
 
             if (string.Equals(rootNamespace1.Identifier.ValueText, rootNamespace2.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (block.Kind == TriviaBlockKind.BlankLine)
+                if (block.Kind == TriviaBlockKind.BlankLine
+                    && DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
+                    && context.GetBlankLineBetweenUsingDirectives() == UsingDirectiveBlankLineStyle.Never)
                 {
-                    if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
-                            block.GetLocation());
-                    }
-
-                    if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
-                        && context.GetBlankLineBetweenUsingDirectives() == UsingDirectiveBlankLineStyle.Never)
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.BlankLineBetweenUsingDirectives,
-                            block.GetLocation(),
-                            "Remove");
-                    }
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.BlankLineBetweenUsingDirectives,
+                        block.GetLocation(),
+                        "Remove");
                 }
             }
             else if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context))

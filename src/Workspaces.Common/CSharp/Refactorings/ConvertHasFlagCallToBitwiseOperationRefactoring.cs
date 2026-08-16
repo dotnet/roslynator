@@ -19,7 +19,7 @@ internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
         InvocationExpressionSyntax invocation,
         CancellationToken cancellationToken = default)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
         return await RefactorAsync(document, invocation, semanticModel, cancellationToken).ConfigureAwait(false);
     }
@@ -44,7 +44,7 @@ internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
 
         SyntaxNode nodeToReplace = invocation;
 
-        SyntaxNode parent = invocation.Parent;
+        SyntaxNode parent = invocation.Parent!;
 
         if (!parent.SpanContainsDirectives())
         {
