@@ -28,8 +28,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.SortEnumMembers,
-                DiagnosticIdentifiers.EnumShouldDeclareExplicitValues,
-                DiagnosticIdentifiers.UseBitShiftOperator);
+                DiagnosticIdentifiers.EnumShouldDeclareExplicitValues);
         }
     }
 
@@ -97,16 +96,6 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction2, diagnostic);
                     }
 
-                    break;
-                }
-                case DiagnosticIdentifiers.UseBitShiftOperator:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use '<<' operator",
-                        ct => UseBitShiftOperatorAsync(document, enumDeclaration, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
             }
@@ -259,49 +248,5 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers);
 
         return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<Document> UseBitShiftOperatorAsync(
-        Document document,
-        EnumDeclarationSyntax enumDeclaration,
-        CancellationToken cancellationToken)
-    {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-        EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceNodes(
-            GetExpressionsToRewrite(),
-            (expression, _) =>
-            {
-                Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
-
-                var power = (int)Math.Log(Convert.ToDouble(constantValue.Value), 2);
-
-                BinaryExpressionSyntax leftShift = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
-
-                return leftShift.WithTriviaFrom(expression);
-            });
-
-        return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
-
-        IEnumerable<ExpressionSyntax> GetExpressionsToRewrite()
-        {
-            foreach (EnumMemberDeclarationSyntax member in enumDeclaration.Members)
-            {
-                ExpressionSyntax expression = member.EqualsValue?.Value.WalkDownParentheses();
-
-                if (expression is not null
-                    && semanticModel.GetDeclaredSymbol(member, cancellationToken) is IFieldSymbol fieldSymbol
-                    && fieldSymbol.HasConstantValue)
-                {
-                    EnumFieldSymbolInfo fieldInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
-
-                    if (fieldInfo.Value > 1
-                        && !fieldInfo.HasCompositeValue())
-                    {
-                        yield return expression;
-                    }
-                }
-            }
-        }
     }
 }

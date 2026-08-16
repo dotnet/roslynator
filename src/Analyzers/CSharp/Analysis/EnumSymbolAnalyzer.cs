@@ -27,8 +27,7 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticRules.DeclareEnumMemberWithZeroValue,
                     DiagnosticRules.CompositeEnumValueContainsUndefinedFlag,
                     DiagnosticRules.DeclareEnumValueAsCombinationOfNames,
-                    DiagnosticRules.DuplicateEnumValue,
-                    DiagnosticRules.UseBitShiftOperator);
+                    DiagnosticRules.DuplicateEnumValue);
             }
 
             return _supportedDiagnostics;
@@ -133,42 +132,6 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
 
                     if (values?.Count > 1)
                         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEnumValueAsCombinationOfNames, expression);
-                }
-            }
-        }
-
-        if (hasFlagsAttribute
-            && DiagnosticRules.UseBitShiftOperator.IsEffective(context))
-        {
-            if (members.IsDefault)
-                members = typeSymbol.GetMembers();
-
-            foreach (ISymbol member in members)
-            {
-                if (member is not IFieldSymbol fieldSymbol)
-                    continue;
-
-                if (!fieldSymbol.HasConstantValue)
-                    continue;
-
-                EnumFieldSymbolInfo fieldInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
-
-                if (fieldInfo.Value <= 1)
-                    continue;
-
-                if (fieldInfo.HasCompositeValue())
-                    continue;
-
-                var declaration = (EnumMemberDeclarationSyntax)fieldInfo.Symbol.GetSyntax(context.CancellationToken);
-
-                ExpressionSyntax expression = declaration.EqualsValue?.Value.WalkDownParentheses();
-
-                if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
-                {
-                    var enumDeclaration = (EnumDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBitShiftOperator, enumDeclaration.Identifier);
-                    break;
                 }
             }
         }

@@ -189,13 +189,6 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Prefix field identifier with underscore");
 
-        [Obsolete("", error: false)]
-        public static readonly ConfigOptionDescriptor SuppressUnityScriptMethods = new(
-            key:                     ConfigOptionKeys.SuppressUnityScriptMethods, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "[deprecated] This option is obsolete, use option 'roslynator_unity_code_analysis.enabled' instead.");
-
         public static readonly ConfigOptionDescriptor TabLength = new(
             key:                     ConfigOptionKeys.TabLength, 
             defaultValue:            "4", 
