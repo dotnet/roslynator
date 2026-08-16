@@ -12,8 +12,6 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst;
 
 internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker, IResettable
 {
-    private bool _canBeCached = true;
-
     public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
 
     public SemanticModel SemanticModel { get; private set; }
@@ -24,22 +22,22 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker, IReset
 
     protected override bool ShouldVisit => !Result;
 
-    public bool CanBeCached => _canBeCached;
-
     public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SemanticModel = semanticModel;
         CancellationToken = cancellationToken;
     }
 
-    public void Reset()
+    public bool Reset()
     {
-        _canBeCached = Identifiers.Count <= ObjectPool.MaxCachedBufferSize;
+        bool canBeCached = Identifiers.Count <= ObjectPool.MaxCachedBufferSize;
 
         Identifiers.Clear();
         SemanticModel = null;
         CancellationToken = default;
         Result = false;
+
+        return canBeCached;
     }
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)

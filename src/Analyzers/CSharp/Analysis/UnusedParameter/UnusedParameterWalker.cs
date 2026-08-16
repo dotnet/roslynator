@@ -15,7 +15,6 @@ internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
     private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
 
     private bool _isEmpty;
-    private bool _canBeCached = true;
 
     public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
 
@@ -29,8 +28,6 @@ internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
 
     protected override bool ShouldVisit => !_isEmpty;
 
-    public bool CanBeCached => _canBeCached;
-
     public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
     {
         SemanticModel = semanticModel;
@@ -38,9 +35,9 @@ internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
         IsIndexer = isIndexer;
     }
 
-    public void Reset()
+    public bool Reset()
     {
-        _canBeCached = Nodes.Count <= ObjectPool.MaxCachedBufferSize;
+        bool canBeCached = Nodes.Count <= ObjectPool.MaxCachedBufferSize;
         _isEmpty = false;
 
         Nodes.Clear();
@@ -48,6 +45,8 @@ internal class UnusedParameterWalker : TypeSyntaxWalker, IResettable
         CancellationToken = default;
         IsIndexer = false;
         IsAnyTypeParameter = false;
+
+        return canBeCached;
     }
 
     public void AddParameter(ParameterSyntax parameter)

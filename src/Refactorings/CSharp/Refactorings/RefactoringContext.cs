@@ -414,10 +414,19 @@ internal class RefactoringContext
         if (node is null)
             return;
 
-        using PooledObject<RefactoringFlags> pooledFlags = ObjectPool<RefactoringFlags>.Rent();
+        RefactoringFlags flags = ObjectPool<RefactoringFlags>.RentInstance();
+        try
+        {
+            await ComputeRefactoringsForNodeAsync(node, flags).ConfigureAwait(false);
+        }
+        finally
+        {
+            ObjectPool<RefactoringFlags>.Free(flags);
+        }
+    }
 
-        RefactoringFlags flags = pooledFlags.Value;
-
+    private async Task ComputeRefactoringsForNodeAsync(SyntaxNode node, RefactoringFlags flags)
+    {
         SyntaxNode firstNode = node;
 
         for (; node is not null; node = node.GetParent(ascendOutOfTrivia: true))
@@ -1051,9 +1060,6 @@ internal class RefactoringContext
             _flags = new BitArray((int)Flag.Count);
         }
 
-        // The bit array has a fixed size, so the instance never grows beyond the pool limit.
-        public bool CanBeCached => true;
-
         public bool IsSet(Flag flag)
         {
             return _flags.Get((int)flag);
@@ -1064,9 +1070,10 @@ internal class RefactoringContext
             _flags.Set((int)flag, true);
         }
 
-        public void Reset()
+        public bool Reset()
         {
             _flags.SetAll(false);
+            return true;
         }
     }
 

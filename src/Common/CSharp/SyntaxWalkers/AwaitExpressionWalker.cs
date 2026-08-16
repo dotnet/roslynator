@@ -10,7 +10,6 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker, IResettable
 {
     private bool _shouldVisit = true;
-    private bool _canBeCached = true;
 
     public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = [];
 
@@ -18,14 +17,13 @@ internal class AwaitExpressionWalker : BaseCSharpSyntaxWalker, IResettable
 
     protected override bool ShouldVisit => _shouldVisit;
 
-    public bool CanBeCached => _canBeCached;
-
-    public void Reset()
+    public bool Reset()
     {
-        _canBeCached = AwaitExpressions.Count <= ObjectPool.MaxCachedBufferSize;
+        bool canBeCached = AwaitExpressions.Count <= ObjectPool.MaxCachedBufferSize;
         _shouldVisit = true;
         StopOnFirstAwaitExpression = false;
         AwaitExpressions.Clear();
+        return canBeCached;
     }
 
     public static bool ContainsAwaitExpression(ExpressionSyntax expression)

@@ -4,11 +4,10 @@ namespace Roslynator;
 
 internal interface IResettable
 {
-    void Reset();
-
     /// <summary>
-    /// Gets a value indicating whether the instance can be retained by <see cref="ObjectPool{T}"/>.
-    /// Implementations should return <c>false</c> when the instance holds a buffer that grew too large to be worth retaining.
+    /// Clears instance state. Returns <c>true</c> if the instance is worth retaining.
+    /// Implementations must snapshot buffer size (capacity when available) before clearing
+    /// and return <c>false</c> when it exceeded <see cref="ObjectPool.MaxCachedBufferSize"/>.
     /// </summary>
-    bool CanBeCached { get; }
+    bool Reset();
 }

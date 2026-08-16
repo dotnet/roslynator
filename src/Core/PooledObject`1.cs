@@ -1,10 +1,8 @@
 // Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-
 namespace Roslynator;
 
-internal struct PooledObject<T> : IDisposable where T : class, IResettable, new()
+internal ref struct PooledObject<T> where T : class, IResettable, new()
 {
     private T? _value;
 

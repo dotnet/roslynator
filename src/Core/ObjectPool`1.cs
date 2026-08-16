@@ -1,7 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 
 namespace Roslynator;
 
@@ -12,20 +11,27 @@ internal static class ObjectPool<T> where T : class, IResettable, new()
 
     public static PooledObject<T> Rent()
     {
+        return new PooledObject<T>(RentInstance());
+    }
+
+    public static T RentInstance()
+    {
         T? instance = _cachedInstance;
 
         _cachedInstance = null;
 
-        return new PooledObject<T>(instance ?? new T());
+        return instance ?? new T();
     }
 
-    internal static void Free(T instance)
+    internal static void Free(T? instance)
     {
-        Debug.Assert(!ReferenceEquals(_cachedInstance, instance), $"'{typeof(T).Name}' freed twice.");
+        if (instance is null)
+            return;
 
-        instance.Reset();
+        if (ReferenceEquals(_cachedInstance, instance))
+            return;
 
-        if (instance.CanBeCached)
+        if (instance.Reset())
             _cachedInstance = instance;
     }
 }

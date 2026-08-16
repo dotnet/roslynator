@@ -246,7 +246,6 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
     {
         private int _localFunctionDepth;
         private int _anonymousFunctionDepth;
-        private bool _canBeCached = true;
 
         public Dictionary<string, IParameterSymbol> Parameters { get; } = [];
 
@@ -254,23 +253,23 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
 
         public CancellationToken CancellationToken { get; private set; }
 
-        public bool CanBeCached => _canBeCached;
-
         public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             SemanticModel = semanticModel;
             CancellationToken = cancellationToken;
         }
 
-        public void Reset()
+        public bool Reset()
         {
-            _canBeCached = Parameters.Count <= ObjectPool.MaxCachedBufferSize;
+            bool canBeCached = Parameters.Count <= ObjectPool.MaxCachedBufferSize;
 
             Parameters.Clear();
             SemanticModel = null;
             CancellationToken = default;
             _localFunctionDepth = 0;
             _anonymousFunctionDepth = 0;
+
+            return canBeCached;
         }
 
         protected override bool ShouldVisit => Parameters.Count > 0;

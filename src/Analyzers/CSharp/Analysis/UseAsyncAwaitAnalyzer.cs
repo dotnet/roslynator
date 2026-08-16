@@ -171,11 +171,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         private readonly List<int> _usingDeclarations = [];
         private int _usingOrTryStatementDepth;
         private bool _shouldVisit = true;
-        private bool _canBeCached = true;
 
         public override bool ShouldVisit => _shouldVisit;
-
-        public bool CanBeCached => _canBeCached;
 
         public ReturnStatementSyntax ReturnStatement { get; private set; }
 
@@ -330,10 +327,10 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
             CancellationToken = cancellationToken;
         }
 
-        public void Reset()
+        public bool Reset()
         {
             // Count is always 0 after a balanced visit; Capacity is the retained buffer size.
-            _canBeCached = _usingDeclarations.Capacity <= ObjectPool.MaxCachedBufferSize;
+            bool canBeCached = _usingDeclarations.Capacity <= ObjectPool.MaxCachedBufferSize;
             _shouldVisit = true;
             _usingOrTryStatementDepth = 0;
 
@@ -341,6 +338,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
             ReturnStatement = null;
             SemanticModel = null;
             CancellationToken = default;
+
+            return canBeCached;
         }
     }
 }

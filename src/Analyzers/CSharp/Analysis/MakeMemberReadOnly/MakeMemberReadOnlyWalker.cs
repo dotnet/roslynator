@@ -18,7 +18,6 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
     private int _anonymousFunctionDepth;
     private bool _isInInstanceConstructor;
     private bool _isInStaticConstructor;
-    private bool _canBeCached = true;
 
     public SemanticModel SemanticModel { get; private set; }
 
@@ -26,17 +25,15 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
 
     public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
 
-    public bool CanBeCached => _canBeCached;
-
     public void Initialize(SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SemanticModel = semanticModel;
         CancellationToken = cancellationToken;
     }
 
-    public void Reset()
+    public bool Reset()
     {
-        _canBeCached = Symbols.Count <= ObjectPool.MaxCachedBufferSize;
+        bool canBeCached = Symbols.Count <= ObjectPool.MaxCachedBufferSize;
 
         Symbols.Clear();
         SemanticModel = null;
@@ -46,6 +43,8 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker, IResettable
         _anonymousFunctionDepth = 0;
         _isInInstanceConstructor = false;
         _isInStaticConstructor = false;
+
+        return canBeCached;
     }
 
     public override void VisitAssignedExpression(ExpressionSyntax expression)
