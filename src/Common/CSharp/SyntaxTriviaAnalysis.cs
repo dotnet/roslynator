@@ -140,8 +140,7 @@ internal static class SyntaxTriviaAnalysis
 
         SyntaxNode? node2 = node;
 
-        while (node2 is not null
-            && !node2.FullSpan.Contains(lineStartIndex))
+        while (node2?.FullSpan.Contains(lineStartIndex) == false)
             node2 = node2.GetParent(ascendOutOfTrivia: true);
 
         if (node2 is null)

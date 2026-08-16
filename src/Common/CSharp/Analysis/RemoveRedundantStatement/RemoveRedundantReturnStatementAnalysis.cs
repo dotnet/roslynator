@@ -29,13 +29,13 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
         {
             SyntaxNode? parent = statement.Parent;
 
-            if (parent?.IsKind(SyntaxKind.Block) == true
+            if (parent.IsKind(SyntaxKind.Block)
                 && parent.Parent is IfStatementSyntax ifStatement
                 && ifStatement.IsSimpleIf())
             {
                 StatementSyntax? nextStatement = ifStatement.NextStatement();
 
-                if (nextStatement?.IsKind(SyntaxKind.ReturnStatement) == true
+                if (nextStatement.IsKind(SyntaxKind.ReturnStatement)
                     && ((ReturnStatementSyntax)nextStatement).Expression?.RawKind == expression.RawKind)
                 {
                     return true;

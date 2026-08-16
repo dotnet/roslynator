@@ -34,9 +34,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (StatementSyntax)parent;
 
-                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
-
-                    if (nextBlock is null)
+                    if (containingStatement.Parent is not BlockSyntax nextBlock)
                         return false;
 
                     block = nextBlock;
@@ -56,9 +54,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (TryStatementSyntax)parent;
 
-                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
-
-                    if (nextBlock is null)
+                    if (containingStatement.Parent is not BlockSyntax nextBlock)
                         return false;
 
                     block = nextBlock;
@@ -101,9 +97,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (StatementSyntax)parent;
 
-                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
-
-                    if (nextBlock is null)
+                    if (containingStatement.Parent is not BlockSyntax nextBlock)
                         return false;
 
                     block = nextBlock;
@@ -123,9 +117,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
                 {
                     containingStatement = (TryStatementSyntax)parent;
 
-                    BlockSyntax? nextBlock = containingStatement.Parent as BlockSyntax;
-
-                    if (nextBlock is null)
+                    if (containingStatement.Parent is not BlockSyntax nextBlock)
                         return false;
 
                     block = nextBlock;

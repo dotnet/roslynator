@@ -101,7 +101,9 @@ internal static partial class ReduceIfNestingRefactoring
 
             if (ifStatement is not null
                 && ReduceIfNestingAnalysis.IsFixable(ifStatement))
+            {
                 return Rewrite(_statementsInfo, ifStatement);
+            }
 
             return node;
         }

@@ -361,7 +361,7 @@ internal static class XmlCodeAnalysisConfigLoader
             path = path.Replace("%LOCALAPPDATA%", localAppDataPath);
         }
 
-        return TryGetNormalizedFullPath(path, basePath, out string? result)
+        return (TryGetNormalizedFullPath(path, basePath, out string? result))
             ? result
             : null;
     }

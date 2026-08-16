@@ -424,7 +424,7 @@ internal static class DiagnosticHelpers
     [Conditional("DEBUG")]
     private static void VerifyMessageArgs(DiagnosticDescriptor descriptor, object?[]? messageArgs)
     {
-        messageArgs ??= [];
+        messageArgs ??= Array.Empty<object?>();
 
         string message = descriptor.MessageFormat.ToString();
         int count = Regex.Matches(message, @"\{\d\}").Count;

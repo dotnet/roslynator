@@ -152,7 +152,7 @@ internal abstract class UnnecessaryBlankLineAnalysis
                     previousNode = catchClause;
                 }
 
-        FinallyClauseSyntax? finallyClause = tryStatement.Finally;
+                FinallyClauseSyntax? finallyClause = tryStatement.Finally;
 
                 if (finallyClause is not null)
                     Analyze(context, previousNode, finallyClause);

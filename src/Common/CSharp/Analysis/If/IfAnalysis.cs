@@ -519,7 +519,7 @@ internal abstract class IfAnalysis
 
         if (elseClause is not null)
         {
-            if (elseClause.Statement?.IsKind(SyntaxKind.IfStatement) == true)
+            if (elseClause.Statement.IsKind(SyntaxKind.IfStatement))
                 return Empty;
 
             StatementSyntax? elseStatement = elseClause.SingleNonBlockStatementOrDefault();
