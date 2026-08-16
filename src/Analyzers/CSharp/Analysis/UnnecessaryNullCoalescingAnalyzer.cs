@@ -30,8 +30,14 @@ public sealed class UnnecessaryNullCoalescingAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeCoalesceExpression(f), SyntaxKind.CoalesceExpression);
-        context.RegisterSyntaxNodeAction(f => AnalyzeCoalesceAssignmentExpression(f), SyntaxKind.CoalesceAssignmentExpression);
+        context.RegisterCompilationStartAction(startContext =>
+        {
+            if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp8)
+                return;
+
+            startContext.RegisterSyntaxNodeAction(f => AnalyzeCoalesceExpression(f), SyntaxKind.CoalesceExpression);
+            startContext.RegisterSyntaxNodeAction(f => AnalyzeCoalesceAssignmentExpression(f), SyntaxKind.CoalesceAssignmentExpression);
+        });
     }
 
     private static void AnalyzeCoalesceExpression(SyntaxNodeAnalysisContext context)
@@ -45,6 +51,9 @@ public sealed class UnnecessaryNullCoalescingAnalyzer : BaseDiagnosticAnalyzer
         ExpressionSyntax right = coalesceExpression.Right;
 
         if (left?.IsMissing != false || right?.IsMissing != false)
+            return;
+
+        if (!IsNullableAnnotationsEnabled(context))
             return;
 
         ExpressionSyntax coalesced = coalesceExpression.WalkUpParentheses();
@@ -76,10 +85,18 @@ public sealed class UnnecessaryNullCoalescingAnalyzer : BaseDiagnosticAnalyzer
         if (left?.IsMissing != false || right?.IsMissing != false)
             return;
 
+        if (!IsNullableAnnotationsEnabled(context))
+            return;
+
         if (!IsUnnecessaryNullCoalescingLeft(left, context.SemanticModel, context.CancellationToken))
             return;
 
         ReportDiagnostic(context, assignment.SyntaxTree, assignment.OperatorToken, right);
+    }
+
+    private static bool IsNullableAnnotationsEnabled(SyntaxNodeAnalysisContext context)
+    {
+        return (context.SemanticModel.GetNullableContext(context.Node.SpanStart) & NullableContext.AnnotationsEnabled) != 0;
     }
 
     private static bool IsUnnecessaryNullCoalescingLeft(

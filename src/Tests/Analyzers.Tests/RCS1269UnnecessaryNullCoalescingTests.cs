@@ -351,6 +351,46 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
+    public async Task TestNoDiagnostic_NullableDisableRegion()
+    {
+        await VerifyNoDiagnosticAsync("""
+#nullable enable
+
+class C
+{
+    void M(string x)
+    {
+#nullable disable
+        string y = x ?? "";
+#nullable restore
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
+    public async Task Test_ProjectLevelNullableEnable()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(string x)
+    {
+        string y = x [|?? ""|];
+    }
+}
+""", """
+class C
+{
+    void M(string x)
+    {
+        string y = x;
+    }
+}
+""", options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCoalescing)]
     public async Task TestNoDiagnostic_StringLiteral()
     {
         await VerifyNoDiagnosticAsync("""
