@@ -2,7 +2,7 @@
 
 namespace Roslynator;
 
-public static class DiagnosticCategories
+internal static class DiagnosticCategories
 {
     internal const string Roslynator = "Roslynator";
 }

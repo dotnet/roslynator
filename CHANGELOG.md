@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Requires OmniSharp with Roslyn 5.x (C# extension 1.39.15+; set `dotnet.server.useOmnisharp` to `true`)
 - Remove leftover implementations of obsolete analyzers (XML descriptors remain). Enable the successor rules instead: RCS0014 → RCS0061, RCS0022 → RCS0021, RCS0038 → RCS0015, RCS0043 → RCS0020, RCS0047 → RCS0053, RCS1008/RCS1009/RCS1010/RCS1012/RCS1176/RCS1177 → RCS1264, RCS1035 → RCS1260, RCS1036 → RCS0063, RCS1038/RCS1040/RCS1041/RCS1066/RCS1072/RCS1091/RCS1106 → RCS1259, RCS1063/RCS1064/RCS1065 → RCS1252, RCS1100/RCS1101 → RCS1253, RCS1237 → RCS1254.
 - Remove `SyntaxInverter` (`Roslynator.CSharp.Workspaces`). Use `SyntaxLogicalInverter`.
-- Remove unused obsolete `DiagnosticCategories` constants.
+- Remove unused obsolete `DiagnosticCategories` constants and make the type `internal`.
 - Remove unused `ROS0001`/`ROS0002` diagnostic IDs.
 - Remove obsolete constructors/properties from the testing package (`DiagnosticTestData`, `CompilerDiagnosticFixTestData`, `RefactoringTestData`).
 - Remove legacy config keys `roslynator.max_line_length`, `roslynator.prefix_field_identifier_with_underscore`, and `roslynator_suppress_unity_script_methods`. Use `roslynator_max_line_length`, `roslynator_prefix_field_identifier_with_underscore`, and `roslynator_unity_code_analysis.enabled`.
