@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.1] - 2026-08-21
+
+### Fixed
+
+- Set Visual Studio extension `InstallationTarget` to API version `[17.14,)` so Marketplace publish succeeds (VsixPub0029; API 18.0 is experimental). Installable on Visual Studio 2022 17.14+ and Visual Studio 2026 ([VS 2026 extension compatibility](https://aka.ms/vs2026extensioncompat)).
+
 ## [5.0.0] - 2026-08-21
 
 ### Added
@@ -28,8 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump Roslyn to 5.0.0 ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - CLI targets Roslyn 5.0.0
   - Solution build and tests use Roslyn 5.0.0 by default (the testing *packages* floor at 3.8.0; see Breaking)
-- Replace Visual Studio 2022 extension with **Roslynator 2026** for Visual Studio 2026 (`[18.0,19.0)`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
+- Replace Visual Studio 2022 extension with **Roslynator 2026** (`josefpihrt.Roslynator2026`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Extension ships refactorings and compiler diagnostic code fixes; analyzers via NuGet
+  - Intended install range was later corrected to API `[17.14,)` in 5.0.1 (Marketplace rejects API 18.0)
   - [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) remains available as the last 4.x VSIX
 - Visual Studio Code extension ships refactorings and compiler diagnostic code fixes only ([PR](https://github.com/dotnet/roslynator/pull/1787))
   - Analyzers require Roslynator NuGet packages
