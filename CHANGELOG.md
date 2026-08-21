@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-08-21
+
 ### Added
 
 - Add `roslyn5.0` NuGet package flavor (`analyzers/dotnet/roslyn5.0/cs`) ([PR](https://github.com/dotnet/roslynator/pull/1787))
