@@ -45,8 +45,6 @@ CI / GitVersion details: [references/release-and-ci.md](references/release-and-c
 3. [`src/VisualStudioCode/package/CHANGELOG.md`](../../../src/VisualStudioCode/package/CHANGELOG.md): copy that new version section (header + body) under `[Unreleased]`.
 4. Commit, push, open PR — title `Bump version to X.Y.Z`.
 
-Do **not** run `generate_all.ps1` as part of this PR unless the user asks.
-
 **STOP.** Wait for Step 2 confirmation.
 
 ## Step 2 — Merge
@@ -103,7 +101,6 @@ Do not amend published tags.
 | Tag CLI because version was in the prompt | Step 4 is opt-in; still ask |
 | Merge + release + CLI in one go | Four separate STOPs |
 | Soft “ask later” while editing/pushing | Confirm **before** push/PR, merge, `gh release create`, CLI tag push |
-| `generate_all.ps1` in bump PR | Out of scope unless the user asks |
 | Same tag for CLI and analyzers | `v*` vs `cli-v*` |
 | Amend published tag | New tag instead |
 | Hardcode version in props | GitVersion + tags |
