@@ -282,7 +282,15 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (!properties.ContainsKey("AlwaysCompileMarkupFilesInSeparateDomain"))
             properties["AlwaysCompileMarkupFilesInSeparateDomain"] = bool.FalseString;
 
-        return MSBuildWorkspace.Create(properties);
+        MSBuildWorkspace workspace = MSBuildWorkspace.Create(properties);
+
+        // Fall back to a referenced project's compiled output when the project itself cannot be
+        // loaded into the workspace (for example an F# project, which MSBuildWorkspace does not
+        // support). Without this, types defined in such a project are invisible to the C#/VB
+        // projects that reference it and surface as false CS0246/CS0103 errors during analysis.
+        workspace.LoadMetadataForReferencedProjects = true;
+
+        return workspace;
     }
 
     private static bool TryGetVisualStudioInstance(out VisualStudioInstance result)
