@@ -13,6 +13,96 @@ public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagno
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullForgivingOperator;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_NonNullExpressions()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+#nullable enable
+
+class C
+{
+    private readonly object _value = new object();
+
+    private object P => new object();
+
+    private object GetValue() => new object();
+
+    object M()
+    {
+        object value = "value"[|!|];
+        value = new()[|!|];
+        value = _value[|!|];
+        value = P[|!|];
+        value = GetValue()[|!|];
+        return value;
+    }
+}
+""", """
+#nullable enable
+
+class C
+{
+    private readonly object _value = new object();
+
+    private object P => new object();
+
+    private object GetValue() => new object();
+
+    object M()
+    {
+        object value = "value";
+        value = new();
+        value = _value;
+        value = P;
+        value = GetValue();
+        return value;
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_FlowStateNotNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+using System.Collections.Generic;
+
+class C
+{
+    object M(Stack<object> stack)
+    {
+        object? value;
+
+        while (!stack.TryPop(out value))
+        {
+        }
+
+        return value[|!|];
+    }
+}
+", @"
+#nullable enable
+
+using System.Collections.Generic;
+
+class C
+{
+    object M(Stack<object> stack)
+    {
+        object? value;
+
+        while (!stack.TryPop(out value))
+        {
+        }
+
+        return value;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
     public async Task Test_Property()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -161,6 +251,27 @@ class C
         string? s = null;
 
         M(s!);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task TestNoDiagnostic_MaybeNullExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#nullable enable
+
+class C
+{
+    object M(object? value)
+    {
+        return value!;
+    }
+
+    object M2()
+    {
+        return default(object)!;
     }
 }
 ");
