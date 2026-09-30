@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - [CLI] Reference the compiled output of referenced projects that cannot be loaded into the workspace (for example F# projects), so their types are no longer reported as missing (`CS0103`/`CS0246`) during analysis ([PR](https://github.com/dotnet/roslynator/pull/1833))
+- Fix code fix for [RCS1233](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1233) to add parentheses when the new `&&`/`||` expression is an operand of an operator with higher precedence (e.g. `a && b | c` is now fixed to `a && (b || c)`) ([PR](https://github.com/dotnet/roslynator/pull/NNNN))
 
 ## [5.0.0] - 2026-08-21
 
