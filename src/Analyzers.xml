@@ -184,7 +184,7 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule does not enforce an blank line between two single-line accessors.</Remarks>
+    <Remarks>This rule does not enforce a blank line between two single-line accessors.</Remarks>
   </Analyzer>
   <Analyzer>
     <Id>RCS0008</Id>
@@ -301,7 +301,7 @@ enum Bar
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule does not enforce an blank line between two single-line declaration.</Remarks>
+    <Remarks>This rule does not enforce a blank line between two single-line declarations.</Remarks>
   </Analyzer>
   <Analyzer>
     <Id>RCS0011</Id>
@@ -312,6 +312,9 @@ enum Bar
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_single_line_accessors" Value="true" />
+        </ConfigOptions>
         <Before><![CDATA[string P
 {
     get { return _p; }
@@ -321,6 +324,22 @@ enum Bar
 {
     get { return _p; }
     
+    set { _p = value; }
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_single_line_accessors" Value="false" />
+        </ConfigOptions>
+        <Before><![CDATA[string P
+{
+    get { return _p; }
+
+    set { _p = value; }
+}]]></Before>
+        <After><![CDATA[string P
+{
+    get { return _p; }
     set { _p = value; }
 }]]></After>
       </Sample>
@@ -403,6 +422,9 @@ object this[int index] { get; }]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_using_directives" Value="separate_groups" />
+        </ConfigOptions>
         <Before><![CDATA[using System;
 using Microsoft.CodeAnalysis;
 
@@ -411,6 +433,24 @@ namespace N
 }]]></Before>
         <After><![CDATA[using System;
 
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_using_directives" Value="never" />
+        </ConfigOptions>
+        <Before><![CDATA[using System;
+
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[using System;
 using Microsoft.CodeAnalysis;
 
 namespace N
@@ -514,6 +554,9 @@ namespace N
     </ConfigOptions>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="accessor_braces_style" Value="multi_line" />
+        </ConfigOptions>
         <Before><![CDATA[string Foo
 {
     get { return _foo; }
@@ -524,6 +567,22 @@ namespace N
     {
         return _foo;
     }
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="accessor_braces_style" Value="single_line_when_expression_is_on_single_line" />
+        </ConfigOptions>
+        <Before><![CDATA[string Foo
+{
+    get
+    {
+        return _foo;
+    }
+}]]></Before>
+        <After><![CDATA[string Foo
+{
+    get { return _foo; }
 }]]></After>
       </Sample>
     </Samples>
@@ -540,11 +599,23 @@ namespace N
     </ConfigOptions>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="block_braces_style" Value="multi_line" />
+        </ConfigOptions>
         <Before><![CDATA[void Foo() { Bar(); }]]></Before>
         <After><![CDATA[void Foo()
 {
     Bar();
 }]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="block_braces_style" Value="single_line_when_empty" />
+        </ConfigOptions>
+        <Before><![CDATA[void Foo()
+{
+}]]></Before>
+        <After><![CDATA[void Foo() { }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -632,6 +703,9 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="binary_operator_new_line" Value="before" />
+        </ConfigOptions>
         <Before><![CDATA[if (x &&
     y &&
     z)
@@ -640,6 +714,21 @@ namespace N
         <After><![CDATA[if (x
     && y
     && z)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="binary_operator_new_line" Value="after" />
+        </ConfigOptions>
+        <Before><![CDATA[if (x
+    && y
+    && z)
+{
+}]]></Before>
+        <After><![CDATA[if (x &&
+    y &&
+    z)
 {
 }]]></After>
       </Sample>
@@ -657,12 +746,26 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="conditional_operator_new_line" Value="before" />
+        </ConfigOptions>
         <Before><![CDATA[var y = x ?
     Foo() :
     Bar();]]></Before>
         <After><![CDATA[var y = x
     ? Foo()
     : Bar();]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="conditional_operator_new_line" Value="after" />
+        </ConfigOptions>
+        <Before><![CDATA[var y = x
+    ? Foo()
+    : Bar();]]></Before>
+        <After><![CDATA[var y = x ?
+    Foo() :
+    Bar();]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -730,10 +833,22 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="arrow_token_new_line" Value="before" />
+        </ConfigOptions>
         <Before><![CDATA[object Foo() =>
     null;]]></Before>
         <After><![CDATA[object Foo()
     => null;]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="arrow_token_new_line" Value="after" />
+        </ConfigOptions>
+        <Before><![CDATA[object Foo()
+    => null;]]></Before>
+        <After><![CDATA[object Foo() =>
+    null;]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -803,15 +918,13 @@ Bar();]]></After>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
-      <Samples>
-        <Sample>
-          <Before><![CDATA[object P1 { get; }
+      <Sample>
+        <Before><![CDATA[object P1 { get; }
 
 object P2 { get; }]]></Before>
-          <After><![CDATA[object P1 { get; }
+        <After><![CDATA[object P1 { get; }
 object P2 { get; }]]></After>
-        </Sample>
-      </Samples>
+      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer>
@@ -1110,6 +1223,9 @@ namespace Foo
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="new_line_before_while_in_do_statement" Value="true" />
+        </ConfigOptions>
         <Before><![CDATA[do
 {
     Foo();
@@ -1119,6 +1235,20 @@ namespace Foo
     Foo();
 }
 while (x);]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="new_line_before_while_in_do_statement" Value="false" />
+        </ConfigOptions>
+        <Before><![CDATA[do
+{
+    Foo();
+}
+while (x);]]></Before>
+        <After><![CDATA[do
+{
+    Foo();
+} while (x);]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -1134,10 +1264,22 @@ while (x);]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="equals_token_new_line" Value="before" />
+        </ConfigOptions>
         <Before><![CDATA[string s =
     new string(' ', 4);]]></Before>
         <After><![CDATA[string s
     = new string(' ', 4);]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="equals_token_new_line" Value="after" />
+        </ConfigOptions>
+        <Before><![CDATA[string s
+    = new string(' ', 4);]]></Before>
+        <After><![CDATA[string s =
+    new string(' ', 4);]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -1306,7 +1448,7 @@ Default maximum length is 140.</Summary>
     </ConfigOptions>
     <Remarks>Code fixer is available for this analyzer but it cannot handle all cases as it's not possible to wrap a line in all cases (e.g. long string literals).
 
-If a particular line seems that it could be reasonably wrapped but it's not, please file an [issue](https://github.com/dotnet/roslynator/issues/new).
+If a line looks like it could be wrapped but is not, please file an [issue](https://github.com/dotnet/roslynator/issues/new).
     </Remarks>
   </Analyzer>
   <Analyzer>
@@ -1325,7 +1467,7 @@ If a particular line seems that it could be reasonably wrapped but it's not, ple
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer enforces:
 * new line at the end of a file
-* no new line at the end of a file if the option `roslynator.prefer_new_line_at_end_of_file` is set to `false`.</Summary>
+* no new line at the end of a file if the option `roslynator_new_line_at_end_of_file` is set to `false`.</Summary>
     <ConfigOptions>
       <Option Key="new_line_at_end_of_file" IsRequired="true" />
     </ConfigOptions>
@@ -1339,16 +1481,30 @@ If a particular line seems that it could be reasonably wrapped but it's not, ple
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="null_conditional_operator_new_line" Value="before" />
+        </ConfigOptions>
         <Before><![CDATA[items
     .Select(selector)
     .FirstOrDefault()
-    ?.ToString()
-    ]]></Before>
+    ?.ToString()]]></Before>
         <After><![CDATA[items
     .Select(selector)
     .FirstOrDefault()?
-    .ToString()
-    ]]></After>
+    .ToString()]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="null_conditional_operator_new_line" Value="after" />
+        </ConfigOptions>
+        <Before><![CDATA[items
+    .Select(selector)
+    .FirstOrDefault()?
+    .ToString()]]></Before>
+        <After><![CDATA[items
+    .Select(selector)
+    .FirstOrDefault()
+    ?.ToString()]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -1365,12 +1521,29 @@ If a particular line seems that it could be reasonably wrapped but it's not, ple
     <MinLanguageVersion>10.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[namespace A.B
+        <ConfigOptions>
+          <Option Key="blank_line_after_file_scoped_namespace_declaration" Value="true" />
+        </ConfigOptions>
+        <Before><![CDATA[namespace A.B;
 public class C
 {
 }]]></Before>
-        <After><![CDATA[namespace A.B
+        <After><![CDATA[namespace A.B;
 
+public class C
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_after_file_scoped_namespace_declaration" Value="false" />
+        </ConfigOptions>
+        <Before><![CDATA[namespace A.B;
+
+public class C
+{
+}]]></Before>
+        <After><![CDATA[namespace A.B;
 public class C
 {
 }]]></After>
@@ -1800,8 +1973,37 @@ foreach (var item in items)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new[] { "a", B };]]></Before>
-        <After><![CDATA[var items = new string[] { "a", B };]]></After>
+        <ConfigOptions>
+          <Option Key="array_creation_type_style" Value="explicit" />
+        </ConfigOptions>
+        <Before><![CDATA[var items = new[] { "a", "b" };]]></Before>
+        <After><![CDATA[var items = new string[] { "a", "b" };]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="array_creation_type_style" Value="implicit" />
+        </ConfigOptions>
+        <Before><![CDATA[var items = new string[] { "a", "b" };]]></Before>
+        <After><![CDATA[var items = new[] { "a", "b" };]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="array_creation_type_style" Value="implicit_when_type_is_obvious" />
+        </ConfigOptions>
+        <Before><![CDATA[void M()
+{
+    var items = new[] { GetValue() };
+    object[] values = new string[] { string.Empty };
+
+    string GetValue() => null;
+}]]></Before>
+        <After><![CDATA[void M()
+{
+    var items = new string[] { GetValue() };
+    object[] values = new[] { string.Empty };
+
+    string GetValue() => null;
+}]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -1846,11 +2048,26 @@ foreach (var item in items)
     <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="body_style" Value="expression" />
+          <Option Key="use_block_body_when_declaration_spans_over_multiple_lines" Value="false" />
+          <Option Key="use_block_body_when_expression_spans_over_multiple_lines" Value="false" />
+        </ConfigOptions>
         <Before><![CDATA[public string Foo()
 {
     return "";
 }]]></Before>
         <After><![CDATA[public string Foo() => "";]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="body_style" Value="block" />
+        </ConfigOptions>
+        <Before><![CDATA[string M() => null;]]></Before>
+        <After><![CDATA[string M()
+{
+    return null;
+}]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -1896,6 +2113,9 @@ foreach (var item in items)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="accessibility_modifiers" Value="explicit" />
+        </ConfigOptions>
         <Before><![CDATA[class Foo
 {
     void Bar()
@@ -1905,6 +2125,23 @@ foreach (var item in items)
         <After><![CDATA[internal class Foo
 {
     private void Bar()
+    {
+    }
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="accessibility_modifiers" Value="implicit" />
+        </ConfigOptions>
+        <Before><![CDATA[internal class Foo
+{
+    private void Bar()
+    {
+    }
+}]]></Before>
+        <After><![CDATA[class Foo
+{
+    void Bar()
     {
     }
 }]]></After>
@@ -2563,8 +2800,18 @@ if (!f)
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new List<string> { "a", "b", "c"  };]]></Before>
-        <After><![CDATA[var items = new List<string>() { "a", "b", "c"  };]]></After>
+        <ConfigOptions>
+          <Option Key="object_creation_parentheses_style" Value="include" />
+        </ConfigOptions>
+        <Before><![CDATA[var items = new List<string> { "a", "b", "c" };]]></Before>
+        <After><![CDATA[var items = new List<string>() { "a", "b", "c" };]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="object_creation_parentheses_style" Value="omit" />
+        </ConfigOptions>
+        <Before><![CDATA[var items = new List<string>() { "a", "b", "c" };]]></Before>
+        <After><![CDATA[var items = new List<string> { "a", "b", "c" };]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -2580,8 +2827,25 @@ if (!f)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="conditional_operator_condition_parentheses_style" Value="include" />
+        </ConfigOptions>
         <Before><![CDATA[x = y != null ? "true" : "false"]]></Before>
         <After><![CDATA[x = (y != null) ? "true" : "false"]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="conditional_operator_condition_parentheses_style" Value="omit" />
+        </ConfigOptions>
+        <Before><![CDATA[x = (y != null) ? "true" : "false"]]></Before>
+        <After><![CDATA[x = y != null ? "true" : "false"]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="conditional_operator_condition_parentheses_style" Value="omit_when_condition_is_single_token" />
+        </ConfigOptions>
+        <Before><![CDATA[x = (y) ? "true" : "false"]]></Before>
+        <After><![CDATA[x = y ? "true" : "false"]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -3282,8 +3546,18 @@ object x = queue.Peek();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="empty_string_style" Value="literal" />
+        </ConfigOptions>
         <Before><![CDATA[string s = string.Empty;]]></Before>
         <After><![CDATA[string s = "";]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="empty_string_style" Value="field" />
+        </ConfigOptions>
+        <Before><![CDATA[string s = "";]]></Before>
+        <After><![CDATA[string s = string.Empty;]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -3460,6 +3734,9 @@ public string Foo
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="configure_await" Value="true" />
+        </ConfigOptions>
         <Before><![CDATA[public async Task FooAsync()
 {
     await GetValueAsync();
@@ -3467,6 +3744,19 @@ public string Foo
         <After><![CDATA[public async Task FooAsync()
 {
     await GetValueAsync().ConfigureAwait(false);
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="configure_await" Value="false" />
+        </ConfigOptions>
+        <Before><![CDATA[public async Task FooAsync()
+{
+    await GetValueAsync().ConfigureAwait(false);
+}]]></Before>
+        <After><![CDATA[public async Task FooAsync()
+{
+    await GetValueAsync();
 }]]></After>
       </Sample>
     </Samples>
@@ -3557,8 +3847,18 @@ namespace Foo
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="enum_has_flag_style" Value="operator" />
+        </ConfigOptions>
         <Before><![CDATA[options.HasFlag(RegexOptions.IgnoreCase)]]></Before>
         <After><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="enum_has_flag_style" Value="method" />
+        </ConfigOptions>
+        <Before><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></Before>
+        <After><![CDATA[options.HasFlag(RegexOptions.IgnoreCase)]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -5675,8 +5975,18 @@ int i = (x != null) ? x.Value.GetHashCode() : 0;]]></Before>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="use_anonymous_function_or_method_group" Value="method_group" />
+        </ConfigOptions>
         <Before><![CDATA[var x = items.Select(f => Foo(f));]]></Before>
         <After><![CDATA[var x = items.Select(Foo);]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="use_anonymous_function_or_method_group" Value="anonymous_function" />
+        </ConfigOptions>
+        <Before><![CDATA[var x = items.Select(Foo);]]></Before>
+        <After><![CDATA[var x = items.Select(f => Foo(f));]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -6964,8 +7274,18 @@ void M()
     <MinLanguageVersion>7.0 (9.0 for 'is not null' syntax)</MinLanguageVersion>
     <Samples>
       <Sample>
+        <ConfigOptions>
+          <Option Key="null_check_style" Value="pattern_matching" />
+        </ConfigOptions>
         <Before><![CDATA[x == null]]></Before>
         <After><![CDATA[x is null]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="null_check_style" Value="equality_operator" />
+        </ConfigOptions>
+        <Before><![CDATA[x is null]]></Before>
+        <After><![CDATA[x == null]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -7007,8 +7327,35 @@ void M()
     <MinLanguageVersion>9.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[private string _value = new string(' ', 1)]]></Before>
-        <After><![CDATA[private string _value = new(' ', 1)]]></After>
+        <ConfigOptions>
+          <Option Key="object_creation_type_style" Value="implicit" />
+        </ConfigOptions>
+        <Before><![CDATA[private string _value = new string(' ', 1);]]></Before>
+        <After><![CDATA[private string _value = new(' ', 1);]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="object_creation_type_style" Value="explicit" />
+        </ConfigOptions>
+        <Before><![CDATA[string M() => new(' ', 1);]]></Before>
+        <After><![CDATA[string M() => new string(' ', 1);]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="object_creation_type_style" Value="implicit_when_type_is_obvious" />
+        </ConfigOptions>
+        <Before><![CDATA[string F = new string(' ', 1);
+
+IEnumerable<string> M()
+{
+    yield return new string(' ', 1);
+}]]></Before>
+        <After><![CDATA[string F = new(' ', 1);
+
+IEnumerable<string> M()
+{
+    yield return new string(' ', 1);
+}]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>
@@ -7335,6 +7682,23 @@ else
         <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
         <After><![CDATA[public enum Foo { A, B, C }]]></After>
       </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="trailing_comma_style" Value="omit" />
+        </ConfigOptions>
+        <Before><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C,
+}]]></Before>
+        <After><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C
+}]]></After>
+      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer>
@@ -7618,7 +7982,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
         <After><![CDATA[!syntaxList.Any()]]></After>
       </Sample>
     </Samples>
-    <Remarks>This analyzer is applicable for following types:
+    <Remarks>This analyzer is applicable to the following types:
 * `Microsoft.CodeAnalysis.ChildSyntaxList`
 * `Microsoft.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;`
 * `Microsoft.CodeAnalysis.SyntaxList&lt;TNode&gt;`
@@ -7656,7 +8020,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
         <After><![CDATA[triviaList[1]]]></After>
       </Sample>
     </Samples>
-    <Remarks>This analyzer is applicable for following types:
+    <Remarks>This analyzer is applicable to the following types:
 * `Microsoft.CodeAnalysis.ChildSyntaxList`
 * `Microsoft.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;`
 * `Microsoft.CodeAnalysis.SyntaxList&lt;TNode&gt;`
@@ -7689,7 +8053,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
         <After><![CDATA[syntaxList.Last()]]></After>
       </Sample>
     </Samples>
-    <Remarks>This analyzer is applicable for following types:
+    <Remarks>This analyzer is applicable to the following types:
 * `Microsoft.CodeAnalysis.ChildSyntaxList`
 * `Microsoft.CodeAnalysis.SeparatedSyntaxList&lt;TNode&gt;`
 * `Microsoft.CodeAnalysis.SyntaxList&lt;TNode&gt;`
