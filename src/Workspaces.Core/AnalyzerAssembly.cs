@@ -98,7 +98,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(DiagnosticAnalyzer)))
             {
-                DiagnosticAnalyzerAttribute attribute = GetCustomAttributeAndCatchIfThrows<DiagnosticAnalyzerAttribute>(typeInfo);
+                DiagnosticAnalyzerAttribute? attribute = GetCustomAttributeAndCatchIfThrows<DiagnosticAnalyzerAttribute>(typeInfo);
 
                 if (attribute is not null)
                 {
@@ -127,7 +127,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
             {
-                ExportCodeFixProviderAttribute attribute = GetCustomAttributeAndCatchIfThrows<ExportCodeFixProviderAttribute>(typeInfo);
+                ExportCodeFixProviderAttribute? attribute = GetCustomAttributeAndCatchIfThrows<ExportCodeFixProviderAttribute>(typeInfo);
 
                 if (attribute is not null)
                 {
