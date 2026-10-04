@@ -45,10 +45,10 @@ internal static class AnalyzerDependencyResolver
             return;
 
         _isRegistered = true;
-        AssemblyLoadContext.Default.Resolving += Resolve;
+        AssemblyLoadContext.Default.Resolving += (_, assemblyName) => Resolve(assemblyName);
     }
 
-    private static Assembly Resolve(AssemblyLoadContext context, AssemblyName assemblyName)
+    private static Assembly Resolve(AssemblyName assemblyName)
     {
         if (!IsRedirected(assemblyName.Name))
             return null;
@@ -62,7 +62,7 @@ internal static class AnalyzerDependencyResolver
 
         string path = Path.Combine(AppContext.BaseDirectory, assemblyName.Name + ".dll");
 
-        return File.Exists(path)
+        return (File.Exists(path))
             ? AssemblyLoadContext.Default.LoadFromAssemblyPath(path)
             : null;
     }
