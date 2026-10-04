@@ -208,21 +208,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 
                     CodeAction codeAction = CodeAction.Create(
                         $"Use '{newToken.ToString()}' operator",
-                        ct =>
-                        {
-                            BinaryExpressionSyntax newBinaryExpression = null;
-
-                            if (kind == SyntaxKind.BitwiseAndExpression)
-                            {
-                                newBinaryExpression = LogicalAndExpression(binaryExpression.Left, newToken, binaryExpression.Right);
-                            }
-                            else if (kind == SyntaxKind.BitwiseOrExpression)
-                            {
-                                newBinaryExpression = LogicalOrExpression(binaryExpression.Left, newToken, binaryExpression.Right);
-                            }
-
-                            return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
-                        },
+                        ct => UseShortCircuitingOperatorAsync(document, binaryExpression, newToken, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
@@ -260,6 +246,39 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                 }
             }
         }
+    }
+
+    private static Task<Document> UseShortCircuitingOperatorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        SyntaxToken newToken,
+        CancellationToken cancellationToken)
+    {
+        SyntaxKind newKind = (binaryExpression.IsKind(SyntaxKind.BitwiseAndExpression))
+            ? SyntaxKind.LogicalAndExpression
+            : SyntaxKind.LogicalOrExpression;
+
+        ExpressionSyntax left = binaryExpression.Left;
+
+        // (a || b) | c >>> a || b || c
+        if (left is ParenthesizedExpressionSyntax parenthesizedExpression
+            && parenthesizedExpression.Expression.IsKind(newKind))
+        {
+            left = parenthesizedExpression.WithSimplifierAnnotation();
+        }
+
+        ExpressionSyntax newExpression = BinaryExpression(newKind, left, newToken, binaryExpression.Right);
+
+        // a && b | c >>> a && (b || c)
+        // The parentheses are not simplifiable so that they are kept for clarity once the parent expression
+        // is also fixed (e.g. a & b | c >>> (a && b) || c), which is what RCS1123 expects.
+        if (binaryExpression.Parent is BinaryExpressionSyntax parentBinaryExpression
+            && CSharpFacts.GetOperatorPrecedence(parentBinaryExpression.Kind()) < CSharpFacts.GetOperatorPrecedence(newKind))
+        {
+            newExpression = newExpression.Parenthesize(simplifiable: false);
+        }
+
+        return document.ReplaceNodeAsync(binaryExpression, newExpression, cancellationToken);
     }
 
     private static Task<Document> UseStringIsNullOrEmptyMethodAsync(
