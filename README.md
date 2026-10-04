@@ -6,9 +6,9 @@ Analyzers are not included in Roslynator IDE extensions. Use Roslynator NuGet pa
 
 ## Tools
 
-- IDE extensions for:
-  - [Visual Studio 2026](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2026) (refactorings and compiler diagnostic fixes; analyzers via NuGet)
-  - [Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) (last 4.x release; pin or use NuGet packages)
+- IDE extensions:
+  - [Roslynator 2026](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2026) (VS 2022 17.14+ and VS 2026; refactorings and compiler diagnostic fixes; analyzers via NuGet)
+  - [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) (last 4.x release; pin or use NuGet packages)
   - [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) (refactorings and compiler diagnostic fixes; analyzers via NuGet)
     - Requires legacy OmniSharp (`dotnet.server.useOmnisharp`: `true`). With C# Dev Kit, use NuGet packages instead.
   - [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
