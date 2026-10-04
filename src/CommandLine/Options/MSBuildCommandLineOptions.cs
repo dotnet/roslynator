@@ -13,14 +13,14 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
     [AdditionalDescription(" For further information about the syntax see [reference documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.filesystemglobbing.matcher?view=dotnet-plat-ext-7.0#remarks).")]
     [Option(
         longName: "include",
-        HelpText = "Space separated list of glob patterns to include files, folders, solutions or projects.",
+        HelpText = "One or more glob patterns to include files, folders, solutions or projects. Pass each pattern as a separate argument (quote a pattern if it contains spaces).",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Include { get; set; }
 
     [AdditionalDescription(" For further information about the syntax see [reference documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.filesystemglobbing.matcher?view=dotnet-plat-ext-7.0#remarks).")]
     [Option(
         longName: "exclude",
-        HelpText = "Space separated list of glob patterns to exclude files, folders, solutions or projects.",
+        HelpText = "One or more glob patterns to exclude files, folders, solutions or projects. Pass each pattern as a separate argument (quote a pattern if it contains spaces).",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Exclude { get; set; }
 
