@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- [CLI] Clarify help text of `--include` / `--exclude`: each glob pattern must be passed as a separate argument ([#1835](https://github.com/dotnet/roslynator/issues/1835))
-
 ### Fixed
 
 - [CLI] Reference the compiled output of referenced projects that cannot be loaded into the workspace (for example F# projects), so their types are no longer reported as missing (`CS0103`/`CS0246`) during analysis ([PR](https://github.com/dotnet/roslynator/pull/1833))
