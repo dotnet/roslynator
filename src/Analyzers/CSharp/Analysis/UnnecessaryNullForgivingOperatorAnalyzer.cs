@@ -64,6 +64,7 @@ public sealed class UnnecessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAna
                 }
 
                 context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
+                return;
             }
         }
         else if (node.IsKind(SyntaxKind.EqualsValueClause))
@@ -80,7 +81,10 @@ public sealed class UnnecessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAna
                     var property = (PropertyDeclarationSyntax)node.Parent;
 
                     if (IsNullableReferenceType(context, property.Type))
+                    {
                         context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                        return;
+                    }
                 }
                 else if (parent.IsKind(SyntaxKind.VariableDeclarator))
                 {
@@ -99,15 +103,30 @@ public sealed class UnnecessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAna
                             if (parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
                             {
                                 context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                                return;
                             }
                             else
                             {
                                 context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
+                                return;
                             }
                         }
                     }
                 }
             }
+        }
+
+        if (IsNotNullWithoutSuppression(context, suppressExpression))
+            context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
+
+        static bool IsNotNullWithoutSuppression(SyntaxNodeAnalysisContext context, PostfixUnaryExpressionSyntax suppressExpression)
+        {
+            TypeInfo typeInfo = context.SemanticModel.GetSpeculativeTypeInfo(
+                suppressExpression.SpanStart,
+                suppressExpression.Operand.WithoutTrivia(),
+                SpeculativeBindingOption.BindAsExpression);
+
+            return typeInfo.Nullability.FlowState == NullableFlowState.NotNull;
         }
 
         static bool IsNullableReferenceType(SyntaxNodeAnalysisContext context, TypeSyntax type)
