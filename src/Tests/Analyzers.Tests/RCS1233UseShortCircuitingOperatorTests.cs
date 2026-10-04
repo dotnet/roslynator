@@ -103,6 +103,108 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
+    public async Task Test_SingleOrInsideLogicalAnd()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if (f && f2 [|||] f3)
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if (f && (f2 || f3))
+        {
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
+    public async Task Test_ParenthesizedLogicalOrAsLeftOperand()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if ((f || f2) [|||] f3)
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if (f || f2 || f3)
+        {
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
+    public async Task Test_AndInsideOr()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if (f [|&|] f2 [|||] f3)
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        bool f3 = false;
+
+        if ((f && f2) || f3)
+        {
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseShortCircuitingOperator)]
     public async Task Test_OrInsideLogicalOr()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -264,12 +264,14 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         if (left is ParenthesizedExpressionSyntax parenthesizedExpression
             && parenthesizedExpression.Expression.IsKind(newKind))
         {
-            left = parenthesizedExpression.Expression.WithTriviaFrom(parenthesizedExpression);
+            left = parenthesizedExpression.WithSimplifierAnnotation();
         }
 
         ExpressionSyntax newExpression = BinaryExpression(newKind, left, newToken, binaryExpression.Right);
 
         // a && b | c >>> a && (b || c)
+        // The parentheses are not simplifiable so that they are kept for clarity once the parent expression
+        // is also fixed (e.g. a & b | c >>> (a && b) || c), which is what RCS1123 expects.
         if (binaryExpression.Parent is BinaryExpressionSyntax parentBinaryExpression
             && CSharpFacts.GetOperatorPrecedence(parentBinaryExpression.Kind()) < CSharpFacts.GetOperatorPrecedence(newKind))
         {
