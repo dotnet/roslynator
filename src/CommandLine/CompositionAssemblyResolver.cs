@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
+using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
 
@@ -26,25 +27,19 @@ namespace Roslynator.CommandLine;
 /// See https://github.com/dotnet/roslynator/issues/1649.
 /// </para>
 /// </summary>
-internal static class AnalyzerDependencyResolver
+internal static class CompositionAssemblyResolver
 {
     private static readonly string[] _redirectedAssemblyNames =
-    {
+    [
         "System.Composition.AttributedModel",
         "System.Composition.Convention",
         "System.Composition.Hosting",
         "System.Composition.Runtime",
         "System.Composition.TypedParts",
-    };
-
-    private static bool _isRegistered;
+    ];
 
     public static void Register()
     {
-        if (_isRegistered)
-            return;
-
-        _isRegistered = true;
         AssemblyLoadContext.Default.Resolving += (_, assemblyName) => Resolve(assemblyName);
     }
 
@@ -57,14 +52,26 @@ internal static class AnalyzerDependencyResolver
         foreach (Assembly assembly in AssemblyLoadContext.Default.Assemblies)
         {
             if (string.Equals(assembly.GetName().Name, assemblyName.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                LogRedirect(assemblyName, assembly.GetName());
                 return assembly;
+            }
         }
 
         string path = Path.Combine(AppContext.BaseDirectory, assemblyName.Name + ".dll");
 
-        return (File.Exists(path))
-            ? AssemblyLoadContext.Default.LoadFromAssemblyPath(path)
-            : null;
+        if (!File.Exists(path))
+            return null;
+
+        Assembly result = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+        LogRedirect(assemblyName, result.GetName());
+
+        return result;
+    }
+
+    private static void LogRedirect(AssemblyName requested, AssemblyName actual)
+    {
+        WriteLine($"Redirecting assembly '{requested.FullName}' to '{actual.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
     }
 
     private static bool IsRedirected(string name)

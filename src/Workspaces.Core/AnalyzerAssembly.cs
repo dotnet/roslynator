@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -97,7 +98,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(DiagnosticAnalyzer)))
             {
-                DiagnosticAnalyzerAttribute attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
+                DiagnosticAnalyzerAttribute attribute = GetCustomAttributeAndCatchIfThrows<DiagnosticAnalyzerAttribute>(typeInfo);
 
                 if (attribute is not null)
                 {
@@ -126,7 +127,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
             {
-                ExportCodeFixProviderAttribute attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
+                ExportCodeFixProviderAttribute attribute = GetCustomAttributeAndCatchIfThrows<ExportCodeFixProviderAttribute>(typeInfo);
 
                 if (attribute is not null)
                 {
@@ -159,13 +160,36 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
             fixers?.ToImmutableDictionary(f => f.Key, f => f.Value.ToImmutableArray()) ?? ImmutableDictionary<string, ImmutableArray<CodeFixProvider>>.Empty);
     }
 
+    private static T? GetCustomAttributeAndCatchIfThrows<T>(TypeInfo typeInfo) where T : Attribute
+    {
+        try
+        {
+            return typeInfo.GetCustomAttribute<T>();
+        }
+        catch (Exception ex) when (IsLoadFailure(ex))
+        {
+            WriteLine($"Cannot read attributes of type '{typeInfo.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            WriteLine(ex.ToString(), ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        }
+
+        return null;
+    }
+
+    private static bool IsLoadFailure(Exception ex)
+    {
+        return ex is FileNotFoundException
+            || ex is FileLoadException
+            || ex is BadImageFormatException
+            || ex is TypeLoadException;
+    }
+
     private static T? CreateInstanceAndCatchIfThrows<T>(TypeInfo typeInfo)
     {
         try
         {
             return (T)Activator.CreateInstance(typeInfo.AsType());
         }
-        catch (TargetInvocationException ex)
+        catch (Exception ex) when (ex is TargetInvocationException || IsLoadFailure(ex))
         {
             WriteLine($"Cannot create instance of type '{typeInfo.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
             WriteLine(ex.ToString(), ConsoleColors.DarkGray, Verbosity.Diagnostic);
