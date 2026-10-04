@@ -30,7 +30,7 @@ internal static class Program
     private static int Main(string[] args)
     {
 #if NETCOREAPP
-        AnalyzerDependencyResolver.Register();
+        CompositionAssemblyResolver.Register();
 #endif
 #if DEBUG
         if (args.LastOrDefault() == "--debug")
