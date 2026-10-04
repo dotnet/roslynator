@@ -986,6 +986,7 @@ else if (y)
     <Title>Use carriage return + linefeed as new line</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer reports each new line that is not a carriage return + linefeed (`\r\n`) sequence, such as a lone linefeed (`\n`).</Summary>
   </Analyzer>
   <Analyzer>
     <Id>RCS0045</Id>
@@ -993,6 +994,7 @@ else if (y)
     <Title>Use linefeed as new line</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer reports each new line that is not a linefeed (`\n`), such as a carriage return + linefeed (`\r\n`) sequence.</Summary>
   </Analyzer>
   <Analyzer>
     <Id>RCS0046</Id>
@@ -1000,6 +1002,7 @@ else if (y)
     <Title>Use spaces instead of tab</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer reports each tab character in whitespace, such as indentation, and replaces it with spaces.</Summary>
   </Analyzer>
   <Analyzer>
     <Id>RCS0047</Id>
@@ -6977,6 +6980,22 @@ void M()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <MinLanguageVersion>8.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string? s = null!;]]></Before>
+        <After><![CDATA[string? s = null;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[class C
+{
+    private string? _value = null!;
+}]]></Before>
+        <After><![CDATA[class C
+{
+    private string? _value;
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1250</Id>
@@ -7031,6 +7050,34 @@ void M()
     <ConfigOptions>
       <Option Key="infinite_loop_style" IsRequired="true" />
     </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="infinite_loop_style" Value="while" />
+        </ConfigOptions>
+        <Before><![CDATA[for (; ; )
+{
+    Foo();
+}]]></Before>
+        <After><![CDATA[while (true)
+{
+    Foo();
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="infinite_loop_style" Value="for" />
+        </ConfigOptions>
+        <Before><![CDATA[while (true)
+{
+    Foo();
+}]]></Before>
+        <After><![CDATA[for (; ; )
+{
+    Foo();
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1253</Id>
@@ -7042,6 +7089,38 @@ void M()
     <ConfigOptions>
       <Option Key="doc_comment_summary_style" IsRequired="true" />
     </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="doc_comment_summary_style" Value="multi_line" />
+        </ConfigOptions>
+        <Before><![CDATA[/// <summary>Represents a foo.</summary>
+class Foo
+{
+}]]></Before>
+        <After><![CDATA[/// <summary>
+/// Represents a foo.
+/// </summary>
+class Foo
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="doc_comment_summary_style" Value="single_line" />
+        </ConfigOptions>
+        <Before><![CDATA[/// <summary>
+/// Represents a foo.
+/// </summary>
+class Foo
+{
+}]]></Before>
+        <After><![CDATA[/// <summary>Represents a foo.</summary>
+class Foo
+{
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1254</Id>
@@ -7053,6 +7132,54 @@ void M()
     <ConfigOptions>
       <Option Key="enum_flag_value_style" IsRequired="true" />
     </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="enum_flag_value_style" Value="shift_operator" />
+        </ConfigOptions>
+        <Before><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    A = 1,
+    B = 2,
+    C = 4,
+    D = 8
+}]]></Before>
+        <After><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    A = 1,
+    B = 1 << 1,
+    C = 1 << 2,
+    D = 1 << 3
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="enum_flag_value_style" Value="decimal_number" />
+        </ConfigOptions>
+        <Before><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    A = 1,
+    B = 1 << 1,
+    C = 1 << 2,
+    D = 1 << 3
+}]]></Before>
+        <After><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    A = 1,
+    B = 2,
+    C = 4,
+    D = 8
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1255</Id>
@@ -7081,6 +7208,34 @@ void M()
 - annotated as nullable reference type.
 - optional and its default value is `null`.
     </Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void M(string? value)
+{
+    if (value == null)
+        throw new ArgumentNullException(nameof(value));
+
+    Foo(value);
+}]]></Before>
+        <After><![CDATA[void M(string? value)
+{
+    Foo(value);
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[void M(string value = null)
+{
+    if (value == null)
+        throw new ArgumentNullException(nameof(value));
+
+    Foo(value);
+}]]></Before>
+        <After><![CDATA[void M(string value = null)
+{
+    Foo(value);
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer Identifier="UseEnumFieldExplicitly">
     <Id>RCS1257</Id>
@@ -7125,6 +7280,25 @@ void M()
   * empty `#region`
   * empty statement
 </Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+{
+    Foo();
+}
+else
+{
+}]]></Before>
+        <After><![CDATA[if (x)
+{
+    Foo();
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var sb = new StringBuilder() { };]]></Before>
+        <After><![CDATA[var sb = new StringBuilder();]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1260</Id>
@@ -7236,6 +7410,37 @@ public string Foo(string bar)
     <ConfigOptions>
       <Option Key="use_var" IsRequired="true" />
     </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="use_var" Value="always" />
+        </ConfigOptions>
+        <Before><![CDATA[string s = GetValue();
+List<string> items = new List<string>();]]></Before>
+        <After><![CDATA[var s = GetValue();
+var items = new List<string>();]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="use_var" Value="never" />
+        </ConfigOptions>
+        <Before><![CDATA[var s = GetValue();
+var items = new List<string>();]]></Before>
+        <After><![CDATA[string s = GetValue();
+List<string> items = new List<string>();]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="use_var" Value="when_type_is_obvious" />
+        </ConfigOptions>
+        <Before><![CDATA[List<string> items = new List<string>();
+TimeSpan timeSpan = TimeSpan.Parse(value);
+var s = GetValue();]]></Before>
+        <After><![CDATA[var items = new List<string>();
+var timeSpan = TimeSpan.Parse(value);
+string s = GetValue();]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1265</Id>

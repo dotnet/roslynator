@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [5.0.1] - 2026-08-21
+## [5.0.1] - 2026-10-04
 
 ### Fixed
 
 - Set Visual Studio extension `InstallationTarget` to API version `[17.14,)` so Marketplace publish succeeds (VsixPub0029; API 18.0 is experimental). Installable on Visual Studio 2022 17.14+ and Visual Studio 2026 ([VS 2026 extension compatibility](https://aka.ms/vs2026extensioncompat)).
+- [CLI] Reference the compiled output of referenced projects that cannot be loaded into the workspace (for example F# projects), so their types are no longer reported as missing (`CS0103`/`CS0246`) during analysis ([PR](https://github.com/dotnet/roslynator/pull/1833))
+- [CLI] Fix loading of analyzers that reference `System.Composition` on the .NET 10 SDK ([PR](https://github.com/dotnet/roslynator/pull/1831))
 
 ## [5.0.0] - 2026-08-21
 
