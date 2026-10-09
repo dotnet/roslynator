@@ -104,7 +104,7 @@ internal class CliSymbolRenameState : SymbolRenameState
         }
     }
 
-    protected override async Task<(string NewName, Solution NewSolution)> RenameSymbolAsync(
+    protected override async Task<SymbolRenameOutcome> RenameSymbolAsync(
         ISymbol symbol,
         string symbolId,
         List<string> ignoreIds,
@@ -137,7 +137,7 @@ internal class CliSymbolRenameState : SymbolRenameState
             if (newName2 is null)
             {
                 ignoreIds?.Add(symbolId);
-                return default;
+                return new SymbolSkipped();
             }
 
             newName = newName2;
@@ -148,7 +148,7 @@ internal class CliSymbolRenameState : SymbolRenameState
                 Verbosity.Minimal);
 
             if (DryRun)
-                return default;
+                return new SymbolSkipped();
 
             try
             {
@@ -166,7 +166,7 @@ internal class CliSymbolRenameState : SymbolRenameState
                 WriteLine(ex.ToString());
 #endif
                 ignoreIds?.Add(symbolId);
-                return default;
+                return new SymbolSkipped();
             }
 
             if (ErrorResolution != CliCompilationErrorResolution.None)
@@ -193,7 +193,7 @@ internal class CliSymbolRenameState : SymbolRenameState
                 else if (ErrorResolution == CliCompilationErrorResolution.Skip)
                 {
                     ignoreIds?.Add(symbolId);
-                    return default;
+                    return new SymbolSkipped();
                 }
                 else if (ErrorResolution == CliCompilationErrorResolution.Ask
                     && UserDialog is not null)
@@ -204,13 +204,13 @@ internal class CliSymbolRenameState : SymbolRenameState
                         case DialogResult.No:
                         {
                             ignoreIds?.Add(symbolId);
-                            return default;
+                            return new SymbolSkipped();
                         }
                         case DialogResult.NoToAll:
                         {
                             ErrorResolution = CliCompilationErrorResolution.Skip;
                             ignoreIds?.Add(symbolId);
-                            return default;
+                            return new SymbolSkipped();
                         }
                         case DialogResult.Yes:
                         {
@@ -250,13 +250,13 @@ internal class CliSymbolRenameState : SymbolRenameState
                 case DialogResult.No:
                 {
                     ignoreIds?.Add(symbolId);
-                    return default;
+                    return new SymbolSkipped();
                 }
                 case DialogResult.NoToAll:
                 {
                     DryRun = true;
                     ignoreIds?.Add(symbolId);
-                    return default;
+                    return new SymbolSkipped();
                 }
                 case DialogResult.Yes:
                 {
@@ -274,7 +274,7 @@ internal class CliSymbolRenameState : SymbolRenameState
             }
         }
 
-        return (newName, newSolution);
+        return new SolutionRenamed(newName, newSolution);
     }
 
     private static string GetSymbolNewName(

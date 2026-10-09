@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [CLI] Fix `NullReferenceException` in `rename-symbol` when `--dry-run` is used or a rename is skipped ([PR](https://github.com/dotnet/roslynator/pull/1847))
+- [CLI] Fix `rename-symbol` failing on anonymous methods without a parameter list (`delegate { }`) when renaming locals ([PR](https://github.com/dotnet/roslynator/pull/1848))
+
 ## [5.0.1] - 2026-10-04
 
 ### Fixed
