@@ -541,8 +541,11 @@ internal class SymbolRenameState
 
         SymbolRenameOutcome outcome = await RenameSymbolAsync(symbol, symbolId, ignoreIds, findSymbolService, span, document, cancellationToken).ConfigureAwait(false);
 
-        if (outcome is not SolutionRenamed renamed)
+        if (outcome is SymbolSkipped)
             return true;
+
+        if (outcome is not SolutionRenamed renamed)
+            throw new InvalidOperationException($"Unknown rename outcome '{outcome.GetType().Name}'.");
 
         IEnumerable<ReferencedSymbol> referencedSymbols = await Microsoft.CodeAnalysis.FindSymbols.SymbolFinder.FindReferencesAsync(
             symbol,
