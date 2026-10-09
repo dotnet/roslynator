@@ -188,6 +188,9 @@ internal static class LocalSymbolFinder
         {
             CancellationToken.ThrowIfCancellationRequested();
 
+            if (symbol.Locations.IsEmpty)
+                return;
+
             Definitions.Add(symbol);
         }
     }
