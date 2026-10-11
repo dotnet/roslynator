@@ -139,4 +139,52 @@ class C
             source.Replace("Outer", "Outer2").Replace("Inner", "Inner2"),
             (await workspace.CurrentSolution.GetDocument(document.Id).GetTextAsync()).ToString());
     }
+
+    [Fact]
+    public static async Task DryRunNamesNestedLocalFunctionsAndLeavesSolutionUnchanged()
+    {
+        const string source = @"
+class C
+{
+    int M()
+    {
+        int Outer(int a)
+        {
+            int Inner(int b)
+            {
+                return b + 1;
+            }
+
+            return Inner(a);
+        }
+
+        return Outer(1);
+    }
+}
+";
+        using var workspace = new AdhocWorkspace();
+        Project project = workspace.AddProject(ProjectInfo.Create(
+            ProjectId.CreateNewId(),
+            VersionStamp.Create(),
+            "Test",
+            "Test",
+            LanguageNames.CSharp,
+            compilationOptions: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            metadataReferences: CSharpTestOptions.Default.MetadataReferences));
+        Document document = workspace.AddDocument(project.Id, "Test.cs", SourceText.From(source));
+        var named = new List<ISymbol>();
+
+        await SymbolRenamer.RenameSymbolsAsync(
+            document.Project,
+            symbol => symbol is IMethodSymbol { MethodKind: MethodKind.LocalFunction },
+            symbol =>
+            {
+                named.Add(symbol);
+                return symbol.Name + "2";
+            },
+            new SymbolRenamerOptions() { DryRun = true, SkipTypes = true, SkipMembers = true });
+
+        Assert.Equal(2, named.Count);
+        Assert.Equal(source, (await workspace.CurrentSolution.GetDocument(document.Id).GetTextAsync()).ToString());
+    }
 }
