@@ -1154,6 +1154,74 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task Test_Multiline_AnonymousObjectCreation_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    public C(object value) { }
+
+    C M()
+    {
+        return new C([|new
+            {
+                P = ""
+            }|]);
+    }
+}
+""", """
+class C
+{
+    public C(object value) { }
+
+    C M()
+    {
+        return new C(new
+        {
+            P = ""
+        });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task Test_Multiline_AnonymousObjectCreationIsLambdaBody_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    IEnumerable<object> M(IEnumerable<string> items)
+    {
+        return items
+            .Select([|f => new
+                    {
+                        f.Length,
+                    }|]);
+    }
+}
+""", """
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    IEnumerable<object> M(IEnumerable<string> items)
+    {
+        return items
+            .Select(f => new
+            {
+                f.Length,
+            });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_Singleline()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1357,6 +1425,48 @@ class C
         {
             P = ""
         });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_Multiline_AnonymousObjectCreation()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    public C(object value) { }
+
+    C M()
+    {
+        return new C(new
+        {
+            P = ""
+        });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_Multiline_AnonymousObjectCreationIsLambdaBody()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    IEnumerable<object> M(IEnumerable<string> items)
+    {
+        return items
+            .Where(f => f.Length > 0)
+            .Select(f => new
+            {
+                f.Length,
+            })
+            .ToList();
     }
 }
 """);

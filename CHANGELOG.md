@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) to treat the braces of an anonymous object creation like an object initializer (e.g. a lambda `f => new { ... }` passed as the only argument) ([PR](https://github.com/dotnet/roslynator/pull/NNNN))
+
 ## [5.0.1] - 2026-10-04
 
 ### Fixed

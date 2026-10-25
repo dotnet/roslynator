@@ -428,13 +428,12 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     return true;
                 }
 
-                if (token.IsParentKind(SyntaxKind.SwitchExpression))
+                if (token.IsParentKind(SyntaxKind.SwitchExpression, SyntaxKind.AnonymousObjectCreationExpression))
                     return true;
 
                 if (token.IsParentKind(SyntaxKind.ObjectInitializerExpression)
                     && token.Parent.Parent.IsKind(
                         SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.AnonymousObjectCreationExpression,
                         SyntaxKind.ImplicitObjectCreationExpression))
                 {
                     return true;
