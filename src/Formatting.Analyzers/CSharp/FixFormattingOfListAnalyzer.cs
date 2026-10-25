@@ -341,7 +341,8 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                             ReportDiagnostic();
                         }
                     }
-                    else if (block.LineStartIndex == token.SpanStart)
+                    else if (block.LineStartIndex == token.SpanStart
+                        && indentationAnalysis.IndentationLength != 0)
                     {
                         ReportDiagnostic();
                     }

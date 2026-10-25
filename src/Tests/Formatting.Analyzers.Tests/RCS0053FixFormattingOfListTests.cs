@@ -1222,6 +1222,58 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task Test_Multiline_LambdaBlockBodyInGlobalStatement_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+using System.Collections.Generic;
+
+if (args.Length > 0)
+{
+    Configure([|options =>
+{
+    options.Add(1);
+}|]);
+}
+
+static void Configure(Action<List<int>> configure) => configure(new List<int>());
+""", """
+using System;
+using System.Collections.Generic;
+
+if (args.Length > 0)
+{
+    Configure(options =>
+    {
+        options.Add(1);
+    });
+}
+
+static void Configure(Action<List<int>> configure) => configure(new List<int>());
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task Test_Multiline_AnonymousObjectCreationIsLambdaBodyInGlobalStatement_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Linq;
+
+var items = args.Select([|f => new
+    {
+        f.Length,
+    }|]);
+""", """
+using System.Linq;
+
+var items = args.Select(f => new
+{
+    f.Length,
+});
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_Singleline()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -1380,6 +1432,66 @@ var items = Enumerable.Range(0, 10)
         return f;
     })
     .Select(f => f);
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_LambdaBlockBodyIsOnlyArgumentInGlobalStatement()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Collections.Generic;
+
+Configure(options =>
+{
+    options.Add(1);
+});
+
+static void Configure(Action<List<int>> configure) => configure(new List<int>());
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_LambdaBlockBodyIsOnlyArgumentInGlobalStatement_OpenBraceAtEndOfLine()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Collections.Generic;
+
+Configure(options => {
+    options.Add(1);
+});
+
+static void Configure(Action<List<int>> configure) => configure(new List<int>());
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_SwitchExpressionIsOnlyArgumentInGlobalStatement()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+int x = args.Length;
+
+Console.WriteLine(x switch
+{
+    0 => "none",
+    _ => "some",
+});
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_AnonymousObjectCreationIsLambdaBodyInGlobalStatement()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System.Linq;
+
+var items = args.Select(f => new
+{
+    f.Length,
+});
 """, options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
