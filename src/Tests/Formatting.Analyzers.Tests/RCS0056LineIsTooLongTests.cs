@@ -1263,6 +1263,175 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_Assignment_PreferOverMemberBinding()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Collections.Generic;
+
+public class Settings
+{
+    public int Status409ConflictValue { get; }
+}
+
+public static class C
+{
+    public static Dictionary<string, int?> Codes(Settings settings) => new()
+    {
+[|        ["the-request-conflicts-with-the-current-state-of-the-resource-reload-it-and-retryyyyyy"] = settings?.Status409ConflictValue,|]
+    };
+}
+""",
+"""
+using System.Collections.Generic;
+
+public class Settings
+{
+    public int Status409ConflictValue { get; }
+}
+
+public static class C
+{
+    public static Dictionary<string, int?> Codes(Settings settings) => new()
+    {
+        ["the-request-conflicts-with-the-current-state-of-the-resource-reload-it-and-retryyyyyy"] =
+            settings?.Status409ConflictValue,
+    };
+}
+""", options: Options
+            .SetConfigOption(ConfigOptionKeys.MaxLineLength, "120")
+            .AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_ParameterList_RestOfLineIsWrappedInNextStep()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class B
+{
+    public B(string a, string b)
+    {
+    }
+}
+
+class D : B
+{
+[|    public D(string firstParameterName, string secondParameterName, string thirdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) : base(firstParameterName, secondParameterName)|]
+    {
+    }
+}
+""",
+"""
+class B
+{
+    public B(string a, string b)
+    {
+    }
+}
+
+class D : B
+{
+    public D(
+        string firstParameterName,
+        string secondParameterName,
+        string thirdeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) : base(
+            firstParameterName,
+            secondParameterName)
+    {
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_ArgumentList_LongStringLiteralAtLimit()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void WriteLine(string s, int v)
+    {
+    }
+
+    void M(int count)
+    {
+[|        WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", 1);|]
+    }
+}
+""",
+"""
+class C
+{
+    void WriteLine(string s, int v)
+    {
+    }
+
+    void M(int count)
+    {
+        WriteLine(
+            $"{count} {((count == 1) ? "document" : "documents")} formatted xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            1);
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_ArgumentList_OpenParenOnPreviousLine_IndentationOfList()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M(object a, string b)
+    {
+        M(
+[|            a, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");|]
+    }
+}
+""",
+"""
+class C
+{
+    void M(object a, string b)
+    {
+        M(
+            a,
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_AnonymousObject_OpenBraceOnPreviousLine()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        var x = new
+        {
+[|            Name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",|]
+        };
+    }
+}
+""",
+"""
+class C
+{
+    void M()
+    {
+        var x = new
+        {
+            Name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            Value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        };
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoFix_BracketedArgumentList_TooLongAfterWrapping()
     {
         await VerifyDiagnosticAndNoFixAsync("""

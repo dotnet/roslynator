@@ -15,6 +15,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong;
 internal class WrapLineNodeFinder
 {
     private Dictionary<SyntaxGroup, SyntaxNode> _nodes;
+    private SyntaxNode _fallbackNode;
     private readonly HashSet<SyntaxNode> _processedNodes;
 
     public Document Document { get; }
@@ -67,7 +68,7 @@ internal class WrapLineNodeFinder
         }
 
         if (_nodes is null)
-            return null;
+            return _fallbackNode;
 
         if (TryGetNode(SyntaxGroup.ArgumentList, out SyntaxNode argumentList)
             && TryGetNode(SyntaxGroup.MemberExpression, out SyntaxNode memberExpression))
@@ -463,7 +464,7 @@ internal class WrapLineNodeFinder
     {
         SyntaxKind kind = node.Kind();
 
-        if (kind == SyntaxKind.SimpleMemberAccessExpression
+        if (kind is SyntaxKind.SimpleMemberAccessExpression or SyntaxKind.MemberBindingExpression
             && !IsPartOfInvocationChain((ExpressionSyntax)node))
         {
             syntaxGroup = SyntaxGroup.NonInvocationMemberAccess;
@@ -591,25 +592,30 @@ internal class WrapLineNodeFinder
         if (nodes.Count < minCount)
             return false;
 
-        int longestLength = 0;
+        SyntaxNode list = nodes[0].Parent;
 
-        for (int i = 0; i < nodes.Count; i++)
+        int longestLength = nodes.Max(f => f.Span.Length);
+
+        if (!CanWrap(list, wrapPosition, longestLength))
+            return false;
+
+        TNode last = nodes.Last();
+
+        if (last.SpanStart < Span.Start
+            || last.Span.End > Span.End)
         {
-            TNode node = nodes[i];
-
-            int end = (i < nodes.SeparatorCount) ? nodes.GetSeparator(i).Span.End : node.Span.End;
-
-            if (i == nodes.Count - 1
-                && node.SpanStart >= Span.Start
-                && node.Span.End <= Span.End)
-            {
-                end = Span.End;
-            }
-
-            longestLength = Math.Max(longestLength, end - node.SpanStart);
+            return true;
         }
 
-        return CanWrap(nodes[0].Parent, wrapPosition, longestLength);
+        int lastLineLength = Document.AnalyzeIndentation(list).IncreasedIndentationLength + Span.End - last.SpanStart;
+
+        if (lastLineLength <= MaxLineLength)
+            return true;
+
+        if (lastLineLength < Span.Length)
+            _fallbackNode ??= list;
+
+        return false;
     }
 
     private bool HasWrapPointOnLine(SyntaxNode node)
