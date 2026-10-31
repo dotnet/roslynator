@@ -43,7 +43,9 @@ internal class WrapLineNodeFinder
         {
             SyntaxToken token = root.FindToken(position);
 
-            for (SyntaxNode node = token.Parent; node?.SpanStart >= Span.Start; node = node.Parent)
+            for (SyntaxNode node = token.Parent;
+                node is not null && (node.SpanStart >= Span.Start || HasWrapPointOnLine(node));
+                node = node.Parent)
             {
                 if (_processedNodes.Contains(node))
                     continue;
@@ -333,6 +335,15 @@ internal class WrapLineNodeFinder
 
                 return initializer;
             }
+            case SyntaxKind.AnonymousObjectCreationExpression:
+            {
+                var anonymousObject = (AnonymousObjectCreationExpressionSyntax)node;
+
+                if (!CanWrap(anonymousObject.Initializers, anonymousObject.OpenBraceToken.Span.End))
+                    return null;
+
+                return anonymousObject;
+            }
             case SyntaxKind.AddExpression:
             case SyntaxKind.SubtractExpression:
             case SyntaxKind.MultiplyExpression:
@@ -452,6 +463,13 @@ internal class WrapLineNodeFinder
     {
         SyntaxKind kind = node.Kind();
 
+        if (kind == SyntaxKind.SimpleMemberAccessExpression
+            && !IsPartOfInvocationChain((ExpressionSyntax)node))
+        {
+            syntaxGroup = SyntaxGroup.NonInvocationMemberAccess;
+            return true;
+        }
+
         if (SyntaxGroupMap.Value.TryGetValue(kind, out syntaxGroup))
             return true;
 
@@ -503,6 +521,7 @@ internal class WrapLineNodeFinder
         switch (syntaxGroup)
         {
             case SyntaxGroup.MemberExpression:
+            case SyntaxGroup.NonInvocationMemberAccess:
             case SyntaxGroup.ArgumentList:
             case SyntaxGroup.InitializerExpression:
             case SyntaxGroup.BinaryExpression:
@@ -572,9 +591,73 @@ internal class WrapLineNodeFinder
         if (nodes.Count < minCount)
             return false;
 
-        int longestLength = nodes.Max(f => f.Span.Length);
+        int longestLength = 0;
 
-        return CanWrap(nodes[0], wrapPosition, longestLength);
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            TNode node = nodes[i];
+
+            int end = (i < nodes.SeparatorCount) ? nodes.GetSeparator(i).Span.End : node.Span.End;
+
+            if (i == nodes.Count - 1
+                && node.SpanStart >= Span.Start
+                && node.Span.End <= Span.End)
+            {
+                end = Span.End;
+            }
+
+            longestLength = Math.Max(longestLength, end - node.SpanStart);
+        }
+
+        return CanWrap(nodes[0].Parent, wrapPosition, longestLength);
+    }
+
+    private bool HasWrapPointOnLine(SyntaxNode node)
+    {
+        IEnumerable<SyntaxNodeOrToken> list = node switch
+        {
+            ParameterListSyntax x => x.Parameters.GetWithSeparators(),
+            BracketedParameterListSyntax x => x.Parameters.GetWithSeparators(),
+            ArgumentListSyntax x => x.Arguments.GetWithSeparators(),
+            BracketedArgumentListSyntax x => x.Arguments.GetWithSeparators(),
+            AttributeArgumentListSyntax x => x.Arguments.GetWithSeparators(),
+            InitializerExpressionSyntax x => x.Expressions.GetWithSeparators(),
+            AnonymousObjectCreationExpressionSyntax x => x.Initializers.GetWithSeparators(),
+            _ => null,
+        };
+
+        if (list is null)
+            return false;
+
+        SyntaxNodeOrToken previous = default;
+
+        foreach (SyntaxNodeOrToken nodeOrToken in list)
+        {
+            if (nodeOrToken.IsNode
+                && previous.IsToken
+                && previous.SpanStart >= Span.Start
+                && nodeOrToken.Span.Start <= Span.End
+                && !previous.AsToken().TrailingTrivia.Any(SyntaxKind.EndOfLineTrivia))
+            {
+                return true;
+            }
+
+            previous = nodeOrToken;
+        }
+
+        return false;
+    }
+
+    private static bool IsPartOfInvocationChain(ExpressionSyntax expression)
+    {
+        return CSharpUtility.GetTopmostExpressionInCallChain(expression)
+            .DescendantNodesAndSelf(f => f.IsKind(
+                SyntaxKind.ConditionalAccessExpression,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.ElementAccessExpression,
+                SyntaxKind.MemberBindingExpression,
+                SyntaxKind.InvocationExpression))
+            .Any(f => f.IsKind(SyntaxKind.InvocationExpression));
     }
 
     private bool CanWrap(

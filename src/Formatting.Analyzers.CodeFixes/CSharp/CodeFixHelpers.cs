@@ -637,6 +637,21 @@ internal static class CodeFixHelpers
             cancellationToken);
     }
 
+    public static Task<Document> FixListAsync(
+        Document document,
+        AnonymousObjectCreationExpressionSyntax anonymousObjectCreation,
+        ListFixMode fixMode = ListFixMode.Fix,
+        CancellationToken cancellationToken = default)
+    {
+        return FixListAsync(
+            document,
+            anonymousObjectCreation,
+            anonymousObjectCreation.OpenBraceToken,
+            anonymousObjectCreation.Initializers,
+            fixMode,
+            cancellationToken);
+    }
+
     private static Task<Document> FixListAsync<TNode>(
         Document document,
         SyntaxNode containingNode,
