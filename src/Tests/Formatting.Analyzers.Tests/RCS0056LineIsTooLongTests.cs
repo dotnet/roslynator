@@ -1008,12 +1008,13 @@ public static class C
     {
         var rows = users
             .Where(a => a.Active)
-            .Select(a => new {
-                a.Id,
-                a.Email,
-                Upper = a.Email.ToUpperInvariant(),
-                IsSecured = a.Active,
-                a.TwoFactorEnabled })
+            .Select(
+                a => new {
+                    a.Id,
+                    a.Email,
+                    Upper = a.Email.ToUpperInvariant(),
+                    IsSecured = a.Active,
+                    a.TwoFactorEnabled })
             .ToList();
         return rows.Count;
     }
@@ -1427,6 +1428,94 @@ class C
             Value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         };
     }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_SimpleMemberAccess_PreferOverInnerBracketedArgumentList()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Collections.Generic;
+
+class P
+{
+    public string VeryLongPropertyNameNumberOneeeeeeeeeeeeeeeeeeeeeeeeeeeeeee { get; }
+}
+
+class C
+{
+    string M(Dictionary<string, P> dictionaryWithALongName)
+    {
+[|        return dictionaryWithALongName["some-key-that-is-long-xx"].VeryLongPropertyNameNumberOneeeeeeeeeeeeeeeeeeeeeeeeeeeeeee;|]
+    }
+}
+""",
+"""
+using System.Collections.Generic;
+
+class P
+{
+    public string VeryLongPropertyNameNumberOneeeeeeeeeeeeeeeeeeeeeeeeeeeeeee { get; }
+}
+
+class C
+{
+    string M(Dictionary<string, P> dictionaryWithALongName)
+    {
+        return dictionaryWithALongName["some-key-that-is-long-xx"]
+            .VeryLongPropertyNameNumberOneeeeeeeeeeeeeeeeeeeeeeeeeeeeeee;
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_ArgumentList_PreferOverInnerCallChain()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System.Linq;
+
+class C
+{
+    int M(object a, object b) => 0;
+
+    void M2(string[] itemsxxxxxxxxxxxxxxxxx, object aaaaaaaaaaaaaaa)
+    {
+[|        M(aaaaaaaaaaaaaaa, itemsxxxxxxxxxxxxxxxxx.Where(f => f.Length > 0).Select(f => f.ToUpperInvariant()).OrderBy(f => f).ToArray());|]
+    }
+}
+""",
+"""
+using System.Linq;
+
+class C
+{
+    int M(object a, object b) => 0;
+
+    void M2(string[] itemsxxxxxxxxxxxxxxxxx, object aaaaaaaaaaaaaaa)
+    {
+        M(
+            aaaaaaaaaaaaaaa,
+            itemsxxxxxxxxxxxxxxxxx.Where(f => f.Length > 0).Select(f => f.ToUpperInvariant()).OrderBy(f => f)
+                .ToArray());
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoFix_ArrayInitializer_OpenBraceOnPreviousLine()
+    {
+        await VerifyDiagnosticAndNoFixAsync("""
+class C
+{
+    static readonly byte[] Table =
+    {
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+[|        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,|]
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+    };
 }
 """, options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
     }

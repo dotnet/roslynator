@@ -15,7 +15,6 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong;
 internal class WrapLineNodeFinder
 {
     private Dictionary<SyntaxGroup, SyntaxNode> _nodes;
-    private SyntaxNode _fallbackNode;
     private readonly HashSet<SyntaxNode> _processedNodes;
 
     public Document Document { get; }
@@ -68,7 +67,7 @@ internal class WrapLineNodeFinder
         }
 
         if (_nodes is null)
-            return _fallbackNode;
+            return null;
 
         if (TryGetNode(SyntaxGroup.ArgumentList, out SyntaxNode argumentList)
             && TryGetNode(SyntaxGroup.MemberExpression, out SyntaxNode memberExpression))
@@ -547,6 +546,7 @@ internal class WrapLineNodeFinder
                 case SyntaxGroup.InitializerExpression:
                 case SyntaxGroup.BinaryExpression:
                 case SyntaxGroup.MemberExpression:
+                case SyntaxGroup.NonInvocationMemberAccess:
                 case SyntaxGroup.ArgumentList:
                 {
                     if (kvp.Value.FullSpan.Contains(node.FullSpan))
@@ -609,13 +609,7 @@ internal class WrapLineNodeFinder
 
         int lastLineLength = Document.AnalyzeIndentation(list).IncreasedIndentationLength + Span.End - last.SpanStart;
 
-        if (lastLineLength <= MaxLineLength)
-            return true;
-
-        if (lastLineLength < Span.Length)
-            _fallbackNode ??= list;
-
-        return false;
+        return lastLineLength < Span.Length;
     }
 
     private bool HasWrapPointOnLine(SyntaxNode node)
@@ -627,7 +621,7 @@ internal class WrapLineNodeFinder
             ArgumentListSyntax x => x.Arguments.GetWithSeparators(),
             BracketedArgumentListSyntax x => x.Arguments.GetWithSeparators(),
             AttributeArgumentListSyntax x => x.Arguments.GetWithSeparators(),
-            InitializerExpressionSyntax x => x.Expressions.GetWithSeparators(),
+            InitializerExpressionSyntax x when x.IsKind(SyntaxKind.ObjectInitializerExpression) => x.Expressions.GetWithSeparators(),
             AnonymousObjectCreationExpressionSyntax x => x.Initializers.GetWithSeparators(),
             _ => null,
         };
