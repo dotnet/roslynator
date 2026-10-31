@@ -9,10 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix code fix for [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) to wrap members of an anonymous object instead of splitting a member access (e.g. `a.TwoFactorEnabled`) ([PR](https://github.com/dotnet/roslynator/pull/1863))
-- Fix code fix for [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) to wrap a parameter, argument or initializer list whose opening token is on a previous line ([PR](https://github.com/dotnet/roslynator/pull/1863))
-- Fix code fix for [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) to not wrap a list when the wrapped line would still be too long (e.g. after `[` of a dictionary initializer key) ([PR](https://github.com/dotnet/roslynator/pull/1863))
-- Fix code fix for [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) to prefer wrapping after `=` or before an operator over splitting a member access that is not a call chain (e.g. `StatusCodes.Status409Conflict`) ([PR](https://github.com/dotnet/roslynator/pull/1863))
+- Fix code fix for [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) to choose a better place to wrap a line (e.g. members of an anonymous object instead of splitting `a.TwoFactorEnabled`) ([PR](https://github.com/dotnet/roslynator/pull/1863))
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) to treat the braces of an anonymous object creation like an object initializer (e.g. a lambda `f => new { ... }` passed as the only argument) ([PR](https://github.com/dotnet/roslynator/pull/1858))
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) to not report a correctly formatted block (e.g. a lambda body, object initializer or switch expression) of the only argument in a top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1858))
 - Fix analyzer [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) to not throw when the left operand of a comparison is a null literal (`null != x && null == x.Flag`) ([PR](https://github.com/dotnet/roslynator/pull/1862))
