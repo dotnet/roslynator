@@ -97,6 +97,81 @@ class C
     }
 
     [Fact]
+    public static async Task DryRunNamesNoParameterOfAnonymousMethodWithoutParameterList()
+    {
+        const string source = @"
+class C
+{
+    public event System.EventHandler Changed = delegate { };
+
+    string M()
+    {
+        var item = new object();
+        return item.ToString();
+    }
+}
+";
+        using var workspace = new AdhocWorkspace();
+        Project project = workspace.AddProject(ProjectInfo.Create(
+            ProjectId.CreateNewId(),
+            VersionStamp.Create(),
+            "Test",
+            "Test",
+            LanguageNames.CSharp,
+            compilationOptions: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            metadataReferences: CSharpTestOptions.Default.MetadataReferences));
+        Document document = workspace.AddDocument(project.Id, "Test.cs", SourceText.From(source));
+        var named = new List<ISymbol>();
+
+        await SymbolRenamer.RenameSymbolsAsync(
+            document.Project,
+            symbol => symbol is IParameterSymbol,
+            symbol =>
+            {
+                named.Add(symbol);
+                return symbol.Name + "2";
+            },
+            new SymbolRenamerOptions() { DryRun = true, SkipTypes = true, SkipMembers = true });
+
+        Assert.Empty(named);
+    }
+
+    [Fact]
+    public static async Task RenameLocalsCompletesWithAnonymousMethodWithoutParameterList()
+    {
+        const string source = @"
+class C
+{
+    public event System.EventHandler Changed = delegate { };
+
+    string M()
+    {
+        var item = new object();
+        return item.ToString();
+    }
+}
+";
+        using var workspace = new AdhocWorkspace();
+        Project project = workspace.AddProject(ProjectInfo.Create(
+            ProjectId.CreateNewId(),
+            VersionStamp.Create(),
+            "Test",
+            "Test",
+            LanguageNames.CSharp,
+            compilationOptions: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            metadataReferences: CSharpTestOptions.Default.MetadataReferences));
+        Document document = workspace.AddDocument(project.Id, "Test.cs", SourceText.From(source));
+
+        await SymbolRenamer.RenameSymbolsAsync(
+            document.Project,
+            symbol => symbol is ILocalSymbol { Name: "item" },
+            _ => "element",
+            new SymbolRenamerOptions() { SkipTypes = true, SkipMembers = true });
+
+        Assert.Equal(source.Replace("item", "element"), (await workspace.CurrentSolution.GetDocument(document.Id).GetTextAsync()).ToString());
+    }
+
+    [Fact]
     public static async Task RenameNestedLocalFunctionsCompletes()
     {
         const string source = @"

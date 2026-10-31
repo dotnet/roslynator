@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) to treat the braces of an anonymous object creation like an object initializer (e.g. a lambda `f => new { ... }` passed as the only argument) ([PR](https://github.com/dotnet/roslynator/pull/1858))
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) to not report a correctly formatted block (e.g. a lambda body, object initializer or switch expression) of the only argument in a top-level statement ([PR](https://github.com/dotnet/roslynator/pull/1858))
 - [CLI] Fix `NullReferenceException` in `rename-symbol` when `--dry-run` is used or a rename is skipped ([PR](https://github.com/dotnet/roslynator/pull/1847))
+- [CLI] Fix `rename-symbol` failing on anonymous methods without a parameter list (`delegate { }`) when renaming locals ([PR](https://github.com/dotnet/roslynator/pull/1848))
 
 ## [5.0.1] - 2026-10-04
 
