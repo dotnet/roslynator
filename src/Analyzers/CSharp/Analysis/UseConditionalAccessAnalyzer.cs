@@ -284,7 +284,9 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                 {
                     ITypeSymbol leftTypeSymbol = semanticModel.GetTypeSymbol(((BinaryExpressionSyntax)expression).Left, cancellationToken);
 
-                    if (leftTypeSymbol.IsErrorType())
+                    // GetTypeSymbol returns null for a null literal. IsErrorType() treats null as false,
+                    // so the null check has to be here: IsValueType below would throw.
+                    if (leftTypeSymbol?.IsErrorType() != false)
                         return false;
 
                     if (leftTypeSymbol.IsValueType && !CSharpFacts.IsPredefinedType(leftTypeSymbol.SpecialType))

@@ -531,6 +531,25 @@ class Foo
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task TestNoDiagnostic_LogicalAnd_NullLiteralOnTheLeft()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public static class Example
+{
+    public static bool Matches(ExampleModel? model)
+    {
+        return null != model && null == model.Flag;
+    }
+}
+
+public sealed class ExampleModel
+{
+    public bool? Flag { get; set; }
+}
+", options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_ReferenceType()
     {
         await VerifyNoDiagnosticAsync("""
