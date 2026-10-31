@@ -341,7 +341,8 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                             ReportDiagnostic();
                         }
                     }
-                    else if (block.LineStartIndex == token.SpanStart)
+                    else if (block.LineStartIndex == token.SpanStart
+                        && indentationAnalysis.IndentationLength != 0)
                     {
                         ReportDiagnostic();
                     }
@@ -428,13 +429,12 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     return true;
                 }
 
-                if (token.IsParentKind(SyntaxKind.SwitchExpression))
+                if (token.IsParentKind(SyntaxKind.SwitchExpression, SyntaxKind.AnonymousObjectCreationExpression))
                     return true;
 
                 if (token.IsParentKind(SyntaxKind.ObjectInitializerExpression)
                     && token.Parent.Parent.IsKind(
                         SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.AnonymousObjectCreationExpression,
                         SyntaxKind.ImplicitObjectCreationExpression))
                 {
                     return true;
