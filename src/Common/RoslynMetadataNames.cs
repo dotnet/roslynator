@@ -37,5 +37,8 @@ internal static class RoslynMetadataNames
     public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics");
     public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute");
     public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxTriviaList = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxTriviaList");
+    public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxToken = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxToken");
+    public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxTrivia = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxTrivia");
+    public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxNodeOrToken = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxNodeOrToken");
     public static readonly MetadataName Microsoft_CodeAnalysis_Text_TextSpan = MetadataName.Parse("Microsoft.CodeAnalysis.Text.TextSpan");
 }
