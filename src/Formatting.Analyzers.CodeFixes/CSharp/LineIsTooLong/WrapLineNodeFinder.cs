@@ -464,9 +464,9 @@ internal class WrapLineNodeFinder
         SyntaxKind kind = node.Kind();
 
         if (kind is SyntaxKind.SimpleMemberAccessExpression or SyntaxKind.MemberBindingExpression
-            && !IsPartOfInvocationChain((ExpressionSyntax)node))
+            && IsMemberAccessOfName((ExpressionSyntax)node))
         {
-            syntaxGroup = SyntaxGroup.NonInvocationMemberAccess;
+            syntaxGroup = SyntaxGroup.MemberAccessOfName;
             return true;
         }
 
@@ -521,7 +521,7 @@ internal class WrapLineNodeFinder
         switch (syntaxGroup)
         {
             case SyntaxGroup.MemberExpression:
-            case SyntaxGroup.NonInvocationMemberAccess:
+            case SyntaxGroup.MemberAccessOfName:
             case SyntaxGroup.ArgumentList:
             case SyntaxGroup.InitializerExpression:
             case SyntaxGroup.BinaryExpression:
@@ -546,7 +546,6 @@ internal class WrapLineNodeFinder
                 case SyntaxGroup.InitializerExpression:
                 case SyntaxGroup.BinaryExpression:
                 case SyntaxGroup.MemberExpression:
-                case SyntaxGroup.NonInvocationMemberAccess:
                 case SyntaxGroup.ArgumentList:
                 {
                     if (kvp.Value.FullSpan.Contains(node.FullSpan))
@@ -648,16 +647,24 @@ internal class WrapLineNodeFinder
         return false;
     }
 
-    private static bool IsPartOfInvocationChain(ExpressionSyntax expression)
+    private static bool IsMemberAccessOfName(ExpressionSyntax expression)
     {
         return CSharpUtility.GetTopmostExpressionInCallChain(expression)
             .DescendantNodesAndSelf(f => f.IsKind(
-                SyntaxKind.ConditionalAccessExpression,
                 SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.ElementAccessExpression,
+                SyntaxKind.ConditionalAccessExpression,
+                SyntaxKind.MemberBindingExpression))
+            .All(f => f.IsKind(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.ConditionalAccessExpression,
                 SyntaxKind.MemberBindingExpression,
-                SyntaxKind.InvocationExpression))
-            .Any(f => f.IsKind(SyntaxKind.InvocationExpression));
+                SyntaxKind.IdentifierName,
+                SyntaxKind.GenericName,
+                SyntaxKind.AliasQualifiedName)
+                || f.IsKind(
+                    SyntaxKind.PredefinedType,
+                    SyntaxKind.ThisExpression,
+                    SyntaxKind.BaseExpression));
     }
 
     private bool CanWrap(

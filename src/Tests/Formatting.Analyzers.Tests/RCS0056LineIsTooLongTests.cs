@@ -1471,6 +1471,56 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_CallChain_ParenthesizedInvocation_PreferOverComparison()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class IndentationAnalysis
+{
+    public int IndentSize { get; }
+}
+
+class Context
+{
+    public object GetConfigOptions() => null;
+}
+
+class C
+{
+    static IndentationAnalysis AnalyzeIndentation(object expression, object options) => null;
+
+    static bool M(bool f, IndentationAnalysis indentationAnalysis, object expressionxxxxxxxxxx, Context context)
+    {
+        return f
+[|            && (indentationAnalysis ?? AnalyzeIndentation(expressionxxxxxxxxxx, context.GetConfigOptions())).IndentSize > 0;|]
+    }
+}
+""",
+"""
+class IndentationAnalysis
+{
+    public int IndentSize { get; }
+}
+
+class Context
+{
+    public object GetConfigOptions() => null;
+}
+
+class C
+{
+    static IndentationAnalysis AnalyzeIndentation(object expression, object options) => null;
+
+    static bool M(bool f, IndentationAnalysis indentationAnalysis, object expressionxxxxxxxxxx, Context context)
+    {
+        return f
+            && (indentationAnalysis ?? AnalyzeIndentation(expressionxxxxxxxxxx, context.GetConfigOptions()))
+                .IndentSize > 0;
+    }
+}
+""", options: Options.SetConfigOption(ConfigOptionKeys.MaxLineLength, "120"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task Test_ArgumentList_PreferOverInnerCallChain()
     {
         await VerifyDiagnosticAndFixAsync("""
