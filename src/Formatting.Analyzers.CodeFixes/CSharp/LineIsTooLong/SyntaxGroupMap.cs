@@ -23,6 +23,7 @@ internal static class SyntaxGroupMap
             new KeyValuePair(SyntaxKind.CollectionInitializerExpression,SyntaxGroup.InitializerExpression),
             new KeyValuePair(SyntaxKind.ComplexElementInitializerExpression,SyntaxGroup.InitializerExpression),
             new KeyValuePair(SyntaxKind.ObjectInitializerExpression,SyntaxGroup.InitializerExpression),
+            new KeyValuePair(SyntaxKind.AnonymousObjectCreationExpression,SyntaxGroup.InitializerExpression),
 
             new KeyValuePair(SyntaxKind.ParameterList, SyntaxGroup.ParameterList),
             new KeyValuePair(SyntaxKind.BracketedParameterList, SyntaxGroup.ParameterList),

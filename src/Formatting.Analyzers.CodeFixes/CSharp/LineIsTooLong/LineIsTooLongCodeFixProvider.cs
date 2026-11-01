@@ -119,6 +119,8 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
             case SyntaxKind.ComplexElementInitializerExpression:
             case SyntaxKind.ObjectInitializerExpression:
                 return ct => FixListAsync(document, (InitializerExpressionSyntax)node, ListFixMode.Wrap, ct);
+            case SyntaxKind.AnonymousObjectCreationExpression:
+                return ct => FixListAsync(document, (AnonymousObjectCreationExpressionSyntax)node, ListFixMode.Wrap, ct);
             case SyntaxKind.AddExpression:
             case SyntaxKind.SubtractExpression:
             case SyntaxKind.MultiplyExpression:

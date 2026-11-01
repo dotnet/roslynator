@@ -18,4 +18,5 @@ internal enum SyntaxGroup
     Is_As_EqualityExpression = 11,
     AssignmentExpression = 12,
     FieldOrLocalInitializer = 13,
+    MemberAccessOfName = 14,
 }
