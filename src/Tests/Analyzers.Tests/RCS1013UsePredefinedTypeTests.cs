@@ -95,6 +95,60 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    public async Task Test_CrefMemberAndParameterTypes()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+
+/// <summary>
+/// <see cref="[|Int32|].MaxValue"/>
+/// <see cref="[|Int32|].Parse([|String|])"/>
+/// <see cref="M([|Int32|])"/>
+/// <see cref="M(ref [|Int32|])"/>
+/// <see cref="M([|Int32|][])"/>
+/// <see cref="this[[|Int32|]]"/>
+/// <see cref="explicit operator [|Int32|](Crefs)"/>
+/// </summary>
+public class Crefs
+{
+    public void M(int value) { }
+
+    public void M(ref int value) { }
+
+    public void M(int[] values) { }
+
+    public int this[int index] => index;
+
+    public static explicit operator int(Crefs value) => 0;
+}
+""", """
+using System;
+
+/// <summary>
+/// <see cref="int.MaxValue"/>
+/// <see cref="int.Parse(string)"/>
+/// <see cref="M(int)"/>
+/// <see cref="M(ref int)"/>
+/// <see cref="M(int[])"/>
+/// <see cref="this[int]"/>
+/// <see cref="explicit operator int(Crefs)"/>
+/// </summary>
+public class Crefs
+{
+    public void M(int value) { }
+
+    public void M(ref int value) { }
+
+    public void M(int[] values) { }
+
+    public int this[int index] => index;
+
+    public static explicit operator int(Crefs value) => 0;
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync("""
@@ -103,6 +157,7 @@ using s = System.String;
 
 /// <summary>
 /// <see cref="s"/>
+/// <see cref=""/>
 /// </summary>
 class C
 {

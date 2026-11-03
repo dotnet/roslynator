@@ -98,6 +98,43 @@ public sealed class UsePredefinedTypeAnalyzer : BaseDiagnosticAnalyzer
                 break;
             }
         }
+
+        if (cref is not null)
+            AnalyzeCrefTypeNames(context, cref);
+    }
+
+    private static void AnalyzeCrefTypeNames(SyntaxNodeAnalysisContext context, CrefSyntax cref)
+    {
+        foreach (SyntaxNode node in cref.DescendantNodesAndSelf())
+        {
+            if (node is not IdentifierNameSyntax identifierName)
+                continue;
+
+            if (identifierName.Parent is NameMemberCrefSyntax nameMemberCref
+                && nameMemberCref.Name == identifierName)
+            {
+                continue;
+            }
+
+            if (identifierName.Parent is QualifiedNameSyntax)
+                continue;
+
+            if (!SupportsPredefinedType(identifierName))
+                continue;
+
+            if (context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) is not ITypeSymbol typeSymbol)
+                continue;
+
+            if (!CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))
+                continue;
+
+            IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(identifierName, context.CancellationToken);
+
+            if (aliasSymbol is not null)
+                continue;
+
+            ReportDiagnostic(context, identifierName);
+        }
     }
 
     private static void Analyze(SyntaxNodeAnalysisContext context, CrefSyntax cref, NameMemberCrefSyntax nameMemberCref)
