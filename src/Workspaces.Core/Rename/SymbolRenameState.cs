@@ -384,7 +384,7 @@ internal class SymbolRenameState
                 {
                     var symbolData = new SymbolData(symbol, GetSymbolId(symbol), documentId);
 
-                    bool success = await RenameSymbolAsync(
+                    await RenameSymbolAsync(
                         symbolData,
                         symbol.Locations[0].SourceSpan,
                         document,
@@ -395,7 +395,6 @@ internal class SymbolRenameState
                         cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
 
-                    Debug.Assert(success);
                     break;
                 }
 
@@ -452,7 +451,7 @@ internal class SymbolRenameState
                 {
                     var symbolData = new SymbolData(symbol, symbol.Name, documentId);
 
-                    bool success = await RenameSymbolAsync(
+                    await RenameSymbolAsync(
                         symbolData,
                         symbol.Locations[0].SourceSpan,
                         document,
@@ -463,7 +462,6 @@ internal class SymbolRenameState
                         cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
 
-                    Debug.Assert(success);
                     break;
                 }
 
@@ -472,7 +470,7 @@ internal class SymbolRenameState
         }
     }
 
-    private async Task<bool> RenameSymbolAsync(
+    private async Task RenameSymbolAsync(
         SymbolData symbolData,
         TextSpan span,
         Document document,
@@ -490,7 +488,7 @@ internal class SymbolRenameState
         if (!root.FullSpan.Contains(span))
         {
             Debug.Fail(span.ToString());
-            return false;
+            return;
         }
 
         SyntaxToken identifier = root.FindToken(span.Start);
@@ -503,7 +501,7 @@ internal class SymbolRenameState
             throw new InvalidOperationException($"Cannot find declaration for symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
         if (!string.Equals(symbol.Name, identifier.ValueText, StringComparison.Ordinal))
-            return false;
+            return;
 
         semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
@@ -515,14 +513,14 @@ internal class SymbolRenameState
             Debug.Fail(symbolId);
 
             IgnoreSymbolId(symbolId, ignoreIds);
-            return false;
+            return;
         }
 
         if (diffTracker is not null
             && _diffTracker.SpanExists(span, document.Id))
         {
             IgnoreSymbol(currentSymbol, ignoreIds);
-            return false;
+            return;
         }
 
         string? currentSymbolId = GetSymbolId(currentSymbol);
@@ -530,11 +528,11 @@ internal class SymbolRenameState
         if (currentSymbolId is not null)
         {
             if (!string.Equals(symbolId, currentSymbolId, StringComparison.Ordinal))
-                return false;
+                return;
         }
         else if (!string.Equals(symbol.Name, currentSymbol.Name, StringComparison.Ordinal))
         {
-            return false;
+            return;
         }
 
         symbol = currentSymbol;
@@ -542,7 +540,7 @@ internal class SymbolRenameState
         SymbolRenameOutcome outcome = await RenameSymbolAsync(symbol, symbolId, ignoreIds, findSymbolService, span, document, cancellationToken).ConfigureAwait(false);
 
         if (outcome is SymbolSkipped)
-            return true;
+            return;
 
         if (outcome is not SolutionRenamed renamed)
             throw new InvalidOperationException($"Unknown rename outcome '{outcome.GetType().Name}'.");
@@ -561,7 +559,7 @@ internal class SymbolRenameState
         if (diffTracker is null
             && ignoreIds is null)
         {
-            return true;
+            return;
         }
 
         int diff = renamed.NewName.Length - symbol.Name.Length;
@@ -664,8 +662,6 @@ internal class SymbolRenameState
             if (symbol is not null)
                 IgnoreSymbol(symbol, ignoreIds);
         }
-
-        return true;
 
         async Task<HashSet<Location>> GetLocationsAsync(IEnumerable<ReferencedSymbol> referencedSymbols, ISymbol? symbol = null)
         {
