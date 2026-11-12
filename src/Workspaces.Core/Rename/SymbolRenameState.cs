@@ -227,13 +227,10 @@ internal class SymbolRenameState
         CancellationToken cancellationToken)
     {
         List<string>? ignoredSymbolIds = null;
-        DiffTracker? diffTracker = null;
+        var diffTracker = new DiffTracker();
 
         if (!DryRun)
-        {
             ignoredSymbolIds = new List<string>();
-            diffTracker = new DiffTracker();
-        }
 
         foreach (SymbolData symbolData in symbols)
         {
@@ -247,7 +244,7 @@ internal class SymbolRenameState
 
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-            TextSpan span = DiffTracker.GetCurrentSpan(symbol.Locations[0].SourceSpan, document.Id, diffTracker);
+            TextSpan span = diffTracker.GetCurrentSpan(symbol.Locations[0].SourceSpan, document.Id);
 
             await RenameSymbolAsync(
                 symbolData,
@@ -287,7 +284,7 @@ internal class SymbolRenameState
                 cancellationToken.ThrowIfCancellationRequested();
 
                 SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
-                DiffTracker? diffTracker = (DryRun) ? null : new DiffTracker();
+                var diffTracker = new DiffTracker();
                 HashSet<int>? localFunctionIndexes = null;
                 HashSet<int>? localSymbolIndexes = null;
                 int i = 0;
@@ -345,7 +342,7 @@ internal class SymbolRenameState
         SyntaxNode node,
         DocumentId documentId,
         HashSet<int> indexes,
-        DiffTracker? diffTracker,
+        DiffTracker diffTracker,
         IFindSymbolService findSymbolService,
         CancellationToken cancellationToken)
     {
@@ -356,7 +353,7 @@ internal class SymbolRenameState
             Document document = CurrentSolution.GetDocument(documentId)!;
             SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
-            TextSpan span = DiffTracker.GetCurrentSpan(node.Span, documentId, diffTracker);
+            TextSpan span = diffTracker.GetCurrentSpan(node.Span, documentId);
 
             if (!root.FullSpan.Contains(span))
             {
@@ -374,7 +371,7 @@ internal class SymbolRenameState
             }
 
             int i = 0;
-            DiffTracker? diffTracker2 = (DryRun) ? null : new DiffTracker();
+            var diffTracker2 = new DiffTracker();
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
             foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel, cancellationToken)
@@ -401,11 +398,7 @@ internal class SymbolRenameState
                 i++;
             }
 
-            if (diffTracker is not null
-                && diffTracker2 is not null)
-            {
-                diffTracker.Add(diffTracker2);
-            }
+            diffTracker.Add(diffTracker2);
         }
     }
 
@@ -413,7 +406,7 @@ internal class SymbolRenameState
         SyntaxNode node,
         DocumentId documentId,
         HashSet<int> indexes,
-        DiffTracker? diffTracker,
+        DiffTracker diffTracker,
         IFindSymbolService findSymbolService,
         CancellationToken cancellationToken)
     {
@@ -424,7 +417,7 @@ internal class SymbolRenameState
             Document document = CurrentSolution.GetDocument(documentId)!;
             SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
-            TextSpan span = DiffTracker.GetCurrentSpan(node.Span, documentId, diffTracker);
+            TextSpan span = diffTracker.GetCurrentSpan(node.Span, documentId);
 
             if (!root.FullSpan.Contains(span))
             {
@@ -476,7 +469,7 @@ internal class SymbolRenameState
         Document document,
         SemanticModel semanticModel,
         IFindSymbolService findSymbolService,
-        DiffTracker? diffTracker,
+        DiffTracker diffTracker,
         List<string>? ignoreIds,
         CancellationToken cancellationToken)
     {
@@ -516,8 +509,7 @@ internal class SymbolRenameState
             return;
         }
 
-        if (diffTracker is not null
-            && _diffTracker.SpanExists(span, document.Id))
+        if (_diffTracker.SpanExists(span, document.Id))
         {
             IgnoreSymbol(currentSymbol, ignoreIds);
             return;
@@ -555,12 +547,6 @@ internal class SymbolRenameState
 
         if (!Workspace.TryApplyChanges(renamed.Solution))
             throw new InvalidOperationException($"Cannot apply changes to a solution when renaming symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
-
-        if (diffTracker is null
-            && ignoreIds is null)
-        {
-            return;
-        }
 
         int diff = renamed.NewName.Length - symbol.Name.Length;
         int oldIdentifierDiff = identifier.Text.Length - identifier.ValueText.Length;
@@ -606,11 +592,8 @@ internal class SymbolRenameState
 
         diff += identifierDiff;
 
-        if (diffTracker is not null)
-        {
-            diffTracker.AddLocations(locations, diff, oldSolution);
-            _diffTracker.AddLocations(locations, diff, oldSolution);
-        }
+        diffTracker.AddLocations(locations, diff, oldSolution);
+        _diffTracker.AddLocations(locations, diff, oldSolution);
 #if DEBUG
         Debug.Assert(string.Equals(renamed.NewName, newIdentifier.ValueText, StringComparison.Ordinal), $"{renamed.NewName}\n{newIdentifier.ValueText}");
 

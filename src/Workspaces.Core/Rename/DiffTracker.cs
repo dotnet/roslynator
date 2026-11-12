@@ -19,11 +19,6 @@ internal class DiffTracker
         return _dic.TryGetValue(documentId, out spans);
     }
 
-    internal static TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId, DiffTracker? diffTracker)
-    {
-        return diffTracker?.GetCurrentSpan(span, documentId) ?? span;
-    }
-
     public TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId)
     {
         if (!TryGetValue(documentId, out List<DiffSpan> spans))
