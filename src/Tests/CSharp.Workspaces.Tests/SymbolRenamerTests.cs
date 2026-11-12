@@ -443,7 +443,7 @@ class C
         string[] results = await RenameDocumentsAsync(
             [source],
             symbol => symbol.Kind == SymbolKind.Field,
-            symbol => "evt",
+            _ => "evt",
             new SymbolRenamerOptions() { SkipTypes = true, SkipLocals = true });
 
         Assert.Equal(expected, Assert.Single(results));
@@ -643,7 +643,7 @@ class C
         string[] results = await RenameDocumentsAsync(
             [source],
             symbol => symbol.Kind == SymbolKind.Local,
-            symbol => "same",
+            _ => "same",
             new SymbolRenamerOptions() { SkipTypes = true, SkipMembers = true, CompilationErrorResolution = CompilationErrorResolution.Skip });
 
         Assert.Equal(expected, Assert.Single(results));
