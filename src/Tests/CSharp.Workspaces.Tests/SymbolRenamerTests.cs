@@ -532,6 +532,58 @@ class C
     }
 
     [Fact]
+    public static async Task RenameNestedLocalFunctionParametersAndTypeParametersUpdatesEveryReference()
+    {
+        const string source = @"
+class C
+{
+    int M()
+    {
+        int Outer<T>(int a)
+        {
+            int Inner<U>(int b)
+            {
+                return b + 1;
+            }
+
+            return Inner<T>(a);
+        }
+
+        return Outer<int>(1);
+    }
+}
+";
+        const string expected = @"
+class C
+{
+    int M()
+    {
+        int Outer<TOuter>(int first)
+        {
+            int Inner<TInner>(int second)
+            {
+                return second + 1;
+            }
+
+            return Inner<TOuter>(first);
+        }
+
+        return Outer<int>(1);
+    }
+}
+";
+        var names = new Dictionary<string, string>() { ["T"] = "TOuter", ["U"] = "TInner", ["a"] = "first", ["b"] = "second" };
+
+        string[] results = await RenameDocumentsAsync(
+            [source],
+            symbol => symbol is IParameterSymbol or ITypeParameterSymbol { TypeParameterKind: TypeParameterKind.Method },
+            symbol => names[symbol.Name],
+            new SymbolRenamerOptions() { SkipTypes = true, SkipMembers = true });
+
+        Assert.Equal(expected, Assert.Single(results));
+    }
+
+    [Fact]
     public static async Task RenamePartialMethodToItsOwnNameCompletes()
     {
         string[] sources =
