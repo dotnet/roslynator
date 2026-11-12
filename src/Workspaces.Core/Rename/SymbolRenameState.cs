@@ -18,8 +18,6 @@ namespace Roslynator.Rename;
 
 internal class SymbolRenameState
 {
-    private readonly DiffTracker _diffTracker = new();
-
     public SymbolRenameState(
         Solution solution,
         Func<ISymbol, bool> predicate,
@@ -509,7 +507,7 @@ internal class SymbolRenameState
             return;
         }
 
-        if (_diffTracker.SpanExists(span, document.Id))
+        if (diffTracker.SpanExists(span, document.Id))
         {
             IgnoreSymbol(currentSymbol, ignoreIds);
             return;
@@ -593,7 +591,6 @@ internal class SymbolRenameState
         diff += identifierDiff;
 
         diffTracker.AddLocations(locations, diff, oldSolution);
-        _diffTracker.AddLocations(locations, diff, oldSolution);
 #if DEBUG
         Debug.Assert(string.Equals(renamed.NewName, newIdentifier.ValueText, StringComparison.Ordinal), $"{renamed.NewName}\n{newIdentifier.ValueText}");
 
