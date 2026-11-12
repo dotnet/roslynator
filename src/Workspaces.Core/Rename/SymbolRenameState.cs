@@ -311,7 +311,7 @@ internal class SymbolRenameState
 
                 if (localFunctionIndexes is not null)
                 {
-                    await RenameLocalFunctionsAndItsParametersAsync(
+                    await RenameLocalSymbolsInNodeAsync(
                         node,
                         document.Id,
                         localFunctionIndexes,
@@ -323,7 +323,7 @@ internal class SymbolRenameState
 
                 if (localSymbolIndexes is not null)
                 {
-                    await RenameLocalsAndLambdaParametersAsync(
+                    await RenameLocalSymbolsInNodeAsync(
                         node,
                         document.Id,
                         localSymbolIndexes,
@@ -336,7 +336,7 @@ internal class SymbolRenameState
         }
     }
 
-    private async Task RenameLocalFunctionsAndItsParametersAsync(
+    private async Task RenameLocalSymbolsInNodeAsync(
         SyntaxNode node,
         DocumentId documentId,
         HashSet<int> indexes,
@@ -368,79 +368,15 @@ internal class SymbolRenameState
                 break;
             }
 
-            int i = 0;
-            var diffTracker2 = new DiffTracker();
             SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
+            int i = 0;
             foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel, cancellationToken)
                 .OrderBy(f => f, LocalSymbolComparer.Instance))
             {
                 if (indexes.Remove(i))
                 {
                     var symbolData = new SymbolData(symbol, GetSymbolId(symbol), documentId);
-
-                    await RenameSymbolAsync(
-                        symbolData,
-                        symbol.Locations[0].SourceSpan,
-                        document,
-                        semanticModel,
-                        findSymbolService,
-                        diffTracker: diffTracker2,
-                        ignoreIds: null,
-                        cancellationToken: cancellationToken)
-                        .ConfigureAwait(false);
-
-                    break;
-                }
-
-                i++;
-            }
-
-            diffTracker.Add(diffTracker2);
-        }
-    }
-
-    private async Task RenameLocalsAndLambdaParametersAsync(
-        SyntaxNode node,
-        DocumentId documentId,
-        HashSet<int> indexes,
-        DiffTracker diffTracker,
-        IFindSymbolService findSymbolService,
-        CancellationToken cancellationToken)
-    {
-        while (indexes.Count > 0)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            Document document = CurrentSolution.GetDocument(documentId)!;
-            SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
-
-            TextSpan span = diffTracker.GetCurrentSpan(node.Span, documentId);
-
-            if (!root.FullSpan.Contains(span))
-            {
-                Debug.Fail("");
-                break;
-            }
-
-            SyntaxNode currentNode = root.FindNode(span);
-
-            if (node.SpanStart != currentNode.SpanStart
-                || node.RawKind != currentNode.RawKind)
-            {
-                Debug.Fail("");
-                break;
-            }
-
-            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
-
-            int i = 0;
-            foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel, cancellationToken)
-                .OrderBy(f => f, LocalSymbolComparer.Instance))
-            {
-                if (indexes.Remove(i))
-                {
-                    var symbolData = new SymbolData(symbol, symbol.Name, documentId);
 
                     await RenameSymbolAsync(
                         symbolData,
