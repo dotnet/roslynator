@@ -279,10 +279,10 @@ class Foo
     public int Bar(int p)
     {
         int local = Field + Prop + p;
-        return local + Baz(local);
+        return local + Scale(local);
     }
 
-    public int Baz(int q)
+    public int Scale(int q)
     {
         return q + Field;
     }
@@ -293,7 +293,7 @@ class User
 {
     int Use(Foo foo)
     {
-        int result = foo.Bar(foo.Field) + foo.Baz(foo.Prop);
+        int result = foo.Bar(foo.Field) + foo.Scale(foo.Prop);
         return result;
     }
 }
@@ -307,7 +307,7 @@ class User
             new SymbolRenamerOptions() { SkipTypes = true, SkipLocals = true });
 
         Assert.Equal(
-            sources.Select(f => f.Replace("Field", "FieldRenamed").Replace("Prop", "PropRenamed").Replace("Bar", "BarRenamed").Replace("Baz", "BazRenamed").Replace("int Use(", "int UseRenamed(")),
+            sources.Select(f => f.Replace("Field", "FieldRenamed").Replace("Prop", "PropRenamed").Replace("Bar", "BarRenamed").Replace("Scale", "ScaleRenamed").Replace("int Use(", "int UseRenamed(")),
             results);
     }
 
@@ -399,12 +399,12 @@ class C
     int M()
     {
         var value = 1;
-        var klass = value + 1;
-        return value + klass;
+        var category = value + 1;
+        return value + category;
     }
 }
 ";
-        var names = new Dictionary<string, string>() { ["default"] = "value", ["class"] = "klass" };
+        var names = new Dictionary<string, string>() { ["default"] = "value", ["class"] = "category" };
 
         string[] results = await RenameDocumentsAsync(
             [source],
@@ -434,16 +434,16 @@ class C
 {
     int M()
     {
-        return evt + evt;
+        return handler + handler;
     }
 
-    private int evt = 1;
+    private int handler = 1;
 }
 ";
         string[] results = await RenameDocumentsAsync(
             [source],
             symbol => symbol.Kind == SymbolKind.Field,
-            _ => "evt",
+            _ => "handler",
             new SymbolRenamerOptions() { SkipTypes = true, SkipLocals = true });
 
         Assert.Equal(expected, Assert.Single(results));
