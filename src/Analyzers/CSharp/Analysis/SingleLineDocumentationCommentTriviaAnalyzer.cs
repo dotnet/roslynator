@@ -267,6 +267,9 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
     private static bool IsMissing(DocumentationCommentTriviaSyntax documentationComment, ParameterSyntax parameter)
     {
+        if (string.IsNullOrEmpty(parameter.Identifier.ValueText))
+            return false;
+
         foreach (XmlNodeSyntax xmlNode in documentationComment.Content)
         {
             XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
