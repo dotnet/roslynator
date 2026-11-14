@@ -114,7 +114,10 @@ internal abstract class DocumentationCommentRefactoring<TNode> where TNode : Syn
 
         for (int i = 0; i < nodes.Count; i++)
         {
-            if (!dic.ContainsKey(GetName(nodes[i])))
+            string name = GetName(nodes[i]);
+
+            if (!string.IsNullOrEmpty(name)
+                && !dic.ContainsKey(name))
             {
                 int insertIndex = -1;
                 var newLinePosition = NewLinePosition.Beginning;

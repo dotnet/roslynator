@@ -45,4 +45,49 @@ class C
 }
 """);
     }
+
+#if ROSLYN_5_0
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParamElementToDocumentationComment)]
+    public async Task TestNoDiagnostic_StaticExtensionBlock()
+    {
+        await VerifyNoDiagnosticAsync("""
+public static class C
+{
+    /// <summary>
+    /// Extensions for <see cref="System.IO.Stream" />
+    /// </summary>
+    extension(System.IO.Stream)
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParamElementToDocumentationComment)]
+    public async Task Test_NamedExtensionBlock()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+public static class C
+{
+    ///[| <summary>
+    /// Extensions for <see cref="System.IO.Stream" />
+    /// </summary>
+|]    extension(System.IO.Stream stream)
+    {
+    }
+}
+""", """
+public static class C
+{
+    /// <summary>
+    /// Extensions for <see cref="System.IO.Stream" />
+    /// </summary>
+    /// <param name="stream"></param>
+    extension(System.IO.Stream stream)
+    {
+    }
+}
+""");
+    }
+#endif
 }
