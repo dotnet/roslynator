@@ -7908,6 +7908,34 @@ string s = """
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1270</Id>
+    <Identifier>UseTimeProviderInsteadOfDateTimeNow</Identifier>
+    <Title>Use 'TimeProvider' instead of 'DateTime.Now'</Title>
+    <MessageFormat>Use 'TimeProvider' instead of '{0}'</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>Reports `DateTime.Now`, `DateTime.UtcNow`, `DateTime.Today`, `DateTimeOffset.Now` and `DateTimeOffset.UtcNow` when `System.TimeProvider` is available (.NET 8+ or the `Microsoft.Bcl.TimeProvider` package), so that code which depends on the current time can be tested with a fake time provider.</Summary>
+    <Remarks>The diagnostic is not reported inside types that derive from `TimeProvider` or inside expression trees. A code fix is offered only when a `TimeProvider` is already in scope as a local, a parameter, a field or a property.</Remarks>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C(TimeProvider timeProvider)
+{
+    DateTime M() => DateTime.UtcNow;
+}]]></Before>
+        <After><![CDATA[class C(TimeProvider timeProvider)
+{
+    DateTime M() => timeProvider.GetUtcNow().UtcDateTime;
+}]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://learn.microsoft.com/dotnet/standard/datetime/timeprovider-overview</Url>
+        <Text>What is TimeProvider?</Text>
+      </Link>
+    </Links>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>
