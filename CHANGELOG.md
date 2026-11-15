@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add analyzer "Use 'TimeProvider' instead of 'DateTime.Now'" [RCS1270](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1270) ([PR](https://github.com/dotnet/roslynator/pull/PR_NUMBER))
+- Add analyzer "Use 'TimeProvider' instead of 'DateTime.Now'" [RCS1270](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1270) ([PR](https://github.com/dotnet/roslynator/pull/1871))
 
 ### Fixed
 
