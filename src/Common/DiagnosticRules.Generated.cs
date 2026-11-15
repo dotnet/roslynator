@@ -3323,5 +3323,17 @@ namespace Roslynator
             helpLinkUri:        DiagnosticIdentifiers.SimplifyNumericComparison, 
             customTags:         []);
 
+        /// <summary>RCS1270</summary>
+        public static readonly DiagnosticDescriptor UseTimeProviderInsteadOfDateTimeNow = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseTimeProviderInsteadOfDateTimeNow, 
+            title:              "Use 'TimeProvider' instead of 'DateTime.Now'", 
+            messageFormat:      "Use 'TimeProvider' instead of '{0}'", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseTimeProviderInsteadOfDateTimeNow, 
+            customTags:         []);
+
     }
 }
