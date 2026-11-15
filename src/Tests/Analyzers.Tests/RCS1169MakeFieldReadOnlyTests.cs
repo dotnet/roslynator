@@ -399,4 +399,19 @@ namespace UnityEngine
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+    public async Task TestNoDiagnostic_InlineArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Runtime.CompilerServices;
+
+[InlineArray(InlineCapacity)]
+internal struct InlineBuffer
+{
+    internal const int InlineCapacity = 31;
+    private byte _element0;
+}
+");
+    }
 }

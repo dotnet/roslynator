@@ -73,6 +73,10 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
         bool skipProperty = !DiagnosticRules.UseReadOnlyAutoProperty.IsEffective(context)
             || ((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp6;
 
+        bool isInlineArray = !skipField
+            && typeDeclaration.IsKind(SyntaxKind.StructDeclaration)
+            && context.SemanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken)?.HasAttribute(MetadataNames.System_Runtime_CompilerServices_InlineArrayAttribute) == true;
+
         Dictionary<string, (SyntaxNode node, ISymbol symbol)> symbols = walker.Symbols;
 
         foreach (MemberDeclarationSyntax memberDeclaration in typeDeclaration.Members)
@@ -117,6 +121,12 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
                         break;
 
                     var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
+
+                    if (isInlineArray
+                        && !fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                    {
+                        break;
+                    }
 
                     foreach (VariableDeclaratorSyntax declarator in fieldDeclaration.Declaration.Variables)
                     {

@@ -57,6 +57,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
         INamedTypeSymbol declarationSymbol = null;
         ImmutableArray<AttributeData> attributes = default;
+        bool isInlineArray = false;
 
 #if ROSLYN_4_0
         if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -70,6 +71,9 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
             if (attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute)))
                 return;
+
+            isInlineArray = typeDeclaration.IsKind(SyntaxKind.StructDeclaration)
+                && attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_InlineArrayAttribute));
         }
 
         bool? canContainUnityScriptMethods = null;
@@ -115,6 +119,13 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                 case FieldDeclarationSyntax declaration:
                 {
                     SyntaxTokenList modifiers = declaration.Modifiers;
+
+                    if (isInlineArray
+                        && !modifiers.Contains(SyntaxKind.StaticKeyword)
+                        && !modifiers.Contains(SyntaxKind.ConstKeyword))
+                    {
+                        break;
+                    }
 
                     if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                         walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
