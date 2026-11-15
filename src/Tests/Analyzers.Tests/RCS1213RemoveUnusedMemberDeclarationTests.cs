@@ -433,4 +433,42 @@ internal sealed class C() : B(Do)
     }
 }");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_InlineArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Runtime.CompilerServices;
+
+[InlineArray(InlineCapacity)]
+internal struct InlineBuffer
+{
+    internal const int InlineCapacity = 31;
+    private byte _element0;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task Test_InlineArrayStaticField()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Runtime.CompilerServices;
+
+[InlineArray(4)]
+internal struct InlineBuffer
+{
+    private byte _element0;
+    private static int [|_unused|];
+}
+", @"
+using System.Runtime.CompilerServices;
+
+[InlineArray(4)]
+internal struct InlineBuffer
+{
+    private byte _element0;
+}
+");
+    }
 }
