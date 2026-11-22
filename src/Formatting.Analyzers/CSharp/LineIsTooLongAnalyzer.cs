@@ -119,6 +119,9 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                 {
                     SyntaxNode parent = token2.Parent;
 
+                    if (parent.IsKind(SyntaxKind.InterpolatedStringText))
+                        parent = parent.Parent;
+
                     if (parent.SpanStart <= start)
                         continue;
 

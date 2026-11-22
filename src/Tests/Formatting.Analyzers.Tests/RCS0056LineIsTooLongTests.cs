@@ -1325,4 +1325,57 @@ class C
 }
 """");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawInterpolatedString_InterpolationOnSameLine()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    void M()
+    {
+        string x = "x";
+        var value = $$"""
+            - {{x}} xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            line 2
+            """;
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawInterpolatedString_InterpolationOnSameLine2()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    void M()
+    {
+        var value = $"""
+            - { "x" } xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            line 2
+            """;
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongVerbatimInterpolatedString_InterpolationOnSameLine()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    void M()
+    {
+        string x = "x";
+        var value = $@"
+            - {x} xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            line 2
+            ";
+    }
+}
+"""");
+    }
 }
